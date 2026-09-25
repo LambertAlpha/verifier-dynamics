@@ -1006,3 +1006,122 @@ only. No target or predictor had been computed.
   `90add2d8acff344c431d7e48e68cfc9da91f3d2f3ec4911123c2377f9ea3d7f1` (900 slots, 124 redraws).
 
 The held-out split is sealed: `configs/e002/HELDOUT_APPROVED` does not exist.
+
+---
+
+### E002 — design-split pilot record (2026-09-25; DESIGN SPLIT ONLY; not E002 results)
+
+Scope as registered in E002 §11. No test-split target, predictor or metric was computed;
+`configs/e002/HELDOUT_APPROVED` does not exist. Every run's `metadata.json` records
+`split = design`. Post-hoc items are labelled **[post-hoc]**.
+
+#### A. Targets and FPR selection (§1, §4)
+
+Run `results/E002-pilot-targets/20260925T083746Z_81ffa61` (script commit `81ffa61`; 16 s per
+panel for targets, 8 workers).
+
+| panel | stall fraction by `f` | selected `f` | flag | QA tolerance / class |
+| --- | --- | --- | --- | --- |
+| P-mod (`q0 = 0.05`) | 0.05: 0.000, 0.1: 0.480, 0.2: 0.953 | **0.1** | no | 30/30, 30/30 |
+| P-rare (`q0 = 0.002`) | 0.005: 0.373, 0.01: 0.423, 0.02: 0.497 | **0.02** | no | 30/30, 30/30 |
+
+No target integration failed (exclusions: 0). `D` is 0 for about half of the structures (all
+successes tie at 0; the C-index uses only pairs with distinct `D`).
+
+Stall fraction by type at the selected `f` (design): P-mod — AND2 .45, AND3 .15, AND4 .15,
+OR2 1.0, OR3 .91, THR23 .13, AOR .41, OAND .91, MIX .22, SINGLE 1.0, RFP 0. P-rare — AND2 .18,
+AND3 .15, AND4 .03, OR2 1.0, OR3 1.0, THR23 .22, AOR .25, OAND .97, MIX .69, SINGLE 1.0, RFP 0.
+
+#### B. Oracle ceilings, design split (§9); committed before any finite-sample pilot
+
+Run `results/E002-pilot-oracle/20260925T083916Z_955e4c1` (commit `5aa546b`).
+
+| signal | P-mod C-index / AUROC | P-rare C-index / AUROC |
+| --- | --- | --- |
+| G0 (constant) | 0.500 / 0.500 | 0.500 / 0.500 |
+| `C(0)`, exact Fisher | 0.9355 / 0.9857 | 0.9274 / 0.9714 |
+| `dFPR/dt(0)`, `dJ_V/dt(0)` | 0.9355 / 0.9857 | 0.9274 / 0.9714 |
+| `-dJ_G/dt(0)` | 0.500 / 0.500 | 0.500 / 0.500 |
+| FPR growth, `t_p = 0.1 / 1 / 3 / 10` | .936 / .944 / .962 / .988 (AUROC .999 at 10) | .929 / .947 / .968 / .974 (AUROC 1.000 at 10) |
+| `J_V` growth, `t_p = 10` | 0.737 / 0.647 | 0.887 / 0.876 |
+| `-(J_G(t_p) - q0)`, `t_p = 10` | 0.980 / 0.996 | 0.995 / 1.000 |
+| P4 oracle (`r = all`) | **0.401 / 0.400** | **0.267 / 0.181** |
+
+Registered predictions: the `C(0)`, `FPR(t_p -> 0)` and `J_V(t_p -> 0)` ceilings coincide —
+**PASS**; the `J_G(t_p -> 0)` ceiling is 0.5 — **PASS**; the G0 ceiling is 0.5 — **PASS**.
+
+Observations (not predictions):
+
+- Every probe ceiling exceeds the geometry ceiling once `t_p >= 0.1`, and by 0.05 (C-index) at
+  `t_p = 10`.
+- `J_V` growth degrades at long horizons because legitimate learning also raises `J_V`.
+- **The P4 oracle is anti-predictive under its registered orientation.** Under OR-type events a
+  rejected wrong response has no feature present, so resampling one feature rarely triggers
+  acceptance; under AND-type events it is often one feature short, with large `s_i`. OR
+  structures stall and AND structures succeed, so the gain runs opposite to the danger. The
+  orientation is **not** flipped post hoc; see §F.
+
+#### C. E002a pilot (§10), `R = 200`
+
+Run `results/E002a-pilot/20260925T084434Z_33f3ea4` (script commit `33f3ea4`; 112 s wall,
+550 MB peak RSS). Fixed non-panel structures at the selected `f` of each panel.
+
+Registered checks:
+
+1. **Degenerate-event rates: PASS.** Observed rates of `A_hat = 0` (plug-in), all-gold-equal,
+   no-false-positive and some-feature-constant match the exact predictions:
+   - P-mod: 0 of 700 checks outside the band;
+   - P-rare: 4 of 700 outside, i.e. 2 distinct batches, each counted twice because `A_hat = 0`
+     and all-gold-equal are the same event (about 1.9 expected by chance).
+
+   **[post-hoc]** The band is an exact two-sided binomial test at the 3-SE level (`p < 0.0027`).
+   The registered `3·sqrt(p(1-p)/R)` band is zero when `p ≈ 0`, and the observed count is then
+   trivially 0.
+2. **U-statistic `C_hat^2` unbiased under the oracle metric: FAIL (preserved).** `|bias| > 3 MCSE`
+   in 35 of 177 cells (P-mod) and 29 of 163 cells (P-rare); cells with zero sample SD are
+   excluded. Two causes:
+   - **(i) Registration error.** Only the Gram entries are U-statistics. `C^2 = Gram_ee -
+     Gram_eG^2 / Gram_GG` contains a ratio and is not unbiased; for example RFP at `N = 4096` has
+     bias `-3.6e-6` with MCSE `2e-8`.
+   - **(ii) Rare-event cells** (P-rare, `N <= 64`). The sample MCSE badly underestimates the true
+     one: the U-statistic drops the diagonal, so a lone false positive contributes nothing and the
+     distribution is heavy-tailed.
+
+   **[post-hoc]** The unbiased Gram entry `P = Gram_eG` passes: 1 of 177 and 4 of 163 cells.
+3. **F4 per-sample noise: PASS.** Empirical vs formula:
+   - P-mod: SINGLE 0.7745 ± 0.0048 vs 0.7783; AND2 0.37631 ± 0.0023 vs 0.37633;
+   - P-rare: SINGLE 0.966 ± 0.015 vs 0.959; AND2 0.2331 ± 0.0036 vs 0.2376.
+4. **Plug-in `C_hat` biased upward near `C = 0`: NOT SUPPORTED on the registered (`C`) scale.**
+   - At dose `rho = 0.05` (P-mod, `C = 0.062`) the bias is +0.004, −0.003, −0.002 and −0.001 at
+     `N = 16, 64, 256, 1024`.
+   - **[post-hoc]** The upward bias is present in `C^2`: +0.048 at `N = 16` vs `C^2 = 0.0039`
+     (12×). On the `C` scale it is cancelled by the atom at `C_hat = 0` (batches without a false
+     positive) and by the concavity of the square root.
+   - The exact-`C = 0` control (RFP) cannot test the claim. With one parameter (`d = 1`),
+     `C_hat ≡ 0` whenever `A_hat > 0`.
+5. **Coverage near `C = 0` below nominal: NOT ASSESSABLE** as run, for the same `d = 1` reason;
+   small-dose structures were not in the coverage set. For `C > 0`, percentile-bootstrap coverage
+   is:
+   - P-mod: 0.90–0.985 at `N = 64–1024`;
+   - P-rare: 0.66–0.77 at `N = 64` (below nominal) and 0.885–0.945 at `N >= 256`.
+6. **False alarm at the RFP-calibrated threshold equals 5%: FAIL (preserved).** Plug-in with the
+   exact metric gives 0.00–0.03 across `N` (P-mod); estimated-metric variants give 0.00–0.10. The
+   RFP null is discrete (`d = 1`), so the 95% quantile sits on an atom.
+7. **Power / minimum detectable `C`: INVALID as an instrument (design flaw).**
+   - The RFP null has `d = 1`, while every tested structure has `d >= 2`. "Detection" therefore
+     partly measures the extra dimension: noise in the orthogonal direction alone gives
+     `C_hat > 0`.
+   - At `N >= 512` the minimum detectable `C` is bounded by the dose grid (smallest nonzero dose
+     `C = 0.062` P-mod, `0.031` P-rare).
+
+Other E002a observations:
+
+- **[post-hoc] The plug-in `C_hat^2` noise floor depends on structure, not only on `N`.** At
+  `N = 16` the bias is:
+  - P-mod: +0.023 SINGLE, +0.017 AND2, +0.069 OR2 (`C^2` = 0.081, 0.039, 0.079);
+  - P-rare: +0.146 on OR2 (`C^2 = 0.019`).
+
+  A structure-dependent floor is a spurious type signal: OR-type structures have larger floors and
+  also stall more. The U-statistic removes most of it.
+- A-extreme family: `alpha` is undefined in 94% (`q = 0.001`) and 53% (`q = 0.01`) of batches at
+  `N = 64`. `C_hat` stays usable (RMSE ≈ 1/3 of `C`), because `C` falls back to `||g_e||`.

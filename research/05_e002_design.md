@@ -1,6 +1,21 @@
-# 05 — E002 design memo (v2, 2026-09-25)
+# 05 — E002 design memo (v3, 2026-09-25)
 
-**Status: DESIGN ONLY. Not registered, not implemented, not run.**
+**Status: DESIGN MEMO. The authoritative E002a/b protocol is the registry entry "E002 —
+pre-registration" plus its dated amendments (`03_experiment_registry.md`); where this memo and the
+registry differ, the registry wins. §13 (E002c) is design only: not registered, not implemented,
+not run.**
+
+- v3 (2026-09-25) adds §13 (E002c, unmatched panel) and this naming note. Arm names in §4–§12
+  below are the v2 draft names; the registry renamed them:
+
+  | v2 memo | registry (E002a/b) |
+  | --- | --- |
+  | S0 | G0 static metrics |
+  | G-est / G-oracle | G1 / G1-oracle |
+  | P3 verifier-score growth | P1 |
+  | P2 importance-reweighted FPR growth | P2 |
+  | P1 / P5 fresh-label probes | P3 |
+  | L local-perturbation audit | P4 |
 
 - v1 (2026-09-25) asked whether `(A, alpha, C)` can be estimated at all. v2 reframes E002 around
   the collaborator's question below. The v1 material on estimator behaviour survives as sub-study
@@ -322,3 +337,71 @@ flow, as in E003.
     credit, precursor behaviours, heterogeneous prompts).
 
   These need a family in which F2 fails. Proposed for discussion only, not for implementation.
+
+## 13. E002c — unmatched panel (design only; NOT registered, NOT implemented, NOT run)
+
+**Gate.** E002c is considered only if E002a/b justify it: G1 must not be abandoned under the E002
+criteria (registry E002 §8). If E002b abandons the diagnostic claim, E002c is not run, because
+the first-order identity `C^2 = (1-q) dFPR/dt` (theory note §12) holds per structure whether or
+not the panel is matched.
+
+**Question.** When ordinary static verifier quality varies naturally across verifiers, does
+estimated geometry add predictive value for long-run gold shortfall **beyond** static metrics,
+and beyond what the same budget spent on probes adds?
+
+**Panel (Candidate 3, FNR = 0, same verifier types as E002).**
+
+- Raw draws as in E002 (§2 of the registry), but **no common shift**: each structure draws its
+  own shift `c ~ U(-3, 3)` on the raw logits, so FPR, FP mass and `S_E` vary. The start accuracy
+  also varies: `q0 ~ LogUniform(0.002, 0.2)`, drawn independently of the verifier.
+- MIX keeps `rho ~ U(0.05, 1)`; RFP draws `p ~ LogUniform(0.005, 0.3)`.
+- Rejection: `s_i ∈ [1e-4, 1-1e-4]`, and FPR in `[0.005, 0.5]`.
+- Size and split as in E002: 900 structures per panel, 300 design / 600 test, sealed loader.
+- One panel only (no P-mod/P-rare split, since `q0` varies within the panel).
+
+**Targets.** As in E002: `D = 1 - J_G(∞)` (primary), stall (categorical). The exact `tau`-ODE
+applies unchanged.
+
+**Static-only reference model S.** Features from the audit (`m0 = B_gold` labeled `pi_0`
+rollouts): `q0_hat` (gold accuracy), `FPR_hat`, verifier accept rate, and `log` transforms. Model:
+cross-fitted (5-fold on the design split) monotone gradient boosting or, if that overfits,
+logistic regression for stall and a rank-linear model for `D`; the model class is fixed on the
+design split before the test split is opened.
+
+**Arms (same accounting as E002 §3; every arm gets the same static audit).**
+
+- `S`: static-only model.
+- `S + G1`: `S` plus `C_hat^2` and `C_hat^2 / (1 - q0_hat)` (the predicted first-order FPR growth)
+  from the same audit plus unlabeled rollouts.
+- `S + P1`, `S + P2`, `S + P3`, `S + P4`: `S` plus that probe's score. P1 needs no gold of its own
+  but inherits the shared audit cost.
+- Oracle ceilings (committed first): `S*` (exact `q0`, FPR), `S* + C(0)`, `S* + FPR(t_p)` for
+  `t_p ∈ {0.1, 1, 10}`.
+
+**Primary estimand.**
+`Delta_inc = [C-index(S + G1) - C-index(S)] - max_j [C-index(S + P_j) - C-index(S)]` at the E002
+primary cells, with the same hierarchical bootstrap, one-sided tests and Holm correction over
+cells × {C-index, AUROC}. "`S + G1` beats `S`" is reported but is not evidence, for the same
+reason "G1 beats G0" is not evidence in E002.
+
+**Success and abandonment.** Mirror E002 §8 with `S + arm` in place of each arm: success needs
+the estimated metric, the test split, a Holm-significant `Delta_inc > 0` at a primary cell, and
+non-domination of the `S + G1` frontier. Abandonment is triggered by the same three conditions.
+
+**Registered-prediction candidates (to be frozen if E002c is ever registered).**
+
+- The `S*` ceiling is well above 0.5, since FPR and `q0` now predict `D` (Prop. 9: the gold race
+  depends on `q0` and the FP mass).
+- `S* + C(0)` and `S* + FPR(t_p -> 0)` have equal ceilings (the §12 identity holds per structure).
+- The incremental value of any `t = 0` diagnostic over `S*` is bounded by the within-(q0, FPR)
+  variation of `eta`, which is what the matched E002 panel isolates.
+
+**Known threats.**
+
+- Confounding by scale: `C^2` grows with the FP mass, so part of `C_hat^2`'s value can be
+  static information re-expressed. The `S + G1` vs `S` comparison controls for it only as well
+  as `S` is specified; the cross-fitted flexible `S` is meant to absorb it.
+- More model fitting means more researcher degrees of freedom; everything is fixed on the design
+  split and committed before the test split is opened.
+- Runtime: about 1.5× E002b (one panel, but a model fit per arm × cell × replication).
+
