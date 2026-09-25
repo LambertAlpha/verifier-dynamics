@@ -1,0 +1,124 @@
+{
+  "experiment_id": "E002-pilot-oracle",
+  "created_utc": "2026-09-25T08:39:16+00:00",
+  "git": {
+    "commit": "955e4c19d30f74d662b72601070d76c3e458b165",
+    "dirty": true
+  },
+  "config": {
+    "experiment_id": "E002",
+    "registry": "research/03_experiment_registry.md#e002",
+    "pilot_seed": 20260926,
+    "operating_points": {
+      "P-mod": {
+        "q0": 0.05,
+        "f_grid": [
+          0.05,
+          0.1,
+          0.2
+        ],
+        "role": "primary"
+      },
+      "P-rare": {
+        "q0": 0.002,
+        "f_grid": [
+          0.005,
+          0.01,
+          0.02
+        ],
+        "role": "secondary"
+      }
+    },
+    "budgets": {
+      "b_gold": [
+        16,
+        32,
+        64,
+        128,
+        256,
+        512,
+        1024
+      ],
+      "roll_ratio": [
+        1,
+        4,
+        16
+      ],
+      "primary_cells": [
+        [
+          64,
+          256
+        ],
+        [
+          256,
+          1024
+        ]
+      ]
+    },
+    "targets": {
+      "report_times": [
+        0.1,
+        0.3,
+        1.0,
+        3.0,
+        10.0,
+        25.0
+      ],
+      "qa_fraction": 0.1,
+      "qa_t_end": 500.0
+    },
+    "e002a": {
+      "n_grid": [
+        8,
+        16,
+        32,
+        64,
+        128,
+        256,
+        512,
+        1024,
+        2048,
+        4096
+      ],
+      "reps_pilot": 200,
+      "reps_formal": 2000,
+      "bootstrap": 200,
+      "rho_dose": [
+        0.0,
+        0.05,
+        0.1,
+        0.2,
+        0.35,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "q_extreme": [
+        0.001,
+        0.01,
+        0.9,
+        0.99
+      ],
+      "asym_raw_probs": [
+        0.05,
+        0.5
+      ]
+    },
+    "e002b": {
+      "reps_design": 32,
+      "reps_heldout": 64,
+      "lam_probe": 0.01
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "split": "design",
+  "targets": "results/E002-pilot-targets/20260925T083746Z_81ffa61"
+}
