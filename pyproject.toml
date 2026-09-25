@@ -9,6 +9,7 @@ dependencies = [
     "scipy>=1.13",
     "torch>=2.4",
     "matplotlib>=3.9",
+    "scikit-learn>=1.5",
 ]
 
 [dependency-groups]

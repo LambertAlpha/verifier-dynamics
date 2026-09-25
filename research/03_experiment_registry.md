@@ -1523,3 +1523,270 @@ because the design relies on it, and E004 predictions that use these facts are n
 | DC6 | Single-feature exploit, normalized shortfall at `T = 15`: NG 0.434; sign-GD 0.000; mean-field Adam 0.012 / 0.031 / 0.095 at batch 512 / 64 / 8. |
 | DC7 | Preference inversion: shortfall 0.43 (NG) / 0.49 (mean-field Adam), peak then decline; with inversion on both prompts, 1.56 / 1.88. No inversion: success under both. |
 | DC8 | Latent-decline outcome hard pair (D vs B, mean-field Adam, batch 64): matched within 0.002 over the first 5%; `alpha` −0.26 → −0.40 vs +0.03; D peaks at 30% of `T`, then DECLINE (normalized shortfall 0.49); B SUCCESS. |
+
+---
+
+### E004a — pre-registration (Stage 0 protocol; Stage 1 success criteria frozen)
+
+Date: 2026-09-25. Written and committed **before any E004 code exists**.
+
+- Design memo: `06_e004_design.md` v1.
+- Collaborator decisions 1–5 approved on 2026-09-25, together with Correction A (hard-pair
+  fairness), Correction B (dynamic hard pair) and the cross-construction validity gate.
+- Design-phase checks E000d are disclosed; predictions that rely on them (F1–F8) are **not
+  blind**.
+- **Stage 0 touches the design split only.** No final predictor is fitted, no test or shift
+  structure is generated, and nothing from E004b is started. The Stage 1 success criteria in §12
+  are frozen here and may not change after Stage 0 is observed.
+
+#### 1. Toy (U-toy; identical parameterization for every structure)
+
+- **Prompts.** `x = 1..4` with weights `w`.
+- **Response** `y = (s, xi, z)`:
+  - `s ∈ {SOLVE, HACK, OTHER}` with softmax logits `(u_x, h, 0)`;
+  - `xi ~ Bern(p_x)` if `s = SOLVE`;
+  - `z ∈ {0,1}^3` independent, `logit z_j = phi_j + lam_j·mean(u)`.
+- **Parameters** `theta = (u_1..u_4, h, phi_1..phi_3)`, `d = 8`.
+- **Gold** `G = 1{s = SOLVE, xi = 1}`.
+- **Verifier**, expected acceptance with fresh coins:
+  - on deleted prompts, `v0`;
+  - otherwise, correct answers are accepted w.p. `1 - fn_x`, and wrong answers w.p.
+    `1 - (1-fp_x)(1 - trig_x 1_E(z))(1 - rho_x 1{HACK})(1 - beta_x 1{SOLVE, failed})`.
+
+#### 2. Constructions (two per mechanism; 12 in total)
+
+| mechanism | construction | channel |
+| --- | --- | --- |
+| R attenuation | R1 | symmetric coins `fp_x = fn_x = eps` on all prompts |
+| | R2 | prompt-heterogeneous coins `fp_x = eps·r_x`, `fn_x = eps'·r'_x` (`r, r' ~ 4·Dirichlet(1)`, capped at 0.45) |
+| X deletion | X1 | accept-all subset: `V = 1` on `S`, `|S| ∈ {1,2}` |
+| | X2 | constant-score subset: `V = v0 ~ U(0, 0.3)` on `S`, `|S| ∈ {1,2}` |
+| Y-A exploit discovery | YA1 | conjunctive trigger (AND2 w.p. 1/2, else AND3) on all prompts, low initial accessibility |
+| | YA2 | prompt-dependent conjunctive trigger: AND2 on a random prompt subset `|T| ∈ {1,2,3}` |
+| Y-B exhaustion | YB1 | accessible single-feature trigger on all prompts |
+| | YB2 | accessible OR2 trigger on all prompts |
+| B benign amplification | B1 | attempt credit `beta` on all prompts |
+| | B2 | attempt credit `beta` on a random prompt subset `|S| ∈ {1,2,3}` |
+| D displacement | D1 | difficulty inversion: hack acceptance `rho ~ U(0.3, 0.9)` on all prompts, with `p_x < rho` on ≥ 1 prompt |
+| | D2 | strictness inversion: hack acceptance `rho ~ U(0.3, 0.9)`, and on a subset `S` of prompts with `p_x >= rho` correct answers are rejected with `fn_x = 1 - rho·U(0.5, 0.9)/p_x` |
+
+#### 3. Common draws and calibration (every construction)
+
+**Draws.**
+
+- `w ~ Dirichlet(2·1)`.
+- `p_x ~ Beta(2, 1.5)`, clipped to `[0.2, 0.98]`.
+- Skill offsets `delta_x ~ N(0, 1)`, centered; `u_x0 = mu + delta_x`.
+- `h0 ~ N(-2, 1)`; `phi0_j ~ N(-1.5, 1)`.
+- **Coupling** `lam_j ~ N(0, 0.5^2)`.
+- Targets from one common distribution:
+  - `J_G(0) ~ U(0.05, 0.5)`;
+  - `FPR(0) ~ LogUniform(0.02, 0.4)`;
+  - `FNR(0) ~ U(0, 0.25)`.
+- Mechanism share `omega ~ U(0.5, 1)`.
+
+**Calibration.**
+
+1. `mu` is solved (brentq) so that `J_G(0)` hits its target. For D, `h0` and `mu` are solved
+   alternately until both converge.
+2. The construction's channel strength is solved so that the channel alone gives `omega` × target
+   FPR:
+   - Y: a common logit shift of the event features;
+   - B: `beta ≤ 1`;
+   - D: `h0`.
+   Exceptions:
+   - YA1 uses `S_E0 = min(omega·target, s_A)` with `s_A ~ LogUniform(0.001, 0.05)`;
+   - YA2 uses `S_E0 ~ LogUniform(0.002, 0.1)`;
+   - R solves its coins for the targets directly;
+   - X uses its own draws.
+3. The channel-only FPR and FNR must not exceed their targets. Otherwise the construction's own
+   draws are redrawn (≤ 50 times), then the targets are redrawn. Rejection counts are reported.
+4. **Background noise (top-up coins).** `fp` and `fn` on non-deleted prompts are solved (brentq)
+   so that the total FPR and FNR hit the targets.
+
+**Canonical twin.** The same structure with `lam = 0` and the top-up coins removed; not
+re-calibrated. It is used for theory checks and signatures only.
+
+#### 4. Seeds and panel
+
+- `SeedSequence(20260930).spawn(4)` = `[design panel, test panel (reserved), shift panel
+  (reserved), runs]`.
+- **Stage 0 generates the design panel only:** 40 structures per construction, 480 in total.
+- Structures with clean gain `J_G^clean(T) - J_G(0) < 0.1` are excluded and counted.
+
+#### 5. Optimizers
+
+- **Primary: sampled GRPO-lite Adam.**
+  - Each step: 8 prompts ~ `w`, 8 responses each.
+  - Advantage `(V - group mean)/(group std + 1e-6)`; 0 when the std is 0.
+  - Gradient: the mean of `A·grad log pi`.
+  - Adam: lr 0.01, β = (0.9, 0.999), eps 1e-8, bias-corrected.
+  - 4 verifier seeds and 4 clean seeds (`V = G`) per structure.
+- **Secondary (theory anchor): exact natural-gradient flow** `theta' = F^-1 grad J_V`, with the
+  clean flow as counterfactual.
+- **Design approximation only: mean-field Adam (MF-Adam).**
+  `theta_i' = lr·g~_i / sqrt(g~_i^2 + sigma~_i^2/64 + eps^2)` per step. `g~` is the exact expected
+  gradient with population-normalized advantages `(V - b_x)/sigma_x`; `sigma~^2` is the exact
+  per-sample second moment minus `g~^2`.
+  - Used for hard-pair search and for a comparison with sampled Adam.
+  - **Never** used as a target or claimed equivalent to sampled Adam.
+- **Horizon `T`** (per optimizer). `T = 3 × median t95^clean` over the design split.
+  - `t95^clean` is the first time the clean mean `J_G` curve (4-seed mean for Adam; the exact flow
+    for NG) reaches `J_G(0) + 0.95(sum_x w_x p_x - J_G(0))`.
+  - Provisional clean runs last 4000 Adam steps or 60 NG time units; censored `t95` = the run
+    length.
+  - Adam `T` is rounded up to a multiple of 100 steps.
+
+#### 6. Checkpoints, observables and features
+
+- **Horizons.** `H = {0, 0.2, 0.5, 1, 2, 5, 10}%` of `T`; primary `h* = 2%`. Checkpoints:
+  - `H ∪ {h/2}`;
+  - every 1% of `T` for outcome curves.
+- **Exact observables** of the realized policy at each checkpoint: `J_G, J_V, FPR, FNR`.
+- **Geometry in the optimizer metric** (`A, alpha, C, C_in, C_out`; `C_in/C_out` = the residual
+  inside/outside the span of the 4 per-prompt gold gradients):
+  - Adam: `M = diag(1/(sqrt(v_hat) + eps))` from the run's own state, with `g_V -> g~` (the
+    GRPO-effective direction). At `t = 0` (L1), `v_hat := g~^2 + sigma~^2/64` at `theta0`.
+  - NG: `M = F^-1`, `g_V = grad J_V`.
+- **Levels.**
+
+  | level | contents |
+  | --- | --- |
+  | L0 | `J_G(0), J_V(0), FPR(0), FNR(0)`, FP mass |
+  | L1 | L0 + `(A, alpha, C)` at 0 |
+  | L2 | L0 + summaries of `J_G, J_V, FPR, FNR` |
+  | L2-G | L0 + summaries of `J_G` |
+  | L3 | L2 + summaries of `A, alpha, C` |
+  | L2+ | L2 + per-prompt `ΔJ_G,x` |
+  | L3+ | L3 + summaries of `C_in, C_out` |
+
+  Summaries at horizon `h`: the value at `h`, the change `0 → h`, and the slope over `[h/2, h]`
+  per 1% of `T`.
+- **Audit SE** (Stage 1 measurement; used here for the hard-pair criteria). With `n = 256`:
+  - `SE(J_G) = sqrt(J_G(1-J_G)/n)`; `SE(J_V)` likewise;
+  - `SE(FPR) = sqrt(FPR(1-FPR)/(n(1-J_G)))`; `SE(FNR) = sqrt(FNR(1-FNR)/(n J_G))`;
+  - the SE of a change or slope combines the two endpoint SEs in quadrature (slope divided by
+    its width);
+  - SEs are evaluated at the mean of the two structures being compared.
+
+#### 7. Outcomes (per run)
+
+- **Clean reference:** the 4-seed-mean clean exact `J_G` curve (Adam), or the exact clean flow
+  (NG).
+- `Dn = (J_G^clean(T) - J_G(T)) / (J_G^clean(T) - J_G(0))`.
+- **Descriptive labels, in precedence order:**
+  1. DECLINE: `max_t J_G - J_G(T) >= 0.05` and `Dn > 0.1`;
+  2. SUCCESS: `Dn <= 0.1`;
+  3. STALL: `2(J_G(T) - J_G(T/2)) < J_G^clean(T) - J_G(T)`;
+  4. SLOW: otherwise.
+- **Primary inferential targets:** `Dn`, and binary failure = STALL ∪ DECLINE.
+- **Onset** `t_on` = the first outcome checkpoint where
+  `(J_G^clean - J_G)/(J_G^clean - J_G(0)) > 0.1`.
+- **Mechanism label** = the construction's mechanism. Route A vs B = YA vs YB.
+
+#### 8. Stage 0 analyses (design split only)
+
+1. **Outcome map** by construction under sampled Adam, NG and MF-Adam; MF-Adam vs sampled-Adam
+   agreement.
+2. **Signatures** of canonical vs primary structures: `alpha_0`, `C_0`, `C_out/C`, and the trends
+   of `C/A` and `alpha`.
+3. **Optimizer-dependence figure**, including a batch sweep (sampled Adam with 4×4, 8×8 and 16×16
+   rollouts per step) on the first 10 design structures of every construction.
+4. **Leakage checks.**
+   - 5-fold CV grouped by structure; standardized features.
+   - L0 → mechanism (6 classes) and L0 → construction (12 classes): multinomial logistic
+     (`LogisticRegressionCV`) and GBM (depth 2, 100 trees).
+   - The type oracle (leave-one-out mechanism-mean `Dn`) is reported.
+5. **Oracle information ceilings** (not final predictors; exact observables along the realized
+   runs).
+   - For each horizon and level, grouped 5-fold CV:
+     - `RidgeCV` → C-index of `Dn`;
+     - `LogisticRegressionCV` → AUROC of binary failure, plus not-yet-visible AUROC (evaluated on
+       runs with `t_on > h`);
+     - multinomial logistic → mechanism macro-F1, and YA vs YB AUROC.
+   - Single-variable raw ceilings with fixed orientation: L0 FPR(0); L1 `C_0/A_0`; L2 `ΔFPR` and
+     `-ΔJ_G`; L3 `ΔC` and `-Δalpha`.
+   - Primary for Adam; repeated for NG.
+6. **Cross-construction mechanism test.** Fit the mechanism classifier (oracle L2 and L3,
+   `h*`) on construction set 1 = {R1, X1, YA1, YB1, B1, D1}, evaluate on set 2, and the reverse;
+   report the mean macro-F1 and its ratio to the within-panel CV macro-F1.
+7. **Hard pairs.**
+   - **Search:** least squares over a member's natural parameters, 20 anchors per pair type,
+     under MF-Adam. Residuals = all L2 feature differences over `[0, h*]` in audit-SE units.
+   - **Verification:** sampled Adam 32-seed means.
+   - **Correction A (all pair types claimed L2-blind):** every L2 feature difference (value,
+     change, slope of `J_G, J_V, FPR, FNR` at every registered horizon ≤ `h*`) must be
+     ≤ 0.5 audit-SE. The criterion is not weakened if a pair type becomes infeasible.
+   - **Types:**
+     - HP-A: B vs coupled YA (mechanism pair);
+     - HP-D: D vs B (latent decline);
+     - HP-B: YA vs YB with coupling;
+     - HP-C: B vs Y proxy growth (stress test only; no L2-blind claim).
+   - **Correction B (dynamic pair, any two different mechanisms).** At `t = 0`:
+     - L0 matched ≤ 0.5 audit-SE;
+     - L1 matched: `|ΔA0| <= 0.1·mean(A0)`, `|Δalpha0| <= 0.1`, `|ΔC0| <= 0.1·max(mean C0, 0.01)`.
+
+     Over `[0, h*]`, L2 is matched as in Correction A. Before the failing member's `t_on`, L3
+     diverges: at some checkpoint, `|Δalpha| >= 0.3`, `|ΔA|/mean >= 0.5` or `|ΔC|/mean >= 0.5`.
+     The outcome (binary failure) or the mechanism differs. The search does not force existence;
+     the best mismatch is reported.
+   - **Freeze:** the pair parameters are committed before any Stage 1 predictor is fitted.
+8. **Theory nulls** on canonical twins:
+   - F1 identity on canonical YA1/YB1 under NG (max deviation ≤ 1e-8);
+   - NG invariance to coupling (coupled vs uncoupled trajectories ≤ 1e-6).
+
+#### 9. Stage 0 predictions (registered)
+
+- **S0-P1 (F1):** canonical YA1/YB1 NG identity holds (≤ 1e-8), and oracle L3 − L2 = 0 there.
+- **S0-P2 (F2):** coupling is invisible to NG (≤ 1e-6).
+- **S0-P3 (F5):** the failure fraction of YA ∪ YB is lower under sampled Adam than under NG.
+- **S0-P4 (F6):** D fails (binary) in ≥ 50% of runs under both sampled Adam and NG.
+- **S0-P5:** B fails in ≤ 10% of runs under both.
+- **Agent's prior (not hypotheses):**
+  - oracle L2 ceilings approach 1 by `h = 5%` in most constructions;
+  - L3 − L2 is small except in D;
+  - HP-D may become infeasible under Correction A once FNR is matched.
+
+#### 10. Gates to Stage 1 (all required)
+
+- **G1:** L0 → mechanism macro-F1 (logistic, CV) ≤ 0.35.
+- **G2:** under sampled Adam, every mechanism except B and R has ≥ 10% failing and ≥ 10%
+  non-failing runs.
+- **G3:** S0-P1 and S0-P2 hold.
+- **G4:** cross-construction mechanism macro-F1 (the best of oracle L2 and L3 at `h*`) is
+  ≥ 0.33, and ≥ 0.6 × the within-panel CV macro-F1.
+
+If a gate fails, the recommendation is REVISE PANEL, with the exact reasons. A revision is
+recorded as a dated amendment and re-run on a new design draw.
+
+#### 11. Deviations from memo v1 (recorded now)
+
+- MIX is deferred; it is not in the Stage 0 panel.
+- The FNR target range is `U(0, 0.25)`; background coins are the calibrated top-ups.
+- RQ4 (counterfactual optimizer) is not part of Stage 0.
+
+#### 12. Stage 1 success criteria (FROZEN; memo §11 with the approved decisions)
+
+- **Setting:** sampled Adam, test split A, `h* = 2%`, audit `n = 256`.
+- **Inference:** hierarchical bootstrap (structures, then seeds, 2000 resamples); one-sided
+  `p = (1 + #{Δ* <= 0})/(B+1)`. A "beats" claim needs the lower 95% bound > 0 **and** a point
+  estimate ≥ the margin (`δ_out = 0.02`, `δ_mech = 0.03`). Ties within ±0.01. No point-estimate
+  dominance rules.
+- **RQ1 success:** `L2 − L0 >= δ_out` with lower bound > 0 for both the C-index of `Dn` and the
+  AUROC of binary failure (Holm over 2).
+- **Early-warning success:** among runs with `t_on > h*`, the L2 AUROC for eventual failure has
+  lower bound ≥ 0.65, **and** the median lead time at a design-calibrated 10% false-alarm
+  threshold is ≥ 5% of `T`.
+- **Generalization:**
+  - the shift split: `L2 − L0` lower bound > −0.01;
+  - leave-one-mechanism-out: `L2 − L0` lower bound > 0 in ≥ 4 of 6 held-out mechanisms.
+- **Mechanistic value:** at `h*`, all of
+  - L3 − L2 macro-F1 ≥ `δ_mech` with lower bound > 0;
+  - Route A vs B AUROC: L3 − L2 ≥ `δ_out` with lower bound > 0;
+  - on the frozen hard pairs, L3 correct on ≥ 80% where L2 is at chance (one-sided binomial).
+
+  L3 is not required to beat L2 on outcome.
+- **Abandon early warning** if, at every `h <= 5%`, RQ1 fails or the not-yet-visible AUROC lower
+  bound is ≤ 0.55.
+- **Mechanistic-only** if early warning fails and mechanistic value succeeds.
+- **Proceed to E004b** if RQ1, early warning and generalization all succeed.
