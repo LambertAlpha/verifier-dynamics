@@ -15,6 +15,7 @@ REPO = Path(__file__).resolve().parents[1]
 def _pilot():
     path = REPO / "experiments" / "e002" / "e002b_design_pilot.py"
     spec = importlib.util.spec_from_file_location("e002b_design_pilot", path)
+    assert spec is not None and spec.loader is not None
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
