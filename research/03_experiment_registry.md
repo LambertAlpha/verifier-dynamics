@@ -623,3 +623,18 @@ that directory.
     informative prefix summary suffices.
 
 **Follow-up.** Pending the collaborator's review. No new experiment has been started.
+
+---
+
+### E000c — E002 design-phase checks (retroactive, NOT pre-registered)
+
+Date: 2026-09-25. Run in the scratch directory: exact enumeration + autodiff on 300 random
+Candidate-3 states (single, AND, OR; `q ∈ [0.01, 0.5]`). This is not E002 code. It informs
+`05_e002_design.md` v2, facts F2–F4. Max relative errors:
+
+- F2: `dFPR/dt = C^2/(1-q)` under natural gradient, 2.0e-15 (all kinds);
+- F3: `dJ_V/dt = (1-FPR)^2 q(1-q) + C^2`, 2.3e-15;
+- F4: the per-sample noise of the plug-in `C_hat^2` equals `(1-q) kappa^2 / S + S q - ||g_e||^2`,
+  1.9e-15 (single and AND only).
+
+Consequence: E002 predictions that rely on these facts are not blind to them.

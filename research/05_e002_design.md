@@ -1,149 +1,324 @@
-# 05 — E002 design: finite-sample estimability of (A, alpha, C)
+# 05 — E002 design memo (v2, 2026-09-25)
 
-**Status: DRAFT for review (2026-09-25). Not registered, not implemented, not run.** Once approved,
-the numeric predictions (§6) will be computed from exact formulas and committed as a registry
-pre-run entry **before** any E002 code runs.
+**Status: DESIGN ONLY. Not registered, not implemented, not run.**
+
+- v1 (2026-09-25) asked whether `(A, alpha, C)` can be estimated at all. v2 reframes E002 around
+  the collaborator's question below. The v1 material on estimator behaviour survives as sub-study
+  E002a (§8).
+- The design-phase checks quoted here (facts F2–F4) were computed in the scratch directory by
+  exact enumeration and agree to 2e-15. They are disclosed as not pre-registered.
 
 ## 1. Question
 
-In a toy where `(A, alpha, C)` are known exactly, can they be estimated from `N` on-policy rollouts
-well enough to be practically useful?
+> Under a matched certification budget, do optimizer-conditioned gradient-geometry diagnostics
+> predict long-run verifier-induced **gold** failure earlier, more cheaply, or more reliably than
+> running a short optimization probe and observing ordinary metrics?
 
-**Revision (2026-09-25, collaborator decision).** The primary evaluation is **matched R vs Y**:
+E003 established four things:
 
-- bias and variance of the estimates;
-- `P(C_hat_Y > C_hat_R)`;
-- power at a fixed 5% false-alarm rate;
-- minimum detectable `C`;
-- behaviour as `A -> 0`.
+- Matched static metrics can lead to very different asymptotic `J_G`.
+- `C(0)` is informative but not sufficient (Spearman 0.913; one predicted inversion).
+- By `t <= 5` the `eta` summaries fix the inversion, but so do FPR growth and early gold progress.
+- Therefore the practical incremental value of geometry is unproven (WH-6).
 
-X is kept only as a separate deletion / zero-signal diagnostic. The three-way R/X/Y classification
-is **not** a headline metric. At `A = 0` the estimators follow the v0.3 convention
-(`alpha = NaN`, `alpha_defined = False`, `C = ||h_e||`).
+## 2. Facts that shape the design (read these first)
 
-## 2. Model and conditions
+- **F1 — first-order equivalence [proved, Prop. 1].** Under `dtheta/dt = M g_V`, one verifier-driven
+  step changes `J_G` at rate `(1+alpha) A^2` and `J_V` at rate `(1+alpha)^2 A^2 + C^2`. One
+  gold-driven step changes `J_G` at rate `A^2`. So the geometry triple is exactly what first-order
+  function-space probes measure. **Gradient geometry has no first-order information that a short
+  probe lacks.** Any advantage must be statistical efficiency, cost, or not needing to train.
+- **F2 — in Candidate 3, `C` is the initial FPR growth rate [derived-agent; exact].** Under natural
+  gradient, `dFPR/dt = C^2 / (1 - q)`. This holds exactly, including OR structures.
+- **F3 — the matched panel neutralizes `A` and `alpha` [derived-agent; exact].**
+  - At matched `q0` and FPR, `A = sqrt(q0(1-q0))` and `alpha = -FPR` are identical across
+    structures (Prop. 8). Geometry therefore reduces to `C`.
+  - `dJ_V/dt = (1-FPR)^2 q0(1-q0) + C^2`, so the **zero-gold** verifier-score growth ranks
+    structures by `C^2` at first order.
+  - `dJ_G/dt = (1-FPR) q0(1-q0)` is identical for all structures, so a gold-progress probe is
+    blind at first order.
+- **F4 — estimation is limited by the number of false-positive events [derived-agent; exact for
+  single / AND].**
+  - Per-rollout noise of the plug-in `C_hat^2` (oracle Fisher) is
+    `(1-q) kappa^2 / S + S q - ||g_e||^2`.
+  - The per-rollout SNR for `C^2` is therefore about `(1-q) S`, i.e. the FP mass. Detecting
+    `C > 0` needs on the order of 10 observed false positives.
+  - FPR-growth probes face the same event limitation.
+- **F5 — label reuse [accounting fact].** Geometry at `t = 0` can reuse the labels of the static
+  audit set: zero *additional* gold. A probe that evaluates FPR or `J_G` on fresh samples from
+  `pi_k` needs new labels, **unless** it reweights the `pi_0` audit set by importance weights
+  `pi_k / pi_0`. For small `k` that reweighting is itself a first-order gradient estimator (F1).
 
-- **Model.** The Phase 1A two-Bernoulli toy. Exact values come from the closed forms (already
-  tested). Rerunning on a Phase 1B model is a later, separate experiment.
-- **No training.** Each cell fixes a policy state `theta` and draws `N` i.i.d. rollouts from
-  `pi_theta`. Gold `G` and verifier `V` are evaluated on the same rollouts (paired). For R, flips
-  are drawn fresh per rollout.
-- **Policy states.**
-  - *S1 typical:* the E001 initial states `(0.30, 0.01)`, `(0.10, 0.10)`, `(0.01, 0.30)`, plus
-    `(0.50, 0.20)`.
-  - *S2 near `C = 0`:* `q = 0.5`, `s ∈ {1e-3, 3e-3, 1e-2, 3e-2, 0.1}`; and `s = 0.2`,
-    `q ∈ {0.9, 0.99, 0.999}`.
-  - *S3 near `A -> 0`:* `s = 0.2`, `q ∈ {1e-3, 1e-2, 0.99, 0.999}`.
-- **Verifiers at each state.**
-  - **Y** (`corr OR z`): false positives only.
-  - **R_p** with `p = (1-q)s`: fresh symmetric flips, **matched to Y's on-policy error rate**.
-  - **X**: constant accept. Its error rate is `1 - q` and cannot be matched in the single-prompt
-    toy. Reported separately; a matched X needs the multi-prompt toy.
-- **Sample sizes.** `N ∈ {8, 16, 32, 64, 128, 256, 512, 1024, 4096}`.
-- **Replications.** 4000 per cell, so the Monte Carlo SE of a probability is ≤ 0.008. Seeds come
-  from `np.random.SeedSequence(<registered root>).spawn(...)`, one child per cell, plus a separate
-  calibration stream (§4).
+**Consequence.** Within Candidate 3, E002 compares **estimators and costs**, not information
+content, at small probe horizons. At larger horizons probes see path curvature that `C(0)` cannot
+(E003 Q4/Q5). E002 can falsify "geometry is practically useful" here; it cannot establish
+usefulness in general (§12).
 
-## 3. Estimators (factors)
+## 3. Budget accounting
 
-- **Gradient estimator.**
-  - *E1:* REINFORCE without a baseline, `gamma_i^R = R_i · score_i`.
-  - *E2:* leave-one-out baseline (RLOO; GRPO-like without std normalization).
+Each method is charged a cost vector `(B_roll, B_gold, B_bwd)`, plus verifier calls (free: the
+verifier is the cheap component) and wall-clock.
 
-  The error gradient is estimated directly from `e_i = V_i - G_i` on the same rollouts.
-- **Metric.**
-  - *M1:* Euclidean (exact).
-  - *M2:* Fisher-oracle (exact `F^{-1}`; isolates gradient noise).
-  - *M3:* estimated Fisher `F_hat = mean(score score^T) + lambda I` with a pre-specified damping
-    `lambda = 1e-3 · tr(F_hat)/d`.
-- **Point estimators.**
-  - *P (plug-in):* `decompose(g_hat_G, g_hat_V, M)`.
-  - *U (bias-corrected Gram):* unbiased U-statistics for the Gram entries
-    `<g_a, g_b>_M ≈ (1/(N(N-1))) Σ_{i≠j} gamma_i^a · M gamma_j^b`. This needs independent terms,
-    so it is used with E1 and M1/M2 only. Then `A_hat^2 = G_GG`, `alpha_hat = G_eG / G_GG`, and
-    `C_hat^2 = G_ee - G_eG^2 / G_GG`, which can be negative; it is reported raw and truncated at 0.
-  - *Gram form (no division by `A^2`):* `P = <g_e, g_G> = alpha A^2` and
-    `D = A^2 ||g_e||^2 - P^2 = A^2 C^2`. These stay stable as `A -> 0`.
-- **Uncertainty.** Nonparametric bootstrap over rollouts, `B = 500`, with percentile 90% and 95%
-  intervals for `A`, `alpha`, `C`, `C^2` and `D`.
+| Arm | `B_roll` | `B_gold` | `B_bwd` |
+| --- | --- | --- | --- |
+| S0 static audit | `m0` from `pi_0` | `m0` | 0 |
+| G geometry (`t = 0`) | `m0` labeled + `u` unlabeled from `pi_0` | `m0` (the audit set, reused) | `m0 + u` per-sample score passes; Fisher estimate from the same samples |
+| P-fresh (FPR / gold at `pi_k`) | `k·b` (training, V only) + `m` from `pi_k` | `m` (+ `m0` if the audit is needed) | `k` batched updates |
+| P-IS (FPR at `pi_k` by reweighting the audit) | `k·b` | 0 new (reuses `m0`) | `k` + `m0` log-prob evaluations under `pi_k` |
+| P-JV (verifier-score growth) | `k·b` (+ unlabeled eval) | **0** | `k` |
+| L local-perturbation audit (§4) | `m0` + `r·m0` edited variants | `m0` (+ edited items if an edit can change correctness) | 0 |
 
-## 4. Metrics
+**Gold-label rules** (identical for all arms):
 
-Each metric is computed per cell (state × verifier × `N` × estimator × metric).
+- Mode A (primary, conservative): every audited response costs one label.
+- Mode B (secondary, declared): only verifier-accepted responses are gold-audited; rejected ones
+  count as wrong. This is valid only because FNR = 0 in this family. Every arm uses the same rule.
 
-1. Bias, SD and RMSE of `A_hat`, `alpha_hat`, `C_hat` (and of `C_hat^2`, `P`, `D`). Also the rate
-   of undefined or invalid `alpha_hat` (`A_hat = 0` or `G_GG <= 0`).
-2. Bootstrap CI coverage at nominal 90% and 95%.
-3. **Detection of `C > 0`.**
-   - `P(C_hat_Y > C_hat_R)`, using independent draws at the same state and `N` (an AUC).
-   - Power `P(C_hat_Y > c95)`, where `c95` is the 95th percentile of `C_hat` under R at the same
-     state and `N`, estimated from the calibration stream.
-   - The minimum detectable `C` at 80% power as a function of `N` (from the S2 sweep).
-4. *(Secondary diagnostic only, not a headline.)* **Zero-signal / deletion diagnostic**, including X, with a pre-specified rule:
-   - (i) **X** if all `N` verifier rewards are equal (with E2 this is exactly `g_hat_V = 0`, the
-     GRPO zero-advantage case);
-   - (ii) otherwise **Y** if `C_hat > c95`;
-   - (iii) otherwise **R**.
+**Matched budget.** Every arm receives the same total `B_gold` and the same total `B_roll`, and
+allocates them freely (for example, a probe may split `B_gold` between `pi_0` and `pi_k`, or spend
+it all at `pi_k`).
 
-   Reported as balanced accuracy and a confusion matrix.
-5. **Minimum `N`** for each of:
-   - `|bias| < 10%` and `CV < 20%` for each quantity;
-   - power ≥ 0.8 for `C > 0`;
-   - (secondary) zero-signal diagnostic accuracy ≥ 0.9.
-6. **Near `A -> 0`:** the `alpha_hat` breakdown rate, and `D`/`P` behaviour vs `alpha_hat`.
+- Budget grid: `B_gold ∈ {16, 32, 64, 128, 256, 512, 1024}`, `B_roll / B_gold ∈ {1, 4, 16}`.
+- Compute (`B_bwd`, Fisher cost) is reported separately and is not matched.
+- **Primary budget cells** (pre-specified): `(B_gold, B_roll) = (64, 256)` and `(256, 1024)`.
 
-## 5. Why the edge cases matter (known in advance)
+What "matched" means for each arm:
 
-- **Constant rewards.** With E2, if all `G_i` are equal then `g_hat_G = 0` exactly, so
-  `A_hat = 0`. This happens with probability `q^N + (1-q)^N`, e.g. 0.53 at `q = 0.01`, `N = 64`.
-  Similarly, Y or R rollouts with all `V_i` equal get classified as X. These rates are exactly
-  computable and realistic: they are GRPO's zero-variance groups.
-- **Estimated Fisher.** If all `z_i = 0` then `F_hat_vv = s^2`, which is tiny. `F_hat^{-1}` then
-  explodes in the exploit direction and inflates `C_hat` under M3. This is a predicted failure mode
-  whose size depends on `lambda`.
-- **Boundary at `C = 0`.** `C_hat >= 0` always (plug-in), so plug-in estimates are biased upward
-  near `C = 0` and percentile bootstrap intervals are expected to undercover there.
+- **A — one-shot geometry.** All `B_gold` labels go to `pi_0` samples; up to `B_roll - B_gold`
+  extra unlabeled `pi_0` samples may improve `g_hat_V` and the Fisher estimate. No updates.
+- **B — `k`-step probe.** `k·b + m <= B_roll` rollouts in total; labels only where the chosen probe
+  needs them; the same optimizer as the training run.
 
-## 6. Predictions to compute and register before running
+## 4. Competing predictors
 
-All from the exact per-sample covariance `Sigma_ab = Cov(gamma^a, gamma^b)`, obtained by
-enumeration in the toy:
+The information access is identical for every arm:
 
-- **Leading-order bias of the plug-in estimators.**
-  - `E[A_hat^2] = A^2 + tr(M Sigma_GG)/N`.
-  - Under R (`C = 0`): `E[C_hat^2] ≈ tr(M_⊥ Sigma_ee)/N`, where `M_⊥` is `M` restricted to the
-    `M`-orthogonal complement of `g_G`. So `C_hat_R ≈ sigma_⊥ / sqrt(N)`: a registered noise-floor
-    curve for each state.
-- **Detection sample size.** `N* ≈ (z_0.95 + z_0.8)^2 sigma_⊥^2 / C_Y^2`, registered as a number
-  per state and metric. Rough order of magnitude for Y at `(0.30, 0.01)` with the Fisher-oracle
-  metric: `N* ~ 10^2–10^3` (to be computed exactly before registration).
-- **Exact probabilities.** `P(all G_i equal)` and `P(all V_i equal)` per state and `N`, which fix
-  the constant-reward rates.
-- **Qualitative predictions.**
-  - (i) U-estimators remove the `1/N` bias of squared quantities but have larger variance at
-    small `N`.
-  - (ii) Gram-form `D` stays stable where `alpha_hat` breaks down (`A -> 0`).
-  - (iii) M3 is worse than M2 at `N <= 32`.
-  - (iv) Bootstrap undercovers for `C` near 0 and at `N <= 16`.
-- **Falsification.** A registered `N*` that is off by more than a factor of 2 at any S1 state
-  rejects the leading-order approximation at that `N`. A U-estimator whose empirical bias exceeds
-  3 Monte Carlo SE indicates an implementation error.
+- the policy log-prob function (needed to sample and train);
+- the verifier as a queryable black box;
+- gold as a black box with a per-call cost;
+- panel-level constants `q0` and FPR, known to all arms.
 
-## 7. Scope and cost
+Nobody knows the block structure (which parameters are "gold" vs "exploit"), exact gradients, or
+the target.
 
-numpy only, vectorized over replications; minutes of CPU. Outputs:
+| ID | Predictor | Gold used |
+| --- | --- | --- |
+| S0 | initial accuracy / FPR / FNR estimates | audit |
+| **G-est** (primary geometry) | `C_hat` at `t = 0`, optimizer-matched metric = damped **estimated** Fisher; estimator (plug-in or U-statistic) and damping `lambda` tuned on the design split | audit |
+| G-oracle | as G-est with the exact Fisher metric (reported; **not eligible for the success claim**) | audit |
+| G-eta | `eta_hat = C_hat^2 / C_hat_max^2` | audit |
+| P1 | `delta log FPR` with fresh labels at `pi_k` | fresh |
+| P2 | `delta log FPR` by importance-reweighting the audit set | audit only |
+| P3 | `delta J_V` (verifier-score growth) | none |
+| P4 | `delta J_G` with fresh labels | fresh |
+| P5 | logistic combination of P1/P3/P4, fitted on the design split | fresh |
+| L | local-perturbation near-miss audit: resample one feature of each audited wrong response from the policy marginal and query the verifier (a gradient-free Boolean-influence estimate of accessibility) | audit |
+| R0 | random ranking (chance) | — |
 
-- RMSE-vs-`N` log-log plots;
-- power curves and AUC-vs-`N`;
-- classification accuracy vs `N`;
-- coverage tables.
+- In the matched panel, S0 is uninformative **by construction** (expected C-index 0.5). It is a
+  negative control, not a competitor.
+- Tuning is symmetric: each arm may tune at most three hyperparameters on the design split, per
+  budget cell (geometry: estimator and `lambda`; probes: `k`, step size, label split).
 
-## 8. Choices for the reviewer
+## 5. Synthetic verifier panel (Candidate 3 family)
 
-1. GRPO std-normalized advantages: include now, or defer to Phase 2? We recommend deferring: they
-   change the expected gradient (Dr. GRPO bias), which is a separate question.
-2. Matched X needs the multi-prompt model. Run E002 on the single-prompt toy now (recommended,
-   since estimator properties are local), then repeat on the Phase 1B model.
-3. The damping `lambda` for M3.
-4. Whether the function-space (k-step) probe estimator enters E002 or a separate E00x. We
-   recommend a separate experiment, because it needs dynamics, not just a fixed state.
+- **Policy.** Independent Bernoulli `(corr, z_1..z_m)`. Gold `G = corr`.
+  Verifier `V = corr OR 1_E(z) [OR xi]`.
+- **Operating points** (one panel each, `q0` fixed within a panel):
+  - Primary **P-mod**: `q0 = 0.05`; FPR `f` chosen from `{0.05, 0.1, 0.2}`.
+  - Secondary **P-rare**: `q0 = 0.002`; `f` from `{0.005, 0.01, 0.02}`.
+
+  In each case `f` is fixed **before any predictor is computed**, by a registered rule: the value
+  whose design-split stall fraction, from exact targets only, is closest to 0.5.
+- **Structure types**, sampled uniformly:
+  - SINGLE; AND_k (k = 2, 3, 4); OR_k (k = 2, 3); THR(2-of-3);
+  - DNF `(z1∧z2)∨z3`; CNF `(z1∨z2)∧z3`;
+  - MIX = `E ∨ xi`, with a fresh coin carrying a controllable share `rho ~ U(0, 1)` of the FPR;
+  - RFP (pure coin), 5%.
+
+  MIX gives continuous variation of `C` at fixed FPR and is used for dose–response (E002a).
+- **Parameter sampling.** Raw feature logits `a_i ~ N(0, 2^2)`. A common shift `c` is then solved so
+  that `P(E) = f` (or the MIX target). Events are monotone, so the root is unique. The draw is
+  rejected and redrawn if any `s_i ∉ [1e-4, 1 - 1e-4]`.
+- **Matching.** Every structure has the same `q0`, FPR `f`, FNR = 0, and hence the same accuracy
+  and FP mass. `A` and `alpha` are therefore matched automatically (Prop. 8).
+- **De-duplication.** Canonicalize (sort features inside symmetric groups; drop features with
+  `s_i > 1 - 1e-4`, which are effectively constant). Reject a structure whose canonical logit vector
+  is within 1e-3 (max-abs) of an earlier one of the same type. **This rule uses parameters only,
+  never predictors or outcomes.**
+- **Size and split.**
+  - 900 structures per panel, stratified random split: 300 design, 600 test.
+  - Secondary robustness: leave-one-type-out evaluation on the test split.
+- **Exclusion.** Target computation failing its QA check (§6). The count is reported; if more than
+  1% fail, stop.
+
+## 6. Targets (fixed before any predictor is computed)
+
+All targets are exact, not noisy training outcomes. The training optimizer is the natural-gradient
+flow, as in E003.
+
+- **Primary continuous:** gold shortfall `D = 1 - J_G(∞)`. The clean natural-gradient run reaches
+  1, so `D` equals the shortfall relative to the clean verifier.
+- **Primary categorical:** stall iff `q0 exp(Λ(1)) < 1` (Prop. 9).
+- **Secondary:**
+  - `J_G(∞)`;
+  - `J_G(T = 25)`;
+  - time to stall `t_95` for stalls only (`J_G` reaches `q∞ - 0.05(q∞ - q0)`).
+- **Computation.** `Λ(1) = ∫ dS / (S eta)` along the feature-space natural-gradient ascent curve of
+  `S`. That curve is independent of `q`. Use closed forms where available (Prop. 9); otherwise
+  integrate the `q`-free feature ODE with quadrature.
+- **QA (registered).** On a random 10% of structures, the full generic-optimizer ODE (E003 code)
+  must agree with the targets to 1e-6 in `J_G(∞)` (or 1e-3 for OR-type algebraic convergence).
+- **Never used as a target:** the signed proxy–gold gap.
+
+## 7. Endpoints and inference
+
+- **Primary endpoints:**
+  - C-index: Harrell's concordance with `D`, over pairs with distinct `D`; predictor ties count ½.
+    `D` has heavy ties at 0 for successes, so C-index is preferred over Spearman.
+  - AUROC for stall vs success.
+- **Secondary endpoints:** Spearman, Kendall τ_b, and recall of the 10% most dangerous structures
+  (by `D`).
+- **Replications.** For each arm × budget cell, `R = 64` independent replications. Each replication
+  draws new rollouts for every test structure and computes the panel-level metric.
+- **Reported per cell:** mean, SD across replications, and a 95% CI from a hierarchical bootstrap
+  (2000 resamples: structures, then replications).
+- **Primary contrast:** `Delta = metric(G-est) - metric(best competitor)`. The best competitor
+  is chosen on the design split per cell, among P1–P5 and L. The contrast is taken on the same test
+  structures with a hierarchical bootstrap CI, and Holm correction over 2 cells × 2 endpoints.
+- **Main deliverable: budget–performance frontiers.** One frontier against `B_gold` for each
+  `B_roll` ratio, plus one against `B_roll`. The summary is the area between frontiers over the
+  registered budget range.
+- **Oracle ceilings** (noiseless value of each predictor: exact `C(0)`, exact `eta0`, exact probe
+  observables at each probe horizon `t_p`) separate information limits from estimation noise.
+  They are computed and **registered as predictions before any finite-sample run**.
+
+## 8. E002a — finite-sample geometry estimation (sub-study)
+
+- **Structures.** The eight E003 structures, the MIX dose family (`C` from 0 to `C_max` at fixed
+  FPR), and one A-extreme family (`q ∈ {1e-3, 1e-2, 0.99}`).
+- **Sample sizes and estimators.**
+  - `N ∈ {8, 16, 32, 64, 128, 256, 512, 1024, 4096}`.
+  - Gradient estimators: E1 (no baseline) and E2 (leave-one-out baseline).
+  - Metrics: exact Fisher, damped estimated Fisher (`lambda` grid), and Euclidean (which is the
+    optimizer-matched metric for a vanilla-trained panel).
+  - Estimators: plug-in, U-statistic Gram, and Gram form (`P = alpha A^2`, `D = A^2 C^2`), which
+    stays finite as `A -> 0`.
+- **Reported quantities.**
+  - Bias, variance and RMSE of `A_hat`, `alpha_hat`, `C_hat`.
+  - `P(C_hat_Y > C_hat_R)`, with Y = SINGLE/AND and R = RFP at the same FPR (the matched-R
+    analogue).
+  - Power at a fixed 5% false-alarm rate, and minimum detectable `C` from MIX.
+- **Degenerate events**, each with its exact probability and reported as is:
+  - `A_hat = 0`, reported with `alpha_defined = False` and never imputed; happens with probability
+    `q0^N + (1-q0)^N` under E2.
+  - No false positive in the sample, so `g_hat_e = 0`.
+  - A feature constant in the sample, making `F_hat` singular.
+
+## 9. Probe design
+
+- The probe runs the same optimizer as training: stochastic natural gradient with RLOO gradients
+  from `b` rollouts per step, Fisher exact or estimated (matched to G-oracle / G-est).
+- Probe horizon `t_p = k · eta_p`, with `k ∈ {1, 2, 5, 10}` and step size `eta_p ∈ {0.1, 0.3, 1.0}`;
+  `b = floor((B_roll - m) / k)`.
+- **When do signals appear?**
+  - Noiseless ceilings versus `t_p` (from exact flows) show when FPR growth and gold progress
+    become predictive.
+  - By F3, `delta J_G` is uninformative at first order and needs `t_p` large enough for `S` to
+    change.
+  - `delta FPR` and `delta J_V` carry `C^2` from the first step.
+- **Does geometry have an edge before these signals appear?** At the same horizon the first-order
+  signals are the same quantity (F1–F2). Any edge before probe signals are visible must therefore
+  come from estimator efficiency at tiny `B_roll`. There a probe cannot take enough steps, while
+  geometry needs no updates.
+
+## 10. Proposed pre-registration
+
+1. **Primary hypothesis H1.** In the held-out P-mod test panel, at matched `B_gold` and `B_roll`,
+   G-est achieves a higher C-index for `D` or AUROC for stall than the best competitor among P1–P5
+   and L, in at least one primary budget cell (Holm-corrected CI excludes 0). G-est is also not
+   dominated on the budget frontier.
+2. **Null H0.** At every primary cell, `Delta <= 0` or its CI includes 0.
+3. **Panel generation:** §5 (types, sampling, shift-to-match, dedup, exclusion), with the root
+   seed registered.
+4. **Held-out split:** 300 design / 600 test, stratified by type. Test labels and test predictors
+   are untouched until design-split tuning is frozen and committed.
+5. **Budgets:** the §3 grid; primary cells `(64, 256)` and `(256, 1024)`; gold mode A primary.
+6. **Predictors:** §4, exactly, with each arm's hyperparameter grid.
+7. **Targets:** §6.
+8. **Metrics:** §7.
+9. **Success criterion for practical incremental value** (all must hold):
+   - (a) H1 holds with **G-est**, not G-oracle;
+   - (b) it holds at matched gold **and** rollout budgets (not only under one axis);
+   - (c) it holds against the tuned probe set **including** the zero-new-gold probes P2 and P3;
+   - (d) it holds on the P-mod test split and has the same sign on P-rare;
+   - (e) compute is reported alongside.
+
+**Challenge to the proposed criterion.**
+
+- "Improvement over initial static metrics" is **vacuous in a matched panel**, because S0 is at
+  chance by construction. It should be a sanity check, not evidence. The incremental-over-static
+  question needs an unmatched panel (proposed as optional E002c, where FPR varies across
+  structures and predictors are compared by incremental C-index over an S0-only model).
+- "At one or more low-budget regimes" invites cherry-picking. Replace it with pre-specified
+  primary cells plus a frontier non-dominance requirement.
+- Charging probes fresh gold labels while geometry reuses the audit is **unfair to probes**. P2 and
+  P3 must be in the competitor set.
+
+## 11. Power and sample-size notes
+
+- **Panel size.** With 600 test structures (~300 per class), `SE(AUROC) ≈ 0.02` (Hanley–McNeil at
+  AUROC ≈ 0.8). A paired difference of about 0.05 is detectable at 80% power. For Spearman,
+  `SE ≈ 0.035`.
+- **Replications.** `R = 64` makes the replication-level SD precise to about ±9%.
+- **Per-structure information limit (F4).** Distinguishing structures needs roughly
+  `N ≳ 10 / (FP mass)` labeled rollouts for geometry (≈ 100 at P-mod, ≈ 1000 at P-rare). FPR probes
+  need a comparable number of labeled false-positive events. Exact `N*` per structure (from the
+  enumerated covariance) is computed and registered before running.
+- **Cost.** The toy is cheap: 1800 structures × 21 budget cells × 64 replications × ~10 arms.
+  Vectorized numpy should take hours at most. **This estimate is unverified until a pilot on the
+  design split** (a pilot must not touch the test split).
+
+## 12. Challenging the project
+
+- **Can E002 falsify practical usefulness?** Yes, within Candidate 3 under natural gradient,
+  provided that:
+  - probes are tuned as generously as geometry;
+  - the zero-new-gold probes are included;
+  - the estimated metric is used;
+  - the endpoints are pre-specified.
+
+  It **cannot** establish general usefulness, because in Candidate 3 `C^2` *is* the first-order
+  FPR growth (F2).
+- **Cheaper baselines the brief was missing:**
+  - (i) P3, verifier-score growth, which needs **no gold at all** and ranks `C^2` exactly in the
+    matched panel (F3);
+  - (ii) P2, importance-reweighting the existing audit, with zero new gold;
+  - (iii) L, a gradient-free, training-free local-perturbation near-miss audit;
+  - (iv) watching the frequency of candidate exploit features among accepted responses (requires
+    knowing the features; excluded as privileged in the toy).
+- **Is the result predetermined by Candidate 3?** Largely, in information content:
+  - by F1–F3, geometry and first-order probes measure the same thing, and the matched panel makes
+    `A` and `alpha` constant;
+  - the panel's type mix (how many `eta`-decreasing, OR-like structures) sets the ceiling of any
+    `t = 0` diagnostic.
+
+  Mitigations: report oracle ceilings and type-stratified results, and treat E002-C3 as a test of
+  **efficiency and cost**, not of unique information.
+- **Abandonment criterion.** Abandon the "diagnostic" contribution and keep the mechanistic one
+  (Props. 8–11, metric matching, the path law, the insufficiency results) if, in E002-C3 under
+  natural gradient — the regime most favourable to geometry — **both** of these hold:
+  - G-est is not better than the best of {P2, P3, L} at any primary cell;
+  - geometry wins only with the oracle Fisher.
+- **Agent's prior** (for the record; not a hypothesis):
+  - most likely, G-est ties P2 and P3 at small budgets and is beaten by P1/P5 once `t_p` covers
+    exploit takeoff;
+  - a win, if any, is expected only at the tiniest rollout budgets, or in a "no training allowed"
+    setting.
+- **Where geometry could still matter** (outside E002-C3):
+  - certification when updates are impossible or unsafe;
+  - large models where fresh gold on updated policies is expensive;
+  - verifiers where the orthogonal pressure is not immediately visible as FPR growth (partial
+    credit, precursor behaviours, heterogeneous prompts).
+
+  These need a family in which F2 fails. Proposed for discussion only, not for implementation.
