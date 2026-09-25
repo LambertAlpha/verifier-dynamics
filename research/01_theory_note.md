@@ -347,7 +347,7 @@ E001 is re-scored.
 | Claim | Tests / evidence |
 | --- | --- |
 | §1 decomposition and Prop. 1 (constant `M`) | `test_decompose.py`, `test_y_flows.py::test_metric_matched_rate_identities`, `test_y_flows.py::test_fisher_metric_mispredicts_vanilla_gap_sign`; E001 P7 along trajectories |
-| §1 `A = 0` convention | not implemented, not tested |
+| §1 `A = 0` degenerate case (v0.3) | `test_decompose.py::test_zero_gold_gradient_is_degenerate`, `::test_metric_blind_to_gold_direction_is_degenerate` |
 | Prop. 2 | `test_y_static.py::test_fisher_diagnostics_are_parameterization_invariant` |
 | §3.1 Y static formulas | `test_y_static.py`, `test_monte_carlo.py`, `test_fisher.py` |
 | §3.2–3.3 flows, Props. 3–4 | `test_y_flows.py`; E001 P1–P4 |
@@ -356,7 +356,7 @@ E001 is re-scored.
 | §5 X, Prop. 6 | `test_x.py` |
 | §6 observations | E001 (`03_experiment_registry.md`): 82/83 registered checks passed; the one failure is a mis-specified absolute tolerance (E001-D1) |
 | Phase 1B derivations (`04_phase1b_design.md`) | scratch checks only (E000b); no repo tests yet |
-| §10 Props. 8–10 (Candidate 3) | pending: `tests/test_triggered_*.py`; E003 (pre-registered) |
+| §10 Props. 8–9 (Candidate 3) | `test_triggered_static.py` (closed form vs enumeration/autodiff, Cramér–Rao bound); `test_triggered_dynamics.py` (gold-race relation, invariants, predicted outcomes, finite differences; **unregistered parameters only**); `test_e003_config.py` (registered settings, t = 0 and closed forms only). E003 not yet run. |
 | §11 Prop. 11 (Candidate 1) | closed-form computation only (registry E000b, item 3); proposed tests listed in `04_phase1b_design.md` |
 
 ## 10. Feature-triggered false positives (Candidate 3) — v0.3

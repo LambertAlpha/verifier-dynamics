@@ -437,3 +437,19 @@ reproduces them.
 **Disclosure.** E000b simulated one related configuration, conjunctive `(0.01, 0.9)` at
 `q0 = 1e-3`, `f = 0.009`, and found `q∞ = 0.166`. The closed form of Prop. 9 gives 0.1659 for it.
 None of the eight registered configurations has been simulated.
+
+**E003 pre-run status note (2026-09-25, after implementation, before execution).** This does not
+edit the pre-run block above.
+
+- Code for Candidate 3 now exists and passes its tests.
+- Tests on **unregistered** parameters (`q0 = 0.02`; single, symmetric OR, symmetric / asymmetric
+  AND, AND3, random-FP) already confirm Prop. 9 in the generic natural-gradient optimizer: the
+  gold-race relation, the invariants and the predicted outcomes. P3a is therefore not a blind test
+  of Prop. 9 in general. It remains a blind test of the registered settings and numbers.
+- Tests at the registered settings are static (`t = 0`) or closed-form only. They confirm P1 and
+  the `t = 0` part of P2, and that the repository's closed-form code reproduces every registered
+  prediction to 1e-6.
+- No trajectory at the registered settings has been integrated.
+- Implementation change made on the way: outcome Jacobians in `geometry/autodiff.py` now use
+  forward mode (`jacfwd`). The full-feature-bank test has 2^15 outcomes, and reverse mode ran out
+  of memory. The math is unchanged; E001 is unaffected.

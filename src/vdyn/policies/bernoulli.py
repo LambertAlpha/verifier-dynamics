@@ -5,6 +5,7 @@ The torch log-prob functions are the *specification* of the policy; everything i
 the Monte Carlo path and deliberately do not call torch.
 """
 
+import itertools
 from collections.abc import Callable
 
 import numpy as np
@@ -58,6 +59,24 @@ def multi_prompt_log_prob(weights: np.ndarray) -> LogProbFn:
     def fn(theta: torch.Tensor) -> torch.Tensor:
         blocks = [log_prob(theta[2 * k : 2 * k + 2]) for k in range(n_prompts)]
         return (log_w[:, None] + torch.stack(blocks)).reshape(-1)
+
+    return fn
+
+
+def product_outcomes(n: int) -> np.ndarray:
+    """All binary vectors of length n in lexicographic order; column 0 is `corr` by convention."""
+    return np.array(list(itertools.product((0, 1), repeat=n)))
+
+
+def product_log_prob(n: int) -> LogProbFn:
+    """n independent Bernoulli coordinates with logits theta (n,).
+
+    Returns log pi over `product_outcomes(n)`.
+    """
+    bits = torch.as_tensor(product_outcomes(n), dtype=torch.float64)
+
+    def fn(theta: torch.Tensor) -> torch.Tensor:
+        return (bits * F.logsigmoid(theta) + (1 - bits) * F.logsigmoid(-theta)).sum(dim=1)
 
     return fn
 

@@ -28,6 +28,10 @@ packages = ["src/vdyn"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
+filterwarnings = [
+    # raised inside torch.func forward-mode internals, not by this package
+    "ignore:`torch.jit.script` is deprecated:FutureWarning",
+]
 
 [tool.ruff]
 line-length = 100
