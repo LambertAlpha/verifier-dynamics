@@ -1,0 +1,1 @@
+SUPERSEDED by the later E003-posthoc run (same data; adds the stable-eta D1 diagnostic and a linear Q5 axis). Kept as a record of the first post-hoc pass.
