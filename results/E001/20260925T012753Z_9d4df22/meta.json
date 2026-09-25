@@ -1,0 +1,119 @@
+{
+  "experiment_id": "E001",
+  "created_utc": "2026-09-25T01:27:53+00:00",
+  "git": {
+    "commit": "9d4df22b0f4d8e76b5b0afb05eb111baba1ddce1",
+    "dirty": true
+  },
+  "config": {
+    "experiment_id": "E001",
+    "title": "Y toy: vanilla vs natural gradient flows",
+    "registry": "research/03_experiment_registry.md#e001",
+    "initial_conditions": [
+      {
+        "name": "IC1",
+        "label": "q0 >> s0",
+        "q0": 0.3,
+        "s0": 0.01
+      },
+      {
+        "name": "IC2",
+        "label": "q0 ~ s0",
+        "q0": 0.1,
+        "s0": 0.1
+      },
+      {
+        "name": "IC3",
+        "label": "q0 << s0",
+        "q0": 0.01,
+        "s0": 0.3
+      }
+    ],
+    "horizon": {
+      "natural": 25.0,
+      "vanilla": 1000000.0
+    },
+    "solver": {
+      "method": "DOP853",
+      "rtol": 1e-10,
+      "atol": 1e-12,
+      "t_min": 0.001,
+      "n_eval": 400
+    },
+    "tolerances": {
+      "trajectory": 1e-07,
+      "natural_invariant": 1e-08,
+      "vanilla_invariant": 1e-06,
+      "endpoint": 1e-08,
+      "clock_free": 1e-05,
+      "switch_point": 1e-06,
+      "gap_rate_zero": 1e-13,
+      "diagnostic_atol": 1e-10,
+      "diagnostic_rtol": 1e-06,
+      "gap_identity_rtol": 0.0001,
+      "gap_identity_atol_frac": 1e-06
+    },
+    "predictions": {
+      "IC1": {
+        "vanilla_invariant_0": -100.414489,
+        "natural_endpoint": [
+          1.0,
+          0.03333333333333333
+        ],
+        "delta_inf": 0.0,
+        "natural_gap_signs": "+-",
+        "natural_switch": [
+          0.5,
+          0.016666666666666666
+        ],
+        "vanilla_gap_signs": "-",
+        "vanilla_clock_free": [
+          "q",
+          0.9999,
+          0.011397
+        ]
+      },
+      "IC2": {
+        "vanilla_invariant_0": 0.0,
+        "natural_gap_signs": "+-",
+        "natural_switch": [
+          0.5,
+          0.5
+        ],
+        "vanilla_gap_signs": "+-",
+        "vanilla_switch": [
+          0.5,
+          0.5
+        ]
+      },
+      "IC3": {
+        "vanilla_invariant_0": 100.414489,
+        "natural_endpoint": [
+          0.03333333333333333,
+          1.0
+        ],
+        "delta_inf": 0.9666666666666667,
+        "natural_gap_signs": "+",
+        "vanilla_gap_signs": "+-",
+        "vanilla_switch": [
+          0.011364,
+          0.999871
+        ],
+        "vanilla_clock_free": [
+          "s",
+          0.9999,
+          0.011397
+        ]
+      }
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  }
+}

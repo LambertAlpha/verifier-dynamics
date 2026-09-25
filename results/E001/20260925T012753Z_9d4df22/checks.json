@@ -1,0 +1,924 @@
+[
+  {
+    "run": "IC1/natural",
+    "prediction": "P1",
+    "quantity": "max |generic - closed-form ODE| over (q, s)",
+    "observed": 1.5915335715988022e-10,
+    "expected": 0.0,
+    "tolerance": 1e-07,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P1",
+    "quantity": "max |generic - closed-form ODE| over (q, s)",
+    "observed": 6.45206665872422e-11,
+    "expected": 0.0,
+    "tolerance": 1e-07,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P1",
+    "quantity": "max |generic - closed-form ODE| over (q, s)",
+    "observed": 1.7691381692941377e-10,
+    "expected": 0.0,
+    "tolerance": 1e-07,
+    "passed": true
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P1",
+    "quantity": "max |generic - closed-form ODE| over (q, s)",
+    "observed": 1.1426085078092285e-10,
+    "expected": 0.0,
+    "tolerance": 1e-07,
+    "passed": true
+  },
+  {
+    "run": "IC3/natural",
+    "prediction": "P1",
+    "quantity": "max |generic - closed-form ODE| over (q, s)",
+    "observed": 1.591528020483679e-10,
+    "expected": 0.0,
+    "tolerance": 1e-07,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P1",
+    "quantity": "max |generic - closed-form ODE| over (q, s)",
+    "observed": 6.45206665872422e-11,
+    "expected": 0.0,
+    "tolerance": 1e-07,
+    "passed": true
+  },
+  {
+    "run": "IC1/natural",
+    "prediction": "P2",
+    "quantity": "max |s/q - s0/q0|",
+    "observed": 1.6221336773813988e-11,
+    "expected": 0.0,
+    "tolerance": 1e-08,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P2",
+    "quantity": "max |I(t) - I(0)|",
+    "observed": 4.981899337508366e-10,
+    "expected": 0.0,
+    "tolerance": 1e-06,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P2",
+    "quantity": "I(0) vs registered",
+    "observed": -100.41448865641404,
+    "expected": -100.414489,
+    "tolerance": 1e-06,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P2",
+    "quantity": "max |s/q - s0/q0|",
+    "observed": 3.552713678800501e-15,
+    "expected": 0.0,
+    "tolerance": 1e-08,
+    "passed": true
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P2",
+    "quantity": "max |I(t) - I(0)|",
+    "observed": 0.0,
+    "expected": 0.0,
+    "tolerance": 1e-06,
+    "passed": true
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P2",
+    "quantity": "I(0) vs registered",
+    "observed": 0.0,
+    "expected": 0.0,
+    "tolerance": 1e-06,
+    "passed": true
+  },
+  {
+    "run": "IC3/natural",
+    "prediction": "P2",
+    "quantity": "max |s/q - s0/q0|",
+    "observed": 1.4599198294718008e-08,
+    "expected": 0.0,
+    "tolerance": 1e-08,
+    "passed": false
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P2",
+    "quantity": "max |I(t) - I(0)|",
+    "observed": 4.981899337508366e-10,
+    "expected": 0.0,
+    "tolerance": 1e-06,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P2",
+    "quantity": "I(0) vs registered",
+    "observed": 100.41448865641404,
+    "expected": 100.414489,
+    "tolerance": 1e-06,
+    "passed": true
+  },
+  {
+    "run": "IC1/natural",
+    "prediction": "P3",
+    "quantity": "(q, s) at T",
+    "observed": [
+      0.9999999999284266,
+      0.033333333328884864
+    ],
+    "expected": [
+      1.0,
+      0.03333333333333333
+    ],
+    "tolerance": 1e-08,
+    "passed": true
+  },
+  {
+    "run": "IC1/natural",
+    "prediction": "P3",
+    "quantity": "Delta at T",
+    "observed": 2.3857832100691155e-12,
+    "expected": 0.0,
+    "tolerance": 1e-08,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P3",
+    "quantity": "max |s - q| (diagonal)",
+    "observed": 2.6645352591003757e-15,
+    "expected": 0.0,
+    "tolerance": 1e-08,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P3",
+    "quantity": "q, s non-decreasing",
+    "observed": true,
+    "expected": true,
+    "tolerance": null,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P3",
+    "quantity": "(q, s, Delta) at T (limit not reached)",
+    "observed": [
+      0.9522035568544076,
+      0.9522035568544092,
+      0.04551194316822262
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "IC3/natural",
+    "prediction": "P3",
+    "quantity": "(q, s) at T",
+    "observed": [
+      0.03333333332888462,
+      0.9999999999284266
+    ],
+    "expected": [
+      0.03333333333333333,
+      1.0
+    ],
+    "tolerance": 1e-08,
+    "passed": true
+  },
+  {
+    "run": "IC3/natural",
+    "prediction": "P3",
+    "quantity": "Delta at T",
+    "observed": 0.9666666666019277,
+    "expected": 0.9666666666666667,
+    "tolerance": 1e-08,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P4",
+    "quantity": "s when q = 0.9999 (t = 1.014e+04)",
+    "observed": 0.011397126193805694,
+    "expected": 0.011397,
+    "tolerance": 1e-05,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P4",
+    "quantity": "natural-flow s at the same q",
+    "observed": 0.03333,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P4",
+    "quantity": "max |s - q| (diagonal)",
+    "observed": 0.0,
+    "expected": 0.0,
+    "tolerance": 1e-05,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P4",
+    "quantity": "q when s = 0.9999 (t = 1.014e+04)",
+    "observed": 0.011397126193805694,
+    "expected": 0.011397,
+    "tolerance": 1e-05,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P4",
+    "quantity": "natural-flow q at the same s",
+    "observed": 0.03333,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "IC1/natural",
+    "prediction": "P5",
+    "quantity": "sign pattern of dDelta/dt",
+    "observed": "+-",
+    "expected": "+-",
+    "tolerance": null,
+    "passed": true
+  },
+  {
+    "run": "IC1/natural",
+    "prediction": "P5",
+    "quantity": "no shrinking -> growing switch",
+    "observed": true,
+    "expected": true,
+    "tolerance": null,
+    "passed": true
+  },
+  {
+    "run": "IC1/natural",
+    "prediction": "P5",
+    "quantity": "(q, s) at first sign switch (t = 0.8587)",
+    "observed": [
+      0.5,
+      0.01666666666544564
+    ],
+    "expected": [
+      0.5,
+      0.016666666666666666
+    ],
+    "tolerance": 1e-06,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P5",
+    "quantity": "sign pattern of dDelta/dt",
+    "observed": "-",
+    "expected": "-",
+    "tolerance": null,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P5",
+    "quantity": "no shrinking -> growing switch",
+    "observed": true,
+    "expected": true,
+    "tolerance": null,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P5",
+    "quantity": "sign pattern of dDelta/dt",
+    "observed": "+-",
+    "expected": "+-",
+    "tolerance": null,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P5",
+    "quantity": "no shrinking -> growing switch",
+    "observed": true,
+    "expected": true,
+    "tolerance": null,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P5",
+    "quantity": "(q, s) at first sign switch (t = 3.086)",
+    "observed": [
+      0.5,
+      0.500000000000001
+    ],
+    "expected": [
+      0.5,
+      0.5
+    ],
+    "tolerance": 1e-06,
+    "passed": true
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P5",
+    "quantity": "sign pattern of dDelta/dt",
+    "observed": "+-",
+    "expected": "+-",
+    "tolerance": null,
+    "passed": true
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P5",
+    "quantity": "no shrinking -> growing switch",
+    "observed": true,
+    "expected": true,
+    "tolerance": null,
+    "passed": true
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P5",
+    "quantity": "(q, s) at first sign switch (t = 17.75)",
+    "observed": [
+      0.5,
+      0.5
+    ],
+    "expected": [
+      0.5,
+      0.5
+    ],
+    "tolerance": 1e-06,
+    "passed": true
+  },
+  {
+    "run": "IC3/natural",
+    "prediction": "P5",
+    "quantity": "sign pattern of dDelta/dt",
+    "observed": "+",
+    "expected": "+",
+    "tolerance": null,
+    "passed": true
+  },
+  {
+    "run": "IC3/natural",
+    "prediction": "P5",
+    "quantity": "no shrinking -> growing switch",
+    "observed": true,
+    "expected": true,
+    "tolerance": null,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P5",
+    "quantity": "sign pattern of dDelta/dt",
+    "observed": "+-",
+    "expected": "+-",
+    "tolerance": null,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P5",
+    "quantity": "no shrinking -> growing switch",
+    "observed": true,
+    "expected": true,
+    "tolerance": null,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P5",
+    "quantity": "(q, s) at first sign switch (t = 7851)",
+    "observed": [
+      0.011364348800409632,
+      0.9998708348927176
+    ],
+    "expected": [
+      0.011364,
+      0.999871
+    ],
+    "tolerance": 1e-06,
+    "passed": true
+  },
+  {
+    "run": "IC1/natural",
+    "prediction": "P6",
+    "quantity": "A_F: max |err| / (atol + rtol|x|)",
+    "observed": 0.044927366063487455,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC1/natural",
+    "prediction": "P6",
+    "quantity": "alpha_F: max |err| / (atol + rtol|x|)",
+    "observed": 6.6920489671033955e-09,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC1/natural",
+    "prediction": "P6",
+    "quantity": "C_F: max |err| / (atol + rtol|x|)",
+    "observed": 4.59850315390468e-07,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC1/natural",
+    "prediction": "P6",
+    "quantity": "A_E: max |err| / (atol + rtol|x|)",
+    "observed": 1.2675269561282125e-06,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC1/natural",
+    "prediction": "P6",
+    "quantity": "alpha_E: max |err| / (atol + rtol|x|)",
+    "observed": 0.18687196691195285,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC1/natural",
+    "prediction": "P6",
+    "quantity": "C_E: max |err| / (atol + rtol|x|)",
+    "observed": 9.39003636240843e-08,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC1/natural",
+    "prediction": "P6",
+    "quantity": "(alpha_F, C_F, C_E) at T",
+    "observed": [
+      -0.03333333332888488,
+      1.284784572234534e-11,
+      2.3062588875669633e-12
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P6",
+    "quantity": "A_F: max |err| / (atol + rtol|x|)",
+    "observed": 6.489049714326468e-05,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P6",
+    "quantity": "alpha_F: max |err| / (atol + rtol|x|)",
+    "observed": 9.022563919882175e-09,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P6",
+    "quantity": "C_F: max |err| / (atol + rtol|x|)",
+    "observed": 2.7767101894726644e-07,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P6",
+    "quantity": "A_E: max |err| / (atol + rtol|x|)",
+    "observed": 1.5334601522172234e-06,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P6",
+    "quantity": "alpha_E: max |err| / (atol + rtol|x|)",
+    "observed": 7.566379501586491e-06,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P6",
+    "quantity": "C_E: max |err| / (atol + rtol|x|)",
+    "observed": 3.0623810870494895e-08,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P6",
+    "quantity": "(alpha_F, C_F, C_E) at T",
+    "observed": [
+      -0.0120189730103427,
+      1.102837051773319e-07,
+      1.2017643892157892e-08
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P6",
+    "quantity": "A_F: max |err| / (atol + rtol|x|)",
+    "observed": 9.8860683578711e-10,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P6",
+    "quantity": "alpha_F: max |err| / (atol + rtol|x|)",
+    "observed": 1.4778490826139456e-09,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P6",
+    "quantity": "C_F: max |err| / (atol + rtol|x|)",
+    "observed": 6.783402252047824e-09,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P6",
+    "quantity": "A_E: max |err| / (atol + rtol|x|)",
+    "observed": 1.7762511156878667e-09,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P6",
+    "quantity": "alpha_E: max |err| / (atol + rtol|x|)",
+    "observed": 1.5231807986571442e-09,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P6",
+    "quantity": "C_E: max |err| / (atol + rtol|x|)",
+    "observed": 6.501458943428474e-09,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P6",
+    "quantity": "(alpha_F, C_F, C_E) at T",
+    "observed": [
+      -0.9522035568544094,
+      0.010196667746762107,
+      0.0021753090040853088
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P6",
+    "quantity": "A_F: max |err| / (atol + rtol|x|)",
+    "observed": 7.444979051236942e-08,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P6",
+    "quantity": "alpha_F: max |err| / (atol + rtol|x|)",
+    "observed": 1.3862226677344097e-09,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P6",
+    "quantity": "C_F: max |err| / (atol + rtol|x|)",
+    "observed": 2.4261731496503706e-07,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P6",
+    "quantity": "A_E: max |err| / (atol + rtol|x|)",
+    "observed": 1.3145791933719798e-07,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P6",
+    "quantity": "alpha_E: max |err| / (atol + rtol|x|)",
+    "observed": 1.2473215421000768e-09,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P6",
+    "quantity": "C_E: max |err| / (atol + rtol|x|)",
+    "observed": 5.395869280183124e-08,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P6",
+    "quantity": "(alpha_F, C_F, C_E) at T",
+    "observed": [
+      -0.9992918802764144,
+      1.8836760502232485e-05,
+      5.010784679485834e-07
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "IC3/natural",
+    "prediction": "P6",
+    "quantity": "A_F: max |err| / (atol + rtol|x|)",
+    "observed": 4.636115936856576e-10,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC3/natural",
+    "prediction": "P6",
+    "quantity": "alpha_F: max |err| / (atol + rtol|x|)",
+    "observed": 1.0008110841933791e-09,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC3/natural",
+    "prediction": "P6",
+    "quantity": "C_F: max |err| / (atol + rtol|x|)",
+    "observed": 0.04354300164480957,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC3/natural",
+    "prediction": "P6",
+    "quantity": "A_E: max |err| / (atol + rtol|x|)",
+    "observed": 8.606703095874673e-10,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC3/natural",
+    "prediction": "P6",
+    "quantity": "alpha_E: max |err| / (atol + rtol|x|)",
+    "observed": 1.5686150909654682e-08,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC3/natural",
+    "prediction": "P6",
+    "quantity": "C_E: max |err| / (atol + rtol|x|)",
+    "observed": 1.2252820806051548e-06,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC3/natural",
+    "prediction": "P6",
+    "quantity": "(alpha_F, C_F, C_E) at T",
+    "observed": [
+      -0.9999999999284263,
+      8.178108338343967e-06,
+      6.918771309660387e-11
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P6",
+    "quantity": "A_F: max |err| / (atol + rtol|x|)",
+    "observed": 6.541463147483006e-10,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P6",
+    "quantity": "alpha_F: max |err| / (atol + rtol|x|)",
+    "observed": 1.0965755889717795e-09,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P6",
+    "quantity": "C_F: max |err| / (atol + rtol|x|)",
+    "observed": 6.48194026380225e-05,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P6",
+    "quantity": "A_E: max |err| / (atol + rtol|x|)",
+    "observed": 1.0716845062371217e-09,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P6",
+    "quantity": "alpha_E: max |err| / (atol + rtol|x|)",
+    "observed": 1.481279763056171e-08,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P6",
+    "quantity": "C_E: max |err| / (atol + rtol|x|)",
+    "observed": 1.515299152905398e-06,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P6",
+    "quantity": "(alpha_F, C_F, C_E) at T",
+    "observed": [
+      -0.9999989879467446,
+      0.0009939168835226074,
+      9.998884030812806e-07
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "IC1/natural",
+    "prediction": "P7",
+    "quantity": "FD dDelta/dt vs b(a+b)+c^2 (Fisher): max |err| / allowed",
+    "observed": 0.000539194962906285,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P7",
+    "quantity": "FD dDelta/dt vs b(a+b)+c^2 (Euclidean): max |err| / allowed",
+    "observed": 0.00021996618345848347,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P7",
+    "quantity": "fraction of points where Fisher-metric sign is wrong",
+    "observed": 0.39650872817955113,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "IC1/vanilla",
+    "prediction": "P7",
+    "quantity": "Fisher-metric prediction at t=0 has opposite sign",
+    "observed": [
+      0.0027720000000000106,
+      -0.00038856510000000015
+    ],
+    "expected": "opposite signs",
+    "tolerance": null,
+    "passed": true
+  },
+  {
+    "run": "IC2/natural",
+    "prediction": "P7",
+    "quantity": "FD dDelta/dt vs b(a+b)+c^2 (Fisher): max |err| / allowed",
+    "observed": 0.0021062083895082794,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P7",
+    "quantity": "FD dDelta/dt vs b(a+b)+c^2 (Euclidean): max |err| / allowed",
+    "observed": 0.002032050141826685,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC2/vanilla",
+    "prediction": "P7",
+    "quantity": "fraction of points where Fisher-metric sign is wrong",
+    "observed": 0.0,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "IC3/natural",
+    "prediction": "P7",
+    "quantity": "FD dDelta/dt vs b(a+b)+c^2 (Fisher): max |err| / allowed",
+    "observed": 0.00039261540434716146,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P7",
+    "quantity": "FD dDelta/dt vs b(a+b)+c^2 (Euclidean): max |err| / allowed",
+    "observed": 0.00022036486203492033,
+    "expected": "<= 1",
+    "tolerance": 1.0,
+    "passed": true
+  },
+  {
+    "run": "IC3/vanilla",
+    "prediction": "P7",
+    "quantity": "fraction of points where Fisher-metric sign is wrong",
+    "observed": 0.2344139650872818,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  }
+]

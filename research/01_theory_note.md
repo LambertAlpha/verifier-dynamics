@@ -218,3 +218,4 @@ Caveat: with shared parameters and many prompts the span can be the whole space.
 | Prop. 5 | `test_y_flows.py::test_gap_sign_never_switches_from_shrinking_to_growing` |
 | R (§3) | `test_r.py` |
 | X (§4, Prop. 6) | `test_x.py` |
+| §2 end-to-end (generic optimizer vs all §2 closed forms, 3 initial conditions × 2 optimizers) | experiment E001 (`03_experiment_registry.md`): 82/83 registered checks passed; the failure is a mis-specified absolute tolerance (see E001-D1) |
