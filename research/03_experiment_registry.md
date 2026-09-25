@@ -1448,7 +1448,7 @@ C-index / AUROC at the primary cells:
 #### Secondary analyses
 
 - **Leave-one-type-out.** Every `Delta` stays negative whichever type is removed. P-mod C-index
-  at (64, 256): [−0.034, −0.028]. P-rare: [−0.070, −0.034] over all cells × endpoints.
+  at (64, 256): [−0.034, −0.028]. P-rare: [−0.070, −0.027] over all cells × endpoints.
 - **Sign-flipped P4** [post-hoc]: 0.52–0.62. It is never the strongest competitor, and no
   `Delta` changes.
 - **Design → test replication.** At the primary cells, the in-sample design `Delta`s were
@@ -1486,13 +1486,14 @@ held-out run.
 - **Plug-in `C_hat` biased upward at `C = 0`: PASS** (dimension-matched nulls). Bias:
   - P-mod: +0.044 to +0.085 at `N = 16`, falling to +0.007 to +0.012 at `N = 1024`;
   - P-rare: +0.006 to +0.023, falling to +0.004 to +0.006.
-- **Coverage near `C = 0` below nominal: PASS.** At the matched nulls coverage is 0.14–0.72 for
-  `N <= 256` and 0.00 at `N = 1024`: a percentile interval of a nonnegative estimator excludes 0.
+- **Coverage near `C = 0` below nominal: PASS.** At the matched nulls coverage is 0.00–0.72 for
+  `N <= 256` (P-mod is already 0.00 at `N = 256`) and 0.00 at `N = 1024`: a percentile interval of a nonnegative estimator excludes 0.
   At dose `rho = 0.05` it is 0.28 / 0.71 / 0.89 (P-mod, `N = 64 / 256 / 1024`). For `C > 0` it
   is 0.92–0.95 at P-mod and 0.70–0.95 at P-rare (`N >= 64`).
 - **False alarm at the matched null equals 5%: PARTIAL.**
-  - Inside the Monte Carlo band (±0.021) for every estimator once `N(1-q)f ≳ 2.5`: P-mod
-    `N >= 16` (3 of 693 outside) and P-rare `N >= 128` (4 of 539 outside).
+  - Inside the Monte Carlo band (±0.021) once the expected false-positive count per batch
+    `N(1-q)f` reaches about 1.5 (P-mod, `N >= 16`: 3 of 693 outside) to 2.5 (P-rare, `N >= 128`:
+    4 of 539 outside).
   - Below nominal at smaller `N` (conservative; false alarm 0.001–0.02): the null `C_hat^2` has
     atoms when a batch holds few false positives.
   - Outside the band overall: 12 of 770 (P-mod) and 104 of 770 (P-rare).
