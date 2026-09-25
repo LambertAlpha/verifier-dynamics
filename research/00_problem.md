@@ -26,8 +26,13 @@ describes what optimization can do with those errors. Verifier quality is relati
 - Decomposition of `g_e` relative to `g_G` in a metric `M`:
   `A = ||g_G||_M`, `alpha = <g_e, g_G>_M / A^2`, `r = g_e - alpha g_G`, `C = ||r||_M`.
   The proposal writes the same triple as `(a, b, c)` with `a = A`, `b = alpha * A`, `c = C`.
+- The metric `M` must be the optimizer's local preconditioner (`F^{-1}` for natural gradient, `I`
+  for vanilla); see theory note v0.2 §1.
 - `C > 0` is **not** by itself evidence of reward hacking; it is a local orthogonal pressure
   until downstream gold/proxy behaviour confirms exploitative drift.
+- `dDelta/dt > 0` (gap growth) is **not** reward hacking or failure onset either; it is signed
+  proxy–gold discrepancy growth. The prediction target is gold-learning failure (stall or
+  decline); see theory note v0.2 §2 and §7 (WH-1).
 
 ## Controlled verifier-error structures (Phase 1)
 
@@ -39,8 +44,9 @@ describes what optimization can do with those errors. Verifier quality is relati
 
 ## Scope of this repository right now
 
-Phase 1A only: closed-form theory for the two-Bernoulli Y toy plus minimal R and X, verified by
-independent numerical methods (autodiff on an enumerated policy, finite differences, Monte Carlo),
+Phase 1A done (E001). Phase 1B is at the design stage (`04_phase1b_design.md`) and E002 is a
+draft (`05_e002_design.md`); neither is implemented. Phase 1A scope: closed-form theory for the
+two-Bernoulli Y toy plus minimal R and X, verified by independent numerical methods (autodiff on an enumerated policy, finite differences, Monte Carlo),
 and vanilla vs natural-gradient flows. **No LLM / GRPO code** until explicitly started.
 
 ## Research norms (binding)

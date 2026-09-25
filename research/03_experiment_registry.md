@@ -222,3 +222,63 @@ tolerances varied; code run inline (not in a committed script), output copied he
 
 Reading: the drift is integration error that shrinks with solver tolerance and is identical in
 relative terms for mirrored initial conditions. E001's recorded result is not changed.
+
+#### E001 post-run addendum A (2026-09-25, theory note v0.2 review)
+
+Nothing above this line is edited. This addendum records semantic revisions and precision
+corrections made after review. It does not re-score anything.
+
+- *Semantic revision.* The pre-run P5 labelled vanilla IC1 as "latent residual: `C > 0`, gap
+  shrinking", and the post-run interpretation read the sign patterns as "no latent-then-growth
+  phase". Under theory note v0.2 §2, `dDelta/dt > 0` is not a failure or hacking signal. The P5
+  results stay valid as observations about the sign of the proxy–gold gap rate only.
+- *Precision: metric mismatch.* The mispredicted sign was that of `dDelta/dt`. For `dJ_G/dt` the
+  Fisher-metric and actual signs agreed in this toy (both >= 0); only magnitudes differed.
+- *Precision: `C` dynamics.* Peak / initial `C_F`: 1.20 (IC2), 1.08–1.09 (IC3), ≈ 1.00 (IC1);
+  Euclidean `C` up to 1.83. `C` then decays toward 0 (to 8e-6 in IC3/natural). In IC1 the decay
+  comes from gold saturation, not exploit saturation.
+- *Precision: late gold failure.* The toy does show a late gold **stall** (natural IC3:
+  `q -> 1/30`; vanilla IC3: `q(1e6) = 0.0120`). What it lacks is gold decline and any diagnostic
+  information beyond static metrics (theory note v0.2 §3.4).
+- Hypothesis revised? The pre-registered E001 hypothesis: no. New working hypotheses WH-1–WH-4
+  are recorded in theory note v0.2 §7.
+
+---
+
+### E000b — Phase 1B design-phase scratch checks (retroactive, NOT pre-registered)
+
+Date: 2026-09-25. Status: **exploratory, not pre-registered.** Run in the scratch directory with
+numpy/scipy while drafting `04_phase1b_design.md`, to avoid proposing wrong math. Closed forms were
+compared with central finite differences; flows were integrated with `solve_ivp`. No repository
+code or tests exist for these models yet. Any later Phase 1B experiment predictions are therefore
+**not blind** with respect to the items below.
+
+1. C1 (multi-prompt, shared exploit), K = 3:
+   - closed-form `A`, `alpha`, `C` and Fisher vs finite differences: max error 7.4e-10.
+   - NG invariant `s / prod_x q_x^{w_x}`: drift ≤ 2.6e-10. Vanilla invariant
+     `H(v) - sum_x H(u_x)`: drift ≤ 1.5e-8.
+2. C1 stall criterion (NG, stall iff `s0 > prod q_x0^{w_x}`), three configurations, all as
+   predicted:
+   - `w = (0.9, 0.1)`, `q0 = (0.6, 1e-5)`: `s0 = 0.02` gave no stall (`s -> 0.1002 = s0/Γ0`);
+     `s0 = 0.3` stalled (`q -> (0.9996, 0.0171)`).
+   - `w = (0.5, 0.5)`, `q0 = (0.8, 0.05)`, `s0 = 0.25`: stalled (`q -> (0.993, 0.645)`).
+3. C1 matched aggregate triple. Two initial conditions with identical `(A, alpha, C) =
+   (0.4123, -0.245, 0.3011)` and identical aggregate static metrics (`qbar = 0.3`, FPR = 0.245)
+   had different outcomes:
+   - `w = (0.5, 0.5)`, `q0 = (0.1, 0.5)`: stall, `qbar_inf = 0.915`.
+   - `w = (0.9, 0.1)`, `q0 = (0.233, 0.9)`: success, `qbar_inf = 1`.
+4. C2 (categorical {C, W, E}): closed-form `A`, `alpha = -pE/(1-pC)`, `C`, natural and vanilla
+   `dJ_G/dt` vs finite differences: max error 5.9e-9. From `p0 = (0.30, 0.35, 0.35)`:
+   - natural: `pC` rose monotonically to 0.4615 (= 0.30/0.65);
+   - vanilla, gauge `thW = 0`: `pC` peaked at 0.335 (t ≈ 8.4), then fell to 3e-4 at t = 2e4;
+   - vanilla, full 3-logit parameterization: `pC` peaked at 0.397 (t ≈ 12), then fell to 0.011
+     at t = 1e6.
+   - Invariants drift ≤ 5e-11.
+5. C3 (conjunctive exploit `V = c OR (z1 AND z2)`): closed forms vs finite differences, max error
+   2.0e-9; invariant `(1-s1)/(1-s2)`, relative drift 7.2e-8. NG, `q0 = 1e-3`, matched FPR 0.009:
+
+   | exploit structure | `C(0)` | outcome |
+   | --- | --- | --- |
+   | conjunctive `(s1, s2) = (0.01, 0.9)` | 0.0895 | stall, `q_inf = 0.166` |
+   | conjunctive `(0.0949, 0.0949)` | 0.0393 | success; exploit never took off (`S_inf = 0.050`) |
+   | single-feature, `s = 0.009` | 0.0943 | stall, `q_inf = 0.111` |

@@ -1,70 +1,154 @@
-# 01 — Theory note (Phase 1A)
+# 01 — Theory note (v0.2, 2026-09-25)
 
-Status tags used below:
+## Version history
 
-- **[given]** stated in the project brief or proposal v2 (2026-09-21).
-- **[proved]** a complete short proof is written here. Agent-written; still needs collaborator review.
-- **[derived-agent]** derived by the coding agent, checked numerically, no separate proof write-up.
-- **[conjecture]** / **[empirical prediction]** as usual.
+- **v0.1** (2026-09-24; last state at commit `e7f5144`): Phase 1A derivations for the Y, R and X
+  toys.
+- **v0.2** (2026-09-25), after E001:
+  1. §1 rewritten as *optimizer-conditioned geometry* with a time-varying preconditioner `M_t`,
+     the explicit derivation, an `A = 0` convention and the Adam caveat.
+  2. New §2 on semantics. Gap growth (`dDelta/dt > 0`) is no longer treated as hacking or as
+     failure onset.
+  3. §3.4 interpretation replaced. The v0.1 text read: *"In this toy, `C > 0` together with a
+     shrinking gap (`rho < 0`) is a terminal residual regime, not a precursor of gap growth. The
+     proposal's H5 latent-phase signature cannot be tested here."* It framed gap growth as the
+     failure signal, which §2 retracts.
+  4. New §6 (E001 observations), §7 (revised working hypotheses) and updated §8 (open issues).
 
-Each claim names the tests that verify it (`tests/<file>::<test>`). Anything not listed in the
-test map at the end is not verified.
+The pre-registered hypotheses and predictions of E001 in `03_experiment_registry.md` are **not**
+edited. Revisions are recorded here (§7) and in the E001 post-run addendum.
+
+Status tags:
+
+- **[given]**: stated in the project brief or proposal v2 (2026-09-21).
+- **[proved]**: complete short proof written here. Agent-written; needs collaborator review.
+- **[derived-agent]**: derived by the coding agent and checked numerically; no separate proof.
+- **[E001-observed]**: empirical observation from E001 (see the registry for numbers and caveats).
+- **[working hypothesis]** / **[conjecture]**: not established.
+
+Each verified claim names its tests (§9). Anything not in the test map is not verified in-repo.
 
 ---
 
 ## 0. Notation
 
-- Proposal `(a, b, c)` and brief `(A, alpha, C)` are the same triple: `a = A`, `b = alpha * A`,
-  `c = C`. Code stores all four of `A, alpha, b, C`.
-- In the Y toy the correctness bit is written `c` in the brief. **In code it is `corr`** to avoid
-  the collision with `c = C`.
-- Metric: a symmetric positive (semi)definite matrix `M`, inner product `<x, y>_M = x^T M y`.
-  Natural gradient uses `M = F^{-1}`; vanilla gradient ascent uses `M = I`. "Fisher-whitened"
-  `h = F^{-1/2} g` is the special case `M = F^{-1}`; all scalar diagnostics depend only on inner
-  products, so the choice of matrix square root is irrelevant.
+- Proposal `(a, b, c)` and brief `(A, alpha, C)` are the same triple: `a = A`, `b = alpha A`,
+  `c = C`. Code stores `A, alpha, b, C`.
+- The Y-toy correctness bit (`c` in the brief) is `corr` in code, to avoid clashing with `c = C`.
+- `Delta = J_V - J_G` is the signed proxy–gold discrepancy.
 
-## 1. Generic decomposition and the metric-matching identity
+## 1. Optimizer-conditioned local geometry [proved]
 
-Given `g_G`, `g_V`, `M`:
+**Setting.** A locally preconditioned flow
 
-    A     = ||g_G||_M
-    alpha = <g_e, g_G>_M / A^2          (g_e = g_V - g_G)
-    b     = alpha * A
-    r     = g_e - alpha * g_G           (so <r, g_G>_M = 0)
-    C     = ||r||_M
+    dtheta/dt = M_t g_V(theta_t),
 
-**Proposition 1 (rate identities) [proved].** Let parameters follow `theta_dot = M g_V` and let
-`(A, alpha, C)` be computed **with the same `M`**. Then
+where `M_t` is symmetric positive semidefinite and may depend on `t` and `theta_t` (not on the
+future). Let `M_t^{1/2}` be its PSD square root and define
 
-    dJ_G/dt   = A^2 (1 + alpha)          = a (a + b)
-    dJ_V/dt   = A^2 (1 + alpha)^2 + C^2  = (a + b)^2 + c^2
-    dDelta/dt = A^2 alpha (1 + alpha) + C^2 = b (a + b) + c^2
+    h_G = M_t^{1/2} g_G,    h_e = M_t^{1/2} g_e,    h_V = h_G + h_e = M_t^{1/2} g_V.
 
-*Proof.* `g_V = (1 + alpha) g_G + r` with `<r, g_G>_M = 0`. Then
-`dJ_G/dt = g_G^T M g_V = <g_G, g_V>_M = (1 + alpha) A^2` and
-`dJ_V/dt = <g_V, g_V>_M = (1 + alpha)^2 A^2 + C^2`. Subtract. ∎
+If `A = ||h_G|| > 0`, decompose
 
-**Corollary [derived-agent].** If `(A, alpha, C)` are computed in a metric other than the
-optimizer's preconditioner, the identities fail, including the sign of `dDelta/dt`. Example in
-the Y toy at `(q, s) = (0.3, 0.05)`: Fisher-metric triple predicts `dDelta/dt = +1.33e-2`; the
-vanilla flow gives `-9.89e-4`. Consequence for Phase 2: Adam's effective preconditioner is
-`diag(v_hat)^{-1/2}`, not `diag(v_hat)^{-1}`.
+    h_e = alpha h_G + r,   <r, h_G> = 0,   alpha = <h_e, h_G> / A^2,   C = ||r||,   b = alpha A.
 
-**Proposition 2 (parameterization invariance) [proved].** For a smooth invertible
-reparameterization `theta = phi(eta)` with Jacobian `J`, gradients map as `g -> J^T g` and the
-Fisher as `F -> J^T F J`; hence `g^T F^{-1} g'` is invariant and so are Fisher-metric
-`(A, alpha, C)`. Euclidean-metric values are not invariant in general.
+**Convention for `A = 0`** (e.g. `q in {0, 1}`, or `M_t` annihilates `g_G`): set `alpha := 0`,
+`r := h_e`, `C := ||h_e||`. The identities below then still hold. *The current code divides by
+`A^2` and returns NaN here; changing that is pending approval (§8).*
 
-## 2. Y toy: policy-controllable false positive
+**Proposition 1 (v0.2 form).**
 
-Policy: `corr ~ Bern(q)`, `z ~ Bern(s)` independent, `q = sigmoid(u)`, `s = sigmoid(v)`,
-`theta = (u, v)`. Gold `G = corr`. Verifier `V = corr + (1 - corr) z = corr OR z`.
+    dJ_G/dt   = (1 + alpha) A^2
+    dJ_V/dt   = (1 + alpha)^2 A^2 + C^2
+    dDelta/dt = alpha (1 + alpha) A^2 + C^2      (= b(a + b) + c^2)
 
-**Observation [derived-agent].** `J_V = 1 - (1 - q)(1 - s)` is symmetric in `(q, s)`. Under `V`
-the optimizer cannot distinguish correctness from the exploit; only `G` and the initial condition
-break the symmetry. Both flows below are symmetric under `(u, v) -> (v, u)`.
+*Derivation.*
 
-### 2.1 Static quantities [given]
+1. Chain rule: `dJ_G/dt = g_G^T (dtheta/dt) = g_G^T M_t g_V`.
+2. With the symmetric root, `g_G^T M_t g_V = (M_t^{1/2} g_G)^T (M_t^{1/2} g_V) = <h_G, h_V>`.
+3. `h_V = h_G + h_e = (1 + alpha) h_G + r`, so
+   `<h_G, h_V> = (1 + alpha) ||h_G||^2 + <h_G, r> = (1 + alpha) A^2`.
+4. Likewise `dJ_V/dt = g_V^T M_t g_V = ||h_V||^2 = (1 + alpha)^2 A^2 + 2(1 + alpha)<h_G, r> + ||r||^2
+   = (1 + alpha)^2 A^2 + C^2`.
+5. `dDelta/dt = dJ_V/dt - dJ_G/dt = (1 + alpha)A^2 [(1 + alpha) - 1] + C^2 = alpha(1 + alpha)A^2 + C^2`. ∎
+
+Remarks.
+
+- The identities are instantaneous, so `M_t` may vary along the trajectory.
+- `M_t` PSD implies `dJ_V/dt >= 0`: the flow always ascends the proxy.
+- For discrete steps `theta_{k+1} = theta_k + eta M_k g_V` they hold to first order in `eta`;
+  second-order (curvature) terms are not studied here.
+- With stochastic gradients `dtheta/dt = M_t g_hat_V`, the expected rates equal the formulas only
+  if `M_t` is independent of the noise in `g_hat_V`.
+
+**Special cases.** Natural gradient is `M = F^{-1}`: Fisher whitening is this one case, not the
+general definition. Vanilla gradient ascent is `M = I`. Prop. 2 (parameterization invariance)
+holds for `M = F^{-1}`, not for `M = I`.
+
+**Corollary (metric mismatch) [derived-agent; E001-observed].** If `(A, alpha, C)` are computed
+in a metric `M'` different from the optimizer's `M_t`, the identities fail, including signs. Y-toy
+example: at `(q, s) = (0.3, 0.05)` the Fisher-metric triple gives `dDelta/dt = +1.33e-2`, while
+the vanilla flow has `-9.89e-4`.
+
+**Adam is not exactly of this form.** An Adam step is `-eta m_hat_t / (sqrt(v_hat_t) + eps)`. This
+is not `M_t g_V(theta_t)` for three reasons:
+
+- (a) the momentum `m_hat_t` averages gradients evaluated at past parameters `theta_{t-k}`;
+- (b) `v_hat_t` contains the current stochastic gradient, so `M_t` is correlated with the
+  gradient noise;
+- (c) `eps` and the bias corrections.
+
+Without momentum and with slowly varying `v_hat`, `M_t ≈ diag(1/(sqrt(v_hat_t) + eps))` is a
+plausible local approximation **[working hypothesis, untested]**. Treating `v_hat` as a Fisher
+estimate and using `diag(v_hat)^{-1}` gives the natural-gradient geometry, not Adam's (which
+scales as `v_hat^{-1/2}`).
+
+**Proposition 2 (parameterization invariance) [proved].** Under a smooth invertible
+reparameterization with Jacobian `J`, `g -> J^T g` and `F -> J^T F J`, so `g^T F^{-1} g'` and the
+Fisher-metric `(A, alpha, C)` are invariant. Euclidean-metric values are not invariant in general.
+
+## 2. Semantics of the diagnostics (new in v0.2)
+
+Current interpretation:
+
+| Quantity | Meaning |
+| --- | --- |
+| `alpha` | parallel distortion of the true direction, in the optimizer's metric |
+| `C` | orthogonal verifier-induced pressure |
+| `dJ_G/dt = (1 + alpha) A^2` | local gold improvement |
+| `dDelta/dt = alpha(1 + alpha) A^2 + C^2` | signed proxy–gold discrepancy dynamics |
+
+**Gap growth is not reward hacking and not failure onset.** `dDelta/dt > 0` means only that the
+proxy is rising faster than gold (or falling slower). It is neither sufficient nor necessary for
+a gold-learning failure.
+
+- *Not sufficient: amplification.* Take `alpha > 0`, `C = 0` (e.g. `V = kappa G` with
+  `kappa > 1`). Verifier and gold gradients are perfectly aligned and
+  `dJ_G/dt = (1 + alpha) A^2 > 0`, yet `dDelta/dt = alpha(1 + alpha) A^2 > 0`. A second example is
+  the Y toy under natural gradient with `q < 1/2`: the gap grows while gold improves (E001 IC1
+  early phase).
+- *Not necessary: deletion.* X (`alpha = -1`, `C = 0`) gives `dJ_G/dt = 0` **and**
+  `dDelta/dt = 0`. Gold learning stops on the affected prompts with no gap growth at all. R with
+  `p = 1/2` behaves the same way.
+
+**`C > 0` is not hacking either.**
+
+- X aggregated over prompts has `C > 0` with no exploitable direction (Prop. 6).
+- In the Y toy, `C` returns toward 0 once the exploit (or gold) saturates (E001, §6).
+
+**The object to predict** is therefore a gold-learning failure (stall or decline, §7 WH-1), not
+gap growth.
+
+## 3. Y toy: policy-controllable false positive
+
+Policy: `corr ~ Bern(q)`, `z ~ Bern(s)` independent, `q = sigmoid(u)`, `s = sigmoid(v)`.
+Gold `G = corr`. Verifier `V = corr + (1 - corr) z = corr OR z`.
+
+**Observation [derived-agent].** `J_V = 1 - (1 - q)(1 - s)` is symmetric in `(q, s)`: under `V`
+the optimizer cannot tell correctness from the exploit. Both flows below are symmetric under
+`(u, v) -> (v, u)`. E001 reproduced this mirror symmetry to machine precision.
+
+### 3.1 Static quantities [given]
 
     J_G = q,    J_V = q + (1 - q) s,    Delta = (1 - q) s
     g_G = [q(1-q), 0]
@@ -77,145 +161,181 @@ break the symmetry. Both flows below are symmetric under `(u, v) -> (v, u)`.
 
 `C > 0` iff `q < 1` and `0 < s < 1`.
 
-Euclidean metric `M = I` **[derived-agent]**: `A_E = q(1-q)`, `alpha_E = -s` (coincides because
-`g_G` has no `v` component and `F` is diagonal), `C_E = (1-q) s (1-s)`. Near exploit onset
-(`s -> 0`) `C_F ~ sqrt(s)` but `C_E ~ s`.
+Euclidean metric **[derived-agent]**: `A_E = q(1-q)`, `alpha_E = -s`, `C_E = (1-q) s (1-s)`.
+Near exploit onset (`s -> 0`) `C_F ~ sqrt(s)` but `C_E ~ s`.
 
-### 2.2 Natural-gradient flow
+**Information content [derived-agent].** The on-policy static verifier metrics are
+FPR `= P(V=1 | G=0) = s` and FNR `= 0`; the policy's gold accuracy is `q`. The triple is a function
+of these: `A = sqrt(q(1-q))`, `alpha = -FPR`, `C = (1-q) sqrt(FPR (1-FPR))`. So in this toy the
+Fisher diagnostics carry **no information beyond on-policy static metrics**.
 
-`theta_dot = F^{-1} g_V` gives `u_dot = 1 - s`, `v_dot = 1 - q` and **[given]**
+### 3.2 Natural-gradient flow
+
+`u_dot = 1 - s`, `v_dot = 1 - q` and **[given]**
 
     q_dot = q(1-q)(1-s),   s_dot = s(1-s)(1-q),   s/q = s0/q0,
     dDelta/dt = s(1-s)(1-q)(1-2q).
 
-**Proposition 3 (NG endpoint) [proved].** With `k = s0/q0`, the trajectory is the ray `s = k q`
-and converges to `(1, k)` if `k <= 1` and to `(1/k, 1)` if `k > 1`. Hence
-`Delta_inf = max(0, 1 - q0/s0)` and, when `s0 > q0`, gold is capped at `q0/s0 < 1`.
+**Proposition 3 (NG endpoint) [proved].** With `k = s0/q0`, the path is the ray `s = kq`. It
+converges to `(1, k)` if `k <= 1` and to `(1/k, 1)` if `k > 1`. So `Delta_inf = max(0, 1 - q0/s0)`,
+and gold is capped at `q0/s0 < 1` when `s0 > q0`.
 
-*Proof.* `q_dot, s_dot >= 0` and both are bounded, so `(q, s)` converges. A limit point in the
-closed square with `q >= q0 > 0`, `s >= s0 > 0` must satisfy `q_dot = s_dot = 0`, i.e. `q = 1` or
-`s = 1`. Intersecting the ray `s = k q` with `{q = 1} ∪ {s = 1}` gives the stated point. ∎
+*Proof.* `q_dot, s_dot >= 0` and bounded, so `(q, s)` converges. A limit with `q >= q0 > 0`,
+`s >= s0 > 0` must have `q_dot = s_dot = 0`, i.e. `q = 1` or `s = 1`. Intersect with the ray. ∎
 
-**Corollary [derived-agent].** `alpha(t) = -s(t)`; when `s -> 1` then `alpha -> -1` and
-`C -> 0`: on-policy `V ≡ 1`, i.e. **the Y verifier turns itself into a deletion (X-like) verifier**.
-R/X/Y are regimes a run can move between, not a static partition.
+**Corollary [derived-agent].** `alpha(t) = -s(t)`. When `s -> 1`, `alpha -> -1` and `C -> 0`:
+on-policy `V ≡ 1`, so **the Y verifier turns itself into a deletion (X-like) verifier**. This
+mechanism produces the late gold stall: early `C > 0`, `dJ_G/dt > 0`; late `dJ_G/dt -> 0` with
+`q -> q0/s0 < 1`.
 
-### 2.3 Vanilla gradient flow
+### 3.3 Vanilla gradient flow
 
-`theta_dot = g_V`: `u_dot = q(1-q)(1-s)`, `v_dot = (1-q)s(1-s)`, so
+`u_dot = q(1-q)(1-s)`, `v_dot = (1-q)s(1-s)`:
 
     q_dot = [q(1-q)]^2 (1-s)          [derived-agent]
     s_dot = (1-q) [s(1-s)]^2          [given]
     dDelta/dt = (1-q)^2 s(1-s) [s(1-s) - q^2]      [derived-agent]
 
-**Proposition 4 (vanilla invariant) [proved].** With `H(x) = x - e^{-x}`,
-`I = H(v) - H(u)` is constant along the vanilla flow.
-*Proof.* `d/dt H(v) = v_dot (1 + e^{-v}) = v_dot / s = (1-q)(1-s)`, and likewise
-`d/dt H(u) = u_dot / q = (1-q)(1-s)`. ∎
+**Proposition 4 (vanilla invariant) [proved].** With `H(x) = x - e^{-x}`, `H(v) - H(u)` is
+conserved. *Proof.* `d/dt H(v) = v_dot / s = (1-q)(1-s) = u_dot / q = d/dt H(u)`. ∎
 
-Consequence: formally both `q, s -> 1` as `t -> infinity` (if `u -> inf` then `H(v) -> inf`), but
-the saturating logit grows like `log t`, so at any practical horizon the non-saturated coordinate is
-effectively frozen (e.g. `(q0, s0) = (0.01, 0.30)`: when `s = 1 - 1e-6`, `q = 0.0120`, versus the
-NG endpoint `0.0333`).
+Formally both `q, s -> 1`, but the saturating logit grows like `log t`. At practical horizons the
+other coordinate is effectively frozen (E001 IC3: `q(1e6) = 0.0120` vs natural-gradient `0.0333`).
 
-**Clock-free comparison [derived-agent].** Time is not comparable across optimizers. Along the
-path,
+**Clock-free comparison [derived-agent].**
 
-    d log s / d log q = 1                          (natural)
-    d log s / d log q = s(1-s) / (q(1-q))          (vanilla)
+    d log s / d log q = 1                        (natural)
+    d log s / d log q = s(1-s) / (q(1-q))        (vanilla)
 
-So vanilla suppresses exploit growth *per unit of gold progress* only where `s(1-s) < q(1-q)`; in
-the `q0 << s0` regime it is worse than natural gradient. The brief's statement
-"vanilla `s_dot ≈ (1-q)s^2` vs natural `(1-q)s`" is correct as calculus but depends on the clock.
+Vanilla suppresses exploit growth per unit of gold progress only where `s(1-s) < q(1-q)`.
 
-### 2.4 No latent-then-growth transition in the single-prompt Y toy
+### 3.4 What the single-prompt OR toy can and cannot test (revised in v0.2)
 
-**Proposition 5 [proved; agent-written, needs review].** Under either flow, `sign(dDelta/dt)`
-can change only from `+` to `-`, never from `-` to `+`.
+**Proposition 5 [proved; needs review].** Under either flow, `sign(dDelta/dt)` can change only from
+`+` to `-`. *Natural:* the sign is `sign(1 - 2q)` and `q` is non-decreasing. *Vanilla:* the sign is
+`sign(f)` with `f = s(1-s) - q^2`. On `{f = 0}`, `q <= 1/2` and
+`df/dt = (1-q) q^3 [(1-2s) q - 2(1-q)(1-s)] < 0`, so `f` only crosses downward. ∎
 
-*Natural.* On the open square `sign(dDelta/dt) = sign(1 - 2q)` and `q` is non-decreasing.
+After §2 this is a statement about the **sign of the proxy–gold discrepancy only**; it says nothing
+directly about gold failure. Revised assessment:
 
-*Vanilla.* `sign(dDelta/dt) = sign(f)`, `f = s(1-s) - q^2`. On `{f = 0}` we have
-`q^2 = s(1-s) <= 1/4`, so `q <= 1/2`, and
-`df/dt = (1-2s) s_dot - 2 q q_dot = (1-q) q^3 [ (1-2s) q - 2(1-q)(1-s) ]`.
-If `1 - 2s <= 0` the bracket is negative. Otherwise `(1-2s) q <= (1-2s)/2 < 1 - s <= 2(1-q)(1-s)`.
-So `df/dt < 0` on `{f = 0}` and `f` crosses zero only downward. ∎
+- **It does produce a late gold stall.** Under natural gradient with `s0 > q0`, `dJ_G/dt -> 0`
+  while `q -> q0/s0 < 1` (Prop. 3; Y turns into X). Under vanilla the same happens at any
+  practical horizon.
+- **It cannot produce gold decline**: `q_dot >= 0` under both flows.
+- **It cannot test prediction beyond static metrics.** The triple is a function of on-policy
+  static metrics (§3.1). The outcome (stall iff `s0 > q0` under natural gradient) is already fixed
+  by those metrics at `t = 0`.
 
-**Interpretation (for the collaborator).** In this toy, `C > 0` together with a shrinking gap
-(`rho < 0`) is a *terminal residual* regime, not a precursor of gap growth. The proposal's H5
-latent-phase signature cannot be tested here. Planning-phase observation (E000, not
-pre-registered): a multi-prompt toy with per-prompt correctness logits and one **shared** exploit
-logit did show `- → + → -` in one configuration (Route B, easy prompts saturating). Phase 1B
-design is the collaborator's call.
+So the full *early-warning → late-gold-failure beyond static metrics* hypothesis is not testable in
+this toy. The reason is not an absence of late failure; the diagnostics simply add no information.
 
-## 3. R: random symmetric flips
+## 4. R: random symmetric flips
 
-With a **fresh** flip `xi ~ Bern(p)` per query, independent of the response:
-`E[V | y] = (1-p) G + p (1-G) = p + (1-2p) G`, hence **[given]**
-`g_V = (1-2p) g_G`, `alpha = -2p`, `C = 0` — in **any** metric, because `g_e` is collinear with
-`g_G`. `p = 1/2` is exactly deletion (`alpha = -1`); `p > 1/2` reverses the signal.
+With a **fresh**, response-independent flip `xi ~ Bern(p)`: `E[V | y] = p + (1-2p) G`, so
+**[given]** `g_V = (1-2p) g_G`, `alpha = -2p`, `C = 0` in any metric. `p = 1/2` is exactly
+deletion; `p > 1/2` reverses the signal.
 
-**Assumption boundary [derived-agent].** A *fixed* (deterministic) flip set on a finite response
-space is a policy-controllable error. Flipping the single outcome `(corr, z) = (0, 1)` reproduces
-Y exactly, with `C > 0`. The operative distinction between R and Y is whether the error is a
-function of something the policy controls.
+Semantics (v0.2): for `0 < p < 1/2`, `dDelta/dt = -2p(1-2p) A^2 < 0`. The gap shrinks while gold
+learning is slowed by the factor `1 - 2p`: a slowdown with no gap growth.
 
-*Refinement found while writing tests (2026-09-24).* Fixed flips are policy-controllable
-**generically, not at every policy**: flipping `{(0,1), (1,1)}` gives `V = corr XOR z` with
-`alpha = -2s` and `C = |1 - 2q| sqrt(s(1-s))` **[derived-agent]**, which vanishes at `q = 1/2`.
-The original test asserted `C > 0` for every fixed flip set and failed at `q = 1/2`; the claim was
-narrowed, not the code.
+**Assumption boundary [derived-agent].** A *fixed* flip set on a finite response space is
+policy-controllable; flipping outcome `(0, 1)` reproduces Y. Refinement (tests, 2026-09-24): this
+holds generically, not at every policy. The XOR set `{(0,1), (1,1)}` has `alpha = -2s` and
+`C = |1 - 2q| sqrt(s(1-s))`, which is 0 at `q = 1/2`.
+*Matched-accuracy illustration [derived-agent]:* a fixed flip of `(0,1)` and R with `p = (1-q)s`
+have the same on-policy error rate, but `C = (1-q)sqrt(s(1-s))` versus `C = 0`.
 
-*Matched-accuracy illustration [derived-agent].* At a given policy, the fixed flip of `(0, 1)` and
-R with `p = (1-q)s` err with the same probability under `pi`, yet `C = (1-q) sqrt(s(1-s))` versus
-`C = 0`. This is the local, single-policy version of the proposal's H1.
+Not tested yet: under step-normalized optimizers the factor `(1 - 2p)` is largely normalized away,
+and R acts mainly through estimator variance.
 
-Not tested in Phase 1A: under step-normalized optimizers (Adam, sign-SGD, KL trust region) the
-scalar `(1-2p)` is largely normalized away and R acts mainly through estimator variance.
+## 5. X: signal deletion
 
-## 4. X: signal deletion
+Per prompt: `g_V(x) = 0`, `alpha = -1`, `C = 0` in any metric **[given]**. Semantics (v0.2): gold
+learning on the subset stops (`dJ_G/dt = 0`) with `dDelta/dt = 0`. This is a gold failure that
+the gap does not show.
 
-Per prompt, a constant verifier gives `g_V(x) = 0`, so `g_e(x) = -g_G(x)`: `alpha = -1`, `C = 0`
-in any metric **[given]**.
+**Proposition 6 (aggregate X) [proved].** Tabular prompts, block-diagonal metric:
 
-**Proposition 6 (aggregate X) [proved].** Tabular multi-prompt policy (prompts share no
-parameters), prompt weights `w_x`, deleted set `S`, block-diagonal metric. Let
-`A_S^2 = sum_{x in S} ||g_G(x)||^2_M` and `A_N^2` the same over the complement. Then
+    alpha_agg = -A_S^2 / (A_S^2 + A_N^2),     C_agg = sqrt(A_S^2 A_N^2 / (A_S^2 + A_N^2)) > 0.
 
-    alpha_agg = -A_S^2 / (A_S^2 + A_N^2),     C_agg = sqrt(A_S^2 A_N^2 / (A_S^2 + A_N^2)).
+So `C_agg > 0` without any new direction. Proposal (not implemented): split `r` into its
+components inside and outside `span{g_G(x)}`.
 
-*Proof.* In block coordinates `g_G = (g_S, g_N)` with `<g_S, g_N>_M = 0` and `g_e = (-g_S, 0)`.
-Then `alpha = -A_S^2/A^2`, `r = (-(A_N^2/A^2) g_S, (A_S^2/A^2) g_N)` and
-`||r||^2 = A_S^2 A_N^4/A^4 + A_N^2 A_S^4/A^4 = A_S^2 A_N^2 / A^2`. ∎
+## 6. E001 empirical observations [E001-observed]
 
-For the Y-structured prompts with natural metric, `A_x^2 = w_x q_x (1 - q_x)`.
+Numbers are from `results/E001/20260925T012753Z_9d4df22/`; details are in the registry.
 
-So `C_agg > 0` whenever both `S` and its complement carry signal, **with no exploitable direction
-anywhere**. Proposal for discussion (not implemented): split `r` into the part inside
-`span{g_G(x)}` (reweighting; X lives here) and the part outside (new directions; Y lives here).
-Caveat: with shared parameters and many prompts the span can be the whole space.
+- **O1 Agreement.** Closed form, autodiff, finite differences and simulation agree:
+  - trajectories within 2e-10;
+  - decomposition within the pre-registered tolerance (worst normalized error 0.19);
+  - Prop. 1 against finite-difference `dDelta/dt`, worst normalized error 2.1e-3.
+- **O2 The optimizer changes state-space paths, not only the clock.**
+  - IC1: at `q = 1 - 1e-4`, `s = 0.0114` (vanilla) vs `0.0333` (natural).
+  - IC3 is the mirror image.
+  - IC2 is the exception: both paths lie on the symmetric diagonal and differ only in the clock.
+- **O3 Mismatched metric → wrong sign.** Along vanilla trajectories, the Fisher-metric prediction
+  had the wrong sign of `dDelta/dt` at 39.7% (IC1), 23.4% (IC3) and 0% (IC2) of evaluation points.
+  *Precision:* for `dJ_G/dt` the sign agreed in this toy, because both metrics give values >= 0
+  here; only magnitudes differ. A wrong **gold** sign under mismatch appears in the Phase 1B
+  candidate 2 design check (`04_phase1b_design.md`), not in E001.
+- **O4 `C` is transient, not a terminal score.**
+  - `C_F` peaked where `s ≈ 0.25–0.5`, then decayed toward 0:
+    - to 8e-6 in IC3/natural, after exploit saturation;
+    - to 1e-2 in IC2/natural at `T = 25`;
+    - to 1e-11 in IC1/natural, where the decay came from **gold** saturation, not exploit
+      saturation.
+  - *Precision:* the rise during exploit acquisition was modest. Peak / initial `C_F` was 1.20
+    (IC2), 1.08–1.09 (IC3) and ≈ 1.00 (IC1); the Euclidean `C` rose up to 1.83 (IC2). In this toy
+    `C` starts near its maximum, so "C becomes large during acquisition" is only weakly supported.
+- **O5** The single-prompt OR toy cannot test early-warning → late failure beyond static metrics
+  (§3.4).
 
-## 5. Open issues raised to the collaborator (2026-09-24)
+## 7. Revised working hypotheses (v0.2)
 
-1. Single-prompt Y toy cannot exhibit latent → growth (Prop. 5); needs a Phase 1B toy.
-2. Diagnostics must be computed in the optimizer's metric (Prop. 1 corollary); affects §3.4 of the
-   proposal (Adam second moments as Fisher proxy).
-3. X has `C_agg > 0` without exploitation (Prop. 6); proposed span split.
-4. R's `C = 0` requires fresh, response-independent flips; fixed flips can be Y.
-5. Naming: `(a,b,c)` vs `(A,alpha,C)`; correctness bit renamed `corr`; "Monte Carlo Fisher" vs
-   "empirical Fisher".
+These are recorded separately from the pre-registered hypotheses, which are unchanged. Nothing in
+E001 is re-scored.
 
-## 6. Test map
+- **WH-1 (prediction target).** The target is **gold-learning failure**, not gap growth.
+  Failure means either:
+  - *stall*: `dJ_G/dt -> 0` with `J_G` below the gold-trained counterfactual at a matched horizon
+    and optimizer; or
+  - *decline*: `dJ_G/dt < 0` after an initial rise.
 
-| Claim | Tests |
+  This supersedes, for this repository's experiments, the gap-based framing in proposal §3.2 / H5
+  (the proposal text itself belongs to the collaborator).
+- **WH-2 (metric).** Diagnostics meant to predict an optimizer's trajectory must be computed in
+  that optimizer's local metric. For Adam this is only approximate (§1).
+- **WH-3 (`C` as an early/cumulative signal).** If `C` is predictive, it will be through early or
+  integrated quantities (e.g. `C/A` early, `∫ C^2 dt` over a probe window), not a terminal value.
+- **WH-4 (information requirement).** A test of "beyond static metrics" needs a model in which
+  on-policy static metrics do not determine the diagnostics or the outcome. The single-prompt OR
+  toy fails this (§3.4). Candidates are in `04_phase1b_design.md`.
+
+## 8. Open issues
+
+1. Phase 1B model needed (§3.4) → `04_phase1b_design.md` (design only; awaiting review).
+2. Metric matching (WH-2). The proposal's §3.4 (Adam second moments as a Fisher proxy) needs
+   revisiting.
+3. X aggregate `C_agg > 0` (Prop. 6); span split proposed, not implemented.
+4. R's `C = 0` requires fresh, response-independent flips.
+5. Naming: `(a,b,c)` vs `(A,alpha,C)`; `corr`; "Monte Carlo Fisher" vs "empirical Fisher".
+6. **New:** the `A = 0` convention (§1) is not implemented; `decompose` returns NaN there. This is
+   a small code change, pending approval.
+7. **New:** the proposal's §3.2 (`rho`, "latent exploitation") and H5 still use gap-growth framing.
+   This is the collaborator's decision.
+
+## 9. Test map
+
+| Claim | Tests / evidence |
 | --- | --- |
-| Y static formulas (§2.1) | `test_y_static.py` (closed form vs enumeration+autodiff vs finite differences), `test_monte_carlo.py` |
-| Fisher formula | `test_fisher.py` (score outer product, negative Hessian, Monte Carlo) |
-| Decomposition + Prop. 1 | `test_decompose.py`, `test_y_flows.py::test_metric_matched_rate_identities`, `test_y_flows.py::test_fisher_metric_mispredicts_vanilla_gap_sign` |
+| §1 decomposition and Prop. 1 (constant `M`) | `test_decompose.py`, `test_y_flows.py::test_metric_matched_rate_identities`, `test_y_flows.py::test_fisher_metric_mispredicts_vanilla_gap_sign`; E001 P7 along trajectories |
+| §1 `A = 0` convention | not implemented, not tested |
 | Prop. 2 | `test_y_static.py::test_fisher_diagnostics_are_parameterization_invariant` |
-| NG rates, invariant, endpoint (§2.2, Prop. 3) | `test_y_flows.py` |
-| Vanilla rates, invariant, dDelta/dt (§2.3, Prop. 4) | `test_y_flows.py` |
-| Prop. 5 | `test_y_flows.py::test_gap_sign_never_switches_from_shrinking_to_growing` |
-| R (§3) | `test_r.py` |
-| X (§4, Prop. 6) | `test_x.py` |
-| §2 end-to-end (generic optimizer vs all §2 closed forms, 3 initial conditions × 2 optimizers) | experiment E001 (`03_experiment_registry.md`): 82/83 registered checks passed; the failure is a mis-specified absolute tolerance (see E001-D1) |
+| §3.1 Y static formulas | `test_y_static.py`, `test_monte_carlo.py`, `test_fisher.py` |
+| §3.2–3.3 flows, Props. 3–4 | `test_y_flows.py`; E001 P1–P4 |
+| Prop. 5 | `test_y_flows.py::test_gap_sign_never_switches_from_shrinking_to_growing`; E001 P5 |
+| §4 R | `test_r.py` |
+| §5 X, Prop. 6 | `test_x.py` |
+| §6 observations | E001 (`03_experiment_registry.md`): 82/83 registered checks passed; the one failure is a mis-specified absolute tolerance (E001-D1) |
+| Phase 1B derivations (`04_phase1b_design.md`) | scratch checks only (E000b); no repo tests yet |
