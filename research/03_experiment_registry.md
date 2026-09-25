@@ -1309,3 +1309,64 @@ Amendment 1 and the pilot record are unchanged.
    4. Run E002b on the test split: frozen configurations (`configs/e002/e002b_tuned_configs.json`,
       sha256 `674c8823…d880`), `R = 64`, `heldout_seed`.
    5. Run the analysis script, frozen and committed before unsealing, which prints the verdict.
+
+**E002 held-out freeze** (2026-09-25). Analysis code, configurations and seeds are frozen at
+commit `d639b09`, before unsealing. `HELDOUT_APPROVED` is absent.
+
+SHA-256 of the frozen files:
+
+| file | sha256 |
+| --- | --- |
+| `configs/e002/e002.toml` | `a967d3d1…c055ca` |
+| `configs/e002/e002b_tuned_configs.json` | `674c8823…00d880` (checked at run start) |
+| `configs/e002/panel_P-mod.json` / `panel_P-rare.json` | `60e27ed0…cadc9e3` / `90add2d8…3d7f1` |
+| `experiments/e002/heldout_targets.py` | `fd84d213…e82913` |
+| `experiments/e002/heldout_oracle.py` | `1e2d9e29…acc64` |
+| `experiments/e002/e002b_heldout.py` | `a3a96a2f…c5eef` |
+| `experiments/e002/e002b_analysis.py` | `b8d71d58…027ad` |
+| `experiments/e002/e002a.py` | `230d4ba4…0469f` |
+| `src/vdyn/e002/arms.py`, `verdict.py`, `endpoints.py` | `af63db6d…`, `7afa0603…`, `a3dfdf34…` |
+
+Engineering checks, all on the design split or on fixed structures only:
+
+- **Arm runner.** `arms.run_arm` reproduces the design pilot's scores bit for bit (4 types × 2
+  cells × every arm and configuration).
+- **Kernel bootstrap.** It equals the §7 reference draw for draw (to 1e-12) and is about 100×
+  faster: 1.6 ms per resample at `n = 600`, `R = 64`.
+- **Mutation tests.** All mutants of the bootstrap, p-value, Holm, dominance and verdict code are
+  caught (12 of 12).
+- **Design-split dry run** (scratch, not committed; `R = 8`, `B = 50`; not a result):
+  - the targets re-computed through the held-out path equal the committed design targets
+    (`max |ΔD| = 0`, no stall mismatches);
+  - the oracle ceilings equal the committed ones;
+  - the pipeline runs end to end;
+  - in-sample verdict on both panels: NO PRACTICAL ADVANTAGE, as the pilot predicted.
+- **Sealed split.** `heldout_targets.py --split test` raises `PermissionError` before writing
+  anything.
+- **E002a matched-null smoke run** (`R = 200`; 4 `N` values; scratch, not a result). Matched-null
+  false alarms fall inside the Monte Carlo band in 614 of 616 cells. The plug-in `C_hat` is
+  biased upward at `C = 0`, and coverage at `C = 0` is far below nominal.
+- **[post-hoc observation]** The Gram-entry flags concentrate in rare-gold cells
+  (`N q < 5`), which the Amendment 2 eligibility rule (FP count only) does not exclude. The
+  formal output reports an `N q >= 5` stratum as a labelled secondary. The registered rule is
+  unchanged.
+
+Run order after explicit approval, from a clean tree:
+
+```
+touch configs/e002/HELDOUT_APPROVED        # unsealing; committed with a reference to the approval
+uv run python -W ignore experiments/e002/heldout_targets.py results/E002-pilot-targets/20260925T083746Z_81ffa61 --split test
+uv run python -W ignore experiments/e002/heldout_oracle.py results/E002-targets-test/<run>   # commit before step 4
+uv run python -W ignore experiments/e002/e002b_heldout.py results/E002-targets-test/<run>
+uv run python -W ignore experiments/e002/e002b_analysis.py results/E002b-test/<run> results/E002-targets-test/<run>
+uv run python -W ignore experiments/e002/e002a.py results/E002-pilot-targets/20260925T083746Z_81ffa61   # formal E002a, R = 2000
+```
+
+Expected wall time on 8 cores:
+
+| step | time |
+| --- | --- |
+| targets | ~1 min |
+| E002b simulation | ~15 min |
+| analysis (`B = 2000`) | ~15 min |
+| formal E002a | ~20–40 min |
