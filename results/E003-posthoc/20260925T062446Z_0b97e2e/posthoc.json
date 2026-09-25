@@ -1,0 +1,664 @@
+{
+  "label": "POST-HOC / EXPLORATORY (not confirmatory)",
+  "shortfall": {
+    "RFP": 0.0,
+    "AND3": 0.0,
+    "AND-SYM": 0.0,
+    "AND-MID": 0.0,
+    "AND-ASYM-A": 0.7699605284083834,
+    "AND-ASYM-B": 0.8923262150875333,
+    "OR": 0.801009498285977,
+    "SINGLE": 0.8999999999933586
+  },
+  "D1_P4_diagnostic": [
+    {
+      "structure": "AND-ASYM-A",
+      "n_violating_points": 3,
+      "first_violation_t": 33.709562123812994,
+      "worst_violation_t": 33.709562123812994,
+      "C_max_at_worst": 1.5054181962407295e-05,
+      "1-FPR_at_worst": 3.8227632170872994e-10,
+      "C_max_at_first_violation": 1.5054181962407295e-05,
+      "min_C_max_where_no_violation_before": 2.290877040721719e-05,
+      "max_abs(eta_generic - eta_closed_form)": 2.442310708350437e-05,
+      "closed_form_eta_obeys_registered_trend_on_observed_states": true,
+      "violations_if_restricted_to_C_max>1e-3": 0,
+      "stable_eta_obeys_registered_trend": true,
+      "max_abs(eta_generic - eta_stable)": 2.442310656558533e-05,
+      "max_abs(eta_closed_form_prob_space - eta_stable)": 2.740887072860687e-09
+    },
+    {
+      "structure": "AND-ASYM-B",
+      "n_violating_points": 4,
+      "first_violation_t": 25.911231141861624,
+      "worst_violation_t": 32.618950099760966,
+      "C_max_at_worst": 3.434899931449591e-06,
+      "1-FPR_at_worst": 1.4817702620462114e-11,
+      "C_max_at_first_violation": 6.849239682266191e-05,
+      "min_C_max_where_no_violation_before": 9.955858038935178e-05,
+      "max_abs(eta_generic - eta_closed_form)": 3.9785182807783315e-05,
+      "closed_form_eta_obeys_registered_trend_on_observed_states": false,
+      "violations_if_restricted_to_C_max>1e-3": 0,
+      "stable_eta_obeys_registered_trend": true,
+      "max_abs(eta_generic - eta_stable)": 3.978518276792631e-05,
+      "max_abs(eta_closed_form_prob_space - eta_stable)": 1.0040882569839482e-09
+    },
+    {
+      "structure": "SINGLE",
+      "n_violating_points": 7,
+      "first_violation_t": 27.672877089838156,
+      "worst_violation_t": 33.709562123812994,
+      "C_max_at_worst": 1.8274732692014534e-06,
+      "1-FPR_at_worst": 4.123035246550444e-12,
+      "C_max_at_first_violation": 2.7644830680987946e-05,
+      "min_C_max_where_no_violation_before": 4.1360505505693196e-05,
+      "max_abs(eta_generic - eta_closed_form)": 7.567744217840122e-06,
+      "closed_form_eta_obeys_registered_trend_on_observed_states": true,
+      "violations_if_restricted_to_C_max>1e-3": 0,
+      "stable_eta_obeys_registered_trend": true,
+      "max_abs(eta_generic - eta_stable)": 7.567744217840122e-06,
+      "max_abs(eta_closed_form_prob_space - eta_stable)": 0.0
+    }
+  ],
+  "Q4_prefix_ranking": {
+    "k=1": {
+      "C(0)": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.5491177252133925
+      },
+      "eta(0)": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.842089957930287
+      },
+      "mean eta on [0,k]": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.8343857086054993
+      },
+      "integral eta on [0,k]": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.8343857086054993
+      },
+      "delta eta on [0,k]": {
+        "spearman_oriented": -0.6849174907329854,
+        "discordant_pairs": 18,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": false,
+        "relative_spread": 3.5332125915390775
+      },
+      "A(0)": {
+        "spearman_oriented": -0.04000355602969988,
+        "discordant_pairs": 10,
+        "tied_pairs": 3,
+        "comparable_pairs": 22,
+        "stall_success_separated": false,
+        "relative_spread": 6.586106630571821e-16
+      },
+      "delta A on [0,k]": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 0.008977240521948475
+      },
+      "delta C on [0,k]": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 2.0316793771451302
+      },
+      "delta log FPR on [0,k] (static metric)": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.8322236666141891
+      },
+      "delta log J_G on [0,k] (early gold)": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 0.007100631451351382
+      }
+    },
+    "k=5": {
+      "C(0)": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.5491177252133925
+      },
+      "eta(0)": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.842089957930287
+      },
+      "mean eta on [0,k]": {
+        "spearman_oriented": 0.938590635448906,
+        "discordant_pairs": 0,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.8003425712944305
+      },
+      "integral eta on [0,k]": {
+        "spearman_oriented": 0.938590635448906,
+        "discordant_pairs": 0,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.8003425712944305
+      },
+      "delta eta on [0,k]": {
+        "spearman_oriented": -0.6214992045540053,
+        "discordant_pairs": 17,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": false,
+        "relative_spread": 4.220595054764933
+      },
+      "A(0)": {
+        "spearman_oriented": -0.04000355602969988,
+        "discordant_pairs": 10,
+        "tied_pairs": 3,
+        "comparable_pairs": 22,
+        "stall_success_separated": false,
+        "relative_spread": 6.586106630571821e-16
+      },
+      "delta A on [0,k]": {
+        "spearman_oriented": 0.938590635448906,
+        "discordant_pairs": 0,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 0.3491588579911826
+      },
+      "delta C on [0,k]": {
+        "spearman_oriented": 0.938590635448906,
+        "discordant_pairs": 0,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.9655661283317292
+      },
+      "delta log FPR on [0,k] (static metric)": {
+        "spearman_oriented": 0.938590635448906,
+        "discordant_pairs": 0,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.726380445640673
+      },
+      "delta log J_G on [0,k] (early gold)": {
+        "spearman_oriented": 0.938590635448906,
+        "discordant_pairs": 0,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 0.15755128916122033
+      }
+    },
+    "k=10": {
+      "C(0)": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.5491177252133925
+      },
+      "eta(0)": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.842089957930287
+      },
+      "mean eta on [0,k]": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.7744276914596684
+      },
+      "integral eta on [0,k]": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.7744276914596682
+      },
+      "delta eta on [0,k]": {
+        "spearman_oriented": -0.48197897496024894,
+        "discordant_pairs": 16,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": false,
+        "relative_spread": 5.000378745149242
+      },
+      "A(0)": {
+        "spearman_oriented": -0.04000355602969988,
+        "discordant_pairs": 10,
+        "tied_pairs": 3,
+        "comparable_pairs": 22,
+        "stall_success_separated": false,
+        "relative_spread": 6.586106630571821e-16
+      },
+      "delta A on [0,k]": {
+        "spearman_oriented": -0.6849174907329854,
+        "discordant_pairs": 16,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": false,
+        "relative_spread": 0.7880364083836976
+      },
+      "delta C on [0,k]": {
+        "spearman_oriented": 0.4312443460170649,
+        "discordant_pairs": 8,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": false,
+        "relative_spread": 3.0384477298806343
+      },
+      "delta log FPR on [0,k] (static metric)": {
+        "spearman_oriented": 0.9132233209773138,
+        "discordant_pairs": 1,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 1.5601552108619594
+      },
+      "delta log J_G on [0,k] (early gold)": {
+        "spearman_oriented": 0.938590635448906,
+        "discordant_pairs": 0,
+        "tied_pairs": 0,
+        "comparable_pairs": 22,
+        "stall_success_separated": true,
+        "relative_spread": 0.3843225752185248
+      }
+    },
+    "gold_fraction_reached_by_k": {
+      "k=1": {
+        "RFP": 0.0026833835721075425,
+        "AND3": 0.0026818395050290772,
+        "AND-SYM": 0.002680759470946954,
+        "AND-MID": 0.002679374316382864,
+        "AND-ASYM-A": 0.011604378028000252,
+        "AND-ASYM-B": 0.024752694229386828,
+        "OR": 0.01339161673059051,
+        "SINGLE": 0.02664710338947356
+      },
+      "k=5": {
+        "RFP": 0.10784782464652998,
+        "AND3": 0.10617691928014375,
+        "AND-SYM": 0.10451060128599371,
+        "AND-MID": 0.10228404506123256,
+        "AND-ASYM-A": 0.31289755606098235,
+        "AND-ASYM-B": 0.5195673400777949,
+        "OR": 0.2852563071879972,
+        "SINGLE": 0.5418068138508596
+      },
+      "k=10": {
+        "RFP": 0.9522680339120376,
+        "AND3": 0.9480309370608773,
+        "AND-SYM": 0.9404873137438877,
+        "AND-MID": 0.9265891779784929,
+        "AND-ASYM-A": 0.9683891428151962,
+        "AND-ASYM-B": 0.991429019499307,
+        "OR": 0.7497021511088615,
+        "SINGLE": 0.9924226714638186
+      }
+    }
+  },
+  "Q4_prefix_values": {
+    "k=1": {
+      "RFP": {
+        "C(0)": 0.0,
+        "eta(0)": 0.0,
+        "mean eta on [0,k]": 1.46501130031333e-37,
+        "integral eta on [0,k]": 1.4631837580232074e-37,
+        "delta eta on [0,k]": 0.0,
+        "A(0)": 0.031606961258558205,
+        "delta A on [0,k]": 0.020124876372754348,
+        "delta C on [0,k]": 0.0,
+        "delta log FPR on [0,k] (static metric)": 0.0,
+        "delta log J_G on [0,k] (early gold)": 0.9870785251116486
+      },
+      "AND3": {
+        "C(0)": 0.03301958190620099,
+        "eta(0)": 0.11035117677614485,
+        "mean eta on [0,k]": 0.11401793855199278,
+        "integral eta on [0,k]": 0.11387570578935688,
+        "delta eta on [0,k]": 0.007486653910937613,
+        "A(0)": 0.031606961258558205,
+        "delta A on [0,k]": 0.02011003055166162,
+        "delta C on [0,k]": 0.0029931892667359877,
+        "delta log FPR on [0,k] (static metric)": 0.11247724108639294,
+        "delta log J_G on [0,k] (early gold)": 0.9865029415435869
+      },
+      "AND-SYM": {
+        "C(0)": 0.0423839804643217,
+        "eta(0)": 0.18181818181818196,
+        "mean eta on [0,k]": 0.18963704192572567,
+        "integral eta on [0,k]": 0.1894004773928658,
+        "delta eta on [0,k]": 0.0160566834219468,
+        "A(0)": 0.031606961258558205,
+        "delta A on [0,k]": 0.02009964373157707,
+        "delta C on [0,k]": 0.006033403031005052,
+        "delta log FPR on [0,k] (static metric)": 0.18699610449850576,
+        "delta log J_G on [0,k] (early gold)": 0.9861001390586106
+      },
+      "AND-MID": {
+        "C(0)": 0.051909562702839265,
+        "eta(0)": 0.2727272727272728,
+        "mean eta on [0,k]": 0.2795388478774861,
+        "integral eta on [0,k]": 0.2791901344811328,
+        "delta eta on [0,k]": 0.014204458560417133,
+        "A(0)": 0.03160696125855822,
+        "delta A on [0,k]": 0.020086319442666117,
+        "delta C on [0,k]": 0.008997767259815471,
+        "delta log FPR on [0,k] (static metric)": 0.2755030366761095,
+        "delta log J_G on [0,k] (early gold)": 0.9855833032295503
+      },
+      "AND-ASYM-A": {
+        "C(0)": 0.08893344660475049,
+        "eta(0)": 0.800505050505051,
+        "mean eta on [0,k]": 0.8020749476908114,
+        "integral eta on [0,k]": 0.801074391663401,
+        "delta eta on [0,k]": 0.0035929275617342382,
+        "A(0)": 0.03160696125855821,
+        "delta A on [0,k]": 0.019990896704532225,
+        "delta C on [0,k]": 0.042189508539228746,
+        "delta log FPR on [0,k] (static metric)": 0.7875356801093947,
+        "delta log J_G on [0,k] (early gold)": 0.981878073948164
+      },
+      "AND-ASYM-B": {
+        "C(0)": 0.09840043921007004,
+        "eta(0)": 0.9800041228612656,
+        "mean eta on [0,k]": 0.9801474466533904,
+        "integral eta on [0,k]": 0.9789247523923074,
+        "delta eta on [0,k]": 0.000339036744318455,
+        "A(0)": 0.0316069612585582,
+        "delta A on [0,k]": 0.01994992864637509,
+        "delta C on [0,k]": 0.05914970697383694,
+        "delta log FPR on [0,k] (static metric)": 0.9608235384736449,
+        "delta log J_G on [0,k] (early gold)": 0.9802852079682021
+      },
+      "OR": {
+        "C(0)": 0.09927429221752601,
+        "eta(0)": 0.997487421323991,
+        "mean eta on [0,k]": 0.995716750846055,
+        "integral eta on [0,k]": 0.9944746345082729,
+        "delta eta on [0,k]": -0.0042110771015171355,
+        "A(0)": 0.03160696125855821,
+        "delta A on [0,k]": 0.019945956687843602,
+        "delta C on [0,k]": 0.06048218229418531,
+        "delta log FPR on [0,k] (static metric)": 0.9759389836198809,
+        "delta log J_G on [0,k] (early gold)": 0.9801307085796568
+      },
+      "SINGLE": {
+        "C(0)": 0.09939924496695135,
+        "eta(0)": 1.0000000000000004,
+        "mean eta on [0,k]": 1.0,
+        "integral eta on [0,k]": 0.998752540482294,
+        "delta eta on [0,k]": -4.440892098500626e-16,
+        "A(0)": 0.03160696125855821,
+        "delta A on [0,k]": 0.019945047993583397,
+        "delta C on [0,k]": 0.06122139532952023,
+        "delta log FPR on [0,k] (static metric)": 0.9800953616933586,
+        "delta log J_G on [0,k] (early gold)": 0.9800953609504383
+      }
+    },
+    "k=5": {
+      "RFP": {
+        "C(0)": 0.0,
+        "eta(0)": 0.0,
+        "mean eta on [0,k]": 2.831160089133883e-36,
+        "integral eta on [0,k]": 1.3709218580660276e-35,
+        "delta eta on [0,k]": 0.0,
+        "A(0)": 0.031606961258558205,
+        "delta A on [0,k]": 0.27858116128249155,
+        "delta C on [0,k]": 0.0,
+        "delta log FPR on [0,k] (static metric)": 0.0,
+        "delta log J_G on [0,k] (early gold)": 4.680721202455852
+      },
+      "AND3": {
+        "C(0)": 0.03301958190620099,
+        "eta(0)": 0.11035117677614485,
+        "mean eta on [0,k]": 0.13141252266019368,
+        "integral eta on [0,k]": 0.6363338492581344,
+        "delta eta on [0,k]": 0.04656116935989395,
+        "A(0)": 0.031606961258558205,
+        "delta A on [0,k]": 0.2764569624526118,
+        "delta C on [0,k]": 0.014600161706716956,
+        "delta log FPR on [0,k] (static metric)": 0.6113178212155761,
+        "delta log J_G on [0,k] (early gold)": 4.665106752609009
+      },
+      "AND-SYM": {
+        "C(0)": 0.0423839804643217,
+        "eta(0)": 0.18181818181818196,
+        "mean eta on [0,k]": 0.22928257408844216,
+        "integral eta on [0,k]": 1.1102462686511276,
+        "delta eta on [0,k]": 0.1088166781260311,
+        "A(0)": 0.031606961258558205,
+        "delta A on [0,k]": 0.2743148187846968,
+        "delta C on [0,k]": 0.03850274160923998,
+        "delta log FPR on [0,k] (static metric)": 1.061550956027432,
+        "delta log J_G on [0,k] (early gold)": 4.6492885139722535
+      },
+      "AND-MID": {
+        "C(0)": 0.051909562702839265,
+        "eta(0)": 0.2727272727272728,
+        "mean eta on [0,k]": 0.319798490379783,
+        "integral eta on [0,k]": 1.5485480397976543,
+        "delta eta on [0,k]": 0.1157629653764059,
+        "A(0)": 0.03160696125855822,
+        "delta A on [0,k]": 0.2714145217870244,
+        "delta C on [0,k]": 0.06246636128215505,
+        "delta log FPR on [0,k] (static metric)": 1.4746077193283185,
+        "delta log J_G on [0,k] (early gold)": 4.627753698538413
+      },
+      "AND-ASYM-A": {
+        "C(0)": 0.08893344660475049,
+        "eta(0)": 0.800505050505051,
+        "mean eta on [0,k]": 0.8257172971887803,
+        "integral eta on [0,k]": 3.998339393254176,
+        "delta eta on [0,k]": 0.08403061764917119,
+        "A(0)": 0.03160696125855821,
+        "delta A on [0,k]": 0.22684582450822766,
+        "delta C on [0,k]": 0.32375373161451626,
+        "delta log FPR on [0,k] (static metric)": 3.518751105294242,
+        "delta log J_G on [0,k] (early gold)": 4.276371470869563
+      },
+      "AND-ASYM-B": {
+        "C(0)": 0.09840043921007004,
+        "eta(0)": 0.9800041228612656,
+        "mean eta on [0,k]": 0.9830622199370933,
+        "integral eta on [0,k]": 4.760244714960526,
+        "delta eta on [0,k]": 0.010526635375181392,
+        "A(0)": 0.0316069612585582,
+        "delta A on [0,k]": 0.19820616995032894,
+        "delta C on [0,k]": 0.3709591164661098,
+        "delta log FPR on [0,k] (static metric)": 3.953831164166432,
+        "delta log J_G on [0,k] (early gold)": 4.024347294052616
+      },
+      "OR": {
+        "C(0)": 0.09927429221752601,
+        "eta(0)": 0.997487421323991,
+        "mean eta on [0,k]": 0.9543256460924661,
+        "integral eta on [0,k]": 4.6210946988214525,
+        "delta eta on [0,k]": -0.16334839329284812,
+        "A(0)": 0.03160696125855821,
+        "delta A on [0,k]": 0.19978280503950238,
+        "delta C on [0,k]": 0.3313384976120698,
+        "delta log FPR on [0,k] (static metric)": 3.887939495705916,
+        "delta log J_G on [0,k] (early gold)": 4.0388899141092
+      },
+      "SINGLE": {
+        "C(0)": 0.09939924496695135,
+        "eta(0)": 1.0000000000000004,
+        "mean eta on [0,k]": 1.0000000000000002,
+        "integral eta on [0,k]": 4.842261881720098,
+        "delta eta on [0,k]": -6.661338147750939e-16,
+        "A(0)": 0.03160696125855821,
+        "delta A on [0,k]": 0.19476692229018996,
+        "delta C on [0,k]": 0.3718544027018486,
+        "delta log FPR on [0,k] (static metric)": 3.9923244129538213,
+        "delta log J_G on [0,k] (early gold)": 3.992324412965544
+      }
+    },
+    "k=10": {
+      "RFP": {
+        "C(0)": 0.0,
+        "eta(0)": 0.0,
+        "mean eta on [0,k]": 1.2051233382953948e-34,
+        "integral eta on [0,k]": 1.2051233382953949e-33,
+        "delta eta on [0,k]": 0.0,
+        "A(0)": 0.031606961258558205,
+        "delta A on [0,k]": 0.18159159760462923,
+        "delta C on [0,k]": 0.0,
+        "delta log FPR on [0,k] (static metric)": 0.0,
+        "delta log J_G on [0,k] (early gold)": 6.858846543391032
+      },
+      "AND3": {
+        "C(0)": 0.03301958190620099,
+        "eta(0)": 0.11035117677614485,
+        "mean eta on [0,k]": 0.15724082391070118,
+        "integral eta on [0,k]": 1.5724082391070118,
+        "delta eta on [0,k]": 0.0838607558316928,
+        "A(0)": 0.031606961258558205,
+        "delta A on [0,k]": 0.19035762924261213,
+        "delta C on [0,k]": -0.02930801959231708,
+        "delta log FPR on [0,k] (static metric)": 0.992946798960729,
+        "delta log J_G on [0,k] (early gold)": 6.854387135753005
+      },
+      "AND-SYM": {
+        "C(0)": 0.0423839804643217,
+        "eta(0)": 0.18181818181818196,
+        "mean eta on [0,k]": 0.29576996998167643,
+        "integral eta on [0,k]": 2.9576996998167644,
+        "delta eta on [0,k]": 0.2137520869775634,
+        "A(0)": 0.031606961258558205,
+        "delta A on [0,k]": 0.20497479296330456,
+        "delta C on [0,k]": -0.033440500879299236,
+        "delta log FPR on [0,k] (static metric)": 1.8047797408787523,
+        "delta log J_G on [0,k] (early gold)": 6.846398159807886
+      },
+      "AND-MID": {
+        "C(0)": 0.051909562702839265,
+        "eta(0)": 0.2727272727272728,
+        "mean eta on [0,k]": 0.4016566503363336,
+        "integral eta on [0,k]": 4.016566503363336,
+        "delta eta on [0,k]": 0.2596398433436361,
+        "A(0)": 0.03160696125855822,
+        "delta A on [0,k]": 0.22920268816345524,
+        "delta C on [0,k]": -0.03461182689971194,
+        "delta log FPR on [0,k] (static metric)": 2.470483205994282,
+        "delta log J_G on [0,k] (early gold)": 6.831510293633634
+      },
+      "AND-ASYM-A": {
+        "C(0)": 0.08893344660475049,
+        "eta(0)": 0.800505050505051,
+        "mean eta on [0,k]": 0.8948025188659956,
+        "integral eta on [0,k]": 8.948025188659956,
+        "delta eta on [0,k]": 0.19503795176190997,
+        "A(0)": 0.03160696125855821,
+        "delta A on [0,k]": 0.384496711695067,
+        "delta C on [0,k]": 0.04660462803424538,
+        "delta log FPR on [0,k] (static metric)": 4.5731207259395505,
+        "delta log J_G on [0,k] (early gold)": 5.406129644366397
+      },
+      "AND-ASYM-B": {
+        "C(0)": 0.09840043921007004,
+        "eta(0)": 0.9800041228612656,
+        "mean eta on [0,k]": 0.9904202199996313,
+        "integral eta on [0,k]": 9.904202199996313,
+        "delta eta on [0,k]": 0.019829441067454656,
+        "A(0)": 0.0316069612585582,
+        "delta A on [0,k]": 0.27718934239140264,
+        "delta C on [0,k]": -0.0160692022465216,
+        "delta log FPR on [0,k] (static metric)": 4.596562980704059,
+        "delta log J_G on [0,k] (early gold)": 4.670498223515056
+      },
+      "OR": {
+        "C(0)": 0.09927429221752601,
+        "eta(0)": 0.997487421323991,
+        "mean eta on [0,k]": 0.768605732802405,
+        "integral eta on [0,k]": 7.68605732802405,
+        "delta eta on [0,k]": -0.5946664373084399,
+        "A(0)": 0.03160696125855821,
+        "delta A on [0,k]": 0.32466240106780886,
+        "delta C on [0,k]": 0.03251467409391451,
+        "delta log FPR on [0,k] (static metric)": 4.53944827960127,
+        "delta log J_G on [0,k] (early gold)": 5.005177810320718
+      },
+      "SINGLE": {
+        "C(0)": 0.09939924496695135,
+        "eta(0)": 1.0000000000000004,
+        "mean eta on [0,k]": 1.0000000000000002,
+        "integral eta on [0,k]": 10.000000000000002,
+        "delta eta on [0,k]": 5.773159728050814e-15,
+        "A(0)": 0.03160696125855821,
+        "delta A on [0,k]": 0.26738006114092805,
+        "delta C on [0,k]": -0.021287849501828868,
+        "delta log FPR on [0,k] (static metric)": 4.597564003646357,
+        "delta log J_G on [0,k] (early gold)": 4.597564003715545
+      }
+    }
+  },
+  "Q5_inversion": {
+    "OR": {
+      "eta(0)": 0.997487421323991,
+      "J_G(T_end)": 0.198990501714023,
+      "log(J_G(T_end)/q0)": 5.2932570935050895,
+      "gold_log_gain_before_crossing(quadrature)": 1.9909726776196464,
+      "gold_log_gain_after_crossing_to_S=1-1e-5(quadrature)": 3.3713511782623926,
+      "t_at_crossing_FPR": 2.0591444779965267,
+      "J_G_at_crossing_FPR(observed)": 0.007296461218364404,
+      "eta_at_crossing": 0.9813021136956618,
+      "J_G_when_FPR_first_reaches_0.9(observed)": 0.13709012732710235
+    },
+    "AND-ASYM-B": {
+      "eta(0)": 0.9800041228612656,
+      "J_G(T_end)": 0.10767378491246672,
+      "log(J_G(T_end)/q0)": 4.679106146107211,
+      "gold_log_gain_before_crossing(quadrature)": 2.0143285796305497,
+      "gold_log_gain_after_crossing_to_S=1-1e-5(quadrature)": 2.664760847526625,
+      "t_at_crossing_FPR": 2.0591444779965267,
+      "J_G_at_crossing_FPR(observed)": 0.007304611449379704,
+      "eta_at_crossing": 0.9813061586004072,
+      "J_G_when_FPR_first_reaches_0.9(observed)": 0.09720864677299858
+    },
+    "crossing_FPR": 0.07206303785690008
+  }
+}
