@@ -42,3 +42,18 @@ def test_ranking_quality_counts_discordance_with_fixed_orientation():
     flipped = posthoc.ranking_quality(np.array([0.1, 0.2, 0.3, 0.4]), shortfall, -1)
     assert flipped["discordant_pairs"] == flipped["comparable_pairs"] == 5
     assert flipped["stall_success_separated"] is False
+
+
+def test_stable_eta_matches_closed_form_where_both_are_accurate():
+    from scipy.special import expit
+
+    from vdyn.geometry import triggered_fp as cf
+    from vdyn.verifiers.triggered import Structure
+
+    logits = np.array([[-3.0, 0.0, 2.0], [1.0, 2.5, 4.0]])
+    st = Structure("x", "and", (0.1, 0.5))
+    expected = [cf.eta(st, expit(logits[:, k])) for k in range(3)]
+    np.testing.assert_allclose(posthoc.stable_eta("and", logits), expected, rtol=1e-12)
+    # far into saturation the stable form stays exact while probability space loses digits
+    deep = np.array([[25.0], [26.0]])
+    assert posthoc.stable_eta("and", deep)[0] == pytest.approx(1.0, abs=1e-10)

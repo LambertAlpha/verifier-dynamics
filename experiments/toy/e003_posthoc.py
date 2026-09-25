@@ -20,6 +20,7 @@ from typing import Any
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import trapezoid
+from scipy.special import expit, log_expit
 
 from vdyn import provenance
 from vdyn.checks import spearman_with_ties
@@ -107,6 +108,19 @@ def ranking_quality(values: np.ndarray, shortfall: np.ndarray, orientation: int)
     }
 
 
+def stable_eta(kind: str, feature_logits: np.ndarray) -> np.ndarray:
+    """eta evaluated from the logits without cancellation (1 - s = expit(-v), 1 - S via expm1).
+
+    Covers the structures with a P4 failure: SINGLE (eta = 1 identically) and 2-feature AND.
+    """
+    if kind == "single":
+        return np.ones(feature_logits.shape[1])
+    v1, v2 = feature_logits
+    s1, s2, c1, c2 = expit(v1), expit(v2), expit(-v1), expit(-v2)
+    one_minus_s = -np.expm1(log_expit(v1) + log_expit(v2))
+    return (s1 * c2 + s2 * c1) / one_minus_s
+
+
 def diagnostic_p4(
     config: dict[str, Any], series: dict[str, dict[str, np.ndarray]]
 ) -> list[dict[str, Any]]:
@@ -131,6 +145,13 @@ def diagnostic_p4(
             steps = np.diff(eta)
             bad = np.r_[False, steps < -1e-8]
             worst_idx = int(np.argmin(steps)) + 1
+        eta_st = stable_eta(st.kind, ser["theta"][1:, finite])
+        st_steps = np.diff(eta_st)
+        st_ok = (
+            bool(np.all(st_steps >= -1e-12))
+            if name != "SINGLE"
+            else bool(np.max(np.abs(eta_st - 1)) < 1e-12)
+        )
         cf_steps = np.diff(eta_cf)
         cf_monotone = (
             bool(np.all(cf_steps >= -1e-12))
@@ -152,6 +173,11 @@ def diagnostic_p4(
                 "max_abs(eta_generic - eta_closed_form)": float(np.max(np.abs(eta - eta_cf))),
                 "closed_form_eta_obeys_registered_trend_on_observed_states": cf_monotone,
                 "violations_if_restricted_to_C_max>1e-3": int((bad & (cmax > 1e-3)).sum()),
+                "stable_eta_obeys_registered_trend": st_ok,
+                "max_abs(eta_generic - eta_stable)": float(np.max(np.abs(eta - eta_st))),
+                "max_abs(eta_closed_form_prob_space - eta_stable)": float(
+                    np.max(np.abs(eta_cf - eta_st))
+                ),
             }
         )
     return out
@@ -250,7 +276,7 @@ def plot_q5(series, q5, path: Path) -> None:
         ax.set_xlabel("on-policy FPR S")
     axes[0].set(xscale="log", xlabel="t (log)", ylabel="eta(t)")
     axes[1].set(ylabel="eta as a function of S (dotted: crossing)")
-    axes[2].set(ylabel="cumulative gold log-gain  ∫ dlog S / eta", yscale="log")
+    axes[2].set(ylabel="cumulative gold log-gain  ∫ dlog S / eta  = log(J_G / q0)")
     for ax in axes:
         ax.grid(True, color="#e6e6e3", lw=0.6)
         ax.legend(fontsize=8, frameon=False)
