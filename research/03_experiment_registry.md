@@ -453,3 +453,173 @@ edit the pre-run block above.
 - Implementation change made on the way: outcome Jacobians in `geometry/autodiff.py` now use
   forward mode (`jacfwd`). The full-feature-bank test has 2^15 outcomes, and reverse mode ran out
   of memory. The math is unchanged; E001 is unaffected.
+
+--- E003 post-run (appended 2026-09-25) ---
+
+**Run.** `results/E003/20260925T061919Z_8ab7d9d/`
+
+- Run commit `8ab7d9d`, clean tree. The run started 2026-09-25T06:19:19Z and took ≈17 s of CPU.
+- Environment: Python 3.12.11, torch 2.14.0, numpy 2.5.3, scipy 1.18.1, matplotlib 3.11.2
+  (macOS arm64).
+- `trajectories.npz` (not committed) is pinned by
+  `sha256 b84183d6c46ea5780a1134541d4f01d4c486b2101ac70cb6082da8e011b8aa97`.
+
+**Pre-run integrity check: PASSED** (`preflight_integrity.txt`).
+
+- Clean tree. The registry pre-run text had zero deleted lines since `2736f50`, and the config was
+  unchanged since `90cf69a`.
+- 155 tests, ruff, format and mypy all passed. No E003 result existed beforehand.
+- At `t = 0` the static metrics agreed to ≤ 2.3e-16 and `C(0)` to ≤ 4.5e-7 of the registered
+  values.
+- The config's predictions are identical to the registry text.
+- Commit `8ab7d9d` changed execution only: one optimizer per invocation, extra recorded series,
+  figures. The registered evaluation functions (`check_static`, `check_c0`, `check_run`,
+  `check_ranking`, `report`, `_outcome_class`) are byte-identical to `90cf69a`. `simulate`
+  differs only by factoring out the field construction.
+
+#### CONFIRMATORY E003 RESULT (natural gradient, registered)
+
+**Score: 79 / 82 registered checks passed; 3 FAILED (all P4).**
+
+| Pred. | Prediction | Observed | Tolerance | Result |
+| --- | --- | --- | --- | --- |
+| P1 | static metrics, `A`, `alpha` identical at `t = 0` | max spread across structures ≤ 2.3e-16; max deviation from registered values ≤ 2.3e-16 | 1e-12 | PASS (14/14) |
+| P2 | `C(0)` values and strict order | max deviation 4.5e-7; order as registered | 1e-6 | PASS (9/9) |
+| P3a | `log J_G(t) - log q0 = Λ(state(t))` along each trajectory | max deviation 4.7e-9 (AND3); ≤ 1e-9 for the others; RFP 5.8e-15 | 1e-7 | PASS (8/8) |
+| P3b | outcome class; `J_G(500)` or `S(500)` | all 8 classes as predicted; stalls: 0.230039, 0.107674, 0.198991 (OR, pred. 0.199499, residual 5.1e-4 as anticipated), 0.100000; successes: `S(500)` = 0.010000, 0.027274, 0.062287, 0.123215 | 1e-3 (stall), 1e-5 (`S`) | PASS (16/16) |
+| P4 | `eta` path trend | AND3, AND-SYM, AND-MID: non-decreasing ✓; OR: non-increasing ✓; RFP constant ✓. **AND-ASYM-A** min step −2.1e-7, **AND-ASYM-B** min step −4.4e-6, **SINGLE** max \|eta − 1\| = 7.6e-6 | 1e-8 (fixed in code at `90cf69a`; the registry text gave no number) | **FAIL (3 of 8)** |
+| P5 | `J_G(t) <= clean J_G(t)` | max excess 0 | 1e-12 | PASS (8/8) |
+| P6 | invariants, symmetry, monotone logits | ratio drift ≤ 6.4e-8; symmetry ≤ 2.4e-13; min logit step ≥ −6.6e-14 | 1e-7 / 1e-10 | PASS (14/14) |
+| P7 | Spearman(`C(0)`, shortfall) = 0.913; single discordant pair OR vs AND-ASYM-B | 0.913223; discordant pairs = [AND-ASYM-B, OR] exactly | 5e-4 | PASS (2/2) |
+
+**Raw outcome table** (natural gradient; clean-verifier reference `sigmoid(u0 + t)` = 1 at `t = 500`):
+
+| structure | C(0) | J_G(10) | J_G(25) | J_G(100) | J_G(500) | J_V(500) | FPR(500) | shortfall vs clean | class |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| RFP | 0 | 0.952268 | 1.000000 | 1 | 1 | 1 | 0.010000 | 0 | success |
+| AND3 | 0.033020 | 0.948031 | 1.000000 | 1 | 1 | 1 | 0.027274 | 0 | success |
+| AND-SYM | 0.042384 | 0.940487 | 1.000000 | 1 | 1 | 1 | 0.062287 | 0 | success |
+| AND-MID | 0.051910 | 0.926589 | 1.000000 | 1 | 1 | 1 | 0.123215 | 0 | success |
+| AND-ASYM-A | 0.088933 | 0.222768 | 0.230039 | 0.230039 | 0.230039 | 1 | 1 | 0.769961 | stall |
+| AND-ASYM-B | 0.098400 | 0.106751 | 0.107674 | 0.107674 | 0.107674 | 1 | 1 | 0.892326 | stall |
+| OR | 0.099274 | 0.149184 | 0.186023 | 0.196788 | 0.198991 | 0.999995 | 0.999994 | 0.801009 | stall |
+| SINGLE | 0.099399 | 0.099242 | 0.100000 | 0.1 | 0.1 | 1 | 1 | 0.900000 | stall |
+
+**Confirmatory conclusions.**
+
+1. **The Phase 1B claim is supported.** Eight verifiers matched at `t = 0` on gold accuracy,
+   verifier accuracy, FPR, FNR, FP mass, `A` and `alpha` (spread ≤ 2.3e-16) produced four gold
+   successes and four stalls, with asymptotic gold ranging from 0.100 to 1.
+2. The proxy reaches `J_V ≈ 1` in **all** runs, so the terminal proxy cannot distinguish these
+   fates.
+3. The asymptotic gold of every structure matches the gold-race law (Prop. 9) to ≤ 5e-9 in log
+   units along the whole trajectory.
+4. `C(0)` orders the outcomes with the registered Spearman 0.913. The one registered inversion
+   (OR vs AND-ASYM-B) occurred exactly as predicted. **Snapshot `C` is informative but not
+   sufficient.**
+5. **Failed predictions: P4 for AND-ASYM-A, AND-ASYM-B and SINGLE.** They remain FAILED.
+   Post-hoc diagnostic D1 below attributes them to floating-point evaluation of `(C/C_max)^2` at
+   saturation. That attribution does not rescore them.
+
+#### POST-HOC / EXPLORATORY ANALYSIS (not confirmatory)
+
+Output: `results/E003-posthoc/20260925T062446Z_0b97e2e/`, from script `e003_posthoc.py`, reading
+the pinned registered trajectories with no new training.
+`results/E003-posthoc/20260925T062236Z_6bd6570/` is an earlier, superseded pass of the same
+analysis without the stable-`eta` diagnostic.
+
+- **D1 (P4 numerical diagnostic).** All violations lie at `t ≈ 26–34`:
+  - there `1 - FPR` is 1e-10 to 4e-12 and `C_max` is 1.5e-5 to 1.8e-6;
+  - with the analysis restricted to `C_max > 1e-3` there are 0 violations.
+
+  `eta` recomputed without cancellation from the logits (`1 - s = expit(-v)`,
+  `1 - S = -expm1(Σ log expit(v))`) obeys the registered trend at every observed state for all
+  three structures. The generic `(C/C_max)^2` deviates from it by up to 4.0e-5, and only at those
+  saturated states; the probability-space closed form deviates by ≤ 2.7e-9.
+
+  Reading: the registered check evaluated `eta` in a numerically unstable way (mask
+  `C_max > 1e-6` too permissive); there is no evidence that the dynamics violate P4. **Lesson for
+  future registrations:** specify numerically stable evaluation of any ratio of vanishing
+  quantities.
+- **Q4 (does short-horizon dynamics help?).** The summaries use trajectory prefixes `t <= k`
+  (orientation fixed by meaning, not fitted). Over the 22 pairs with distinct outcomes:
+
+  | prefix | summaries | result |
+  | --- | --- | --- |
+  | `k = 1` (before takeoff; stall runs have reached 1–3% of final gold) | every informative summary: `C(0)`, `eta(0)`, mean or integral of `eta`, `delta A`, `delta C`, `delta log FPR`, `delta log J_G` | ρ = 0.913 with the **same single discordant pair** (OR vs AND-ASYM-B) |
+  | `k = 5` | mean/integral `eta` (OR 0.954 vs AND-ASYM-B 0.983), `delta log FPR` (static metric), `delta log J_G` (early gold), `delta A`, `delta C` | 0 discordant pairs (ρ = 0.939, the maximum attainable given ties) |
+  | `k = 10` | only `delta log J_G` | still perfect; by then the stall runs have reached 75–99% of final gold |
+
+  Additional notes:
+  - `delta eta` is anti-predictive.
+  - `A(0)` is constant across structures by design, so it carries no information.
+
+  Reading: short-horizon `eta` summaries fix the inversion only once the prefix covers the exploit
+  takeoff (by `t = 5` FPR has already risen about 50-fold). At that point the trajectory of the
+  **static metric FPR** and early gold progress fix it just as well. So in this noiseless toy the
+  **incremental value of geometry over tracking static metrics over time is not demonstrated.**
+
+  Two caveats: every monotone prefix summary is rank-predictive here, and at `k = 1` the
+  relative spread across structures is ≈180% for `eta` summaries but only 0.7% for
+  `delta log J_G`. Any practical advantage would therefore have to come from effect size under
+  estimation noise, which is untested.
+- **Q5 (the inversion, from the trajectories).**
+  - `eta_OR(S)` and `eta_B(S)` cross at `FPR = 0.072` (t ≈ 2.06). At that point both have
+    `J_G = 0.0073`.
+  - Before the crossing OR's `eta` is higher: its gold log-gain from `FPR = 0.01` to 0.072 is
+    1.991, vs 2.014 for AND-ASYM-B.
+  - After the crossing OR's `eta` collapses toward 0 as its exploit saturates, while AND-ASYM-B's
+    rises to 1. Log-gains from `FPR = 0.072` to `1 - 1e-5`: 3.371 vs 2.665.
+  - Observed `J_G` when `FPR` first reaches 0.9: 0.137 (OR) vs 0.097 (AND-ASYM-B). Final: 0.199
+    vs 0.108.
+  - Conclusion: OR starts with higher `C`/`eta` but its accessibility decays along the path. Most
+    of its extra gold is earned late, while the exploit is saturating.
+
+#### E003-V EXPLORATORY RESULT (vanilla gradient; no registered predictions)
+
+Run `results/E003-V/20260925T062511Z_ea62f59/` (commit `ea62f59`, clean tree; run after the
+registered record was committed as `9ed68aa`). `trajectories.npz` is pinned by its SHA-256 in
+that directory.
+
+- **Every** policy-controllable structure stalls almost immediately:
+  - `J_G(1e6)` lies in 0.00111–0.00127 (from 0.001) with `FPR -> 1`;
+  - the random-FP control reaches `J_G = 0.99999899`. The frozen thresholds call that
+    "unresolved", but only because it misses `1 - 1e-6` by 1e-8.
+- Static matching still coexists with different fates, but only in the controllable vs
+  uncontrollable contrast. Among controllable structures all fates are stalls, with small
+  quantitative differences.
+- **The ordering of danger changes with the optimizer.**
+  - Vanilla worst → best: AND-SYM, AND-MID, AND3, SINGLE, AND-ASYM-B, AND-ASYM-A, OR.
+  - Spearman between natural and vanilla shortfalls: −0.30.
+  - The conjunctive structures that were safe under natural gradient are the most dangerous under
+    vanilla. Exploit takeoff (`FPR = 0.5`): AND-SYM at t = 78, SINGLE at 113, OR at 222.
+- **Optimizer-matched geometry explains the vanilla ordering; Fisher geometry does not.**
+
+  | metric | Spearman(`C(0)`, vanilla shortfall), all 8 | 7 exploit structures only |
+  | --- | --- | --- |
+  | Euclidean `C_E(0)` | +0.857 | +0.786 |
+  | Fisher `C_F(0)` | −0.095 | −0.643 |
+
+  Along the trajectories the Euclidean triple predicts the actual `dJ_G/dt` to relative error
+  ≤ 1.4e-10 (Prop. 1 with `M = I`). The Fisher triple is off by up to ~1/q (≈1000×), though the
+  sign agrees because both are >= 0 in this family.
+- The natural-gradient gold-race relation fails under vanilla, as expected (max deviation 4.5–15
+  in log units).
+
+**Unexpected observations.**
+
+1. The three P4 failures (diagnosed as numerical, D1).
+2. Under vanilla the danger ordering across structures reverses.
+3. The terminal proxy `J_V = 1` in every natural-gradient run.
+
+**Hypothesis revised?**
+
+- Registered E003 hypothesis: **no**. Props. 8–10 are supported; P4 failed as registered.
+- Working hypotheses (theory note §7):
+  - WH-2 (metric matching) gains exploratory support from E003-V.
+  - WH-5 (path, not snapshot) is supported by the confirmed inversion.
+  - New **WH-6**: the incremental value of geometry must be tested against the time evolution of
+    static metrics, under estimation noise and at matched rollout budget. In a noiseless toy any
+    informative prefix summary suffices.
+
+**Follow-up.** Pending the collaborator's review. No new experiment has been started.

@@ -1,7 +1,9 @@
-# 01 — Theory note (v0.3, 2026-09-25)
+# 01 — Theory note (v0.3.1, 2026-09-25)
 
 ## Version history
 
+- **v0.3.1** (2026-09-25): E003 outcome recorded in WH-5 and the test map; new WH-6. No
+  proposition was changed.
 - **v0.3** (2026-09-25), Phase 1B decisions:
   1. The `A = 0` convention changed from v0.2's `alpha := 0` to `alpha = NaN`,
      `alpha_defined = False`, `C := ||h_e||` (collaborator decision; §1).
@@ -328,7 +330,16 @@ E001 is re-scored.
 - **WH-5 (v0.3: path, not snapshot).** Even in a family matched on static metrics, `A` and `alpha`,
   the gold outcome is a functional of the whole accessibility path (Prop. 9). A snapshot `C` is
   informative but not sufficient (Prop. 10). Predictors should target the short-horizon evolution
-  of `eta = (C/C_max)^2`, not `C(0)` alone.
+  of `eta = (C/C_max)^2`, not `C(0)` alone. *E003: supported. The registered OR vs AND-ASYM-B
+  inversion occurred exactly as predicted.*
+- **WH-6 (after E003; working hypothesis).** In a noiseless toy every informative summary of a
+  trajectory prefix is rank-predictive. In the E003 post-hoc analysis, short-horizon `eta` fixed
+  the inversion only once the prefix covered the exploit takeoff, and there the time evolution of
+  the **static** FPR did equally well. The incremental value of geometry must therefore be tested
+  against static metrics tracked over time, under estimation noise and at a matched rollout
+  budget. *E003-V adds exploratory support for WH-2:* optimizer-matched Euclidean `C(0)` ordered
+  the vanilla outcomes (Spearman +0.86); Fisher `C(0)` did not (−0.10, and −0.64 over the exploit
+  structures).
 
 ## 8. Open issues
 
@@ -356,6 +367,7 @@ E001 is re-scored.
 | §5 X, Prop. 6 | `test_x.py` |
 | §6 observations | E001 (`03_experiment_registry.md`): 82/83 registered checks passed; the one failure is a mis-specified absolute tolerance (E001-D1) |
 | Phase 1B derivations (`04_phase1b_design.md`) | scratch checks only (E000b); no repo tests yet |
+| §10 Props. 8–10 end-to-end | **E003 (confirmatory)**: 79/82 registered checks passed. The gold-race law held to ≤ 5e-9 along every trajectory; all outcomes and the predicted inversion matched. P4 FAILED for 3 structures, diagnosed post hoc as numerical (registry E003 D1). |
 | §10 Props. 8–9 (Candidate 3) | `test_triggered_static.py` (closed form vs enumeration/autodiff, Cramér–Rao bound); `test_triggered_dynamics.py` (gold-race relation, invariants, predicted outcomes, finite differences; **unregistered parameters only**); `test_e003_config.py` (registered settings, t = 0 and closed forms only). E003 not yet run. |
 | §11 Prop. 11 (Candidate 1) | closed-form computation only (registry E000b, item 3); proposed tests listed in `04_phase1b_design.md` |
 
