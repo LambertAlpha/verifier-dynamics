@@ -50,6 +50,12 @@ class EventStructure:
         return len(self.s0)
 
 
+def matched_null(st: EventStructure, coin: float) -> EventStructure:
+    """Dimension-matched null (Amendment 2 §5): same features and marginals, no event, coin only,
+    so FPR = coin, dFPR/ds = 0 and C = 0 exactly."""
+    return EventStructure(f"null-{st.sid}", "RFP", st.s0, coin=coin)
+
+
 def event(event_type: str, z: np.ndarray) -> np.ndarray:
     """Truth value of E for binary feature rows z (n, m)."""
     z = np.asarray(z).astype(bool)

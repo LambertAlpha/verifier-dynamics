@@ -139,6 +139,9 @@ def geometry(
         "C2": c2,  # raw, may be negative
         "P": gram_eg,
         "D": gram_gg * gram_ee - gram_eg**2,
+        "gram_gg": gram_gg,
+        "gram_eg": gram_eg,
+        "gram_ee": gram_ee,
     }
 
 

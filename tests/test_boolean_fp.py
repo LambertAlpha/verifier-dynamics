@@ -116,3 +116,26 @@ def test_sampled_verifier_matches_expected_table(rng):
         mask = (corr == o[0]) & (z[:, 0] == o[1]) & (z[:, 1] == o[2])
         se = np.sqrt(table[k] * (1 - table[k]) / mask.sum()) + 1e-12
         assert abs(v[mask].mean() - table[k]) < 5 * se + 1e-12
+
+
+@pytest.mark.parametrize(
+    "st",
+    [
+        bf.EventStructure("s", "SINGLE", (0.1,)),
+        bf.EventStructure("a", "AND2", (0.3, 0.4)),
+        bf.EventStructure("m", "MIX", (0.2, 0.5), coin=0.03, base="OR2", rho=0.4),
+    ],
+)
+def test_matched_null_keeps_the_dimension_and_has_zero_orthogonal_pressure(st):
+    f = bf.fpr(st, np.asarray(st.s0))
+    null = bf.matched_null(st, f)
+    assert null.n_features == st.n_features and null.s0 == st.s0
+    assert bf.fpr(null, np.asarray(null.s0)) == pytest.approx(f, rel=1e-12)
+    np.testing.assert_allclose(bf.dfpr_ds(null, np.asarray(null.s0)), 0.0, atol=1e-15)
+    lp = bernoulli.product_log_prob(1 + null.n_features)
+    theta = _theta(null, 0.05)
+    g_gold = autodiff.reward_gradient(lp, theta, bf.gold_table(null))
+    g_ver = autodiff.reward_gradient(lp, theta, bf.verifier_table(null))
+    d = decompose(g_gold, g_ver, np.linalg.inv(autodiff.fisher(lp, theta)))
+    assert d.C == pytest.approx(0.0, abs=1e-12)
+    assert d.alpha == pytest.approx(-f, rel=1e-10)

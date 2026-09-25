@@ -122,3 +122,17 @@ def test_rloo_matches_its_definition():
     baseline = np.array([1 / 3, 2 / 3, 2 / 3, 1 / 3])  # mean of the other three rewards
     expected = np.mean((rewards[0] - baseline) * sc[0, :, 0])
     np.testing.assert_allclose(est.rloo(rewards, sc), [[expected]], rtol=1e-12)
+
+
+def test_ustat_returns_raw_gram_entries(rng):
+    labeled = est.sample_rollouts(ST, Q, np.asarray(ST.s0), n=24, reps=7, rng=rng)
+    fisher = _exact(ST, Q)[2]
+    out = est.geometry(ST, labeled, None, Q, np.asarray(ST.s0), "ustat", 0.0, "paired",
+                       exact_fisher=fisher)  # fmt: skip
+    sc = est.score_vectors(Q, np.asarray(ST.s0), labeled.corr, labeled.z)
+    m = np.broadcast_to(np.linalg.inv(fisher), (7, *fisher.shape))
+    gam_g = labeled.corr[..., None] * sc
+    gam_e = (labeled.v - labeled.corr)[..., None] * sc
+    np.testing.assert_allclose(out["gram_gg"], est.ustat_gram(gam_g, gam_g, m), rtol=1e-12)
+    np.testing.assert_allclose(out["gram_eg"], est.ustat_gram(gam_e, gam_g, m), rtol=1e-12)
+    np.testing.assert_allclose(out["gram_ee"], est.ustat_gram(gam_e, gam_e, m), rtol=1e-12)
