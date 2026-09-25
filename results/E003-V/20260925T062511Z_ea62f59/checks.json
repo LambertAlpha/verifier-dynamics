@@ -1,0 +1,825 @@
+[
+  {
+    "run": "RFP",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR, class) at T_end",
+    "observed": [
+      0.9999989888373495,
+      0.01,
+      "unresolved"
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "RFP",
+    "prediction": "E003-V",
+    "quantity": "t=0 ('gold', 'fpr', 'A_F', 'alpha_F', 'C_F', 'C_E')",
+    "observed": [
+      0.0009999999999999994,
+      0.01,
+      0.031606961258558205,
+      -0.01000000000000009,
+      0.0,
+      0.0
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "RFP",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from E-metric triple",
+    "observed": 2.199488739864142e-16,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "RFP",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from F-metric triple",
+    "observed": 988960.5786733297,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "RFP",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=10",
+    "observed": [
+      0.0010099787022272674,
+      0.01
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "RFP",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=25",
+    "observed": [
+      0.0010253254397167833,
+      0.01
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "RFP",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=100",
+    "observed": [
+      0.0011096213003875754,
+      0.01
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "RFP",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=500",
+    "observed": [
+      0.0019748642053880813,
+      0.01
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND3",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR, class) at T_end",
+    "observed": [
+      0.0011231826731547905,
+      0.9999969962692414,
+      "stall"
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND3",
+    "prediction": "E003-V",
+    "quantity": "t=0 ('gold', 'fpr', 'A_F', 'alpha_F', 'C_F', 'C_E')",
+    "observed": [
+      0.000999999999999999,
+      0.009999999999999995,
+      0.031606961258558205,
+      -0.010000000000000097,
+      0.03301958190620099,
+      0.013575328813233672
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND3",
+    "prediction": "E003-V",
+    "quantity": "natural-gradient gold-race relation: max deviation",
+    "observed": 15.35265315912361,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND3",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from E-metric triple",
+    "observed": 3.143582197515996e-11,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND3",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from F-metric triple",
+    "observed": 1000.0010010010027,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND3",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=10",
+    "observed": [
+      0.001009968120595402,
+      0.012212057966869394
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND3",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=25",
+    "observed": [
+      0.0010252407644000504,
+      0.01778435071408904
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND3",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=100",
+    "observed": [
+      0.001083175945670412,
+      0.8577850722439319
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND3",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=500",
+    "observed": [
+      0.001094404364777503,
+      0.9926485839588612
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-SYM",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR, class) at T_end",
+    "observed": [
+      0.0011103932964622032,
+      0.9999979975532934,
+      "stall"
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-SYM",
+    "prediction": "E003-V",
+    "quantity": "t=0 ('gold', 'fpr', 'A_F', 'alpha_F', 'C_F', 'C_E')",
+    "observed": [
+      0.0009999999999999994,
+      0.01000000000000001,
+      0.031606961258558205,
+      -0.010000000000000089,
+      0.0423839804643217,
+      0.012715194139296511
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-SYM",
+    "prediction": "E003-V",
+    "quantity": "natural-gradient gold-race relation: max deviation",
+    "observed": 11.211088011130505,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-SYM",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from E-metric triple",
+    "observed": 4.242573428251715e-11,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-SYM",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from F-metric triple",
+    "observed": 1000.001001001002,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-SYM",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=10",
+    "observed": [
+      0.0010099695199298107,
+      0.011908552523292691
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-SYM",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=25",
+    "observed": [
+      0.0010252535660914123,
+      0.016485076280420535
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-SYM",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=100",
+    "observed": [
+      0.0010838525656590168,
+      0.8948183551022005
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-SYM",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=500",
+    "observed": [
+      0.001091487759246445,
+      0.9951095097087063
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-MID",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR, class) at T_end",
+    "observed": [
+      0.0011176529939000758,
+      0.999997997527334,
+      "stall"
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-MID",
+    "prediction": "E003-V",
+    "quantity": "t=0 ('gold', 'fpr', 'A_F', 'alpha_F', 'C_F', 'C_E')",
+    "observed": [
+      0.0009999999999999996,
+      0.010000000000000002,
+      0.03160696125855822,
+      -0.010000000000000087,
+      0.051909562702839265,
+      0.012170181938245627
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-MID",
+    "prediction": "E003-V",
+    "quantity": "natural-gradient gold-race relation: max deviation",
+    "observed": 9.66737884702224,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-MID",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from E-metric triple",
+    "observed": 2.9928086474771377e-11,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-MID",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from F-metric triple",
+    "observed": 1000.001001001002,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-MID",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=10",
+    "observed": [
+      0.0010099703790090338,
+      0.011720169165594211
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-MID",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=25",
+    "observed": [
+      0.0010252617399447595,
+      0.015633591484757087
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-MID",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=100",
+    "observed": [
+      0.0010899378269930552,
+      0.8593916968372689
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-MID",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=500",
+    "observed": [
+      0.0010984677516152957,
+      0.9950405665273013
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-A",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR, class) at T_end",
+    "observed": [
+      0.0011460235422837974,
+      0.9999979974311939,
+      "stall"
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-A",
+    "prediction": "E003-V",
+    "quantity": "t=0 ('gold', 'fpr', 'A_F', 'alpha_F', 'C_F', 'C_E')",
+    "observed": [
+      0.0009999999999999996,
+      0.010000000000000002,
+      0.03160696125855821,
+      -0.010000000000000085,
+      0.08893344660475049,
+      0.01006542076942763
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-A",
+    "prediction": "E003-V",
+    "quantity": "natural-gradient gold-race relation: max deviation",
+    "observed": 5.317190239844317,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-A",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from E-metric triple",
+    "observed": 5.7118775260111076e-11,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-A",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from F-metric triple",
+    "observed": 1000.0010010010012,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-A",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=10",
+    "observed": [
+      0.001009973170027953,
+      0.011126192021997255
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-A",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=25",
+    "observed": [
+      0.0010252854005078158,
+      0.013372757189017976
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-A",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=100",
+    "observed": [
+      0.001106588642408375,
+      0.2038818623543686
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-A",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=500",
+    "observed": [
+      0.0011257342874742189,
+      0.9947868331731915
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-B",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR, class) at T_end",
+    "observed": [
+      0.001145864512389326,
+      0.9999979974791698,
+      "stall"
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-B",
+    "prediction": "E003-V",
+    "quantity": "t=0 ('gold', 'fpr', 'A_F', 'alpha_F', 'C_F', 'C_E')",
+    "observed": [
+      0.000999999999999999,
+      0.009999999999999995,
+      0.0316069612585582,
+      -0.010000000000000103,
+      0.09840043921007004,
+      0.00989007961642668
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-B",
+    "prediction": "E003-V",
+    "quantity": "natural-gradient gold-race relation: max deviation",
+    "observed": 4.558080031949865,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-B",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from E-metric triple",
+    "observed": 7.097149556971842e-11,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-B",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from F-metric triple",
+    "observed": 1000.0010010010018,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-B",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=10",
+    "observed": [
+      0.0010099733714661297,
+      0.011084083563684519
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-B",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=25",
+    "observed": [
+      0.00102528699724762,
+      0.013228161200938497
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-B",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=100",
+    "observed": [
+      0.001107014179663549,
+      0.16000744605466516
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "AND-ASYM-B",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=500",
+    "observed": [
+      0.001125726843893903,
+      0.9950651594240741
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "OR",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR, class) at T_end",
+    "observed": [
+      0.0012671111713970745,
+      0.9999994978295226,
+      "stall"
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "OR",
+    "prediction": "E003-V",
+    "quantity": "t=0 ('gold', 'fpr', 'A_F', 'alpha_F', 'C_F', 'C_E')",
+    "observed": [
+      0.0009999999999999998,
+      0.00999999999999998,
+      0.03160696125855821,
+      -0.009999999999999868,
+      0.09927429221752601,
+      0.007010928135723701
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "OR",
+    "prediction": "E003-V",
+    "quantity": "natural-gradient gold-race relation: max deviation",
+    "observed": 5.058536935450157,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "OR",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from E-metric triple",
+    "observed": 1.4403773349667057e-10,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "OR",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from F-metric triple",
+    "observed": 1000.0010010010013,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "OR",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=10",
+    "observed": [
+      0.0010099761132358804,
+      0.010517272008236581
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "OR",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=25",
+    "observed": [
+      0.0010253078636938066,
+      0.011400939104797047
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "OR",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=100",
+    "observed": [
+      0.0011091616137693704,
+      0.019577432084139618
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "OR",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=500",
+    "observed": [
+      0.0012603014046042365,
+      0.9978735411717927
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "SINGLE",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR, class) at T_end",
+    "observed": [
+      0.0011328678070156998,
+      0.9999989987320052,
+      "stall"
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "SINGLE",
+    "prediction": "E003-V",
+    "quantity": "t=0 ('gold', 'fpr', 'A_F', 'alpha_F', 'C_F', 'C_E')",
+    "observed": [
+      0.0009999999999999998,
+      0.010000000000000002,
+      0.03160696125855821,
+      -0.010000000000000083,
+      0.09939924496695135,
+      0.009890100000000002
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "SINGLE",
+    "prediction": "E003-V",
+    "quantity": "natural-gradient gold-race relation: max deviation",
+    "observed": 4.487211849789127,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "SINGLE",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from E-metric triple",
+    "observed": 1.0715067552506431e-10,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "SINGLE",
+    "prediction": "E003-V",
+    "quantity": "max rel. error of dJ_G/dt from F-metric triple",
+    "observed": 1000.001001001001,
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "SINGLE",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=10",
+    "observed": [
+      0.001009973371359824,
+      0.011084114625378052
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "SINGLE",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=25",
+    "observed": [
+      0.0010252869951810648,
+      0.013228437349089548
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "SINGLE",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=100",
+    "observed": [
+      0.001107004314858337,
+      0.16165013196263042
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  },
+  {
+    "run": "SINGLE",
+    "prediction": "E003-V",
+    "quantity": "(J_G, FPR) at t=500",
+    "observed": [
+      0.0011228575146975917,
+      0.997371130171736
+    ],
+    "expected": null,
+    "tolerance": null,
+    "passed": null
+  }
+]
