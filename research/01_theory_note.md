@@ -1,7 +1,9 @@
-# 01 — Theory note (v0.4, 2026-09-25)
+# 01 — Theory note (v0.4.1, 2026-09-25)
 
 ## Version history
 
+- **v0.4.1** (2026-09-25): E002 outcome recorded under §12 (status only). No proposition was
+  changed.
 - **v0.4** (2026-09-25): new §12, the oracle-equivalence note for E002 (first-order relations
   among `C^2`, FPR growth, verifier-score growth and gold progress). No earlier proposition was
   changed.
@@ -530,7 +532,10 @@ Verification:
 
 - The single / AND / OR case was checked numerically as registry **E000c** (design-phase, not
   pre-registered; max relative error ≤ 2.3e-15).
-- The general Boolean / coin family will be verified by unit tests in the E002 implementation.
+- The general Boolean / coin family is verified by
+  `test_boolean_fp.py::test_oracle_equivalence_under_natural_gradient`. The design and test oracle
+  ceilings of `C(0)`, `dFPR/dt(0)` and `dJ_V/dt(0)` are identical (registry E002 records). Status:
+  **verified**.
 
 | Measure | Uses G? | Requires a training update? | First-order information (matched panel, NG) |
 | --- | --- | --- | --- |
@@ -546,3 +551,14 @@ at first order. **E002 therefore tests finite-sample efficiency (per gold label,
 backward pass) and the ability to diagnose without optimizing. It does not test oracle
 information superiority.** At finite probe horizons, probes additionally observe path curvature
 that `C(0)` lacks (Props. 9–10; E003 post-hoc Q4/Q5).
+
+**E002 outcome (v0.4.1; registry "E002 — held-out results"; confirmatory, test split).** Scope:
+Candidate 3, natural gradient, matched panels. Status: **tested**.
+
+- At both primary budgets, estimated geometry is 0.02–0.04 (P-mod) and 0.04–0.065 (P-rare)
+  C-index/AUROC below the best short probe; the CIs exclude 0.
+- The exact Fisher does worse than the estimated metric.
+- Registered verdict: P-mod ABANDON (frontier rule (c), decided by a tie at one cell); P-rare NO
+  PRACTICAL ADVANTAGE.
+- The practical-diagnostic claim for `t = 0` geometry is **not supported**. Geometry keeps an
+  explanatory role (§1–§11).

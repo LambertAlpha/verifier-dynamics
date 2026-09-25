@@ -1370,3 +1370,134 @@ Expected wall time on 8 cores:
 | E002b simulation | ~15 min |
 | analysis (`B = 2000`) | ~15 min |
 | formal E002a | ~20–40 min |
+
+---
+
+### E002 — held-out results (CONFIRMATORY; test split; 2026-09-25)
+
+**Unsealing.** The test split was unsealed on explicit approval in chat (commit `83b6737`,
+`configs/e002/HELDOUT_APPROVED`). The frozen code is `d639b09`; no tracked code file changed
+before or during the held-out runs. Every step followed the frozen order, each result was
+committed before the next step, and every run directory is clean (no `-dirty`).
+
+| step | run | notes |
+| --- | --- | --- |
+| targets | `results/E002-targets-test/20260925T210315Z_83b6737` | 34 s; 0 exclusions; stall fraction P-mod 0.475, P-rare 0.508 |
+| oracle ceilings | `results/E002-oracle-test/20260925T210356Z_39a931c` | committed before any finite-sample test evaluation |
+| E002b simulation | `results/E002b-test/20260925T210407Z_211d097` | 882 s; `R = 64`; local `scores.npz` sha256 `43f17dbe…338e3` |
+| analysis | `results/E002b-analysis-test/20260925T211907Z_97413c9` | 536 s; `B = 2000` |
+
+#### Oracle ceilings on the test split (registered predictions, §9)
+
+| signal | P-mod C-index / AUROC | P-rare C-index / AUROC |
+| --- | --- | --- |
+| `C(0)` = `dFPR/dt(0)` = `dJ_V/dt(0)` | 0.930 / 0.976 | 0.923 / 0.979 |
+| `-dJ_G/dt(0)`, G0 | 0.500 / 0.500 | 0.500 / 0.500 |
+| FPR growth, `t_p = 10` | 0.989 / 0.997 | 0.970 / 1.000 |
+| P4 oracle | 0.395 / 0.399 | 0.259 / 0.177 |
+
+- The three first-order signals coincide — **PASS**.
+- The `J_G(t_p -> 0)` ceiling is 0.5 — **PASS**.
+- The G0 ceiling is 0.5 — **PASS**.
+
+#### Primary endpoints (P-mod, primary)
+
+C-index / AUROC at the primary cells:
+
+| cell | G1 | G1-oracle | P1 | P2 | P3 | P4 | G0 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| (64, 256) | .790 / .872 | .742 / .822 | .772 / .852 | .816 / .903 | **.821 / .901** | .479 / .471 | .498 / .496 |
+| (256, 1024) | .863 / .950 | .832 / .929 | .848 / .938 | .870 / .958 | **.900 / .968** | .455 / .445 | .497 / .497 |
+
+`Delta = G1 - max_j P_j`, with the one-sided bootstrap p-value:
+
+| cell | endpoint | `Delta` [95% CI] | p |
+| --- | --- | --- | --- |
+| (64, 256) | C-index | −0.031 [−0.037, −0.025] | 1.000 |
+| (64, 256) | AUROC | −0.030 [−0.039, −0.024] | 1.000 |
+| (256, 1024) | C-index | −0.037 [−0.043, −0.032] | 1.000 |
+| (256, 1024) | AUROC | −0.018 [−0.025, −0.012] | 1.000 |
+
+- **Holm: no test rejected.** Practical success is **not** established.
+- Pairwise at the primary cells:
+  - G1 > P1 (zero gold) by +0.012 to +0.020, one-sided `p ≈ 0.0005`;
+  - G1 < P2 and G1 < P3;
+  - G1 ≫ P4.
+- G1-oracle − `max_j P_j`: −0.039 to −0.080. The exact Fisher is again **below** the estimated
+  metric.
+
+#### Frontier and verdict (computed by the frozen code)
+
+- **P-mod: G1 is dominated at every one of the 21 cells, so rule (c) holds. Verdict: ABANDON.**
+- Rules (a) and (b) do not hold: G1 beats P1 and P4 at the primary cells, and G1-oracle never has
+  a positive `Delta`.
+- **Fragility disclosure.** At (16, 64) the dominating competitor is P3 at the same cell, with
+  C-index 0.6996 vs G1's 0.6995 (margin 7e-5). The registered rule counts a tie (`>=`) as
+  domination, and the verdict stands as registered.
+- **[post-hoc]** Bootstrap probability that G1 at (16, 64) is dominated: 0.508 (run
+  `results/E002b-posthoc-test/20260925T215910Z_462360d`). The ABANDON-versus-NO PRACTICAL
+  ADVANTAGE distinction is therefore a coin flip. Practical success is rejected regardless.
+- **P-rare (secondary): NO PRACTICAL ADVANTAGE.**
+  - All four `Delta`s are negative: −0.039 [−0.047, −0.032], −0.045 [−0.054, −0.036],
+    −0.065 [−0.071, −0.059] and −0.039 [−0.049, −0.031], each with p = 1.000.
+  - P1 (zero gold) beats G1 by 0.04–0.06, and P3 by 0.02–0.07.
+  - G1 is non-dominated only at (16, 64): margin +0.025 over the best cheaper competitor,
+    bootstrap CI [0.015, 0.035], P*(dominated) = 0.00 [post-hoc]. This is G1's only robust
+    advantage: the smallest gold budget, rollout ratio 4, rare-gold regime.
+
+#### Secondary analyses
+
+- **Leave-one-type-out.** Every `Delta` stays negative whichever type is removed. P-mod C-index
+  at (64, 256): [−0.034, −0.028]. P-rare: [−0.070, −0.034] over all cells × endpoints.
+- **Sign-flipped P4** [post-hoc]: 0.52–0.62. It is never the strongest competitor, and no
+  `Delta` changes.
+- **Design → test replication.** At the primary cells, the in-sample design `Delta`s were
+  −0.031 / −0.034 (P-mod C-index); the test values are −0.031 / −0.037.
+- **Agent's prior (§12, not a hypothesis).** "Any G1 win ... confined to ratio-1 cells or none":
+  - none in P-mod;
+  - in P-rare, the only non-dominated cell is ratio 4, not ratio 1.
+
+#### Conclusion (scope: Candidate 3, natural gradient, matched panels)
+
+Estimated zero-step geometry has **no practical advantage** over short probes at matched
+certification budgets. Under the registered rules the primary verdict is **ABANDON (rule c)**.
+That verdict turns on a tie at one cell, and without it the result would be NO PRACTICAL
+ADVANTAGE. The diagnostic claim is therefore **not supported**, and the mechanistic contribution
+is preserved (§8). Geometry beats the zero-gold verifier-score probe in P-mod but loses to it in
+P-rare. Its one robust advantage is the smallest-budget cell in P-rare.
+
+---
+
+### E002a — formal results (R = 2000; Amendment 2 instrumentation; fixed non-panel structures)
+
+Run `results/E002a/20260925T212851Z_10aa907`: 1133 s, 1.9 GB peak RSS, approved together with the
+held-out run.
+
+- **Degenerate-event rates: PASS.** Exact binomial tests flag 0 of 1140 checks per panel
+  (3.1 expected by chance).
+- **Raw Gram entries unbiased** (U-statistic, oracle metric, `N(1-q)f >= 5`): **consistent with
+  chance.**
+  - P-mod: 1 of 579 entries flagged (1.6 expected).
+  - P-rare: 3 of 408 (1.1 expected; binomial tail ≈ 0.10). All three are rare-gold cells
+    (`N q < 5`).
+  - **[secondary]** In the `N q >= 5` stratum: 1 of 474 (P-mod) and 0 of 90 (P-rare).
+  - The pilot's FAIL of the original `C_hat^2` claim stands. The ratio `C_hat^2` is not unbiased.
+- **F4: PASS.** `z` = 0.21, 0.70 (P-mod) and 0.43, 0.27 (P-rare).
+- **Plug-in `C_hat` biased upward at `C = 0`: PASS** (dimension-matched nulls). Bias:
+  - P-mod: +0.044 to +0.085 at `N = 16`, falling to +0.007 to +0.012 at `N = 1024`;
+  - P-rare: +0.006 to +0.023, falling to +0.004 to +0.006.
+- **Coverage near `C = 0` below nominal: PASS.** At the matched nulls coverage is 0.14–0.72 for
+  `N <= 256` and 0.00 at `N = 1024`: a percentile interval of a nonnegative estimator excludes 0.
+  At dose `rho = 0.05` it is 0.28 / 0.71 / 0.89 (P-mod, `N = 64 / 256 / 1024`). For `C > 0` it
+  is 0.92–0.95 at P-mod and 0.70–0.95 at P-rare (`N >= 64`).
+- **False alarm at the matched null equals 5%: PARTIAL.**
+  - Inside the Monte Carlo band (±0.021) for every estimator once `N(1-q)f ≳ 2.5`: P-mod
+    `N >= 16` (3 of 693 outside) and P-rare `N >= 128` (4 of 539 outside).
+  - Below nominal at smaller `N` (conservative; false alarm 0.001–0.02): the null `C_hat^2` has
+    atoms when a batch holds few false positives.
+  - Outside the band overall: 12 of 770 (P-mod) and 104 of 770 (P-rare).
+- **Minimum detectable `C`** (plug-in, estimated Fisher `lam = 1e-2`, 80% power at the
+  matched-null 5%):
+  - P-mod: 0.143 / 0.073 / 0.049 at `N = 64 / 256 / 1024`. At `N >= 1024` the value is bounded
+    by the dose grid (smallest nonzero dose `C = 0.062`).
+  - P-rare: not reached at `N = 64`; 0.079 / 0.040 / 0.025 at `N = 256 / 1024 / 4096`.
