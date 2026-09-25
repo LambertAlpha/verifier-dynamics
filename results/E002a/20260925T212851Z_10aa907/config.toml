@@ -1,0 +1,41 @@
+# E002 parameters (registry "E002 — pre-registration" + Amendment 1). Registered values only.
+experiment_id = "E002"
+registry = "research/03_experiment_registry.md#e002"
+pilot_seed = 20260926          # pilot sampling streams (separate from the panel seed 20260925)
+
+[operating_points.P-mod]
+q0 = 0.05
+f_grid = [0.05, 0.1, 0.2]
+role = "primary"
+
+[operating_points.P-rare]
+q0 = 0.002
+f_grid = [0.005, 0.01, 0.02]
+role = "secondary"
+
+[budgets]
+b_gold = [16, 32, 64, 128, 256, 512, 1024]
+roll_ratio = [1, 4, 16]
+primary_cells = [[64, 256], [256, 1024]]
+
+[targets]
+report_times = [0.1, 0.3, 1.0, 3.0, 10.0, 25.0]   # oracle t_p grid + secondary J_G(T = 25)
+qa_fraction = 0.10
+qa_t_end = 500.0
+
+[e002a]
+n_grid = [8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
+reps_pilot = 200
+reps_formal = 2000
+bootstrap = 200
+formal_seed = 20260928                      # Amendment 2: formal E002a seed stream
+rho_dose = [0.0, 0.05, 0.1, 0.2, 0.35, 0.5, 0.75, 1.0]
+q_extreme = [0.001, 0.01, 0.9, 0.99]            # plus q0 itself
+asym_raw_probs = [0.05, 0.5]                     # AND2-asym: s1/s2 ratio 1:10 before the shift
+
+[e002b]
+reps_design = 32
+reps_heldout = 64
+lam_probe = 1e-2
+heldout_seed = 20260927                     # Amendment 2 §3
+bootstrap_heldout = 2000
