@@ -124,3 +124,19 @@ Seeds: none (fully deterministic, no Monte Carlo in this experiment).
 
 Code/config: `experiments/toy/e001_y_flows.py`, `configs/toy/e001_y_flows.toml` (to be written
 after this entry is committed); commit sha and dirty flag recorded in the run directory.
+
+Amendment 1 (2026-09-24, written after the evaluation code and **before E001 was executed**):
+the pre-run block left some evaluation details unspecified. Fixed now, without having seen output:
+(a) P5 switch points are located by root-finding the observed `dDelta/dt` on the dense solver
+output; they must match the registered `(q, s)` within 1e-6 (this includes the rounding of the
+6-decimal registered values). Values registered as fractions (1/30, 1/60, 29/30) are compared
+exactly. `|dDelta/dt| < 1e-13` counts as numerically zero when reading sign patterns.
+(b) P7 compares a central finite difference of `Delta(t)` on the dense output (step
+`h = max(1e-6, 1e-4 t)`) with `b(a+b) + c^2` in the optimizer's metric, passing if
+`|diff| <= 1e-4 |pred| + 1e-6 max_t |pred|`; the absolute term covers sign switches, where a
+purely relative criterion is ill-defined.
+(c) P4 locates `q = 1 - 1e-4` (IC1) and `s = 1 - 1e-4` (IC3) by root-finding on the dense output.
+(d) P3 for IC2 is checked as `max |s - q| <= 1e-8` with `q`, `s` non-decreasing; `Delta_inf` is
+checked only where the limit is reached within `T` (IC1, IC3).
+(e) `Delta` is computed as `E_pi[V - G]` on the enumerated policy (no cancellation), not as
+`J_V - J_G`.
