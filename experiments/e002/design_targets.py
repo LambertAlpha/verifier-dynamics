@@ -61,8 +61,15 @@ def _qa(args: tuple[dict[str, Any], float, float, float, dict[str, Any]]) -> dic
         ok = abs(fpr_end - target["fpr_inf"]) <= 1e-4
         err = abs(fpr_end - target["fpr_inf"])
     cls_ode = "stall" if (q_end < 1 - 1e-6 and 1 - fpr_end < 1e-2) else "success"
-    return {"sid": slot["sid"], "stall_target": target["stall"], "q_end": q_end,
-            "fpr_end": fpr_end, "abs_err": err, "tolerance_ok": ok, "ode_class": cls_ode}  # fmt: skip
+    return {
+        "sid": slot["sid"],
+        "stall_target": target["stall"],
+        "q_end": q_end,
+        "fpr_end": fpr_end,
+        "abs_err": err,
+        "tolerance_ok": ok,
+        "ode_class": cls_ode,
+    }
 
 
 def main() -> int:
