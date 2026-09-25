@@ -1244,3 +1244,68 @@ cannot be the strongest competitor, and G1 always beats it.
 Tuned configurations (candidate freeze): `configs/e002/e002b_tuned_configs.json`, sha256
 `674c882340328d0b497af9464bb1e5d973a709b316b9276694dbdefae500d880`. They are extracted from the
 run JSON (sha256 `83f662c7bd0fda0839f59c82e888e815cace455d6101313d349871b84e89650e`).
+
+---
+
+**E002 Amendment 2** (2026-09-25; written and committed before the code that implements it)
+
+**Disclosure.** Written **after** the design-split pilot (design data seen). The test split is
+sealed: `HELDOUT_APPROVED` is absent and no test target, predictor or metric exists. The
+collaborator decided items 1–5 after reviewing the pilot record. The pre-registration block,
+Amendment 1 and the pilot record are unchanged.
+
+1. **P4 orientation: unchanged** (higher resampling gain = more danger).
+   - **[post-hoc, secondary]** The sign-flipped P4 is reported alongside. It never enters a
+     success or abandonment decision.
+   - **Disclosure.** Under the registered orientation, P4 is anti-predictive on design (oracle
+     C-index 0.40 / 0.27). Abandonment condition (a) is therefore decided in practice by P1 and
+     P2.
+2. **Verdict categories** (exhaustive and mutually exclusive), computed by code on **P-mod**
+   (primary); P-rare gets the same categories as a secondary report:
+   - **SUCCESS**: all four §8 success conditions hold.
+   - **ABANDON**: any §8 abandonment condition holds. Operationally, on the test split:
+     - (a) at no primary cell × primary endpoint does G1's point estimate exceed that of P1, P2
+       or P4 (the lenient reading, which makes abandonment harder);
+     - (b) G1-oracle has a point estimate above `max_j P_j` at some primary cell × endpoint, and
+       G1 has none;
+     - (c) G1 is dominated at every grid cell (§7, nominal cells, C-index point estimates).
+   - **NO PRACTICAL ADVANTAGE**: neither of the above. Practical superiority is not established,
+     but the letter of §8 does not trigger abandonment. The diagnostic claim is reported as **not
+     supported**.
+   - **Scope.** Every verdict applies to Candidate 3 under natural gradient, with the matched
+     P-mod and P-rare panels only.
+3. **Inference details.**
+   - One-sided bootstrap p-value: `p = (1 + #{b : Delta*_b <= 0}) / (B + 1)`, with
+     `B = 2000`.
+   - Holm at `alpha = 0.05` over the 4 P-mod tests (2 primary cells × {C-index, AUROC}).
+     P-rare is reported unadjusted.
+   - The bootstrap is computed from per-replication concordance kernels, one quadratic form per
+     resample. The resampling draws and their order are identical to the E002 §7 reference
+     implementation, and the results agree with it to 1e-12 (tested).
+   - Seeds: `heldout_seed = 20260927`.
+4. **Leave-one-type-out** (secondary; this makes §2's plan concrete). The primary `Delta` (both
+   endpoints, both primary cells) is recomputed on the test split with each of the 11 types
+   removed in turn. The min and max are reported; there is no re-tuning.
+5. **E002a instrumentation for the formal run** (the pilot record stays as it is):
+   - **Dimension-matched null.** Each detection structure `Y` gets its own null `Y0`: the same
+     `q`, the same feature marginals `s(Y)`, the event removed, and coin `= f`. Then
+     `C(Y0) = 0` exactly and `d(Y0) = d(Y)`.
+     - The threshold is the 95% quantile of `C_hat^2` under `Y0`, from one sample.
+     - False alarm is measured on an independent `Y0` sample.
+     - Every dose level has its own null. The `d = 1` RFP null is kept for continuity only.
+   - **Coverage set:** add dose `rho ∈ {0.05, 0.1}` and the matched nulls (`C = 0`).
+   - **U-statistic prediction, restated.** The raw Gram entries `Gram_GG`, `Gram_eG` and
+     `Gram_ee` are unbiased (`|bias| <= 3 MCSE`), on cells with `N(1-q)f >= 5` expected false
+     positives per batch. The ratio bias of `C_hat^2` is reported descriptively. The original
+     claim stays recorded as FAILED in the pilot.
+   - **Degenerate-event rates:** exact two-sided binomial test at `p < 0.0027`.
+   - **Upward bias near `C = 0`:** reported on both the `C` and `C^2` scales. The registered
+     scale remains `C`.
+6. **Held-out execution order (frozen).**
+   1. Create `HELDOUT_APPROVED` only after explicit approval.
+   2. Compute test-split targets at the design-selected `f` (P-mod 0.1, P-rare 0.02); `f` is not
+      re-selected.
+   3. Compute test-split oracle ceilings and commit them.
+   4. Run E002b on the test split: frozen configurations (`configs/e002/e002b_tuned_configs.json`,
+      sha256 `674c8823…d880`), `R = 64`, `heldout_seed`.
+   5. Run the analysis script, frozen and committed before unsealing, which prints the verdict.
