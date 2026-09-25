@@ -3,8 +3,9 @@
 The registered verdict (P-mod ABANDON by rule c) turned on one cell, (16, 64), where the best
 cheaper-or-equal competitor matched G1 to 1e-4 in C-index. This script estimates, by the same
 hierarchical bootstrap (structures, then replications), the probability that G1 at each cell is
-dominated: P*(max over cheaper-or-equal competitor cells of C-index >= G1's C-index). It does not
-change the registered verdict.
+dominated: P*(max over cheaper-or-equal competitor cells of C-index >= G1's C-index), for the
+near-tie cells (point margin > -0.01; the others get the point margin only). It does not change
+the registered verdict.
 """
 
 import json
@@ -45,18 +46,19 @@ def main(argv: list[str]) -> int:
             cheaper = [y for y in cells if y[0] <= cell[0] and y[1] <= cell[1]]
             comps = [s[cells.index(y), a_idx[a]] for y in cheaper for a in arms.COMPETITORS
                      if not np.all(np.isnan(s[cells.index(y), a_idx[a]]))]  # fmt: skip
-            rng = np.random.default_rng([config["e002b"]["heldout_seed"], 30, op_i, c_i])
-            diff = ep.paired_difference_bootstrap(ep.c_index, g1, comps, target, n_boot, rng)
             point = ep.panel_metric(ep.c_index, g1, target) - max(
                 ep.panel_metric(ep.c_index, c, target) for c in comps
             )
-            report[op][f"{cell[0]},{cell[1]}"] = {
-                "point_margin": point,
-                "ci95": np.quantile(diff, [0.025, 0.975]).tolist(),
-                "p_dominated": float(np.mean(diff <= 0)),
-            }
-        free = {k: v for k, v in report[op].items() if v["p_dominated"] < 0.95}
-        print(f"{op}: cells with P*(dominated) < 0.95: {json.dumps(free)}")
+            row: dict[str, float] = {"point_margin": point}
+            if point > -0.01:  # near tie: bootstrap the dominance probability
+                rng = np.random.default_rng([config["e002b"]["heldout_seed"], 30, op_i, c_i])
+                diff = ep.paired_difference_bootstrap(ep.c_index, g1, comps, target, n_boot, rng)
+                lo, hi = np.quantile(diff, [0.025, 0.975])
+                row |= {"ci95_lo": float(lo), "ci95_hi": float(hi),
+                        "p_dominated": float(np.mean(diff <= 0))}  # fmt: skip
+            report[op][f"{cell[0]},{cell[1]}"] = row
+        near = {k: v for k, v in report[op].items() if "p_dominated" in v}
+        print(f"{op}: near-tie cells: {json.dumps(near)}")
     (out_dir / "posthoc_frontier.json").write_text(json.dumps(report, indent=1) + "\n")
     print(f"run directory: {out_dir}")
     return 0
