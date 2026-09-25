@@ -638,3 +638,331 @@ Candidate-3 states (single, AND, OR; `q ∈ [0.01, 0.5]`). This is not E002 code
   1.9e-15 (single and AND only).
 
 Consequence: E002 predictions that rely on these facts are not blind to them.
+
+---
+
+### E002 — pre-registration (E002a instrumentation + E002b budget-matched prediction)
+
+Experiment IDs: E002a, E002b.
+Date: 2026-09-25. Written and committed **before any E002 code exists.** Design memo:
+`05_e002_design.md`. Theory: theory note §12 (oracle equivalence).
+
+#### 0. Question and framing (frozen)
+
+At matched certification budgets, does an optimizer-conditioned gradient-geometry diagnostic
+predict long-run **gold** failure earlier, more cheaply, or more reliably than simple short probes?
+
+Within Candidate 3, geometry has **no first-order information** that an infinitesimal probe lacks
+(theory note §12: `C^2 = (1-q)·dFPR/dt`, `dJ_V/dt = (1-f)^2 q0(1-q0) + C^2`). E002 compares:
+
+- statistical efficiency;
+- gold-label efficiency;
+- rollout efficiency;
+- the ability to diagnose without optimizing.
+
+It does **not** test oracle information superiority. Design-phase checks E000c are disclosed and
+are not E002 results.
+
+#### 1. Operating points and target FPR
+
+| panel | role | `q0` | FPR grid |
+| --- | --- | --- | --- |
+| **P-mod** | primary | 0.05 | `{0.05, 0.1, 0.2}` |
+| **P-rare** | secondary | 0.002 | `{0.005, 0.01, 0.02}` |
+
+**Rule.** Per panel, choose the `f` whose **design-split** stall fraction, computed from exact
+targets only (§4), is closest to 0.5 (ties go to the smaller `f`). This happens before any
+predictor is computed. If the chosen stall fraction lies outside `[0.2, 0.8]`, the panel is flagged
+for review rather than silently changed.
+
+#### 2. Verifier panel (per operating point; the same raw draws are used for every `f`)
+
+- **Policy.** Independent Bernoulli `(corr, z_1..z_m)` with logits; `P(corr = 1) = q0`.
+- **Verifier.** `V = corr OR 1_E(z) OR xi`, with a fresh coin `xi ~ Bern(p)` per query; FNR = 0.
+- **Types** (registered order) and events:
+
+  | type | event `E` |
+  | --- | --- |
+  | SINGLE | `z1` |
+  | AND2 / AND3 / AND4 | all features |
+  | OR2 / OR3 | any feature |
+  | THR23 | at least 2 of 3 |
+  | AOR | `(z1 ∨ z2) ∧ z3` |
+  | OAND | `(z1 ∧ z2) ∨ z3` |
+  | MIX | base ∈ {SINGLE, AND2, OR2}, uniform, plus a coin |
+  | RFP | no event (coin only), `p = f` |
+
+- **Counts:** 89 per feature type (10 types, 890 structures) plus 10 RFP = 900.
+- **Random draws**, in a fixed order from `numpy.random.default_rng(SeedSequence(20260925))`:
+  - raw feature logits `a_i ~ N(0, 2^2)` i.i.d.;
+  - for MIX, a controllable share `rho ~ U(0.05, 1)`.
+- **Matching by one common shift `c`:**
+  - `s_i = sigmoid(a_i + c)`, where `c` solves `F(c) = f` (brentq on `[-40, 40]`; `F` is
+    monotone);
+  - for MIX, the event targets `S_E = 1 - (1-f)^rho` and the coin is `p = 1 - (1-f)^(1-rho)`;
+  - consequently accuracy, FPR, FNR, FP mass, `A` and `alpha` at `t = 0` are equal across
+    structures (Prop. 8, §12).
+- **Rejection.** If any `s_i ∉ [1e-4, 1 - 1e-4]`, redraw (same stream; redraw counts are reported).
+- **De-duplication (parameters only).** The canonical form sorts features within symmetric groups
+  (AND/OR/THR: all; AOR, OAND: the first two). Reject a structure whose canonical logit vector
+  (plus `rho` for MIX) is within 1e-3 max-abs of an earlier same-type structure. RFP instances have
+  no parameters and are intentional identical controls, so they are exempt.
+- **Split.** Fixed before any target or predictor is computed, by a seeded permutation within each
+  type:
+  - the first 6 feature types (registered order) put 30 structures in design and 59 in test;
+  - the last 4 feature types put 29 in design and 60 in test;
+  - RFP: 4 design, 6 test;
+  - totals: **300 design / 600 test**.
+- **Integrity mechanism.**
+  - The panel file (parameters and split labels only; **no test targets or predictors**) is
+    written once and its SHA-256 committed.
+  - The loader returns test structures only if the file `configs/e002/HELDOUT_APPROVED` exists.
+    That file is created only after explicit approval. A unit test asserts that the loader
+    refuses otherwise.
+  - Pilot scripts request `split = "design"` only, and every run records which split it touched.
+  - Test-split targets are not computed in the pilot round.
+- **Secondary evaluation plan:** leave-one-type-out on the test split (reported, not primary).
+
+#### 3. Budgets and accounting
+
+Costs are tracked separately and shown in every table:
+
+- `B_roll`: generated policy responses (a perturbed variant counts as one rollout);
+- `B_gold`: gold calls;
+- `B_bwd`: per-sample score/gradient evaluations;
+- plus `k`, the number of sequential updates.
+
+Verifier calls are free and reported.
+
+- **Gold mode A (primary; the only mode implemented):** every audited response costs one gold
+  label.
+- **Mode B** (accepted-only auditing) is deferred and **not** part of this registration.
+- **Grid:** `B_gold ∈ {16, 32, 64, 128, 256, 512, 1024}` × `B_roll/B_gold ∈ {1, 4, 16}` (21 cells).
+- **Primary cells:** `(B_gold, B_roll) = (64, 256)` and `(256, 1024)`. The other cells form the
+  frontier (secondary).
+- **Panel constants known to all arms:** `q0` and `f`, the policy log-prob function, the verifier
+  as a black box, and gold as a costed black box. No arm knows the parameter blocks, exact
+  gradients or targets.
+
+#### 4. Targets (exact; exact natural-gradient flow = the training run)
+
+- **q-free feature ODE.** In `tau = ∫(1-q)dt`: `dphi_i/dtau = dF/ds_i`,
+  `dLambda/dtau = 1 - F`, `q = q0 exp(Lambda)`, `dt/dtau = 1/(1 - q)`. It is integrated with
+  DOP853 (`rtol 1e-10`). `1 - F` is computed from non-event pattern probabilities, so there is no
+  cancellation. Closed forms (Prop. 9) are used where they exist and must agree to 1e-8.
+- **Primary continuous target:** `D = 1 - J_G(∞)`, the shortfall relative to the clean verifier
+  (the clean natural-gradient run reaches 1).
+- **Primary categorical target:** stall iff `Lambda(∞) < log(1/q0)`.
+- **Secondary targets:**
+  - `J_G(T = 25)`;
+  - `J_G(∞)`;
+  - `t95` (stalls only), the time at which `J_G = q0 + 0.95(q∞ - q0)`.
+- **QA.** On a random 10% of **design** structures, the full generic natural-gradient ODE (E003
+  code) must agree with the targets:
+  - the outcome class must match;
+  - stalls: `|J_G(T_end) - q∞| <= 2e-3` at `T_end = 500`;
+  - successes: `|FPR(T_end) - F*| <= 1e-4`.
+- **Exclusion.** Structures whose target integration fails; counts are reported, and if more than
+  1% fail the run stops.
+- **Never used as a target:** the signed proxy–gold gap.
+
+#### 5. Arms (exact; at most three tuned hyperparameters each)
+
+Common definitions:
+
+- Scores: `score = (corr - q, z - s)`, hand-written; they equal the autodiff score for this policy.
+- RLOO gradient: `g_hat[R] = (1/n) Σ (R_i - b_i) score_i`, with `b_i` the mean of the other
+  rewards.
+- Estimated Fisher: `F_hat = mean(score score^T)`, damped as `F_hat + lam·(tr F_hat / d)·I`.
+
+**G0 — static metrics** (sanity baseline only; at chance by construction).
+
+- Uses `m0 = B_gold` audited `pi_0` rollouts; score = audited FPR.
+- Cost: `B_roll = m0`, `B_gold = m0`, `B_bwd = 0`.
+
+**G1 — geometry at `t = 0`** (estimated optimizer-matched metric, i.e. estimated Fisher).
+
+- Data: `m0 = B_gold` audited rollouts plus `B_roll - m0` unlabeled `pi_0` rollouts. `F_hat` uses
+  all `B_roll` rollouts.
+- **Plug-in estimator:**
+  - `g_hat_G` = RLOO on the audited set;
+  - `g_hat_V` = RLOO on the audited set (paired) or on all rollouts (pooled);
+  - `(A_hat, alpha_hat, C_hat) = decompose(g_hat_G, g_hat_V, M_hat)`.
+- **U-statistic estimator** (audited set, no baseline): `gamma_i^G = G_i score_i`,
+  `gamma_i^e = (V_i - G_i) score_i`, and
+  `Gram_ab = [(Σgamma^a)^T M (Σgamma^b) - Σ gamma_i^a^T M gamma_i^b] / (n(n-1))`. Then:
+  - `A_hat^2 = Gram_GG`;
+  - `C_hat^2 = Gram_ee - Gram_eG^2 / Gram_GG` if `Gram_GG > 0`, otherwise `Gram_ee`;
+  - raw values are allowed to be negative.
+- **`A_hat = 0` (or `Gram_GG <= 0`):** `alpha = NaN` and `alpha_defined = False`; `C_hat` is then
+  the full residual `||g_hat_e||`. This is never imputed.
+- **Ranking score:** `C_hat^2` (raw).
+- **Tuned hyperparameters:**
+  - estimator ∈ {plug-in, U};
+  - `lam ∈ {1e-3, 1e-2, 1e-1}`;
+  - `g_V` source ∈ {paired, pooled} (plug-in only).
+- **Oracle variant G1-oracle** (exact Fisher): reported as a ceiling only. **Never eligible for
+  success.**
+- Cost: `B_roll`, `B_gold = m0`, `B_bwd = B_roll`, `k = 0`.
+
+**P1 — verifier-score growth (zero gold).**
+
+- Run `k` stochastic natural-gradient steps: `theta += eta_p (F_hat + lam_p·tr/d·I)^{-1} g_hat_V`,
+  with `lam_p = 1e-2` fixed and `b` fresh rollouts per step.
+- `k + 1` batches of size `b = floor(B_roll / (k+1))`: batch 0 at `pi_0`, batch `k` at `pi_k`.
+- Score = `mean V(batch k) - mean V(batch 0)`.
+- Tuned: `k ∈ {1, 2, 5, 10}`, `eta_p ∈ {0.1, 0.3, 1.0}`.
+- Cost: `B_gold = 0`, `B_bwd = k·b`.
+
+**P2 — importance-reweighted FPR growth (zero new gold).**
+
+- Audit: `m0 = B_gold` labeled `pi_0` rollouts.
+- Updates: `k` steps with `b = floor((B_roll - m0)/k)` fresh rollouts each. If `b < 2` and
+  `k = 1`, the audit rollouts serve as the training batch; otherwise the configuration is
+  infeasible.
+- `FPR_hat_k = Σ_{G=0} w_i V_i / Σ_{G=0} w_i`, with `w_i = pi_k(y_i)/pi_0(y_i)` (self-normalized;
+  the coin draw recorded at audit time is reused).
+- Score = `FPR_hat_k - FPR_hat_0`, with `FPR_hat_0` the unweighted audited FPR.
+- Tuned: `k ∈ {1, 2}`, `eta_p ∈ {0.1, 0.3, 1.0}`.
+- Cost: `B_gold = m0`, `B_bwd = k·b` (plus `m0` forward log-prob evaluations).
+
+**P3 — fresh-label probe.**
+
+- `k` steps with `b = floor((B_roll - m)/k)` (infeasible if `b < 2`), then `m = B_gold` fresh
+  labeled rollouts at `pi_k`.
+- Score: `FPR_hat_k` (observable "FPR"), or `-(J_G_hat_k - q0)` (observable "gold").
+- Tuned: `k ∈ {1, 2, 5, 10}`, `eta_p ∈ {0.1, 0.3, 1.0}`, observable ∈ {FPR, gold}.
+- Cost: `B_gold = m`, `B_bwd = k·b`.
+
+**P4 — local-perturbation audit** (no training, no gradients).
+
+- Audit `m0 = B_gold` labeled `pi_0` rollouts.
+- For each audited response that is wrong and rejected (`G = 0`, `V = 0`): resample `r` distinct
+  randomly chosen features from the policy marginal and query `V` on each variant. Also re-query
+  `V` once on the unchanged response, to control for verifier randomness.
+- Score = `mean V(variants) - mean V(re-queries)`.
+- Variants count as rollouts. If `m0 + #variants > B_roll`, rejected-wrong items are subsampled
+  uniformly to fit; infeasible if none fit.
+- Variants inherit the parent's gold label. This is a declared toy assumption (the features do
+  not change correctness) and it **favours P4**.
+- Tuned: `r ∈ {1, 2, all}`.
+- Cost: `B_gold = m0`, `B_bwd = 0`.
+
+No ensemble is registered.
+
+#### 6. Tuning protocol (design split only)
+
+- For each arm × budget cell, choose the hyperparameters that maximize the **design-split mean
+  C-index** over `R_design = 32` replications.
+- Ties go to the simpler configuration (smaller `k`, then smaller `eta_p`, then plug-in, smaller
+  `lam`, paired, smaller `r`).
+- The same configuration is used for AUROC.
+- Frozen configurations are committed before any held-out evaluation.
+
+#### 7. Endpoints and inference (held-out round; not run now)
+
+- **Primary endpoints:**
+  - C-index: Harrell's concordance with `D` over pairs with distinct `D`; predictor ties count ½.
+  - AUROC for stall (Mann–Whitney; ties ½).
+- **Secondary endpoints:** Kendall τ_b, Spearman, and recall of the top 10% by `D`.
+- **Replications:** `R = 64` per arm × cell on the test split. The panel metric is computed per
+  replication and averaged.
+- **CI:** hierarchical bootstrap (2000 resamples; structures, then replications).
+- **Primary tests:** at the 2 primary cells × 2 endpoints, the statistic is
+  `Delta = metric(G1) - max_j metric(P_j)` over the required competitors P1–P4. The max is
+  recomputed inside every bootstrap resample. One-sided at α = 0.05, **Holm** over the 4 tests.
+  Pairwise differences against each arm are also reported.
+- **Frontier non-dominance (C-index point estimates).** G1 is *dominated* if, for every grid cell,
+  some competitor at the same or a lower budget on both axes attains at least G1's value.
+
+#### 8. Success and abandonment (frozen)
+
+**Practical geometry success requires all of:**
+
+1. the estimated metric (G1, not G1-oracle);
+2. evaluation on the 600 test structures;
+3. at a primary cell, a Holm-significant improvement over the strongest required competitor in
+   C-index or AUROC;
+4. G1 is not dominated on the frontier.
+
+"Beats G0" is not evidence (matched by construction). P-rare is secondary and reported.
+
+**The diagnostic contribution is ABANDONED for this setting if any of:**
+
+- (a) estimated geometry beats none of P1, P2, P4;
+- (b) any apparent win exists only with the exact Fisher;
+- (c) the G1 frontier is uniformly dominated by cheaper probes.
+
+The mechanistic contribution is preserved and the negative diagnostic result is reported.
+
+#### 9. Oracle ceilings (registered procedure)
+
+Noiseless signals per structure:
+
+- `C(0)` (exact Fisher);
+- `FPR(t_p)`, `J_V(t_p) - J_V(0)`, `J_G(t_p)` at `t_p ∈ {0.1, 0.3, 1, 3, 10}` (exact flow);
+- the P4 oracle: expected directional acceptance gain over the rejected-wrong distribution,
+  `r = all`;
+- G0 (constant).
+
+Their C-index and AUROC are computed on the **design split in this round, before any
+finite-sample pilot**, and on the **test split as the first committed step of the held-out round,
+before any finite-sample test evaluation**.
+
+**Registered predictions (§12):**
+
+- the ceilings of `C(0)`, `FPR(t_p -> 0)` and `J_V(t_p -> 0)` coincide;
+- the ceiling of `J_G(t_p -> 0)` is 0.5;
+- the G0 ceiling is 0.5.
+
+#### 10. E002a — estimator characterization
+
+- **Structures** (at each panel's selected `f`, `q0` as in the panel):
+  - SINGLE; AND2-sym; AND2-asym (`s1/s2` ratio 1:10 before shift); OR2-sym; RFP;
+  - the MIX-SINGLE dose family, `rho ∈ {0, .05, .1, .2, .35, .5, .75, 1}`;
+  - the A-extreme family: SINGLE exploit at FPR `f` with `q ∈ {1e-3, 1e-2, q0, 0.9, 0.99}`.
+- **Sample sizes:** `N ∈ {8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096}`.
+- **Estimators:**
+  - metrics: exact Fisher (oracle), estimated Fisher (`lam` grid), Euclidean (reported; it is
+    the metric matched to a *vanilla* optimizer);
+  - plug-in (RLOO) and U-statistic;
+  - Gram-form `P = alpha A^2` and `D = A^2 C^2`.
+- **Metrics:**
+  - bias, SD and RMSE of `A_hat`, `alpha_hat` (conditional on being defined, plus the
+    undefined rate) and `C_hat`;
+  - percentile-bootstrap 95% CI coverage for `C` (200 bootstrap resamples);
+  - false-alarm rate at the RFP-calibrated threshold, which must equal the nominal 5% up to
+    Monte Carlo error;
+  - power; minimum detectable `C` (80% power at 5% false alarm, interpolated over the dose
+    family); `P(C_hat_Y > C_hat_RFP)`.
+- **Degenerate-event rates**, with their **registered exact predictions**:
+  - `P(A_hat = 0)` under RLOO equals `q^N + (1-q)^N`;
+  - `P(no false positive in the batch)` equals `(1 - (1-q) f)^N`;
+  - `P(some feature constant in the batch)` equals `1 - Π_i [1 - s_i^N - (1-s_i)^N]`, an upper
+    bound under dependence (the features are independent here, so it is exact);
+  - the observed rates must agree within 3 Monte Carlo SE.
+- **Further predictions:**
+  - under the oracle metric, the U-statistic `C_hat^2` is unbiased (|bias| within 3 MC SE);
+  - the per-sample noise of the plug-in follows F4 (single/AND) within 3 MC SE;
+  - plug-in `C_hat` is biased upward near `C = 0`;
+  - coverage near `C = 0` is below nominal.
+- **Replications:** `R = 2000` in the formal E002a run, `R = 200` in the pilot.
+
+#### 11. This round's scope
+
+- oracle ceilings (design split);
+- E002a pilot (`R = 200`);
+- E002b design-split tuning and runtime pilot (`R_design = 32`).
+
+**No test-split target, predictor or metric is computed.** The formal E002a (`R = 2000`) and the
+held-out E002b require explicit approval. Any change to this block is recorded as a dated
+amendment before the corresponding formal run.
+
+#### 12. Agent's prior (not a hypothesis)
+
+G1 ties P1/P2 at small budgets and is beaten by P3 once `t_p` covers exploit takeoff; any G1 win is
+most likely confined to ratio-1 cells or none.
+
+**Code/config** (to be written after this commit): `src/vdyn/verifiers/boolean_fp.py`,
+`src/vdyn/geometry/gold_race.py`, `src/vdyn/e002/{panel,estimators,probes,endpoints}.py`,
+`experiments/e002/*`, `configs/e002/e002.toml`.

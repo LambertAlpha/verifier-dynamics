@@ -1,7 +1,10 @@
-# 01 — Theory note (v0.3.1, 2026-09-25)
+# 01 — Theory note (v0.4, 2026-09-25)
 
 ## Version history
 
+- **v0.4** (2026-09-25): new §12, the oracle-equivalence note for E002 (first-order relations
+  among `C^2`, FPR growth, verifier-score growth and gold progress). No earlier proposition was
+  changed.
 - **v0.3.1** (2026-09-25): E003 outcome recorded in WH-5 and the test map; new WH-6. No
   proposition was changed.
 - **v0.3** (2026-09-25), Phase 1B decisions:
@@ -492,3 +495,54 @@ prompt-accuracy distribution only through its first two moments. The outcome dep
      (analyticity), but that inversion is ill-posed **[conjecture]**.
 
 This result is kept as a limitation of the framework (negative control), not fixed.
+
+## 12. Oracle equivalence among first-order signals (for E002) — v0.4
+
+**Setting.** Candidate 3 generalized to any feature-triggered false positive, optionally mixed with
+a fresh coin:
+
+- `V = corr OR 1_E(z) OR xi`, with `xi ~ Bern(p)` drawn fresh each time;
+- the FPR is `F(phi) = 1 - (1 - S_E(phi))(1 - p)`, with `S_E = P(z in E)`;
+- training is the natural-gradient flow; the metric is the exact Fisher;
+- evaluated at a state `(q, phi)`.
+
+By Prop. 8 (whose derivation carries over unchanged with `S` replaced by `F`):
+`A^2 = q(1-q)`, `alpha = -F`, and `C^2 = (1-q)^2 kappa^2` with
+`kappa^2 = grad_phi F^T F_phi^{-1} grad_phi F`.
+
+**Derivations [proved].** Under natural gradient, `u' = 1 - F` and
+`phi' = (1-q) F_phi^{-1} grad_phi F`.
+
+1. **FPR growth.** `F` depends only on `phi`, so
+   `dF/dt = grad_phi F^T phi' = (1-q) kappa^2`. Hence
+   **`C^2 = (1 - q) · dFPR/dt`**.
+2. **Gold progress.** Prop. 1 gives `dJ_G/dt = (1 + alpha) A^2 = (1 - F) q(1-q)`.
+3. **Verifier-score growth.** Prop. 1 gives
+   **`dJ_V/dt = (1 + alpha)^2 A^2 + C^2 = (1 - F)^2 q(1-q) + C^2`**.
+
+**In a panel matched on `q0` and `F(0) = f`:**
+
+- `A`, `alpha`, `dJ_G/dt(0)` and the non-`C` part of `dJ_V/dt(0)` are identical across structures;
+- `C(0)^2`, `dFPR/dt(0)` and `dJ_V/dt(0)` rank the structures identically;
+- gold progress is uninformative at first order.
+
+Verification:
+
+- The single / AND / OR case was checked numerically as registry **E000c** (design-phase, not
+  pre-registered; max relative error ≤ 2.3e-15).
+- The general Boolean / coin family will be verified by unit tests in the E002 implementation.
+
+| Measure | Uses G? | Requires a training update? | First-order information (matched panel, NG) |
+| --- | --- | --- | --- |
+| `C(0)` (geometry) | yes (to separate `g_e` from `g_G`) | no | exploit accessibility `(1-q)^2 kappa^2` |
+| FPR growth | yes (to know which responses are wrong); zero *new* labels if the audit is importance-reweighted | yes, or importance-weighted | equivalent: `C^2 / (1 - q)` |
+| `J_V` growth | **no** | yes | `C^2` + a common term `(1-f)^2 q0(1-q0)` identical across the panel |
+| `J_G` growth | yes | yes | true-learning progress `(1-f) q0(1-q0)`; identical at first order, so uninformative |
+| local-perturbation acceptance | yes (to know which responses are wrong) | no | Boolean influence of the event on rejected wrong answers; **related to, but not a function of**, `kappa^2` |
+
+**Statement.** In the noiseless matched Candidate-3 family, `C(0)`, the initial FPR growth and the
+initial verifier-score growth carry the same first-order information. Gold progress carries none
+at first order. **E002 therefore tests finite-sample efficiency (per gold label, per rollout, per
+backward pass) and the ability to diagnose without optimizing. It does not test oracle
+information superiority.** At finite probe horizons, probes additionally observe path curvature
+that `C(0)` lacks (Props. 9–10; E003 post-hoc Q4/Q5).
