@@ -1,0 +1,2896 @@
+{
+ "source_run": "results/E002b-design-pilot/20260925T085007Z_673a370-dirty/e002b_design_pilot.json",
+ "source_sha256": "83f662c7bd0fda0839f59c82e888e815cace455d6101313d349871b84e89650e",
+ "rule": "registry E002 \u00a76: max design-split mean C-index over R_design = 32; registered tie-breaks",
+ "status": "candidate freeze from the design pilot; used by the held-out round only after explicit approval",
+ "configs": {
+  "P-mod": {
+   "16,16|G0": {
+    "cfg": {},
+    "B_roll": 16,
+    "B_gold": 16,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "16,16|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "paired"
+    },
+    "B_roll": 16,
+    "B_gold": 16,
+    "B_bwd": 16,
+    "k": 0,
+    "b": 0
+   },
+   "16,16|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "paired"
+    },
+    "B_roll": 16,
+    "B_gold": 16,
+    "B_bwd": 16,
+    "k": 0,
+    "b": 0
+   },
+   "16,16|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 12,
+    "B_gold": 0,
+    "B_bwd": 10,
+    "k": 5,
+    "b": 2
+   },
+   "16,16|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 1.0
+    },
+    "B_roll": 16,
+    "B_gold": 16,
+    "B_bwd": 16,
+    "k": 1,
+    "b": 16
+   },
+   "16,64|G0": {
+    "cfg": {},
+    "B_roll": 16,
+    "B_gold": 16,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "16,64|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 64,
+    "B_gold": 16,
+    "B_bwd": 64,
+    "k": 0,
+    "b": 0
+   },
+   "16,64|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 64,
+    "B_gold": 16,
+    "B_bwd": 64,
+    "k": 0,
+    "b": 0
+   },
+   "16,64|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 63,
+    "B_gold": 0,
+    "B_bwd": 42,
+    "k": 2,
+    "b": 21
+   },
+   "16,64|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 64,
+    "B_gold": 16,
+    "B_bwd": 48,
+    "k": 2,
+    "b": 24
+   },
+   "16,64|P3": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 64,
+    "B_gold": 16,
+    "B_bwd": 48,
+    "k": 2,
+    "b": 24
+   },
+   "16,64|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 64,
+    "B_gold": 16,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "16,256|G0": {
+    "cfg": {},
+    "B_roll": 16,
+    "B_gold": 16,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "16,256|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 256,
+    "B_gold": 16,
+    "B_bwd": 256,
+    "k": 0,
+    "b": 0
+   },
+   "16,256|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 256,
+    "B_gold": 16,
+    "B_bwd": 256,
+    "k": 0,
+    "b": 0
+   },
+   "16,256|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 255,
+    "B_gold": 0,
+    "B_bwd": 170,
+    "k": 2,
+    "b": 85
+   },
+   "16,256|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 256,
+    "B_gold": 16,
+    "B_bwd": 240,
+    "k": 2,
+    "b": 120
+   },
+   "16,256|P3": {
+    "cfg": {
+     "k": 10,
+     "eta": 0.3,
+     "observable": "fpr"
+    },
+    "B_roll": 256,
+    "B_gold": 16,
+    "B_bwd": 240,
+    "k": 10,
+    "b": 24
+   },
+   "16,256|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 256,
+    "B_gold": 16,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "32,32|G0": {
+    "cfg": {},
+    "B_roll": 32,
+    "B_gold": 32,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "32,32|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "paired"
+    },
+    "B_roll": 32,
+    "B_gold": 32,
+    "B_bwd": 32,
+    "k": 0,
+    "b": 0
+   },
+   "32,32|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "paired"
+    },
+    "B_roll": 32,
+    "B_gold": 32,
+    "B_bwd": 32,
+    "k": 0,
+    "b": 0
+   },
+   "32,32|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 30,
+    "B_gold": 0,
+    "B_bwd": 20,
+    "k": 2,
+    "b": 10
+   },
+   "32,32|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 1.0
+    },
+    "B_roll": 32,
+    "B_gold": 32,
+    "B_bwd": 32,
+    "k": 1,
+    "b": 32
+   },
+   "32,128|G0": {
+    "cfg": {},
+    "B_roll": 32,
+    "B_gold": 32,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "32,128|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 128,
+    "B_gold": 32,
+    "B_bwd": 128,
+    "k": 0,
+    "b": 0
+   },
+   "32,128|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 128,
+    "B_gold": 32,
+    "B_bwd": 128,
+    "k": 0,
+    "b": 0
+   },
+   "32,128|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 126,
+    "B_gold": 0,
+    "B_bwd": 84,
+    "k": 2,
+    "b": 42
+   },
+   "32,128|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 128,
+    "B_gold": 32,
+    "B_bwd": 96,
+    "k": 2,
+    "b": 48
+   },
+   "32,128|P3": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 128,
+    "B_gold": 32,
+    "B_bwd": 96,
+    "k": 2,
+    "b": 48
+   },
+   "32,128|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 128,
+    "B_gold": 32,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "32,512|G0": {
+    "cfg": {},
+    "B_roll": 32,
+    "B_gold": 32,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "32,512|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 512,
+    "B_gold": 32,
+    "B_bwd": 512,
+    "k": 0,
+    "b": 0
+   },
+   "32,512|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 512,
+    "B_gold": 32,
+    "B_bwd": 512,
+    "k": 0,
+    "b": 0
+   },
+   "32,512|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 510,
+    "B_gold": 0,
+    "B_bwd": 340,
+    "k": 2,
+    "b": 170
+   },
+   "32,512|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 512,
+    "B_gold": 32,
+    "B_bwd": 480,
+    "k": 2,
+    "b": 240
+   },
+   "32,512|P3": {
+    "cfg": {
+     "k": 10,
+     "eta": 1.0,
+     "observable": "gold"
+    },
+    "B_roll": 512,
+    "B_gold": 32,
+    "B_bwd": 480,
+    "k": 10,
+    "b": 48
+   },
+   "32,512|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 512,
+    "B_gold": 32,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "64,64|G0": {
+    "cfg": {},
+    "B_roll": 64,
+    "B_gold": 64,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "64,64|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "paired"
+    },
+    "B_roll": 64,
+    "B_gold": 64,
+    "B_bwd": 64,
+    "k": 0,
+    "b": 0
+   },
+   "64,64|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "paired"
+    },
+    "B_roll": 64,
+    "B_gold": 64,
+    "B_bwd": 64,
+    "k": 0,
+    "b": 0
+   },
+   "64,64|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 63,
+    "B_gold": 0,
+    "B_bwd": 42,
+    "k": 2,
+    "b": 21
+   },
+   "64,64|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 1.0
+    },
+    "B_roll": 64,
+    "B_gold": 64,
+    "B_bwd": 64,
+    "k": 1,
+    "b": 64
+   },
+   "64,256|G0": {
+    "cfg": {},
+    "B_roll": 64,
+    "B_gold": 64,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "64,256|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 256,
+    "B_gold": 64,
+    "B_bwd": 256,
+    "k": 0,
+    "b": 0
+   },
+   "64,256|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 256,
+    "B_gold": 64,
+    "B_bwd": 256,
+    "k": 0,
+    "b": 0
+   },
+   "64,256|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 255,
+    "B_gold": 0,
+    "B_bwd": 170,
+    "k": 2,
+    "b": 85
+   },
+   "64,256|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 256,
+    "B_gold": 64,
+    "B_bwd": 192,
+    "k": 2,
+    "b": 96
+   },
+   "64,256|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 254,
+    "B_gold": 64,
+    "B_bwd": 190,
+    "k": 5,
+    "b": 38
+   },
+   "64,256|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 256,
+    "B_gold": 64,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "64,1024|G0": {
+    "cfg": {},
+    "B_roll": 64,
+    "B_gold": 64,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "64,1024|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 1024,
+    "B_gold": 64,
+    "B_bwd": 1024,
+    "k": 0,
+    "b": 0
+   },
+   "64,1024|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 1024,
+    "B_gold": 64,
+    "B_bwd": 1024,
+    "k": 0,
+    "b": 0
+   },
+   "64,1024|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 1023,
+    "B_gold": 0,
+    "B_bwd": 682,
+    "k": 2,
+    "b": 341
+   },
+   "64,1024|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 1024,
+    "B_gold": 64,
+    "B_bwd": 960,
+    "k": 2,
+    "b": 480
+   },
+   "64,1024|P3": {
+    "cfg": {
+     "k": 10,
+     "eta": 1.0,
+     "observable": "gold"
+    },
+    "B_roll": 1024,
+    "B_gold": 64,
+    "B_bwd": 960,
+    "k": 10,
+    "b": 96
+   },
+   "64,1024|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 1024,
+    "B_gold": 64,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "128,128|G0": {
+    "cfg": {},
+    "B_roll": 128,
+    "B_gold": 128,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "128,128|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "paired"
+    },
+    "B_roll": 128,
+    "B_gold": 128,
+    "B_bwd": 128,
+    "k": 0,
+    "b": 0
+   },
+   "128,128|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "paired"
+    },
+    "B_roll": 128,
+    "B_gold": 128,
+    "B_bwd": 128,
+    "k": 0,
+    "b": 0
+   },
+   "128,128|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 126,
+    "B_gold": 0,
+    "B_bwd": 84,
+    "k": 2,
+    "b": 42
+   },
+   "128,128|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 1.0
+    },
+    "B_roll": 128,
+    "B_gold": 128,
+    "B_bwd": 128,
+    "k": 1,
+    "b": 128
+   },
+   "128,512|G0": {
+    "cfg": {},
+    "B_roll": 128,
+    "B_gold": 128,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "128,512|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 512,
+    "B_gold": 128,
+    "B_bwd": 512,
+    "k": 0,
+    "b": 0
+   },
+   "128,512|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 512,
+    "B_gold": 128,
+    "B_bwd": 512,
+    "k": 0,
+    "b": 0
+   },
+   "128,512|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 510,
+    "B_gold": 0,
+    "B_bwd": 340,
+    "k": 2,
+    "b": 170
+   },
+   "128,512|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 512,
+    "B_gold": 128,
+    "B_bwd": 384,
+    "k": 2,
+    "b": 192
+   },
+   "128,512|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 508,
+    "B_gold": 128,
+    "B_bwd": 380,
+    "k": 5,
+    "b": 76
+   },
+   "128,512|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 512,
+    "B_gold": 128,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "128,2048|G0": {
+    "cfg": {},
+    "B_roll": 128,
+    "B_gold": 128,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "128,2048|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 2048,
+    "B_gold": 128,
+    "B_bwd": 2048,
+    "k": 0,
+    "b": 0
+   },
+   "128,2048|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 2048,
+    "B_gold": 128,
+    "B_bwd": 2048,
+    "k": 0,
+    "b": 0
+   },
+   "128,2048|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 2046,
+    "B_gold": 0,
+    "B_bwd": 1364,
+    "k": 2,
+    "b": 682
+   },
+   "128,2048|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 2048,
+    "B_gold": 128,
+    "B_bwd": 1920,
+    "k": 2,
+    "b": 960
+   },
+   "128,2048|P3": {
+    "cfg": {
+     "k": 10,
+     "eta": 1.0,
+     "observable": "gold"
+    },
+    "B_roll": 2048,
+    "B_gold": 128,
+    "B_bwd": 1920,
+    "k": 10,
+    "b": 192
+   },
+   "128,2048|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 2048,
+    "B_gold": 128,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "256,256|G0": {
+    "cfg": {},
+    "B_roll": 256,
+    "B_gold": 256,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "256,256|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "paired"
+    },
+    "B_roll": 256,
+    "B_gold": 256,
+    "B_bwd": 256,
+    "k": 0,
+    "b": 0
+   },
+   "256,256|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "paired"
+    },
+    "B_roll": 256,
+    "B_gold": 256,
+    "B_bwd": 256,
+    "k": 0,
+    "b": 0
+   },
+   "256,256|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 255,
+    "B_gold": 0,
+    "B_bwd": 170,
+    "k": 2,
+    "b": 85
+   },
+   "256,256|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 1.0
+    },
+    "B_roll": 256,
+    "B_gold": 256,
+    "B_bwd": 256,
+    "k": 1,
+    "b": 256
+   },
+   "256,1024|G0": {
+    "cfg": {},
+    "B_roll": 256,
+    "B_gold": 256,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "256,1024|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 1024,
+    "B_gold": 256,
+    "B_bwd": 1024,
+    "k": 0,
+    "b": 0
+   },
+   "256,1024|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 1024,
+    "B_gold": 256,
+    "B_bwd": 1024,
+    "k": 0,
+    "b": 0
+   },
+   "256,1024|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 1023,
+    "B_gold": 0,
+    "B_bwd": 682,
+    "k": 2,
+    "b": 341
+   },
+   "256,1024|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 1024,
+    "B_gold": 256,
+    "B_bwd": 768,
+    "k": 2,
+    "b": 384
+   },
+   "256,1024|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 1021,
+    "B_gold": 256,
+    "B_bwd": 765,
+    "k": 5,
+    "b": 153
+   },
+   "256,1024|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 1024,
+    "B_gold": 256,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "256,4096|G0": {
+    "cfg": {},
+    "B_roll": 256,
+    "B_gold": 256,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "256,4096|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 4096,
+    "B_gold": 256,
+    "B_bwd": 4096,
+    "k": 0,
+    "b": 0
+   },
+   "256,4096|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 4096,
+    "B_gold": 256,
+    "B_bwd": 4096,
+    "k": 0,
+    "b": 0
+   },
+   "256,4096|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 4095,
+    "B_gold": 0,
+    "B_bwd": 2730,
+    "k": 2,
+    "b": 1365
+   },
+   "256,4096|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 4096,
+    "B_gold": 256,
+    "B_bwd": 3840,
+    "k": 2,
+    "b": 1920
+   },
+   "256,4096|P3": {
+    "cfg": {
+     "k": 10,
+     "eta": 1.0,
+     "observable": "gold"
+    },
+    "B_roll": 4096,
+    "B_gold": 256,
+    "B_bwd": 3840,
+    "k": 10,
+    "b": 384
+   },
+   "256,4096|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 4096,
+    "B_gold": 256,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "512,512|G0": {
+    "cfg": {},
+    "B_roll": 512,
+    "B_gold": 512,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "512,512|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "paired"
+    },
+    "B_roll": 512,
+    "B_gold": 512,
+    "B_bwd": 512,
+    "k": 0,
+    "b": 0
+   },
+   "512,512|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "paired"
+    },
+    "B_roll": 512,
+    "B_gold": 512,
+    "B_bwd": 512,
+    "k": 0,
+    "b": 0
+   },
+   "512,512|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 510,
+    "B_gold": 0,
+    "B_bwd": 340,
+    "k": 2,
+    "b": 170
+   },
+   "512,512|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 1.0
+    },
+    "B_roll": 512,
+    "B_gold": 512,
+    "B_bwd": 512,
+    "k": 1,
+    "b": 512
+   },
+   "512,2048|G0": {
+    "cfg": {},
+    "B_roll": 512,
+    "B_gold": 512,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "512,2048|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 2048,
+    "B_gold": 512,
+    "B_bwd": 2048,
+    "k": 0,
+    "b": 0
+   },
+   "512,2048|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 2048,
+    "B_gold": 512,
+    "B_bwd": 2048,
+    "k": 0,
+    "b": 0
+   },
+   "512,2048|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 2046,
+    "B_gold": 0,
+    "B_bwd": 1364,
+    "k": 2,
+    "b": 682
+   },
+   "512,2048|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 2048,
+    "B_gold": 512,
+    "B_bwd": 1536,
+    "k": 2,
+    "b": 768
+   },
+   "512,2048|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 2047,
+    "B_gold": 512,
+    "B_bwd": 1535,
+    "k": 5,
+    "b": 307
+   },
+   "512,2048|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 2048,
+    "B_gold": 512,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "512,8192|G0": {
+    "cfg": {},
+    "B_roll": 512,
+    "B_gold": 512,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "512,8192|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 8192,
+    "B_gold": 512,
+    "B_bwd": 8192,
+    "k": 0,
+    "b": 0
+   },
+   "512,8192|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 8192,
+    "B_gold": 512,
+    "B_bwd": 8192,
+    "k": 0,
+    "b": 0
+   },
+   "512,8192|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 8190,
+    "B_gold": 0,
+    "B_bwd": 6825,
+    "k": 5,
+    "b": 1365
+   },
+   "512,8192|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 8192,
+    "B_gold": 512,
+    "B_bwd": 7680,
+    "k": 2,
+    "b": 3840
+   },
+   "512,8192|P3": {
+    "cfg": {
+     "k": 10,
+     "eta": 1.0,
+     "observable": "gold"
+    },
+    "B_roll": 8192,
+    "B_gold": 512,
+    "B_bwd": 7680,
+    "k": 10,
+    "b": 768
+   },
+   "512,8192|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 8192,
+    "B_gold": 512,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "1024,1024|G0": {
+    "cfg": {},
+    "B_roll": 1024,
+    "B_gold": 1024,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "1024,1024|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "paired"
+    },
+    "B_roll": 1024,
+    "B_gold": 1024,
+    "B_bwd": 1024,
+    "k": 0,
+    "b": 0
+   },
+   "1024,1024|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "paired"
+    },
+    "B_roll": 1024,
+    "B_gold": 1024,
+    "B_bwd": 1024,
+    "k": 0,
+    "b": 0
+   },
+   "1024,1024|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 1023,
+    "B_gold": 0,
+    "B_bwd": 682,
+    "k": 2,
+    "b": 341
+   },
+   "1024,1024|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 1.0
+    },
+    "B_roll": 1024,
+    "B_gold": 1024,
+    "B_bwd": 1024,
+    "k": 1,
+    "b": 1024
+   },
+   "1024,4096|G0": {
+    "cfg": {},
+    "B_roll": 1024,
+    "B_gold": 1024,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "1024,4096|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 4096,
+    "B_gold": 1024,
+    "B_bwd": 4096,
+    "k": 0,
+    "b": 0
+   },
+   "1024,4096|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 4096,
+    "B_gold": 1024,
+    "B_bwd": 4096,
+    "k": 0,
+    "b": 0
+   },
+   "1024,4096|P1": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 4095,
+    "B_gold": 0,
+    "B_bwd": 2730,
+    "k": 2,
+    "b": 1365
+   },
+   "1024,4096|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 4096,
+    "B_gold": 1024,
+    "B_bwd": 3072,
+    "k": 2,
+    "b": 1536
+   },
+   "1024,4096|P3": {
+    "cfg": {
+     "k": 10,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 4094,
+    "B_gold": 1024,
+    "B_bwd": 3070,
+    "k": 10,
+    "b": 307
+   },
+   "1024,4096|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 4096,
+    "B_gold": 1024,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "1024,16384|G0": {
+    "cfg": {},
+    "B_roll": 1024,
+    "B_gold": 1024,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "1024,16384|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 16384,
+    "B_gold": 1024,
+    "B_bwd": 16384,
+    "k": 0,
+    "b": 0
+   },
+   "1024,16384|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 16384,
+    "B_gold": 1024,
+    "B_bwd": 16384,
+    "k": 0,
+    "b": 0
+   },
+   "1024,16384|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 16380,
+    "B_gold": 0,
+    "B_bwd": 13650,
+    "k": 5,
+    "b": 2730
+   },
+   "1024,16384|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 16384,
+    "B_gold": 1024,
+    "B_bwd": 15360,
+    "k": 2,
+    "b": 7680
+   },
+   "1024,16384|P3": {
+    "cfg": {
+     "k": 10,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 16384,
+    "B_gold": 1024,
+    "B_bwd": 15360,
+    "k": 10,
+    "b": 1536
+   },
+   "1024,16384|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 16384,
+    "B_gold": 1024,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   }
+  },
+  "P-rare": {
+   "16,16|G0": {
+    "cfg": {},
+    "B_roll": 16,
+    "B_gold": 16,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "16,16|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "paired"
+    },
+    "B_roll": 16,
+    "B_gold": 16,
+    "B_bwd": 16,
+    "k": 0,
+    "b": 0
+   },
+   "16,16|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "paired"
+    },
+    "B_roll": 16,
+    "B_gold": 16,
+    "B_bwd": 16,
+    "k": 0,
+    "b": 0
+   },
+   "16,16|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 12,
+    "B_gold": 0,
+    "B_bwd": 10,
+    "k": 5,
+    "b": 2
+   },
+   "16,16|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 0.3
+    },
+    "B_roll": 16,
+    "B_gold": 16,
+    "B_bwd": 16,
+    "k": 1,
+    "b": 16
+   },
+   "16,64|G0": {
+    "cfg": {},
+    "B_roll": 16,
+    "B_gold": 16,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "16,64|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 64,
+    "B_gold": 16,
+    "B_bwd": 64,
+    "k": 0,
+    "b": 0
+   },
+   "16,64|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 64,
+    "B_gold": 16,
+    "B_bwd": 64,
+    "k": 0,
+    "b": 0
+   },
+   "16,64|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 60,
+    "B_gold": 0,
+    "B_bwd": 50,
+    "k": 5,
+    "b": 10
+   },
+   "16,64|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 0.3
+    },
+    "B_roll": 64,
+    "B_gold": 16,
+    "B_bwd": 48,
+    "k": 2,
+    "b": 24
+   },
+   "16,64|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 61,
+    "B_gold": 16,
+    "B_bwd": 45,
+    "k": 5,
+    "b": 9
+   },
+   "16,64|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 64,
+    "B_gold": 16,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "16,256|G0": {
+    "cfg": {},
+    "B_roll": 16,
+    "B_gold": 16,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "16,256|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 256,
+    "B_gold": 16,
+    "B_bwd": 256,
+    "k": 0,
+    "b": 0
+   },
+   "16,256|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 256,
+    "B_gold": 16,
+    "B_bwd": 256,
+    "k": 0,
+    "b": 0
+   },
+   "16,256|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 252,
+    "B_gold": 0,
+    "B_bwd": 210,
+    "k": 5,
+    "b": 42
+   },
+   "16,256|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 0.1
+    },
+    "B_roll": 256,
+    "B_gold": 16,
+    "B_bwd": 240,
+    "k": 2,
+    "b": 120
+   },
+   "16,256|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 256,
+    "B_gold": 16,
+    "B_bwd": 240,
+    "k": 5,
+    "b": 48
+   },
+   "16,256|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 256,
+    "B_gold": 16,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "32,32|G0": {
+    "cfg": {},
+    "B_roll": 32,
+    "B_gold": 32,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "32,32|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.01,
+     "source": "paired"
+    },
+    "B_roll": 32,
+    "B_gold": 32,
+    "B_bwd": 32,
+    "k": 0,
+    "b": 0
+   },
+   "32,32|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "paired"
+    },
+    "B_roll": 32,
+    "B_gold": 32,
+    "B_bwd": 32,
+    "k": 0,
+    "b": 0
+   },
+   "32,32|P1": {
+    "cfg": {
+     "k": 10,
+     "eta": 1.0
+    },
+    "B_roll": 22,
+    "B_gold": 0,
+    "B_bwd": 20,
+    "k": 10,
+    "b": 2
+   },
+   "32,32|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 1.0
+    },
+    "B_roll": 32,
+    "B_gold": 32,
+    "B_bwd": 32,
+    "k": 1,
+    "b": 32
+   },
+   "32,128|G0": {
+    "cfg": {},
+    "B_roll": 32,
+    "B_gold": 32,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "32,128|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 128,
+    "B_gold": 32,
+    "B_bwd": 128,
+    "k": 0,
+    "b": 0
+   },
+   "32,128|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 128,
+    "B_gold": 32,
+    "B_bwd": 128,
+    "k": 0,
+    "b": 0
+   },
+   "32,128|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 126,
+    "B_gold": 0,
+    "B_bwd": 105,
+    "k": 5,
+    "b": 21
+   },
+   "32,128|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 1.0
+    },
+    "B_roll": 128,
+    "B_gold": 32,
+    "B_bwd": 96,
+    "k": 1,
+    "b": 96
+   },
+   "32,128|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 127,
+    "B_gold": 32,
+    "B_bwd": 95,
+    "k": 5,
+    "b": 19
+   },
+   "32,128|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 128,
+    "B_gold": 32,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "32,512|G0": {
+    "cfg": {},
+    "B_roll": 32,
+    "B_gold": 32,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "32,512|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 512,
+    "B_gold": 32,
+    "B_bwd": 512,
+    "k": 0,
+    "b": 0
+   },
+   "32,512|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 512,
+    "B_gold": 32,
+    "B_bwd": 512,
+    "k": 0,
+    "b": 0
+   },
+   "32,512|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 510,
+    "B_gold": 0,
+    "B_bwd": 425,
+    "k": 5,
+    "b": 85
+   },
+   "32,512|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 0.1
+    },
+    "B_roll": 512,
+    "B_gold": 32,
+    "B_bwd": 480,
+    "k": 2,
+    "b": 240
+   },
+   "32,512|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 512,
+    "B_gold": 32,
+    "B_bwd": 480,
+    "k": 5,
+    "b": 96
+   },
+   "32,512|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 512,
+    "B_gold": 32,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "64,64|G0": {
+    "cfg": {},
+    "B_roll": 64,
+    "B_gold": 64,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "64,64|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "paired"
+    },
+    "B_roll": 64,
+    "B_gold": 64,
+    "B_bwd": 64,
+    "k": 0,
+    "b": 0
+   },
+   "64,64|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "paired"
+    },
+    "B_roll": 64,
+    "B_gold": 64,
+    "B_bwd": 64,
+    "k": 0,
+    "b": 0
+   },
+   "64,64|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 60,
+    "B_gold": 0,
+    "B_bwd": 50,
+    "k": 5,
+    "b": 10
+   },
+   "64,64|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 1.0
+    },
+    "B_roll": 64,
+    "B_gold": 64,
+    "B_bwd": 64,
+    "k": 1,
+    "b": 64
+   },
+   "64,256|G0": {
+    "cfg": {},
+    "B_roll": 64,
+    "B_gold": 64,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "64,256|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 256,
+    "B_gold": 64,
+    "B_bwd": 256,
+    "k": 0,
+    "b": 0
+   },
+   "64,256|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 256,
+    "B_gold": 64,
+    "B_bwd": 256,
+    "k": 0,
+    "b": 0
+   },
+   "64,256|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 252,
+    "B_gold": 0,
+    "B_bwd": 210,
+    "k": 5,
+    "b": 42
+   },
+   "64,256|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 256,
+    "B_gold": 64,
+    "B_bwd": 192,
+    "k": 2,
+    "b": 96
+   },
+   "64,256|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 254,
+    "B_gold": 64,
+    "B_bwd": 190,
+    "k": 5,
+    "b": 38
+   },
+   "64,256|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 256,
+    "B_gold": 64,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "64,1024|G0": {
+    "cfg": {},
+    "B_roll": 64,
+    "B_gold": 64,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "64,1024|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 1024,
+    "B_gold": 64,
+    "B_bwd": 1024,
+    "k": 0,
+    "b": 0
+   },
+   "64,1024|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 1024,
+    "B_gold": 64,
+    "B_bwd": 1024,
+    "k": 0,
+    "b": 0
+   },
+   "64,1024|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 1020,
+    "B_gold": 0,
+    "B_bwd": 850,
+    "k": 5,
+    "b": 170
+   },
+   "64,1024|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 1024,
+    "B_gold": 64,
+    "B_bwd": 960,
+    "k": 2,
+    "b": 480
+   },
+   "64,1024|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 1024,
+    "B_gold": 64,
+    "B_bwd": 960,
+    "k": 5,
+    "b": 192
+   },
+   "64,1024|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 1024,
+    "B_gold": 64,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "128,128|G0": {
+    "cfg": {},
+    "B_roll": 128,
+    "B_gold": 128,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "128,128|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "paired"
+    },
+    "B_roll": 128,
+    "B_gold": 128,
+    "B_bwd": 128,
+    "k": 0,
+    "b": 0
+   },
+   "128,128|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "paired"
+    },
+    "B_roll": 128,
+    "B_gold": 128,
+    "B_bwd": 128,
+    "k": 0,
+    "b": 0
+   },
+   "128,128|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 126,
+    "B_gold": 0,
+    "B_bwd": 105,
+    "k": 5,
+    "b": 21
+   },
+   "128,128|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 1.0
+    },
+    "B_roll": 128,
+    "B_gold": 128,
+    "B_bwd": 128,
+    "k": 1,
+    "b": 128
+   },
+   "128,512|G0": {
+    "cfg": {},
+    "B_roll": 128,
+    "B_gold": 128,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "128,512|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 512,
+    "B_gold": 128,
+    "B_bwd": 512,
+    "k": 0,
+    "b": 0
+   },
+   "128,512|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 512,
+    "B_gold": 128,
+    "B_bwd": 512,
+    "k": 0,
+    "b": 0
+   },
+   "128,512|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 510,
+    "B_gold": 0,
+    "B_bwd": 425,
+    "k": 5,
+    "b": 85
+   },
+   "128,512|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 512,
+    "B_gold": 128,
+    "B_bwd": 384,
+    "k": 2,
+    "b": 192
+   },
+   "128,512|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 508,
+    "B_gold": 128,
+    "B_bwd": 380,
+    "k": 5,
+    "b": 76
+   },
+   "128,512|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 512,
+    "B_gold": 128,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "128,2048|G0": {
+    "cfg": {},
+    "B_roll": 128,
+    "B_gold": 128,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "128,2048|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 2048,
+    "B_gold": 128,
+    "B_bwd": 2048,
+    "k": 0,
+    "b": 0
+   },
+   "128,2048|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 2048,
+    "B_gold": 128,
+    "B_bwd": 2048,
+    "k": 0,
+    "b": 0
+   },
+   "128,2048|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 2046,
+    "B_gold": 0,
+    "B_bwd": 1705,
+    "k": 5,
+    "b": 341
+   },
+   "128,2048|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 2048,
+    "B_gold": 128,
+    "B_bwd": 1920,
+    "k": 2,
+    "b": 960
+   },
+   "128,2048|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 2048,
+    "B_gold": 128,
+    "B_bwd": 1920,
+    "k": 5,
+    "b": 384
+   },
+   "128,2048|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 2048,
+    "B_gold": 128,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "256,256|G0": {
+    "cfg": {},
+    "B_roll": 256,
+    "B_gold": 256,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "256,256|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "paired"
+    },
+    "B_roll": 256,
+    "B_gold": 256,
+    "B_bwd": 256,
+    "k": 0,
+    "b": 0
+   },
+   "256,256|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "paired"
+    },
+    "B_roll": 256,
+    "B_gold": 256,
+    "B_bwd": 256,
+    "k": 0,
+    "b": 0
+   },
+   "256,256|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 252,
+    "B_gold": 0,
+    "B_bwd": 210,
+    "k": 5,
+    "b": 42
+   },
+   "256,256|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 1.0
+    },
+    "B_roll": 256,
+    "B_gold": 256,
+    "B_bwd": 256,
+    "k": 1,
+    "b": 256
+   },
+   "256,1024|G0": {
+    "cfg": {},
+    "B_roll": 256,
+    "B_gold": 256,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "256,1024|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 1024,
+    "B_gold": 256,
+    "B_bwd": 1024,
+    "k": 0,
+    "b": 0
+   },
+   "256,1024|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 1024,
+    "B_gold": 256,
+    "B_bwd": 1024,
+    "k": 0,
+    "b": 0
+   },
+   "256,1024|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 1020,
+    "B_gold": 0,
+    "B_bwd": 850,
+    "k": 5,
+    "b": 170
+   },
+   "256,1024|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 1024,
+    "B_gold": 256,
+    "B_bwd": 768,
+    "k": 2,
+    "b": 384
+   },
+   "256,1024|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 1021,
+    "B_gold": 256,
+    "B_bwd": 765,
+    "k": 5,
+    "b": 153
+   },
+   "256,1024|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 1024,
+    "B_gold": 256,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "256,4096|G0": {
+    "cfg": {},
+    "B_roll": 256,
+    "B_gold": 256,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "256,4096|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 4096,
+    "B_gold": 256,
+    "B_bwd": 4096,
+    "k": 0,
+    "b": 0
+   },
+   "256,4096|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 4096,
+    "B_gold": 256,
+    "B_bwd": 4096,
+    "k": 0,
+    "b": 0
+   },
+   "256,4096|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 4092,
+    "B_gold": 0,
+    "B_bwd": 3410,
+    "k": 5,
+    "b": 682
+   },
+   "256,4096|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 4096,
+    "B_gold": 256,
+    "B_bwd": 3840,
+    "k": 2,
+    "b": 1920
+   },
+   "256,4096|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 4096,
+    "B_gold": 256,
+    "B_bwd": 3840,
+    "k": 5,
+    "b": 768
+   },
+   "256,4096|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 4096,
+    "B_gold": 256,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "512,512|G0": {
+    "cfg": {},
+    "B_roll": 512,
+    "B_gold": 512,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "512,512|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "paired"
+    },
+    "B_roll": 512,
+    "B_gold": 512,
+    "B_bwd": 512,
+    "k": 0,
+    "b": 0
+   },
+   "512,512|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "paired"
+    },
+    "B_roll": 512,
+    "B_gold": 512,
+    "B_bwd": 512,
+    "k": 0,
+    "b": 0
+   },
+   "512,512|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 510,
+    "B_gold": 0,
+    "B_bwd": 425,
+    "k": 5,
+    "b": 85
+   },
+   "512,512|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 1.0
+    },
+    "B_roll": 512,
+    "B_gold": 512,
+    "B_bwd": 512,
+    "k": 1,
+    "b": 512
+   },
+   "512,2048|G0": {
+    "cfg": {},
+    "B_roll": 512,
+    "B_gold": 512,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "512,2048|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 2048,
+    "B_gold": 512,
+    "B_bwd": 2048,
+    "k": 0,
+    "b": 0
+   },
+   "512,2048|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 2048,
+    "B_gold": 512,
+    "B_bwd": 2048,
+    "k": 0,
+    "b": 0
+   },
+   "512,2048|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 2046,
+    "B_gold": 0,
+    "B_bwd": 1705,
+    "k": 5,
+    "b": 341
+   },
+   "512,2048|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 2048,
+    "B_gold": 512,
+    "B_bwd": 1536,
+    "k": 2,
+    "b": 768
+   },
+   "512,2048|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 2047,
+    "B_gold": 512,
+    "B_bwd": 1535,
+    "k": 5,
+    "b": 307
+   },
+   "512,2048|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 2048,
+    "B_gold": 512,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "512,8192|G0": {
+    "cfg": {},
+    "B_roll": 512,
+    "B_gold": 512,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "512,8192|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 8192,
+    "B_gold": 512,
+    "B_bwd": 8192,
+    "k": 0,
+    "b": 0
+   },
+   "512,8192|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 8192,
+    "B_gold": 512,
+    "B_bwd": 8192,
+    "k": 0,
+    "b": 0
+   },
+   "512,8192|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 8190,
+    "B_gold": 0,
+    "B_bwd": 6825,
+    "k": 5,
+    "b": 1365
+   },
+   "512,8192|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 8192,
+    "B_gold": 512,
+    "B_bwd": 7680,
+    "k": 2,
+    "b": 3840
+   },
+   "512,8192|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 8192,
+    "B_gold": 512,
+    "B_bwd": 7680,
+    "k": 5,
+    "b": 1536
+   },
+   "512,8192|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 8192,
+    "B_gold": 512,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "1024,1024|G0": {
+    "cfg": {},
+    "B_roll": 1024,
+    "B_gold": 1024,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "1024,1024|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "paired"
+    },
+    "B_roll": 1024,
+    "B_gold": 1024,
+    "B_bwd": 1024,
+    "k": 0,
+    "b": 0
+   },
+   "1024,1024|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "paired"
+    },
+    "B_roll": 1024,
+    "B_gold": 1024,
+    "B_bwd": 1024,
+    "k": 0,
+    "b": 0
+   },
+   "1024,1024|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 1020,
+    "B_gold": 0,
+    "B_bwd": 850,
+    "k": 5,
+    "b": 170
+   },
+   "1024,1024|P2": {
+    "cfg": {
+     "k": 1,
+     "eta": 1.0
+    },
+    "B_roll": 1024,
+    "B_gold": 1024,
+    "B_bwd": 1024,
+    "k": 1,
+    "b": 1024
+   },
+   "1024,4096|G0": {
+    "cfg": {},
+    "B_roll": 1024,
+    "B_gold": 1024,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "1024,4096|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 4096,
+    "B_gold": 1024,
+    "B_bwd": 4096,
+    "k": 0,
+    "b": 0
+   },
+   "1024,4096|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 4096,
+    "B_gold": 1024,
+    "B_bwd": 4096,
+    "k": 0,
+    "b": 0
+   },
+   "1024,4096|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 4092,
+    "B_gold": 0,
+    "B_bwd": 3410,
+    "k": 5,
+    "b": 682
+   },
+   "1024,4096|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 4096,
+    "B_gold": 1024,
+    "B_bwd": 3072,
+    "k": 2,
+    "b": 1536
+   },
+   "1024,4096|P3": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 4094,
+    "B_gold": 1024,
+    "B_bwd": 3070,
+    "k": 5,
+    "b": 614
+   },
+   "1024,4096|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 4096,
+    "B_gold": 1024,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "1024,16384|G0": {
+    "cfg": {},
+    "B_roll": 1024,
+    "B_gold": 1024,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   },
+   "1024,16384|G1": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.1,
+     "source": "pooled"
+    },
+    "B_roll": 16384,
+    "B_gold": 1024,
+    "B_bwd": 16384,
+    "k": 0,
+    "b": 0
+   },
+   "1024,16384|G1-oracle": {
+    "cfg": {
+     "estimator": "plugin",
+     "lam": 0.0,
+     "source": "pooled"
+    },
+    "B_roll": 16384,
+    "B_gold": 1024,
+    "B_bwd": 16384,
+    "k": 0,
+    "b": 0
+   },
+   "1024,16384|P1": {
+    "cfg": {
+     "k": 5,
+     "eta": 1.0
+    },
+    "B_roll": 16380,
+    "B_gold": 0,
+    "B_bwd": 13650,
+    "k": 5,
+    "b": 2730
+   },
+   "1024,16384|P2": {
+    "cfg": {
+     "k": 2,
+     "eta": 1.0
+    },
+    "B_roll": 16384,
+    "B_gold": 1024,
+    "B_bwd": 15360,
+    "k": 2,
+    "b": 7680
+   },
+   "1024,16384|P3": {
+    "cfg": {
+     "k": 10,
+     "eta": 1.0,
+     "observable": "fpr"
+    },
+    "B_roll": 16384,
+    "B_gold": 1024,
+    "B_bwd": 15360,
+    "k": 10,
+    "b": 1536
+   },
+   "1024,16384|P4": {
+    "cfg": {
+     "r": 1
+    },
+    "B_roll": 16384,
+    "B_gold": 1024,
+    "B_bwd": 0,
+    "k": 0,
+    "b": 0
+   }
+  }
+ }
+}

@@ -1125,3 +1125,122 @@ Other E002a observations:
   also stall more. The U-statistic removes most of it.
 - A-extreme family: `alpha` is undefined in 94% (`q = 0.001`) and 53% (`q = 0.01`) of batches at
   `N = 64`. `C_hat` stays usable (RMSE ≈ 1/3 of `C`), because `C` falls back to `||g_e||`.
+
+#### D. E002b design-split tuning and runtime pilot (§5, §6), `R_design = 32`
+
+Run `results/E002b-design-pilot/20260925T085007Z_673a370-dirty`: script commit `673a370`,
+2088 s wall, 8 workers, 827 MB peak RSS in the main process and 332 MB per worker.
+
+**Disclosure.** The `-dirty` flag comes from one untracked output directory
+(`results/E002a-pilot/`) present at launch. No tracked file differed from `673a370`.
+
+All numbers are **in-sample**: arms are tuned and evaluated on the same 300 design structures.
+To size the selection optimism, the tuned configuration was also re-selected on replications
+1–16 and evaluated on replications 17–32. That estimate agrees with the in-sample one to within
+0.008 at the primary cells (0.013 at worst over all cells), so replication-level selection optimism
+is negligible.
+Structure-level optimism is not measured.
+
+Tuned C-index / AUROC at the primary cells. Costs are `B_roll / B_gold / B_bwd`; the probe
+columns also give the tuned configuration.
+
+| panel, cell | G1 | G1-oracle | P1 | P2 | P3 | P4 |
+| --- | --- | --- | --- | --- | --- | --- |
+| P-mod (64, 256) | .793 / .883 | .747 / .834 | .772 / .860 (k2 η1) | .818 / .914 (k2 η1) | **.825 / .909** (k5 η1 FPR) | .480 / .470 (r1) |
+| P-mod (256, 1024) | .867 / .959 | .837 / .939 | .851 / .948 | .876 / .970 | **.901 / .976** | .458 / .442 |
+| P-rare (64, 256) | .787 / .862 | .706 / .781 | **.824 / .905** (k5 η1) | .652 / .690 | .808 / .886 | .468 / .450 |
+| P-rare (256, 1024) | .860 / .946 | .810 / .909 | .924 / .986 | .858 / .947 | **.926 / .986** | .426 / .391 |
+
+Costs at (64, 256) for P-mod:
+
+| arm | `B_roll` | `B_gold` | `B_bwd` |
+| --- | --- | --- | --- |
+| G1 | 256 | 64 | 256 |
+| P1 | 255 | 0 | 170 |
+| P2 | 256 | 64 | 192 |
+| P3 | 254 | 64 | 190 |
+| P4 | 256 | 64 | 0 |
+
+Every cell's costs are in the run JSON.
+
+**`G1 - max_j P_j`** (P1–P4; in-sample; 200 hierarchical-bootstrap resamples; the max is taken
+inside each resample):
+
+| panel, cell | C-index | AUROC |
+| --- | --- | --- |
+| P-mod (64, 256) | −0.031 [−0.043, −0.020] | −0.032 [−0.047, −0.019] |
+| P-mod (256, 1024) | −0.034 [−0.043, −0.025] | −0.018 [−0.029, −0.009] |
+| P-rare (64, 256) | −0.037 [−0.052, −0.024] | −0.042 [−0.061, −0.026] |
+| P-rare (256, 1024) | −0.066 [−0.077, −0.056] | −0.040 [−0.055, −0.028] |
+
+With G1-oracle in place of G1, the difference is −0.038 to −0.124.
+
+Frontier (C-index point estimates, nominal cells as registered):
+
+- G1 is **not** uniformly dominated. It is non-dominated only at (16, 64) in both panels, where it
+  leads P1 by 0.015 (P-mod: .706 vs .691) and 0.019 (P-rare: .633 vs .614), and at (32, 128) in
+  P-rare.
+- **[post-hoc]** Dominance recomputed from each arm's *actual* costs, instead of nominal cells,
+  leaves the same cells non-dominated.
+
+Tuning behaviour:
+
+- **G1** always selects plug-in, pooled `g_V`, `lam = 0.1`:
+  - pooled vs paired is worth +0.08 to +0.17 C-index at the primary cells;
+  - `lam` is worth at most 0.016 there;
+  - the U-statistic is 0.10–0.28 worse there.
+- **G1-oracle is never above G1**: it is below by up to 0.088, with one tie at (16, 16) in
+  P-rare. **[post-hoc hypothesis, untested]**
+  The exact-Fisher metric weights direction `i` by `1/(s_i(1-s_i))`, which gives the
+  structure-dependent noise floor seen in E002a. An estimated `F_hat` from the same batch
+  whitens the noise per structure, like a Hotelling statistic. **Consequence:** exact Fisher is
+  not a finite-sample ceiling for G1.
+- **Probes** select `eta = 1.0`, the grid edge, in 107 of 112 probe cells. The optimum is an
+  interior ridge in `k·eta ≈ 3–5`: for example (10, 0.3) ≈ (5, 1.0), and (10, 1.0) degrades.
+  The edge is therefore not binding.
+- The P3 gold observable is much worse than the FPR observable.
+
+**P4 is below 0.5 in every cell**, finite-sample (0.369–0.495), as the oracle ceiling predicted. It
+cannot be the strongest competitor, and G1 always beats it.
+
+#### E. Items that need the collaborator's decision (NOT applied; no amendment made)
+
+1. **P4 orientation.** The registered orientation is anti-predictive: oracle C-index 0.40
+   (P-mod) and 0.27 (P-rare). Options:
+   - (a) keep it as registered and disclose;
+   - (b) add the sign as a design-tuned hyperparameter of P4;
+   - (c) drop P4 from abandonment rule (a).
+
+   Under the registered rule, "G1 beats P4" is automatic, so abandonment condition (a) ("beats
+   none of P1, P2, P4") **cannot trigger**. Flipping the sign would not change any comparison
+   with G1: the flipped finite-sample C-index is ≤ 0.63.
+2. **Decision gap.** The design pilot predicts:
+   - no practical success (G1 < max P at every primary cell);
+   - no abandonment ((a) is blocked by P4 and by G1 > P1 on P-mod; (b) does not apply; (c) fails
+     because of one non-dominated low-budget cell).
+
+   The registration does not name this outcome. A rule for it is needed before the held-out run.
+   Changing a decision rule after seeing design data is a forking path, and it should be
+   disclosed as such.
+3. **E002a instrumentation** (formal run only):
+   - add a dimension-matched null (policy features that do not enter the event, coin `= f`);
+   - add small-dose structures to the coverage set;
+   - restate the U-statistic claim for the Gram entries only;
+   - use exact binomial bands for degenerate rates.
+4. **Endpoint engineering.** At `n = 600` the registered bootstrap (2000 resamples × 64
+   replications) costs about 8.7e6 C-index evaluations per panel, about 13 CPU-hours with the
+   current O(n²)-per-call code. Precomputing per-replication concordance matrices makes each
+   resample one quadratic form, about 100× faster. This is a pure refactor, and it needs an
+   equivalence test first.
+
+#### F. Held-out resource estimate (not run)
+
+- **Simulation**, frozen configurations only (600 structures, `R = 64`): 1.1–3.0 CPU-hours, about
+  11–29 min wall on 8 workers.
+- **Test-split targets and oracle ceilings:** under 2 min.
+- **Bootstrap:** about 13 CPU-hours with the current code, or minutes after the refactor in E.4.
+- **Memory:** under 1 GB per worker and about 1 GB in the main process.
+
+Tuned configurations (candidate freeze): `configs/e002/e002b_tuned_configs.json`, sha256
+`674c882340328d0b497af9464bb1e5d973a709b316b9276694dbdefae500d880`. They are extracted from the
+run JSON (sha256 `83f662c7bd0fda0839f59c82e888e815cace455d6101313d349871b84e89650e`).
