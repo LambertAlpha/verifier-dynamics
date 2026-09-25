@@ -160,6 +160,16 @@ space is a policy-controllable error. Flipping the single outcome `(corr, z) = (
 Y exactly, with `C > 0`. The operative distinction between R and Y is whether the error is a
 function of something the policy controls.
 
+*Refinement found while writing tests (2026-09-24).* Fixed flips are policy-controllable
+**generically, not at every policy**: flipping `{(0,1), (1,1)}` gives `V = corr XOR z` with
+`alpha = -2s` and `C = |1 - 2q| sqrt(s(1-s))` **[derived-agent]**, which vanishes at `q = 1/2`.
+The original test asserted `C > 0` for every fixed flip set and failed at `q = 1/2`; the claim was
+narrowed, not the code.
+
+*Matched-accuracy illustration [derived-agent].* At a given policy, the fixed flip of `(0, 1)` and
+R with `p = (1-q)s` err with the same probability under `pi`, yet `C = (1-q) sqrt(s(1-s))` versus
+`C = 0`. This is the local, single-policy version of the proposal's H1.
+
 Not tested in Phase 1A: under step-normalized optimizers (Adam, sign-SGD, KL trust region) the
 scalar `(1-2p)` is largely normalized away and R acts mainly through estimator variance.
 
