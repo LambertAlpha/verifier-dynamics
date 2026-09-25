@@ -85,8 +85,12 @@ def test_loader_refuses_the_test_split_without_approval(tmp_path, mod_panel):
     assert len(pn.load_split(path, "test", approval_file=approval)) == 600
 
 
-def test_default_approval_file_is_absent():
-    assert not pn.DEFAULT_APPROVAL.exists()
+def test_default_approval_file_is_absent_or_records_an_explicit_approval():
+    # Sealed until 2026-09-25; unsealed on explicit approval (commit 83b6737). The file may only
+    # exist with the recorded approval and the frozen code commit.
+    if pn.DEFAULT_APPROVAL.exists():
+        text = pn.DEFAULT_APPROVAL.read_text()
+        assert "explicit approval" in text and "d639b09" in text
 
 
 def test_design_counts_are_the_amendment_1_values():
