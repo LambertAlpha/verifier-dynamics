@@ -138,7 +138,7 @@ def tune(
     stall: np.ndarray, reps: int
 ) -> dict[str, Any] | None:  # fmt: skip
     b_gold, b_roll = cell
-    rows = []
+    rows: list[dict[str, Any]] = []
     for g_i, cfg in enumerate(configs(arm)):
         key = f"{c_i}|{arm}|{g_i}"
         if key not in data:
