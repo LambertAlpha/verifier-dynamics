@@ -966,3 +966,32 @@ most likely confined to ratio-1 cells or none.
 **Code/config** (to be written after this commit): `src/vdyn/verifiers/boolean_fp.py`,
 `src/vdyn/geometry/gold_race.py`, `src/vdyn/e002/{panel,estimators,probes,endpoints}.py`,
 `experiments/e002/*`, `configs/e002/e002.toml`.
+
+**E002 Amendment 1** (2026-09-25; written during implementation, **before any panel, target,
+predictor or pilot output exists**). Each item fixes an ambiguity or infeasibility found while
+implementing. The pre-registration block above is unchanged.
+
+1. **SINGLE has no free parameters after matching.** The common shift forces `s = f`, so all
+   SINGLE draws are the same structure. As registered, the de-duplication rule could never be
+   satisfied and panel generation loops forever. Fix:
+   - SINGLE becomes an identical-control class like RFP: 10 instances, exempt from
+     de-duplication.
+   - The 79 freed slots are reassigned evenly to the other feature types: AND2, AND3, AND4, OR2,
+     OR3, THR23 and AOR get +9 (98 each); OAND and MIX get +8 (97 each). The total stays 900.
+   - Design counts per type use largest-remainder apportionment of 1/3 per class, with a total
+     of exactly 300 (ties broken by registered type order). SINGLE and RFP get 4 design and
+     6 test each.
+2. **Shared raw draws across the FPR grid.** A raw draw is accepted only if the matched features
+   stay inside `[1e-4, 1 - 1e-4]` for **every** `f` in the operating point's grid. This implements
+   "the same raw draws are used for every `f`" together with the rejection rule. De-duplication is
+   evaluated at the first grid value; a constant shift makes it `f`-invariant.
+3. **Seeds.** `SeedSequence(20260925).spawn(4)` gives `[P-mod draws, P-mod split, P-rare draws,
+   P-rare split]`.
+4. **Numerical tolerance for the categorical target.** Stall iff `q∞ < 1 - 1e-6`, the same
+   success threshold as E003. A unit-test structure sat within 1e-11 of the exact threshold, where
+   the raw rule `Lambda(∞) < log(1/q0)` is decided by floating-point noise.
+5. **Target integration.** The `tau`-ODE stops when `1 - FPR < 1e-12` (cancellation-free), with
+   `tau_max = 1e10`. The remaining tail `∫(1 - FPR) dtau` is added analytically for a power-law
+   tail `c tau^-p`, with `p` estimated from the solution between `tau_e/2` and `tau_e` (the tail
+   is 0 if `p > 30`). This is validated against the Prop. 9 closed forms, including symmetric OR,
+   to 1e-8 relative.
