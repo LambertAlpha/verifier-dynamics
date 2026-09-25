@@ -995,3 +995,14 @@ implementing. The pre-registration block above is unchanged.
    tail `c tau^-p`, with `p` estimated from the solution between `tau_e/2` and `tau_e` (the tail
    is 0 if `p > 30`). This is validated against the Prop. 9 closed forms, including symmetric OR,
    to 1e-8 relative.
+
+**E002 panel freeze** (2026-09-25). The panel files were written by
+`experiments/e002/write_panels.py` (commit `8272c02` code); they hold parameters and split labels
+only. No target or predictor had been computed.
+
+- `configs/e002/panel_P-mod.json`: sha256
+  `60e27ed0e99c0ca0b428404e44fe525253ee15a0aec76f9e259359b53cadc9e3` (900 slots, 29 redraws).
+- `configs/e002/panel_P-rare.json`: sha256
+  `90add2d8acff344c431d7e48e68cfc9da91f3d2f3ec4911123c2377f9ea3d7f1` (900 slots, 124 redraws).
+
+The held-out split is sealed: `configs/e002/HELDOUT_APPROVED` does not exist.
