@@ -1502,3 +1502,24 @@ held-out run.
   - P-mod: 0.143 / 0.073 / 0.049 at `N = 64 / 256 / 1024`. At `N >= 1024` the value is bounded
     by the dose grid (smallest nonzero dose `C = 0.062`).
   - P-rare: not reached at `N = 64`; 0.079 / 0.040 / 0.025 at `N = 256 / 1024 / 4096`.
+
+---
+
+### E000d — E004 design-phase checks (retroactive, NOT pre-registered; not evidence)
+
+Date: 2026-09-25. These are scratch checks for the E004 design memo
+(`research/06_e004_design.md`, §2), run on a scratch multi-prompt toy (exact enumeration +
+autodiff). The scripts are kept as run in `research/design_checks/e004/`, which is excluded from
+lint. No E004 panel, target or predictor exists. None of this is an E004 result. It is disclosed
+because the design relies on it, and E004 predictions that use these facts are not blind to them.
+
+| check | result |
+| --- | --- |
+| DC1 | Observable identity `alpha = -FPR`, `A^2 = J_G'/(1-FPR)`, `C^2 = (1-J_G) FPR'` for feature-triggered FP with FNR = 0, prompt-uniform trigger, and features independent of gold-relevant parameters: ≤ 3e-15 under NG. It breaks (deviation 0.4–31) for attempt credit, deletion, FN coins, prompt-specific triggers and R. Shared-parameter coupling is a reparameterization and invisible to NG (4e-9). |
+| DC2 | Benign amplification vs the most accessible exploit at matched `(J_G, FPR)` under NG: `rho_B - rho_Y = FPR` (min residual −2e-10 over 40 pairs); `rho_B = 1 + FPR(1-J_G)/J_G` exact. |
+| DC3 | NG, FNR = 0, hack acceptance 0.9: no decline (0.15 → 0.90). FNR = 0.3: peak 0.20 at `t = 2`, then 0.001. |
+| DC4 | Infinite-batch Adam-like flow. The identity holds for an uncoupled AND2 (block-diagonal metric). Coupling changes the dynamics (`alpha(0)` +0.025 vs −0.002; FPR(0.6) 0.18 vs 0.016). Clean `t95`: 4.9 (NG), 5.6 (Adam). |
+| DC5 | Mechanism hard pair (B vs coupled AND2 exploit, infinite-batch Adam): matched within 0.005 over the first 5% of `T`; `alpha` +0.45 vs −0.37; `C_out` 0 vs 0.28–0.43; both succeed. |
+| DC6 | Single-feature exploit, normalized shortfall at `T = 15`: NG 0.434; sign-GD 0.000; mean-field Adam 0.012 / 0.031 / 0.095 at batch 512 / 64 / 8. |
+| DC7 | Preference inversion: shortfall 0.43 (NG) / 0.49 (mean-field Adam), peak then decline; with inversion on both prompts, 1.56 / 1.88. No inversion: success under both. |
+| DC8 | Latent-decline outcome hard pair (D vs B, mean-field Adam, batch 64): matched within 0.002 over the first 5%; `alpha` −0.26 → −0.40 vs +0.03; D peaks at 30% of `T`, then DECLINE (normalized shortfall 0.49); B SUCCESS. |

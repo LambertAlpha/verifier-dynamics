@@ -36,6 +36,8 @@ filterwarnings = [
 [tool.ruff]
 line-length = 100
 target-version = "py312"
+# Design-phase check scripts are kept exactly as run (records, not repo code); see their README.
+extend-exclude = ["research/design_checks"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "NPY"]
