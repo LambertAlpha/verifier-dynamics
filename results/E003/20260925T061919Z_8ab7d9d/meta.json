@@ -1,0 +1,189 @@
+{
+  "experiment_id": "E003",
+  "created_utc": "2026-09-25T06:19:19+00:00",
+  "git": {
+    "commit": "8ab7d9d8072e3da1c9a1b32453ea5476be71f6f1",
+    "dirty": true
+  },
+  "config": {
+    "experiment_id": "E003",
+    "title": "Candidate 3: feature-triggered false positives matched on static metrics (natural gradient)",
+    "registry": "research/03_experiment_registry.md#e003",
+    "q0": 0.001,
+    "f": 0.01,
+    "structures": [
+      {
+        "name": "RFP",
+        "kind": "random"
+      },
+      {
+        "name": "AND3",
+        "kind": "and",
+        "s0": [
+          0.2154434690031884,
+          0.2154434690031884,
+          0.2154434690031884
+        ]
+      },
+      {
+        "name": "AND-SYM",
+        "kind": "and",
+        "s0": [
+          0.1,
+          0.1
+        ]
+      },
+      {
+        "name": "AND-MID",
+        "kind": "and",
+        "s0": [
+          0.04,
+          0.25
+        ]
+      },
+      {
+        "name": "AND-ASYM-A",
+        "kind": "and",
+        "s0": [
+          0.0125,
+          0.8
+        ]
+      },
+      {
+        "name": "AND-ASYM-B",
+        "kind": "and",
+        "s0": [
+          0.010204081632653062,
+          0.98
+        ]
+      },
+      {
+        "name": "OR",
+        "kind": "or",
+        "s0": [
+          0.005012562893380035,
+          0.005012562893380035
+        ]
+      },
+      {
+        "name": "SINGLE",
+        "kind": "single",
+        "s0": [
+          0.01
+        ]
+      }
+    ],
+    "horizon": {
+      "natural": 500.0,
+      "vanilla": 1000000.0
+    },
+    "solver": {
+      "method": "DOP853",
+      "rtol": 1e-10,
+      "atol": 1e-12,
+      "t_min": 0.001,
+      "n_eval": 400,
+      "report_times": [
+        10.0,
+        25.0,
+        100.0,
+        500.0
+      ]
+    },
+    "tolerances": {
+      "static": 1e-12,
+      "c0": 1e-06,
+      "gold_race": 1e-07,
+      "success_gold": 1e-06,
+      "success_exploit": 1e-05,
+      "stall_gold": 0.001,
+      "stall_exploit": 0.01,
+      "invariant": 1e-07
+    },
+    "predictions": {
+      "RFP": {
+        "C0": 0.0,
+        "eta0": 0.0,
+        "stall": false,
+        "q_inf": 1.0,
+        "S_inf": 0.01,
+        "eta_trend": "constant"
+      },
+      "AND3": {
+        "C0": 0.03302,
+        "eta0": 0.1104,
+        "stall": false,
+        "q_inf": 1.0,
+        "S_inf": 0.027274,
+        "eta_trend": "nondecreasing"
+      },
+      "AND-SYM": {
+        "C0": 0.042384,
+        "eta0": 0.1818,
+        "stall": false,
+        "q_inf": 1.0,
+        "S_inf": 0.062287,
+        "eta_trend": "nondecreasing"
+      },
+      "AND-MID": {
+        "C0": 0.05191,
+        "eta0": 0.2727,
+        "stall": false,
+        "q_inf": 1.0,
+        "S_inf": 0.123215,
+        "eta_trend": "nondecreasing"
+      },
+      "AND-ASYM-A": {
+        "C0": 0.088933,
+        "eta0": 0.8005,
+        "stall": true,
+        "q_inf": 0.230039,
+        "S_inf": 1.0,
+        "eta_trend": "nondecreasing"
+      },
+      "AND-ASYM-B": {
+        "C0": 0.0984,
+        "eta0": 0.98,
+        "stall": true,
+        "q_inf": 0.107674,
+        "S_inf": 1.0,
+        "eta_trend": "nondecreasing"
+      },
+      "OR": {
+        "C0": 0.099274,
+        "eta0": 0.9975,
+        "stall": true,
+        "q_inf": 0.199499,
+        "S_inf": 1.0,
+        "eta_trend": "nonincreasing"
+      },
+      "SINGLE": {
+        "C0": 0.099399,
+        "eta0": 1.0,
+        "stall": true,
+        "q_inf": 0.1,
+        "S_inf": 1.0,
+        "eta_trend": "constant"
+      },
+      "summary": {
+        "spearman_c0_shortfall": 0.913,
+        "discordant_pairs": [
+          [
+            "OR",
+            "AND-ASYM-B"
+          ]
+        ]
+      }
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "optimizer": "natural"
+}

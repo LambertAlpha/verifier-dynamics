@@ -1,0 +1,45 @@
+== E003 pre-run integrity check  2026-09-25T06:18:02Z
+-- 1. working tree
+uncommitted paths: 0
+-- 2. commits
+HEAD (run commit):     8ab7d9d8072e3da1c9a1b32453ea5476be71f6f1
+pre-registration:      2736f5074419a8dd9d3a0aefba2c36a6d31db694
+implementation:        90cf69a80c43241c2ba9693b8fe08a7a882cf742
+execution plumbing:    8ab7d9d8072e3da1c9a1b32453ea5476be71f6f1
+python 3.12.11 | torch 2.14.0 | numpy 2.5.3 | scipy 1.18.1 | matplotlib 3.11.2
+-- frozen files: registry pre-run text since 2736f50 (deleted lines must be 0)
+16	0	research/03_experiment_registry.md
+config since implementation commit 90cf69a (must be empty):
+-- 3. validation suite
+155 passed in 31.53s
+All checks passed!
+41 files already formatted
+Success: no issues found in 33 source files
+-- 4. existing results
+E001
+results/E003 absent (ok)
+/Users/lambertlin/Documents/01Project/verifier-dynamics/.venv/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+-- 5. t = 0 quantities from the registered config (generic enumeration + autodiff; no integration)
+  gold               registered=0.001  max|obs-reg|=1.08e-18  max-min across structures=8.67e-19
+  fpr                registered=0.01  max|obs-reg|=2.08e-17  max-min across structures=3.12e-17
+  fnr                registered=0  max|obs-reg|=0.00e+00  max-min across structures=0.00e+00
+  verifier_accuracy  registered=0.99001  max|obs-reg|=1.11e-16  max-min across structures=1.11e-16
+  fp_mass            registered=0.00999  max|obs-reg|=2.08e-17  max-min across structures=3.12e-17
+  A_F                registered=0.03160696126  max|obs-reg|=2.08e-17  max-min across structures=2.08e-17
+  alpha_F            registered=-0.01  max|obs-reg|=1.32e-16  max-min across structures=2.34e-16
+  structure    C(0) generic   registered   |diff|     eta0 generic
+  RFP         0.000000000  0.000000   0.0e+00   0.0000
+  AND3        0.033019582  0.033020   4.2e-07   0.1104
+  AND-SYM     0.042383980  0.042384   2.0e-08   0.1818
+  AND-MID     0.051909563  0.051910   4.4e-07   0.2727
+  AND-ASYM-A  0.088933447  0.088933   4.5e-07   0.8005
+  AND-ASYM-B  0.098400439  0.098400   4.4e-07   0.9800
+  OR          0.099274292  0.099274   2.9e-07   0.9975
+  SINGLE      0.099399245  0.099399   2.4e-07   1.0000
+  C(0) strictly increasing in registered order: True
+Traceback (most recent call last):
+  File "<stdin>", line 31, in <module>
+ValueError: dictionary update sequence element #0 has length 3; 2 is required
+  config predictions identical to registry text at 2736f50 (C0, eta0, class, q_inf, S_inf; 8 structures): True
+== pre-run integrity check: PASSED
