@@ -4,6 +4,24 @@
 Every closed form below was checked numerically in the scratch directory (registry E000b), so later
 predictions for these models will not be blind.
 
+## Decisions (collaborator, 2026-09-25)
+
+1. **Candidate 3** is the primary positive experiment. It is pre-registered as **E003** (registry),
+   with its theory in theory note §10.
+2. **Candidate 1** is a negative control / insufficiency result. Its statement is theory note §11,
+   Prop. 11. It will not be "fixed".
+3. **Candidate 2** is not a core experiment for now.
+4. The Phase 1B claim and the `J_G`-based outcome definitions are frozen in the registry
+   ("Phase 1B claim").
+
+Proposed tests for the Candidate 1 negative control (not yet implemented):
+
+- the two matched states have identical aggregate `(A, alpha, C)` and static metrics (autodiff on
+  a shared-exploit multi-prompt policy);
+- the Prop. 7 invariant and stall criterion agree with generic natural-gradient trajectories;
+- `dC/dt(0)` is identical in the two states while `dA^2/dt(0)` differs;
+- per-prompt `(A_x, C_x)` recover `q_x` and hence `I0`.
+
 ## Goal
 
 Toy models in which a run shows, **early**: `C(t) > 0` and `dJ_G/dt > 0`; **later**: `dJ_G/dt -> 0`

@@ -1,6 +1,13 @@
-# 01 — Theory note (v0.2, 2026-09-25)
+# 01 — Theory note (v0.3, 2026-09-25)
 
 ## Version history
+
+- **v0.3** (2026-09-25), Phase 1B decisions:
+  1. The `A = 0` convention changed from v0.2's `alpha := 0` to `alpha = NaN`,
+     `alpha_defined = False`, `C := ||h_e||` (collaborator decision; §1).
+  2. New §10: feature-triggered false positives (Candidate 3), Props. 8–10.
+  3. New §11: aggregate-snapshot insufficiency (Candidate 1), Prop. 11.
+  4. New WH-5 in §7.
 
 - **v0.1** (2026-09-24; last state at commit `e7f5144`): Phase 1A derivations for the Y, R and X
   toys.
@@ -52,9 +59,16 @@ If `A = ||h_G|| > 0`, decompose
 
     h_e = alpha h_G + r,   <r, h_G> = 0,   alpha = <h_e, h_G> / A^2,   C = ||r||,   b = alpha A.
 
-**Convention for `A = 0`** (e.g. `q in {0, 1}`, or `M_t` annihilates `g_G`): set `alpha := 0`,
-`r := h_e`, `C := ||h_e||`. The identities below then still hold. *The current code divides by
-`A^2` and returns NaN here; changing that is pending approval (§8).*
+**Degenerate case `A = 0`** (v0.3; e.g. `q in {0, 1}`, or `M_t` annihilates `g_G`). There is no
+gold direction, so:
+
+- `alpha = NaN` and `alpha_defined = False` (and `b = NaN`);
+- `C := ||h_e||`, the **magnitude of the whole residual**. It is *not* an orthogonal component,
+  because there is nothing for it to be orthogonal to.
+
+The regime is **degenerate true-signal exhaustion**. The rates still follow directly:
+`dJ_G/dt = <h_G, h_V> = 0` and `dDelta/dt = dJ_V/dt = ||h_e||^2 = C^2`. (v0.2 proposed
+`alpha := 0`; withdrawn per collaborator decision, because it silently assigns a direction.)
 
 **Proposition 1 (v0.2 form).**
 
@@ -311,6 +325,10 @@ E001 is re-scored.
 - **WH-4 (information requirement).** A test of "beyond static metrics" needs a model in which
   on-policy static metrics do not determine the diagnostics or the outcome. The single-prompt OR
   toy fails this (§3.4). Candidates are in `04_phase1b_design.md`.
+- **WH-5 (v0.3: path, not snapshot).** Even in a family matched on static metrics, `A` and `alpha`,
+  the gold outcome is a functional of the whole accessibility path (Prop. 9). A snapshot `C` is
+  informative but not sufficient (Prop. 10). Predictors should target the short-horizon evolution
+  of `eta = (C/C_max)^2`, not `C(0)` alone.
 
 ## 8. Open issues
 
@@ -320,8 +338,7 @@ E001 is re-scored.
 3. X aggregate `C_agg > 0` (Prop. 6); span split proposed, not implemented.
 4. R's `C = 0` requires fresh, response-independent flips.
 5. Naming: `(a,b,c)` vs `(A,alpha,C)`; `corr`; "Monte Carlo Fisher" vs "empirical Fisher".
-6. **New:** the `A = 0` convention (§1) is not implemented; `decompose` returns NaN there. This is
-   a small code change, pending approval.
+6. `A = 0` handling: decided in v0.3 (§1). The implementation follows this entry and is tested.
 7. **New:** the proposal's §3.2 (`rho`, "latent exploitation") and H5 still use gap-growth framing.
    This is the collaborator's decision.
 
@@ -339,3 +356,127 @@ E001 is re-scored.
 | §5 X, Prop. 6 | `test_x.py` |
 | §6 observations | E001 (`03_experiment_registry.md`): 82/83 registered checks passed; the one failure is a mis-specified absolute tolerance (E001-D1) |
 | Phase 1B derivations (`04_phase1b_design.md`) | scratch checks only (E000b); no repo tests yet |
+| §10 Props. 8–10 (Candidate 3) | pending: `tests/test_triggered_*.py`; E003 (pre-registered) |
+| §11 Prop. 11 (Candidate 1) | closed-form computation only (registry E000b, item 3); proposed tests listed in `04_phase1b_design.md` |
+
+## 10. Feature-triggered false positives (Candidate 3) — v0.3
+
+**Setting.**
+
+- Policy: `pi(corr, z) = Bern(corr; q) × pi_phi(z)`, where `z = (z_1..z_m)` are independent
+  Bernoulli features with logits `phi` (`s_i = sigmoid(phi_i)`).
+- Gold `G = corr`. Verifier `V = corr OR 1_E(z)` for an event `E` defined on the features.
+- On-policy `S(phi) = pi_phi(E)`, which equals the FPR (`E` is independent of `corr`); FNR = 0.
+- Random-FP control: `V = corr OR xi`, `xi ~ Bern(f)` fresh, so `S ≡ f` is not policy-controllable.
+
+**Proposition 8 (static metrics fix `alpha` and cap `C`) [proved].**
+
+    J_G = q,   J_V = q + (1-q) S,   Delta = (1-q) S
+    g_G = (q(1-q), 0),   g_e = (-S q(1-q), (1-q) grad_phi S),   F = diag(q(1-q), F_phi)
+
+In the Fisher metric:
+
+- `A = sqrt(q(1-q))`;
+- `alpha = -S = -FPR` exactly;
+- `C = (1-q) kappa`, with `kappa^2 = grad S^T F_phi^{-1} grad S`.
+
+By Cramér–Rao (Cauchy–Schwarz applied to `Cov(1_E, score) = grad S`),
+`kappa^2 <= Var(1_E) = S(1-S)`. Equality holds iff `1_E - S` lies in the span of the feature
+scores. Hence
+
+    0 <= C <= C_max := (1-q) sqrt(FPR (1-FPR)),     eta := (C / C_max)^2 in [0, 1].
+
+A single-feature exploit attains `C_max` (`eta = 1`); a random FP has `C = 0`. At fixed `q`, FPR
+and FNR, all such verifiers share `A` and `alpha`. **They differ only in `C`, i.e. in the
+accessibility of the error in action space.**
+
+`kappa^2` for independent features:
+
+- single: `s(1-s)`;
+- `k`-AND: `S^2 sum_i (1-s_i)/s_i` (2-AND: `S(s1 + s2 - 2S)`);
+- `k`-OR: `(1-S)^2 sum_i s_i/(1-s_i)`.
+
+**Proposition 9 (gold-race law, natural gradient) [proved].** Natural gradient on `J_V` gives
+
+    u' = 1 - S,     phi' = (1-q) F_phi^{-1} grad_phi S     (for Bernoulli logits: phi_i' = (1-q) dS/ds_i).
+
+- (a) The feature path is the natural-gradient ascent curve of `S` in feature space. Only its
+  speed depends on `q`.
+- (b) Along it, `d log q / d log S = S(1-S)/kappa^2 = 1/eta`. So
+  `log q(t) - log q0 = Λ(S(t)) := ∫_{S0}^{S(t)} dS' / (S' eta(S'))`.
+- (c) Outcome:
+  - if `q0 exp(Λ(1)) < 1`: gold **stalls** at `q∞ = q0 exp(Λ(1))` and `S -> 1`;
+  - otherwise **success**: `q -> 1` and the exploit freezes at `S*`, where
+    `Λ(S*) = log(1/q0)`.
+- (d) `q` is non-decreasing and `q(t) <= sigmoid(u0 + t)`, the clean-verifier natural-gradient
+  run.
+
+*Proof.* (a) holds by definition. (b) `d log q/dt = (1-q)(1-S)` and
+`d log S/dt = (1-q) kappa^2 / S`; take the ratio. (c) `q` and `S` are monotone and bounded, so
+they converge; at the limit either `q = 1` or `kappa = 0` (`S = 1` for the structures here);
+combine with (b). (d) follows from `u' = 1 - S <= 1`. ∎
+
+Closed forms of `Λ`:
+
+- single: `log(s/s0)`, so `q∞ = q0/s0` (Prop. 3);
+- symmetric 2-OR: `log(a/a0)`, so `q∞ = q0/a0`;
+- symmetric 2-AND: `[log s - 1/s]_{s0}^{s}`;
+- symmetric 3-AND: `[log s - 1/s - 1/(2s^2)]_{s0}^{s}`;
+- asymmetric 2-AND, using the invariant `(1-s1)/(1-s2) = rho`:
+  `Λ = [log(s2/s2_0) - rho log(s1/s1_0)] / (1 - rho)`.
+
+The asymmetric case reduces by partial fractions, because `s1 + s2 - 2S = (1-s2)(s1 + rho s2)`.
+Stall threshold for symmetric 2-AND: `q0 < s0 exp(1 - 1/s0)`.
+
+**Proposition 10 (snapshot `C` is informative but not sufficient) [derived-agent].** The outcome
+depends on the whole `eta`-path, while `C(0)` gives only its starting value. Along the path:
+
+- `eta` rises for AND structures (`2s/(1+s)` in the symmetric case);
+- `eta` falls for OR (`2(1-a)/(2-a)`);
+- `eta` is constant 1 for single.
+
+So `C(0)` orders outcomes correctly only when the `eta`-paths do not cross. E003 (P7) pre-registers
+a crossing: OR vs AND-ASYM-B.
+
+## 11. Aggregate snapshot insufficiency (Candidate 1) — v0.3
+
+Model: `04_phase1b_design.md` Candidate 1 (prompt-specific `q_x`, shared exploit `s`), natural
+gradient.
+
+**Proposition 11 [proved by construction].** The aggregate snapshot — Fisher-metric `(A, alpha, C)`
+of the aggregate gradients, together with the aggregate static metrics (gold accuracy `qbar`, FPR
+`s`, FNR 0) — is **not a sufficient statistic** for the gold outcome.
+
+*Construction* (weights `(p, 1-p)`, two prompts, mean accuracy 0.30, variance 0.04, `s0 = 0.245`):
+
+| `p` | `q0` | aggregate `(A^2, alpha, C)` | `E_w log q` → geometric mean | outcome (Prop. 7) |
+| --- | --- | --- | --- | --- |
+| 0.5 | (0.1, 0.5) | (0.170, −0.245, 0.30106) | 0.2236 | **stall**, `qbar∞ = 0.915` |
+| 0.9 | (0.2333, 0.9) | identical | 0.2671 | **success** (`s∞ = 0.917`) |
+
+*Why.* `A^2 = qbar - E q^2`, `alpha = -s` and `C = (1-qbar) sqrt(s(1-s))` depend on the
+prompt-accuracy distribution only through its first two moments. The outcome depends on
+`I0 = log s0 - E_w log q_x0` (stall iff `I0 > 0`; `I0 = +0.0914` vs `-0.0862` here), and
+`E log q` is not a function of the first two moments. ∎
+
+**What distinguishes the two states.**
+
+1. **The sufficient statistic of this model** is `I0` itself, the natural-gradient invariant.
+   It is a *distributional* statistic of per-prompt accuracy, the log-mean.
+2. **Prompt-conditioned diagnostics suffice.**
+   - `A_x = sqrt(w_x q_x(1-q_x))` and `C_x = w_x (1-q_x) sqrt(s(1-s))` (with `w_x` known) recover
+     each `q_x`, hence `I0`.
+   - Here: `A_x = (0.212, 0.354)` vs `(0.401, 0.095)`; `C_x = (0.194, 0.108)` vs `(0.297, 0.004)`.
+   - `alpha_x = -s` for every prompt and carries no information.
+3. **Short-horizon evolution.** In the two states `dC/dt(0)` is **identical** (−0.00146), because
+   `C` and `dC/dt` depend only on `qbar`, `s` and `A^2`. `dA^2/dt(0)` differs (0.0272 vs 0.0594):
+   it involves the third moment. So the `C` channel is blind at first order, and the `A` channel's
+   evolution separates these two states.
+   - In general, the aggregate snapshot plus `k` time derivatives is a function of finitely many
+     moments of the prompt-accuracy distribution **[derived-agent sketch]**, whereas `E log q` is
+     not determined by finitely many moments. Hence finite-order aggregate evolution is not
+     sufficient in general **[conjecture]**.
+   - The full aggregate trajectory over a finite window determines the distribution in principle
+     (analyticity), but that inversion is ill-posed **[conjecture]**.
+
+This result is kept as a limitation of the framework (negative control), not fixed.

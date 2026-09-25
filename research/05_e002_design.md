@@ -7,11 +7,19 @@ pre-run entry **before** any E002 code runs.
 ## 1. Question
 
 In a toy where `(A, alpha, C)` are known exactly, can they be estimated from `N` on-policy rollouts
-well enough to be practically useful? Concretely: how large must `N` be to
+well enough to be practically useful?
 
-- estimate each quantity with small bias and variance,
-- tell R, X and Y apart, and
-- detect `C > 0`, in particular near `C = 0` and as `A -> 0`?
+**Revision (2026-09-25, collaborator decision).** The primary evaluation is **matched R vs Y**:
+
+- bias and variance of the estimates;
+- `P(C_hat_Y > C_hat_R)`;
+- power at a fixed 5% false-alarm rate;
+- minimum detectable `C`;
+- behaviour as `A -> 0`.
+
+X is kept only as a separate deletion / zero-signal diagnostic. The three-way R/X/Y classification
+is **not** a headline metric. At `A = 0` the estimators follow the v0.3 convention
+(`alpha = NaN`, `alpha_defined = False`, `C = ||h_e||`).
 
 ## 2. Model and conditions
 
@@ -71,7 +79,7 @@ Each metric is computed per cell (state × verifier × `N` × estimator × metri
    - Power `P(C_hat_Y > c95)`, where `c95` is the 95th percentile of `C_hat` under R at the same
      state and `N`, estimated from the calibration stream.
    - The minimum detectable `C` at 80% power as a function of `N` (from the S2 sweep).
-4. **Three-way R / X / Y classification** with a pre-specified rule:
+4. *(Secondary diagnostic only, not a headline.)* **Zero-signal / deletion diagnostic**, including X, with a pre-specified rule:
    - (i) **X** if all `N` verifier rewards are equal (with E2 this is exactly `g_hat_V = 0`, the
      GRPO zero-advantage case);
    - (ii) otherwise **Y** if `C_hat > c95`;
@@ -81,7 +89,7 @@ Each metric is computed per cell (state × verifier × `N` × estimator × metri
 5. **Minimum `N`** for each of:
    - `|bias| < 10%` and `CV < 20%` for each quantity;
    - power ≥ 0.8 for `C > 0`;
-   - balanced classification accuracy ≥ 0.9.
+   - (secondary) zero-signal diagnostic accuracy ≥ 0.9.
 6. **Near `A -> 0`:** the `alpha_hat` breakdown rate, and `D`/`P` behaviour vs `alpha_hat`.
 
 ## 5. Why the edge cases matter (known in advance)

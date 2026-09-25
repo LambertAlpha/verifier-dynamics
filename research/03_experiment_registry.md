@@ -282,3 +282,158 @@ code or tests exist for these models yet. Any later Phase 1B experiment predicti
    | conjunctive `(s1, s2) = (0.01, 0.9)` | 0.0895 | stall, `q_inf = 0.166` |
    | conjunctive `(0.0949, 0.0949)` | 0.0393 | success; exploit never took off (`S_inf = 0.050`) |
    | single-feature, `s = 0.009` | 0.0943 | stall, `q_inf = 0.111` |
+
+---
+
+### Phase 1B claim (frozen 2026-09-25, before any Phase 1B code)
+
+**Claim under test (controlled, positive).** Verifiers matched on conventional static metrics can
+induce different policy-conditioned local geometry and different downstream **gold-learning**
+outcomes.
+
+**Not claimed.** That gap growth is failure; that snapshot `C` alone predicts outcomes; anything
+about LLM-scale RLVR.
+
+**Outcomes** (all defined on `J_G`, never on the signed gap `Delta`):
+
+- **O1 asymptotic gold** `J_G(∞)`: analytic under natural gradient (theory note §10, Prop. 9);
+  observed as `J_G(T_end)`.
+- **O2 finite-horizon gold** `J_G(T)` at `T ∈ {10, 25, 100, 500}`: reported.
+- **O3 gold-learning stall.**
+  - Theory: `q0 · exp(Λ(1)) < 1`.
+  - Observed: `S(T_end) >= 1 - 1e-2` and `J_G(T_end) < 0.999`.
+  - Observed success: `J_G(T_end) >= 1 - 1e-6`.
+- **O4 clean-verifier performance gap** `sigmoid(u0 + T) - J_G(T)`. The clean natural-gradient
+  baseline is analytic because `u' = 1` under `G`.
+- **O5 gold shortfall** `1 - J_G(∞)`.
+
+### E003 — Candidate 3: feature-triggered false positives matched on static metrics (natural gradient)
+
+Experiment ID: E003
+Date: 2026-09-25 (pre-registered before any Candidate 3 code, test or experiment script exists)
+
+**Question.** Across verifier structures matched on initial gold accuracy, verifier accuracy, FPR,
+FNR and false-positive mass (and therefore on `A` and `alpha`), do `C` and the natural-gradient
+gold outcome differ as predicted by theory note §10 (Props. 8–10)?
+
+**Hypothesis.** Props. 8–10 are correct, and a generic autodiff natural-gradient optimizer
+reproduces them.
+
+**Design.**
+
+- Policy: independent Bernoulli coordinates `(corr, z_1, …, z_m)` with logits.
+- `G = corr`. Verifier `V = corr OR 1_E(z)` for an event `E` over that structure's own features.
+- The random-FP control is `V = corr OR xi`, with `xi ~ Bern(f)` drawn fresh for every response.
+- Identical initial policy: the policy is the product over the union of all structures' features.
+  Each verifier reads only its own features, and by independence each run reduces exactly to
+  `(corr, own features)`. The reduction is to be unit-tested.
+- Parameters: `q0 = 0.001` (`u0 = logit(0.001)`), `f = 0.01`.
+
+| structure | event `E` | initial feature probabilities |
+| --- | --- | --- |
+| RFP | fresh coin, P = f (not policy-controllable) | — |
+| AND3 | `z1 AND z2 AND z3` | `(f^(1/3),)*3 = 0.215443…` each |
+| AND-SYM | `z1 AND z2` | `(0.1, 0.1)` |
+| AND-MID | `z1 AND z2` | `(0.04, 0.25)` |
+| AND-ASYM-A | `z1 AND z2` | `(0.0125, 0.8)` |
+| AND-ASYM-B | `z1 AND z2` | `(f/0.98, 0.98) = (0.0102041…, 0.98)` |
+| OR | `z1 OR z2` | `(1 - sqrt(1-f),)*2 = 0.0050126…` each |
+| SINGLE | `z1` | `(f,) = (0.01,)` |
+
+**Predictions** (from closed forms only: quadrature and root finding, no ODE integration):
+
+- **P1 Matched static metrics (exact).** For all eight structures at `t = 0`:
+  - gold accuracy 0.001, FPR 0.01, FNR 0, verifier accuracy 0.990010, false-positive mass
+    0.009990;
+  - Fisher-metric `A = 0.0316070` and `alpha = -0.01`.
+
+  Identical across structures to 1e-12.
+- **P2 `C(0)`, Fisher metric** (tolerance 1e-6 vs these 6-decimal values):
+
+  | structure | `C(0)` | `eta0 = (C/C_max)^2` |
+  | --- | --- | --- |
+  | RFP | 0 | 0 |
+  | AND3 | 0.033020 | 0.1104 |
+  | AND-SYM | 0.042384 | 0.1818 |
+  | AND-MID | 0.051910 | 0.2727 |
+  | AND-ASYM-A | 0.088933 | 0.8005 |
+  | AND-ASYM-B | 0.098400 | 0.9800 |
+  | OR | 0.099274 | 0.9975 |
+  | SINGLE | 0.099399 | 1.0000 |
+
+  `C_max = 0.099399`. Strict ordering: RFP < AND3 < AND-SYM < AND-MID < AND-ASYM-A < AND-ASYM-B <
+  OR < SINGLE.
+- **P3a Gold-race relation (trajectory level; the sharpest test).** At every evaluation time,
+  `log J_G(t) - log q0 = Λ_k(state(t))` within 1e-7. The functions `Λ_k` are:
+  - SINGLE: `log(s/s0)`;
+  - OR (symmetric): `log(a/a0)`;
+  - AND-SYM: `[log s - 1/s] - [log s0 - 1/s0]`;
+  - AND3: `[log s - 1/s - 1/(2s^2)] - [same at s0]`;
+  - AND asymmetric: `[log(s2/s2_0) - rho log(s1/s1_0)]/(1 - rho)` with
+    `rho = (1-s1_0)/(1-s2_0)`;
+  - RFP: `J_G(t) = sigmoid(u0 + (1-f) t)` exactly.
+- **P3b Outcome class and asymptotic gold** (`T_end = 500`):
+
+  | structure | outcome | asymptotic `J_G` | asymptotic `S` | shortfall |
+  | --- | --- | --- | --- | --- |
+  | RFP | success | 1 | 0.010000 | 0 |
+  | AND3 | success | 1 | 0.027274 | 0 |
+  | AND-SYM | success | 1 | 0.062287 | 0 |
+  | AND-MID | success | 1 | 0.123215 | 0 |
+  | AND-ASYM-A | **stall** | 0.230039 | 1 | 0.769961 |
+  | AND-ASYM-B | **stall** | 0.107674 | 1 | 0.892326 |
+  | OR | **stall** | 0.199499 | 1 | 0.800501 |
+  | SINGLE | **stall** | 0.100000 | 1 | 0.900000 |
+
+  Tolerances:
+  - Success: `J_G(500) >= 1 - 1e-6` and `|S(500) - S∞| <= 1e-5`.
+  - Stall: `|J_G(500) - J_G(∞)| <= 1e-3` (OR converges only algebraically, predicted residual
+    ≈ 5e-4) and `S(500) >= 1 - 1e-2`.
+- **P4 Accessibility paths.**
+  - `eta(t)` is non-decreasing for AND3, AND-SYM, AND-MID, AND-ASYM-A, AND-ASYM-B;
+  - non-increasing for OR (`eta = 2(1-a)/(2-a)`);
+  - constant 1 for SINGLE and 0 for RFP.
+- **P5 Clean-gap bound.** For all structures and `t`, `J_G(t) <= sigmoid(u0 + t)`. So the
+  clean-verifier gap O4 is >= 0 and tends to the shortfall.
+- **P6 Invariants.**
+  - AND structures: `(1-s_i)/(1-s_j)` is constant (relative drift ≤ 1e-7 while `1 - s > 1e-9`);
+  - symmetric structures stay symmetric;
+  - all logits are non-decreasing.
+- **P7 Snapshot `C` is informative but not sufficient** (a consequence of P2 and P3b; theory note
+  Prop. 10). Spearman`(C(0), shortfall) = +0.913` over the eight structures (average ranks for the
+  four tied successes). Exactly one discordant pair among structures with distinct outcomes:
+  **OR vs AND-ASYM-B**. OR has the higher `C(0)` (0.099274 vs 0.098400) but the higher gold
+  (0.1995 vs 0.1077), because OR's `eta` falls and AND-ASYM-B's rises along the path. This
+  inversion is predicted, not a post-hoc finding.
+
+**Falsification criterion.**
+
+- P1, P2, P3a or P6 outside tolerance → derivation or implementation wrong; stop and investigate.
+- P3b, P4 or P5 violated → Prop. 9/10 or the registered numbers are wrong.
+- A different P7 discordance pattern → Prop. 10's explanation is wrong.
+
+**Independent variable.** Verifier structure (8 levels).
+
+**Controlled variables.**
+
+- Initial policy (product construction); `q0`; `f`.
+- Natural gradient with exact expected gradients and the exact Fisher of the reduced policy.
+- DOP853 solver, `rtol = 1e-10`, `atol = 1e-12`.
+- Evaluation grid: `t = 0` plus 400 log-spaced points on `[1e-3, 500]`.
+
+**Seeds.** None (deterministic).
+
+**Secondary, exploratory (E003-V).** The same eight structures under vanilla gradient flow to
+`T = 1e6`. **No predictions are registered**; results will be reported as exploratory only.
+
+**Code/config** (to be written after this entry is committed):
+
+- `src/vdyn/policies/bernoulli.py` (product policy),
+- `src/vdyn/verifiers/triggered.py`,
+- `src/vdyn/geometry/triggered_fp.py` (closed forms),
+- tests `tests/test_triggered_*.py`,
+- `experiments/toy/e003_triggered_fp.py`, `configs/toy/e003_triggered_fp.toml`.
+
+**Disclosure.** E000b simulated one related configuration, conjunctive `(0.01, 0.9)` at
+`q0 = 1e-3`, `f = 0.009`, and found `q∞ = 0.166`. The closed form of Prop. 9 gives 0.1659 for it.
+None of the eight registered configurations has been simulated.
