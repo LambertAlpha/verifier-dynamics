@@ -71,14 +71,14 @@ def _record(checkpoints: list[int] | list[float]) -> tuple[list[Any], dict[Any, 
     return ck, {c: i for i, c in enumerate(ck)}
 
 
-def run_sampled_adam(structures: list[toy.Structure], seeds: Sequence[Sequence[int]], steps: int,
+def run_sampled_adam(structures: list[toy.Structure], seeds: Sequence[Any], steps: int,
                      checkpoints: list[int], clean: bool = False, n_prompts: int = 8,
                      n_resp: int = 8, lr: float = LR) -> dict[str, Any]:  # fmt: skip
     tb = toy.Tables.of(structures)
     tb = tb.clean() if clean else tb
     theta = np.stack([s.theta0 for s in structures])
     state = AdamState.zeros(len(structures))
-    rngs = [np.random.default_rng(list(s)) for s in seeds]
+    rngs = [np.random.default_rng(s) for s in seeds]  # int lists or SeedSequence objects
     ck, pos = _record(checkpoints)
     th_rec = np.zeros((len(structures), len(ck), toy.D))
     v_rec = np.zeros_like(th_rec)
