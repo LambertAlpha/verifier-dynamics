@@ -1,0 +1,3 @@
+Held-out split unsealed on explicit approval from the user in chat, 2026-09-25 ("批准"),
+covering: held-out E002b (targets, oracle ceilings, frozen-config simulation, analysis) and the
+formal E002a run (R = 2000). Frozen code: commit d639b09 (registry "E002 held-out freeze").
