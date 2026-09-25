@@ -4,6 +4,8 @@ import importlib.util
 import json
 from pathlib import Path
 
+import numpy as np
+
 SCRIPT = Path(__file__).resolve().parents[1] / "experiments/toy/e003_triggered_fp.py"
 
 DUMMY_CONFIG = """
@@ -87,17 +89,54 @@ def _load_script():
     return module
 
 
-def test_script_runs_end_to_end_on_a_dummy_config(tmp_path):
+def _run(tmp_path, *extra):
     config = tmp_path / "dummy.toml"
     config.write_text(DUMMY_CONFIG)
     results = tmp_path / "results"
-    status = _load_script().main([str(config), "--results-root", str(results)])
+    status = _load_script().main([str(config), "--results-root", str(results), *extra])
     assert status in (0, 1)  # dummy predictions are arbitrary; only plumbing is tested
-    (run_dir,) = (results / "E003-smoke").iterdir()
-    for name in ("meta.json", "config.toml", "checks.json", "summary.md", "trajectories.npz"):
+    return results
+
+
+FIGURES = (
+    "fig_A_gold.png",
+    "fig_B_accessibility.png",
+    "fig_C_state_space.png",
+    "fig_D_c0_vs_shortfall.png",
+)
+
+
+def _files(run_dir):
+    for name in (
+        "meta.json",
+        "config.toml",
+        "checks.json",
+        "summary.md",
+        "trajectories.npz",
+        *FIGURES,
+    ):
         assert (run_dir / name).exists(), name
-    for fig in ("fig_gold.png", "fig_exploit.png", "fig_accessibility.png", "fig_c0_vs_gold.png"):
-        assert (run_dir / fig).exists(), fig
-    rows = json.loads((run_dir / "checks.json").read_text())
+    return json.loads((run_dir / "checks.json").read_text())
+
+
+def test_registered_mode_runs_natural_gradient_only(tmp_path):
+    results = _run(tmp_path)
+    (run_dir,) = (results / "E003-smoke").iterdir()
+    rows = _files(run_dir)
     predictions = {r["prediction"] for r in rows}
-    assert {"P1", "P2", "P3a", "P3b", "P4", "P5", "P6", "P7", "E003-V"} <= predictions
+    assert {"P1", "P2", "P3a", "P3b", "P4", "P5", "P6", "P7"} <= predictions
+    assert "E003-V" not in predictions
+    assert not (results / "E003-smoke-V").exists()
+    arrays = np.load(run_dir / "trajectories.npz")
+    for key in ("J_V", "C_max", "A_F", "alpha_F", "C_F", "eta_F", "fpr", "gold"):
+        assert f"SINGLE_natural_{key}" in arrays.files, key
+    assert not any("_vanilla_" in k for k in arrays.files)
+
+
+def test_vanilla_mode_is_exploratory_and_separate(tmp_path):
+    results = _run(tmp_path, "--optimizer", "vanilla")
+    assert not (results / "E003-smoke").exists()
+    (run_dir,) = (results / "E003-smoke-V").iterdir()
+    rows = _files(run_dir)
+    assert {r["prediction"] for r in rows} == {"E003-V"}
+    assert all(r["passed"] is None for r in rows)

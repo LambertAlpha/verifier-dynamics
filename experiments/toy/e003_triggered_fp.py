@@ -5,7 +5,10 @@ registered experiment. Vanilla (E003-V) is exploratory: its rows carry no pass/f
 Observations are generic (enumeration + autodiff); closed forms enter only as registered
 predictions.
 
-Usage:  uv run python experiments/toy/e003_triggered_fp.py [config.toml] [--results-root DIR]
+Each invocation runs ONE optimizer:
+  registered run:   uv run python experiments/toy/e003_triggered_fp.py
+  exploratory run:  uv run python experiments/toy/e003_triggered_fp.py --optimizer vanilla
+Options: [config.toml] [--results-root DIR]. Vanilla output goes to "<experiment_id>-V".
 """
 
 import argparse
@@ -33,7 +36,11 @@ REPO = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG = REPO / "configs" / "toy" / "e003_triggered_fp.toml"
 # Categorical slots 1-8 in fixed order (validated). Contrast relief: legend, labels, summary table.
 PALETTE = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"]
-OBSERVED = ("gold", "fpr", "fnr", "fp_mass", "verifier_accuracy", "A_F", "alpha_F", "C_F", "eta_F")
+OBSERVED = (
+    "gold", "J_V", "fpr", "fnr", "fp_mass", "verifier_accuracy",
+    "A_F", "alpha_F", "C_F", "C_max", "eta_F", "A_E", "alpha_E", "C_E",
+    "gold_rate_actual", "gold_rate_F", "gold_rate_E",
+)  # fmt: skip
 
 
 @dataclass
@@ -45,8 +52,17 @@ class Run:
     series: dict[str, np.ndarray] = field(default_factory=dict)
 
 
-def observe(structure: Structure, theta: np.ndarray) -> dict[str, float]:
-    """Generic observations at one state: enumerated static metrics and Fisher-metric geometry."""
+def _field(structure: Structure, optimizer: str) -> flows.Field:
+    log_prob = bernoulli.product_log_prob(1 + structure.n_features)
+    table = verifier_table(structure)
+    if optimizer == "natural":
+        return flows.natural_field(log_prob, table)
+    return flows.vanilla_field(log_prob, table)
+
+
+def observe(structure: Structure, theta: np.ndarray, optimizer: str) -> dict[str, float]:
+    """Generic observations at one state: enumerated static metrics, Fisher- and Euclidean-metric
+    geometry, and the actual gold rate g_G . theta_dot under the optimizer being run."""
     log_prob = bernoulli.product_log_prob(1 + structure.n_features)
     g_tab, v_tab = gold_table(structure), verifier_table(structure)
     p = autodiff.outcome_probs(log_prob, theta)
@@ -57,9 +73,11 @@ def observe(structure: Structure, theta: np.ndarray) -> dict[str, float]:
     g_gold = autodiff.reward_gradient(log_prob, theta, g_tab)
     g_ver = autodiff.reward_gradient(log_prob, theta, v_tab)
     dec = decompose(g_gold, g_ver, np.linalg.inv(autodiff.fisher(log_prob, theta)))
+    dec_e = decompose(g_gold, g_ver, np.eye(len(theta)))
     c_max = (1 - gold) * np.sqrt(fpr * (1 - fpr))
     return {
         "gold": gold,
+        "J_V": float(p @ v_tab),
         "fpr": fpr,
         "fnr": fn_mass / gold,
         "fp_mass": fp_mass,
@@ -67,7 +85,14 @@ def observe(structure: Structure, theta: np.ndarray) -> dict[str, float]:
         "A_F": dec.A,
         "alpha_F": dec.alpha,
         "C_F": dec.C,
+        "C_max": c_max,
         "eta_F": (dec.C / c_max) ** 2 if c_max > 1e-6 else np.nan,
+        "A_E": dec_e.A,
+        "alpha_E": dec_e.alpha,
+        "C_E": dec_e.C,
+        "gold_rate_actual": float(g_gold @ _field(structure, optimizer)(0.0, theta)),
+        "gold_rate_F": dec.gold_rate,
+        "gold_rate_E": dec_e.gold_rate,
     }
 
 
@@ -78,13 +103,7 @@ def simulate(structure: Structure, optimizer: str, config: dict[str, Any]) -> Ru
         np.concatenate([[0.0], np.geomspace(solver["t_min"], t_end, solver["n_eval"]), report])
     )
     theta0 = np.concatenate([[logit(config["q0"])], logit(np.asarray(structure.s0, dtype=float))])
-    log_prob = bernoulli.product_log_prob(1 + structure.n_features)
-    table = verifier_table(structure)
-    field_fn = (
-        flows.natural_field(log_prob, table)
-        if optimizer == "natural"
-        else flows.vanilla_field(log_prob, table)
-    )
+    field_fn = _field(structure, optimizer)
     start = time.perf_counter()
     traj = flows.integrate(
         field_fn,
@@ -96,7 +115,7 @@ def simulate(structure: Structure, optimizer: str, config: dict[str, Any]) -> Ru
         method=solver["method"],
     )
     run = Run(structure, optimizer, traj, time.perf_counter() - start)
-    rows = [observe(structure, theta) for theta in traj.y.T]
+    rows = [observe(structure, theta, optimizer) for theta in traj.y.T]
     run.series = {"t": traj.t, "theta": traj.y, "q": expit(traj.y[0]), "s": expit(traj.y[1:])}
     run.series.update({k: np.array([r[k] for r in rows]) for k in OBSERVED})
     return run
@@ -264,122 +283,162 @@ def report(runs: dict[str, Run], config: dict[str, Any], checks: Checks, label: 
 
 
 def exploratory_vanilla(runs: dict[str, Run], config: dict[str, Any], checks: Checks) -> None:
+    """E003-V: information rows only (no registered predictions, no pass/fail)."""
+    q0, tol = config["q0"], config["tolerances"]
     for name, run in runs.items():
-        ser = run.series
-        cls = _outcome_class(float(ser["gold"][-1]), float(ser["fpr"][-1]), config["tolerances"])
-        checks.info(
-            name,
-            "E003-V",
-            "vanilla (J_G, FPR, class) at T_end",
-            [ser["gold"][-1], ser["fpr"][-1], cls],
-        )
+        st, ser = run.structure, run.series
+        cls = _outcome_class(float(ser["gold"][-1]), float(ser["fpr"][-1]), tol)
+        checks.info(name, "E003-V", "(J_G, FPR, class) at T_end",
+                    [ser["gold"][-1], ser["fpr"][-1], cls])  # fmt: skip
+        t0_keys = ("gold", "fpr", "A_F", "alpha_F", "C_F", "C_E")
+        checks.info(name, "E003-V", f"t=0 {t0_keys}", [ser[k][0] for k in t0_keys])
+        if st.kind != "random":
+            lam = np.array([cf.gold_race(st, st.s0, ser["s"][:, k]) for k in range(len(ser["t"]))])
+            dev = float(np.max(np.abs(np.log(ser["q"]) - np.log(q0) - lam)))
+            checks.info(name, "E003-V", "natural-gradient gold-race relation: max deviation", dev)
+        scale = np.maximum(np.abs(ser["gold_rate_actual"]), 1e-300)
+        for metric in ("E", "F"):
+            rel = float(
+                np.max(np.abs(ser[f"gold_rate_{metric}"] - ser["gold_rate_actual"]) / scale)
+            )
+            checks.info(
+                name, "E003-V", f"max rel. error of dJ_G/dt from {metric}-metric triple", rel
+            )
+        for t in config["solver"]["report_times"]:
+            k = np.flatnonzero(np.isclose(ser["t"], t))
+            if k.size:
+                checks.info(
+                    name, "E003-V", f"(J_G, FPR) at t={t:g}", [ser["gold"][k[0]], ser["fpr"][k[0]]]
+                )
 
 
 # --- outputs -------------------------------------------------------------------------------------
 
-
-def _style(config: dict[str, Any], name: str) -> str:
-    return "--" if config["predictions"][name]["stall"] else "-"
+LINESTYLE = {"success": "-", "stall": "--", "unresolved": ":"}
 
 
-def plot_lines(
-    runs: dict[str, Run],
-    config: dict[str, Any],
-    key: str,
-    ylabel: str,
-    path: Path,
-    clean: bool = False,
-) -> None:
-    fig, ax = plt.subplots(figsize=(7.2, 4.6))
+def _observed_class(run: Run, config: dict[str, Any]) -> str:
+    ser = run.series
+    return _outcome_class(float(ser["gold"][-1]), float(ser["fpr"][-1]), config["tolerances"])
+
+
+def _style(run: Run, config: dict[str, Any]) -> str:
+    return LINESTYLE[_observed_class(run, config)]
+
+
+def _mark_horizons(ax: Any, config: dict[str, Any], t_max: float) -> None:
+    for t in config["solver"]["report_times"]:
+        if t <= t_max:
+            ax.axvline(t, color="#bbbbb6", lw=0.8, ls=":")
+
+
+def _title(config: dict[str, Any], optimizer: str, what: str) -> str:
+    tag = "REGISTERED (natural gradient)" if optimizer == "natural" else "EXPLORATORY (vanilla)"
+    return f"{config['experiment_id']} {tag}: {what}"
+
+
+def plot_gold(runs: dict[str, Run], config: dict[str, Any], optimizer: str, path: Path) -> None:
+    """Figure A: J_G(t), clean-verifier reference, registered horizons."""
+    fig, ax = plt.subplots(figsize=(7.6, 4.8))
+    t = next(iter(runs.values())).series["t"][1:]
     for i, (name, run) in enumerate(runs.items()):
         ser = run.series
+        label = f"{name} ({_observed_class(run, config)})"
         ax.plot(
             ser["t"][1:],
-            ser[key][1:],
+            ser["gold"][1:],
             color=PALETTE[i % 8],
-            ls=_style(config, name),
+            ls=_style(run, config),
             lw=1.6,
-            label=name,
+            label=label,
         )
-    if clean:
-        t = runs[next(iter(runs))].series["t"][1:]
-        ax.plot(
-            t,
-            cf.clean_gold(float(logit(config["q0"])), t),
-            color="#333333",
-            ls=":",
-            lw=1.2,
-            label="clean V = G",
-        )
-    ax.set_xscale("log")
-    ax.set_yscale("log")
-    ax.set_xlabel("t (natural-gradient time, log scale)")
-    ax.set_ylabel(ylabel)
+    if optimizer == "natural":
+        ax.plot(t, cf.clean_gold(float(logit(config["q0"])), t), color="#333333", ls="-.", lw=1.1,
+                label="clean verifier V = G")  # fmt: skip
+    _mark_horizons(ax, config, t[-1])
+    ax.set(xscale="log", yscale="log", xlabel="t (log; dotted: registered horizons)",
+           ylabel="gold J_G(t)")  # fmt: skip
     ax.grid(True, color="#e6e6e3", lw=0.6)
     ax.legend(fontsize=7, frameon=False, ncol=2)
-    ax.set_title(
-        f"{config['experiment_id']}: {ylabel} (solid: predicted success, dashed: predicted stall)",
-        fontsize=9,
+    ax.set_title(_title(config, optimizer, "J_G(t); solid = success, dashed = stall"), fontsize=9)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def plot_accessibility(
+    runs: dict[str, Run], config: dict[str, Any], optimizer: str, path: Path
+) -> None:
+    """Figure B: C(t) (Fisher metric) and eta(t) = (C/C_max)^2."""
+    fig, axes = plt.subplots(1, 2, figsize=(11.5, 4.4))
+    for i, (name, run) in enumerate(runs.items()):
+        ser = run.series
+        kw = {"color": PALETTE[i % 8], "ls": _style(run, config), "lw": 1.5, "label": name}
+        axes[0].plot(ser["t"][1:], np.where(ser["C_F"][1:] > 0, ser["C_F"][1:], np.nan), **kw)
+        axes[1].plot(ser["t"][1:], ser["eta_F"][1:], **kw)
+    axes[0].set(yscale="log", ylabel="C(t), Fisher metric")
+    axes[1].set(ylabel="eta(t) = (C / C_max)^2  (undefined where C_max < 1e-6)")
+    for ax in axes:
+        ax.set(xscale="log", xlabel="t (log scale)")
+        _mark_horizons(ax, config, next(iter(runs.values())).series["t"][-1])
+        ax.grid(True, color="#e6e6e3", lw=0.6)
+    axes[1].legend(fontsize=7, frameon=False, ncol=2)
+    fig.suptitle(_title(config, optimizer, "accessibility"), fontsize=9)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def plot_state_space(
+    runs: dict[str, Run], config: dict[str, Any], optimizer: str, path: Path
+) -> None:
+    """Figure C: J_G vs on-policy FPR (log-log; slope 1/eta under NG) and eta vs FPR."""
+    fig, axes = plt.subplots(1, 2, figsize=(11.5, 4.6))
+    for i, (name, run) in enumerate(runs.items()):
+        ser = run.series
+        kw = {"color": PALETTE[i % 8], "ls": _style(run, config), "lw": 1.5, "label": name}
+        axes[0].plot(ser["fpr"], ser["gold"], **kw)
+        axes[0].plot(ser["fpr"][0], ser["gold"][0], marker="o", ms=4, color=PALETTE[i % 8])
+        axes[1].plot(ser["fpr"], ser["eta_F"], **kw)
+    axes[0].set(xscale="log", yscale="log", xlabel="on-policy FPR S(t)", ylabel="gold J_G(t)")
+    axes[1].set(xscale="log", xlabel="on-policy FPR S(t)", ylabel="eta = (C / C_max)^2")
+    for ax in axes:
+        ax.grid(True, color="#e6e6e3", lw=0.6)
+    axes[0].legend(fontsize=7, frameon=False, ncol=2)
+    fig.suptitle(
+        _title(config, optimizer, "state space (all runs start at FPR = f, J_G = q0)"), fontsize=9
     )
     fig.tight_layout()
     fig.savefig(path, dpi=150)
     plt.close(fig)
 
 
-def plot_accessibility(runs: dict[str, Run], config: dict[str, Any], path: Path) -> None:
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.2))
+def plot_c0_vs_shortfall(
+    runs: dict[str, Run], config: dict[str, Any], optimizer: str, path: Path
+) -> None:
+    """Figure D: C(0) vs gold shortfall 1 - J_G(T_end); open markers = registered prediction."""
+    fig, ax = plt.subplots(figsize=(6.8, 4.8))
     for i, (name, run) in enumerate(runs.items()):
         ser = run.series
-        kw = {"color": PALETTE[i % 8], "ls": _style(config, name), "lw": 1.5, "label": name}
-        axes[0].plot(ser["t"][1:], np.where(ser["C_F"][1:] > 0, ser["C_F"][1:], np.nan), **kw)
-        axes[1].plot(ser["t"][1:], ser["eta_F"][1:], **kw)
-    axes[0].set_yscale("log")
-    axes[0].set_ylabel("C, Fisher metric")
-    axes[1].set_ylabel("eta = (C / C_max)^2")
-    for ax in axes:
-        ax.set_xscale("log")
-        ax.set_xlabel("t (log scale)")
-        ax.grid(True, color="#e6e6e3", lw=0.6)
-    axes[1].legend(fontsize=7, frameon=False, ncol=2)
-    fig.tight_layout()
-    fig.savefig(path, dpi=150)
-    plt.close(fig)
-
-
-def plot_c0_vs_gold(runs: dict[str, Run], config: dict[str, Any], path: Path) -> None:
-    fig, ax = plt.subplots(figsize=(6.4, 4.8))
-    for i, (name, run) in enumerate(runs.items()):
-        c0 = run.series["C_F"][0]
-        ax.plot(
-            c0,
-            config["predictions"][name]["q_inf"],
-            marker="o",
-            mfc="none",
-            ms=9,
-            color=PALETTE[i % 8],
-        )
-        ax.plot(c0, run.series["gold"][-1], marker="o", ms=5, color=PALETTE[i % 8])
-        ax.annotate(
-            name,
-            (c0, run.series["gold"][-1]),
-            textcoords="offset points",
-            xytext=(5, 4),
-            fontsize=7,
-            color="#333333",
-        )
-    ax.set_xlabel("C(0), Fisher metric (all structures matched on static metrics, A, alpha)")
-    ax.set_ylabel("asymptotic gold J_G  (open: predicted, filled: J_G(T_end))")
+        c0 = ser["C_F"][0]
+        if optimizer == "natural":
+            ax.plot(c0, 1 - config["predictions"][name]["q_inf"], marker="o", mfc="none", ms=10,
+                    color=PALETTE[i % 8])  # fmt: skip
+        ax.plot(c0, 1 - ser["gold"][-1], marker="o", ms=5, color=PALETTE[i % 8])
+        ax.annotate(name, (c0, 1 - ser["gold"][-1]), textcoords="offset points", xytext=(5, 4),
+                    fontsize=7, color="#333333")  # fmt: skip
+    ax.set(xlabel="C(0), Fisher metric (structures matched on static metrics, A, alpha)",
+           ylabel="gold shortfall 1 - J_G(T_end)")  # fmt: skip
     ax.grid(True, color="#e6e6e3", lw=0.6)
+    ax.set_title(_title(config, optimizer, "C(0) vs shortfall (open = predicted)"), fontsize=9)
     fig.tight_layout()
     fig.savefig(path, dpi=150)
     plt.close(fig)
 
 
-def write_summary(
-    checks: Checks, run_dir: Path, runs: dict[str, Run], vanilla: dict[str, Run]
-) -> str:
+def write_summary(checks: Checks, run_dir: Path, runs: dict[str, Run], title: str) -> str:
     lines = [
-        "# E003 summary",
+        f"# {title}",
         "",
         "| prediction | run | quantity | observed | expected | tol | pass |",
         "| --- | --- | --- | --- | --- | --- | --- |",
@@ -395,13 +454,12 @@ def write_summary(
         "| run | optimizer | field evals | wall s | J_G(T) | FPR(T) |",
         "| --- | --- | --- | --- | --- | --- |",
     ]
-    for group in (runs, vanilla):
-        for name, run in group.items():
-            ser = run.series
-            lines.append(
-                f"| {name} | {run.optimizer} | {run.traj.n_evals} | {run.wall_seconds:.1f} | "
-                f"{ser['gold'][-1]:.8g} | {ser['fpr'][-1]:.8g} |"
-            )
+    for name, run in runs.items():
+        ser = run.series
+        lines.append(
+            f"| {name} | {run.optimizer} | {run.traj.n_evals} | {run.wall_seconds:.1f} | "
+            f"{ser['gold'][-1]:.8g} | {ser['fpr'][-1]:.8g} |"
+        )
     text = "\n".join(lines) + "\n"
     (run_dir / "summary.md").write_text(text)
     return text
@@ -422,44 +480,47 @@ def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("config", nargs="?", default=str(DEFAULT_CONFIG))
     parser.add_argument("--results-root", default=str(REPO / "results"))
+    parser.add_argument("--optimizer", choices=("natural", "vanilla"), default="natural")
     args = parser.parse_args(argv[1:] if argv and argv[0].endswith(".py") else argv)
     config_path = Path(args.config).resolve()
     config = provenance.load_config(config_path)
     structures = [structure_from_config(entry, config["f"]) for entry in config["structures"]]
-    run_dir = provenance.create_run_dir(Path(args.results_root), config["experiment_id"], REPO)
-    provenance.write_metadata(run_dir, config["experiment_id"], config_path, REPO)
+    registered = args.optimizer == "natural"
+    experiment_id = config["experiment_id"] if registered else f"{config['experiment_id']}-V"
+    run_dir = provenance.create_run_dir(Path(args.results_root), experiment_id, REPO)
+    provenance.write_metadata(
+        run_dir, experiment_id, config_path, REPO, extra={"optimizer": args.optimizer}
+    )
 
-    natural = {st.name: simulate(st, "natural", config) for st in structures}
-    vanilla = {st.name: simulate(st, "vanilla", config) for st in structures}
-    for group in (natural, vanilla):
-        for name, run in group.items():
-            print(
-                f"simulated {name}/{run.optimizer}: {run.traj.n_evals} field evals, "
-                f"{run.wall_seconds:.1f}s"
-            )
+    runs = {st.name: simulate(st, args.optimizer, config) for st in structures}
+    for name, run in runs.items():
+        print(f"simulated {name}/{run.optimizer}: {run.traj.n_evals} field evals, "
+              f"{run.wall_seconds:.1f}s")  # fmt: skip
 
     checks = Checks()
-    check_static(natural, config, checks)
-    check_c0(natural, config, checks)
-    for run in natural.values():
-        check_run(run, config, checks)
-    check_ranking(natural, config, checks)
-    report(natural, config, checks, "O2/O4")
-    exploratory_vanilla(vanilla, config, checks)
+    if registered:
+        check_static(runs, config, checks)
+        check_c0(runs, config, checks)
+        for run in runs.values():
+            check_run(run, config, checks)
+        check_ranking(runs, config, checks)
+        report(runs, config, checks, "O2/O4")
+    else:
+        exploratory_vanilla(runs, config, checks)
 
     (run_dir / "checks.json").write_text(json.dumps(checks.rows, indent=2) + "\n")
     arrays: dict[str, Any] = {
         f"{name}_{run.optimizer}_{key}": value
-        for group in (natural, vanilla)
-        for name, run in group.items()
+        for name, run in runs.items()
         for key, value in run.series.items()
     }
     np.savez_compressed(run_dir / "trajectories.npz", **arrays)
-    plot_lines(natural, config, "gold", "J_G", run_dir / "fig_gold.png", clean=True)
-    plot_lines(natural, config, "fpr", "on-policy FPR S", run_dir / "fig_exploit.png")
-    plot_accessibility(natural, config, run_dir / "fig_accessibility.png")
-    plot_c0_vs_gold(natural, config, run_dir / "fig_c0_vs_gold.png")
-    print(write_summary(checks, run_dir, natural, vanilla))
+    plot_gold(runs, config, args.optimizer, run_dir / "fig_A_gold.png")
+    plot_accessibility(runs, config, args.optimizer, run_dir / "fig_B_accessibility.png")
+    plot_state_space(runs, config, args.optimizer, run_dir / "fig_C_state_space.png")
+    plot_c0_vs_shortfall(runs, config, args.optimizer, run_dir / "fig_D_c0_vs_shortfall.png")
+    title = f"{experiment_id} summary ({'REGISTERED' if registered else 'EXPLORATORY'})"
+    print(write_summary(checks, run_dir, runs, title))
     failed = checks.failed()
     print(f"run directory: {run_dir}")
     print(f"{len(failed)} failed / {sum(r['passed'] is not None for r in checks.rows)} checked")
