@@ -303,8 +303,11 @@ def accepted(ev: dict[str, Any], kind: str) -> dict[str, bool]:
 
 def main(argv: list[str]) -> int:
     runs_dir = Path(argv[1]).resolve()
-    T = int(json.loads((runs_dir / "summary.json").read_text())["T_adam"])
+    summ = json.loads((runs_dir / "summary.json").read_text())
+    T = int(summ["T_adam"])
+    excluded = set(summ["excluded_low_clean_gain"])  # registry §4
     structs = [toy.Structure.from_dict(d) for d in json.loads(PANEL.read_text())["structures"]]
+    structs = [s for s in structs if s.sid not in excluded]
     by_mech = {m: [s for s in structs if s.mechanism == m] for m in pn.MECHANISMS}
     out_dir = provenance.create_run_dir(REPO / "results", "E004a-stage0-hardpairs", REPO)
     provenance.write_metadata(
