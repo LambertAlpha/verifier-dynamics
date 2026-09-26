@@ -3075,3 +3075,39 @@ left unspecified. It changes no threshold, definition, predictor or panel rule.
   reproduce 0.75.
 
 ---
+
+### E004a Stage 1 — held-out execution deviation 1: an infinite loop in panel generation (2026-09-26)
+
+Written and committed **before any held-out or shift structure is written and before any outcome
+is computed.**
+
+**What happened.**
+
+- The first held-out launch (HEAD `b9fff65`, after the approval) generated the test panel
+  sequentially. After 36 minutes it had written nothing.
+- A structures-only timing diagnostic with the same seeds (no trajectories, no outcomes) showed:
+  - 767 of 768 test structures generate in ≤ 22 s each;
+  - **cell D3-INVERTED, index 24 never finishes.**
+- **Cause.** Its common draw has `phi0_1 = −4.46`, so `P(z1 = 1) ≈ 0.011`. D3 accepts the hack only
+  when `z1 = 1`, so the hack-driven FPR share is at most about `rho × 0.011 ≤ 0.01`. That is below
+  `omega × FPR_target ≥ 0.53 × 0.02 = 0.0106` for **every** target draw. The frozen generator
+  redraws targets without limit, so the loop never ends.
+  - Over 3000 target draws: 2422 "hack share cannot reach the FPR share" and 578 rejections at
+    the `J_G` check.
+- **No effect on the design panel.** The largest per-structure target-redraw count there is 24
+  (D3).
+- **Nothing was written.** The process was killed. Its run directory was empty and has been
+  removed. No held-out panel, trajectory or outcome exists.
+
+**Rule** (procedural termination; no panel parameter, range or criterion changes):
+
+- A held-out structure that needs more than **200 target redraws** is recorded as **INFEASIBLE**
+  and **excluded without replacement**. Its cell and index are reported.
+- 200 is more than 8× the design maximum (24), so no design structure could be affected. The
+  design panel still regenerates bit-for-bit (tested).
+- Panel generation is parallelized. Every structure keeps its own registered seed, so the result
+  is identical to sequential generation.
+- The same seeds, approval and frozen configuration are used for the relaunch. The frozen-path
+  sources are unchanged.
+
+---
