@@ -1,0 +1,128 @@
+{
+  "experiment_id": "E004a-stage1-posthoc",
+  "created_utc": "2026-09-26T05:15:23+00:00",
+  "git": {
+    "commit": "90e0341e9b43b92d45f373f80f0864b08e78f9e4",
+    "dirty": false
+  },
+  "config_sha256": "2f8db710541c27ea7c92eb3b29d64fbb10b7f9fbd308ee58bfa653bc4a798321",
+  "config": {
+    "experiment_id": "E004a-stage1",
+    "registry": "research/03_experiment_registry.md (E004a \u2014 Stage 1 execution note)",
+    "split": "design",
+    "root_seed": 20261001,
+    "panel": "configs/e004/design_panel_0b.json",
+    "panel_sha256": "c7da2c3154294ae62424d13444dcf7dfafc4fad3c8fa52fbb8db5c0c35b0da84",
+    "stage0b_runs": "results/E004a-stage0b/20260926T010655Z_a5e0ca0",
+    "hardpairs": "results/E004a-stage0b-hardpairs/20260926T013006Z_594d7f9/hardpairs_frozen.json",
+    "hardpairs_sha256": "0dfecbb005fb48a96d41667dea9cd145737303a1a06c3928023ac3396f766e8a",
+    "runs": {
+      "T_adam": 2700,
+      "T_ng": 23.4,
+      "n_seeds": 4,
+      "roles": [
+        "prim_ver",
+        "prim_clean",
+        "can_ver",
+        "can_clean",
+        "b16_ver",
+        "b16_clean",
+        "b256_ver",
+        "b256_clean",
+        "hardpair",
+        "spare"
+      ],
+      "seed_tree": "SeedSequence(root_seed).spawn(5)[3] -> roles; spare.spawn(4) = [adam_audit, ng_audit, hardpair_audit, resample]; per structure (panel order) -> per seed"
+    },
+    "adam": {
+      "lr": 0.01,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "prompts_per_step": 8,
+      "responses_per_prompt": 8
+    },
+    "horizons": {
+      "fractions": [
+        0.0,
+        0.002,
+        0.005,
+        0.01,
+        0.02,
+        0.05,
+        0.1
+      ],
+      "primary": 0.02,
+      "secondary": [
+        0.01,
+        0.05
+      ]
+    },
+    "audit": {
+      "n_groups": 32,
+      "responses_per_group": 8,
+      "estimator": "plug-in, pooled verifier gradient (E002 G1 winner)",
+      "ng_fisher_damping": 0.1,
+      "adam_t0_metric": "mean(gamma)^2 + var(gamma)/8 over the 40 pooled groups"
+    },
+    "predictors": {
+      "levels": [
+        "L0",
+        "L1",
+        "L1r",
+        "L2-G",
+        "L2",
+        "L2N",
+        "L2+",
+        "L3",
+        "L3r",
+        "L3+"
+      ],
+      "primary_levels": [
+        "L0",
+        "L1",
+        "L2-G",
+        "L2",
+        "L3"
+      ],
+      "penalty_grid": "logspace(-3, 3, 13)",
+      "outer_folds": 5,
+      "inner_folds": 5,
+      "fold_seed": 0,
+      "logistic_scoring": "neg_log_loss",
+      "imputation": "median (training fold); no indicators",
+      "gbm": {
+        "max_depth": 2,
+        "n_estimators": 100,
+        "learning_rate": 0.1
+      },
+      "noise_features": 9
+    },
+    "inference": {
+      "bootstrap": "hierarchical: structures, then seeds",
+      "B": 2000,
+      "lower_bound": "5th percentile (one-sided)",
+      "delta_out": 0.02,
+      "delta_mech": 0.03,
+      "tie": 0.01,
+      "false_alarm": 0.1
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "split": "design",
+  "post_hoc": true,
+  "root_seed": 20261001,
+  "panel_sha256": "c7da2c3154294ae62424d13444dcf7dfafc4fad3c8fa52fbb8db5c0c35b0da84",
+  "runs": "results/E004a-stage1-runs/20260926T045733Z_63ea693",
+  "extra_audit_seeds": "spare -> resample child 3"
+}
