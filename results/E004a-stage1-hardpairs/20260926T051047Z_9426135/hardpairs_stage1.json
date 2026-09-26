@@ -1,0 +1,3469 @@
+{
+ "HP-A": {
+  "kind": "A",
+  "accepted_stage0b": {
+   "mf": true,
+   "sampled": true
+  },
+  "anchor": "B3-A-22",
+  "mechanisms": [
+   "B",
+   "YA"
+  ],
+  "axes": [
+   "ALIGNED",
+   "ALIGNED"
+  ],
+  "failure_fraction": [
+   0.0,
+   0.0
+  ],
+  "categories": [
+   [
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS"
+   ],
+   [
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS"
+   ]
+  ],
+  "horizons": {
+   "0": {
+    "L3_geo_max_sd_units": 0.277418880330146,
+    "L3_geo_rms_sd_units": 0.11885102808486586,
+    "L2": {
+     "risk_mean": [
+      0.44886441732195176,
+      0.436539915102067
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.30571442527675774,
+      0.27952473759705765
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.53125,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L0": {
+     "risk_mean": [
+      0.44313536096007855,
+      0.43175312890002204
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L1": {
+     "risk_mean": [
+      0.30695281270023766,
+      0.2805253035504314
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.53125,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.002": {
+    "L2_max_se_units": 0.26687557593767247,
+    "L2_rms_se_units": 0.15008183087389954,
+    "L2_worst": "FPR_h",
+    "L3_geo_max_sd_units": 0.5365404329433416,
+    "L3_geo_rms_sd_units": 0.36843321461369694,
+    "L2": {
+     "risk_mean": [
+      0.45955006177609536,
+      0.45720968802763623
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.3201019984625769,
+      0.346720139831363
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.46875,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.005": {
+    "L2_max_se_units": 0.15172600737628164,
+    "L2_rms_se_units": 0.0931868784344682,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 0.34277427723274256,
+    "L3_geo_rms_sd_units": 0.22816231003836285,
+    "L2": {
+     "risk_mean": [
+      0.4659650290082736,
+      0.44472519022086454
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.35078624351201987,
+      0.37167390547235357
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.01": {
+    "L2_max_se_units": 0.5277847553635082,
+    "L2_rms_se_units": 0.26587370789791515,
+    "L2_worst": "FPR_h",
+    "L3_geo_max_sd_units": 0.49209537995484176,
+    "L3_geo_rms_sd_units": 0.3018122824630575,
+    "L2": {
+     "risk_mean": [
+      0.45433210310858896,
+      0.4497878740120946
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.29207329141961996,
+      0.3675460934792356
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.484375,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.02": {
+    "L2_max_se_units": 0.9624202992054487,
+    "L2_rms_se_units": 0.5045493554830626,
+    "L2_worst": "FPR_slope",
+    "L3_geo_max_sd_units": 0.6079968328625007,
+    "L3_geo_rms_sd_units": 0.37382816370970895,
+    "L2": {
+     "risk_mean": [
+      0.45812719427927845,
+      0.4355243657282729
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.2636025738023265,
+      0.35671292084711526
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.05": {
+    "L2_max_se_units": 0.4880907012361236,
+    "L2_rms_se_units": 0.23662896295268693,
+    "L2_worst": "J_G_slope",
+    "L3_geo_max_sd_units": 0.38084239317406543,
+    "L3_geo_rms_sd_units": 0.2537361795659662,
+    "L2": {
+     "risk_mean": [
+      0.42258323669054104,
+      0.44571273031929803
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.26259646452232893,
+      0.3356701928337549
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.484375,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.1": {
+    "L2_max_se_units": 2.084717898177072,
+    "L2_rms_se_units": 1.2075672808268483,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 2.3077432560535436,
+    "L3_geo_rms_sd_units": 1.114629846667331,
+    "L2": {
+     "risk_mean": [
+      0.32774423384613316,
+      0.25142810434343676
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "R",
+      "R"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.21282352584207792,
+      0.2647112158695325
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "R",
+      "R"
+     ]
+    }
+   }
+  }
+ },
+ "HP-D": {
+  "kind": "A",
+  "accepted_stage0b": {
+   "mf": true,
+   "sampled": true
+  },
+  "anchor": "D1-I-00",
+  "mechanisms": [
+   "D",
+   "B"
+  ],
+  "axes": [
+   "INVERTED",
+   "ALIGNED"
+  ],
+  "failure_fraction": [
+   1.0,
+   0.0
+  ],
+  "categories": [
+   [
+    "STALL",
+    "STALL",
+    "STALL",
+    "DECLINE",
+    "STALL",
+    "STALL",
+    "STALL",
+    "DECLINE",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "DECLINE",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "DECLINE",
+    "STALL"
+   ],
+   [
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS"
+   ]
+  ],
+  "horizons": {
+   "0": {
+    "L3_geo_max_sd_units": 3.978064228323946,
+    "L3_geo_rms_sd_units": 2.0537601685200295,
+    "L2": {
+     "risk_mean": [
+      0.46018231965552747,
+      0.4674427486251994
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.484375,
+     "pair_mech_accuracy": 0.453125,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.8391272720920959,
+      0.32058407543773626
+     ],
+     "risk_auroc_fail_vs_nonfail": 1.0,
+     "pair_mech_accuracy": 0.984375,
+     "top1_mech": [
+      "D",
+      "YB"
+     ]
+    },
+    "L0": {
+     "risk_mean": [
+      0.4542803053782334,
+      0.46080863813670925
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4833984375,
+     "pair_mech_accuracy": 0.453125,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L1": {
+     "risk_mean": [
+      0.838130378123923,
+      0.3197527253634115
+     ],
+     "risk_auroc_fail_vs_nonfail": 1.0,
+     "pair_mech_accuracy": 0.984375,
+     "top1_mech": [
+      "D",
+      "YB"
+     ]
+    }
+   },
+   "0.002": {
+    "L2_max_se_units": 0.7029765498770928,
+    "L2_rms_se_units": 0.3407775346054671,
+    "L2_worst": "J_G_d",
+    "L3_geo_max_sd_units": 2.8082420590265262,
+    "L3_geo_rms_sd_units": 1.4407587831197775,
+    "L2": {
+     "risk_mean": [
+      0.4748774163977276,
+      0.505649086160525
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.3310546875,
+     "pair_mech_accuracy": 0.46875,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.855108034431727,
+      0.3615290984882608
+     ],
+     "risk_auroc_fail_vs_nonfail": 1.0,
+     "pair_mech_accuracy": 0.984375,
+     "top1_mech": [
+      "D",
+      "B"
+     ]
+    }
+   },
+   "0.005": {
+    "L2_max_se_units": 0.6579222631639572,
+    "L2_rms_se_units": 0.3394545409140663,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 3.3009357127560834,
+    "L3_geo_rms_sd_units": 1.6524533834273003,
+    "L2": {
+     "risk_mean": [
+      0.5025856547251201,
+      0.5000830632345143
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.5263671875,
+     "pair_mech_accuracy": 0.46875,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.9045057228350453,
+      0.31987373121171714
+     ],
+     "risk_auroc_fail_vs_nonfail": 1.0,
+     "pair_mech_accuracy": 1.0,
+     "top1_mech": [
+      "D",
+      "B"
+     ]
+    }
+   },
+   "0.01": {
+    "L2_max_se_units": 0.6467792628439791,
+    "L2_rms_se_units": 0.3819026693460745,
+    "L2_worst": "J_G_slope",
+    "L3_geo_max_sd_units": 3.737577299353494,
+    "L3_geo_rms_sd_units": 1.835596956771614,
+    "L2": {
+     "risk_mean": [
+      0.5168853348676634,
+      0.511718245993585
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.5546875,
+     "pair_mech_accuracy": 0.453125,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.8969130142739947,
+      0.2965166988167164
+     ],
+     "risk_auroc_fail_vs_nonfail": 1.0,
+     "pair_mech_accuracy": 1.0,
+     "top1_mech": [
+      "D",
+      "B"
+     ]
+    }
+   },
+   "0.02": {
+    "L2_max_se_units": 0.49384165970263355,
+    "L2_rms_se_units": 0.2240666032957183,
+    "L2_worst": "FNR_slope",
+    "L3_geo_max_sd_units": 3.8366672483322755,
+    "L3_geo_rms_sd_units": 1.9729458893426508,
+    "L2": {
+     "risk_mean": [
+      0.4988473118526877,
+      0.5043839035136898
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4833984375,
+     "pair_mech_accuracy": 0.453125,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.9240872650809533,
+      0.24115980592677216
+     ],
+     "risk_auroc_fail_vs_nonfail": 1.0,
+     "pair_mech_accuracy": 1.0,
+     "top1_mech": [
+      "D",
+      "B"
+     ]
+    }
+   },
+   "0.05": {
+    "L2_max_se_units": 0.8986288458804139,
+    "L2_rms_se_units": 0.37268546146251674,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 4.121603003615464,
+    "L3_geo_rms_sd_units": 1.9076506086785103,
+    "L2": {
+     "risk_mean": [
+      0.5335683197950369,
+      0.5031890333840953
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.5869140625,
+     "pair_mech_accuracy": 0.546875,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.9111367185345574,
+      0.24191626415302467
+     ],
+     "risk_auroc_fail_vs_nonfail": 1.0,
+     "pair_mech_accuracy": 1.0,
+     "top1_mech": [
+      "D",
+      "B"
+     ]
+    }
+   },
+   "0.1": {
+    "L2_max_se_units": 4.943826847765524,
+    "L2_rms_se_units": 2.1229915649021085,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 6.984221454267382,
+    "L3_geo_rms_sd_units": 3.0931873575158133,
+    "L2": {
+     "risk_mean": [
+      0.5950266459753495,
+      0.3604734170949313
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.9677734375,
+     "pair_mech_accuracy": 0.890625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.960617208623822,
+      0.19995230651323864
+     ],
+     "risk_auroc_fail_vs_nonfail": 1.0,
+     "pair_mech_accuracy": 1.0,
+     "top1_mech": [
+      "D",
+      "YA"
+     ]
+    }
+   }
+  }
+ },
+ "HP-B": {
+  "kind": "A",
+  "accepted_stage0b": {
+   "mf": true,
+   "sampled": true
+  },
+  "anchor": "YA1-A-00",
+  "mechanisms": [
+   "YA",
+   "YB"
+  ],
+  "axes": [
+   "ALIGNED",
+   "ALIGNED"
+  ],
+  "failure_fraction": [
+   0.03125,
+   0.0
+  ],
+  "categories": [
+   [
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SUCCESS",
+    "SLOW",
+    "SUCCESS",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "STALL",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SUCCESS",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SLOW",
+    "SUCCESS",
+    "SLOW",
+    "SLOW"
+   ],
+   [
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS"
+   ]
+  ],
+  "horizons": {
+   "0": {
+    "L3_geo_max_sd_units": 0.8686775504164288,
+    "L3_geo_rms_sd_units": 0.35814625993882454,
+    "L2": {
+     "risk_mean": [
+      0.5207325876452203,
+      0.5313986698657195
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.12698412698412698,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.506863329677642,
+      0.4076494159601788
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.1111111111111111,
+     "pair_mech_accuracy": 0.453125,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L0": {
+     "risk_mean": [
+      0.5248333525874971,
+      0.5359635803146202
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.12698412698412698,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L1": {
+     "risk_mean": [
+      0.5056860908845573,
+      0.4063018784751785
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.1111111111111111,
+     "pair_mech_accuracy": 0.453125,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.002": {
+    "L2_max_se_units": 0.37603836130306745,
+    "L2_rms_se_units": 0.19369490231446815,
+    "L2_worst": "J_G_slope",
+    "L3_geo_max_sd_units": 0.48185699569811624,
+    "L3_geo_rms_sd_units": 0.29248487569887555,
+    "L2": {
+     "risk_mean": [
+      0.5553975872815491,
+      0.546603306474442
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4603174603174603,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.5703756691681128,
+      0.4870368286854283
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.25396825396825395,
+     "pair_mech_accuracy": 0.53125,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.005": {
+    "L2_max_se_units": 0.4052641946717138,
+    "L2_rms_se_units": 0.25984526918221695,
+    "L2_worst": "FPR_slope",
+    "L3_geo_max_sd_units": 0.9152269228667556,
+    "L3_geo_rms_sd_units": 0.42329119658324865,
+    "L2": {
+     "risk_mean": [
+      0.5504356617171258,
+      0.5723488352660714
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.9365079365079365,
+     "pair_mech_accuracy": 0.515625,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.6079979987479719,
+      0.48655669399096846
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.5873015873015873,
+     "pair_mech_accuracy": 0.53125,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.01": {
+    "L2_max_se_units": 0.30789915913104593,
+    "L2_rms_se_units": 0.14733499109511017,
+    "L2_worst": "J_G_slope",
+    "L3_geo_max_sd_units": 0.6954748116424675,
+    "L3_geo_rms_sd_units": 0.3273066373896475,
+    "L2": {
+     "risk_mean": [
+      0.5650359411318149,
+      0.5948397840693369
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.8253968253968254,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.5996841222904989,
+      0.4893220177564408
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.20634920634920634,
+     "pair_mech_accuracy": 0.40625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.02": {
+    "L2_max_se_units": 0.4671858975662478,
+    "L2_rms_se_units": 0.3325693844980773,
+    "L2_worst": "J_V_d",
+    "L3_geo_max_sd_units": 0.8737544489862517,
+    "L3_geo_rms_sd_units": 0.4623499267899867,
+    "L2": {
+     "risk_mean": [
+      0.5357767843977428,
+      0.5615304510026744
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.047619047619047616,
+     "pair_mech_accuracy": 0.5625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.5874145428375572,
+      0.4686662644924251
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.047619047619047616,
+     "pair_mech_accuracy": 0.421875,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.05": {
+    "L2_max_se_units": 0.7114558993720672,
+    "L2_rms_se_units": 0.41911328654369273,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 0.6510789233722569,
+    "L3_geo_rms_sd_units": 0.33372685144143655,
+    "L2": {
+     "risk_mean": [
+      0.5364063908083461,
+      0.5205187345030199
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.8095238095238095,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.629560225406941,
+      0.45717833054920365
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.3968253968253968,
+     "pair_mech_accuracy": 0.484375,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.1": {
+    "L2_max_se_units": 0.8750256387302405,
+    "L2_rms_se_units": 0.5259905554516664,
+    "L2_worst": "J_V_h",
+    "L3_geo_max_sd_units": 1.1483814667231782,
+    "L3_geo_rms_sd_units": 0.5633872272469985,
+    "L2": {
+     "risk_mean": [
+      0.5134639157145799,
+      0.47668074306035657
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.14285714285714285,
+     "pair_mech_accuracy": 0.515625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.7178254461292414,
+      0.5477946705877557
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.6666666666666666,
+     "pair_mech_accuracy": 0.453125,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   }
+  }
+ },
+ "HP-I": {
+  "kind": "A",
+  "accepted_stage0b": {
+   "mf": false,
+   "sampled": false
+  },
+  "anchor": "YA1-A-12",
+  "mechanisms": [
+   "YA",
+   "YA"
+  ],
+  "axes": [
+   "INVERTED",
+   "INVERTED"
+  ],
+  "failure_fraction": [
+   1.0,
+   1.0
+  ],
+  "categories": [
+   [
+    "STALL",
+    "STALL",
+    "DECLINE",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "DECLINE",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "DECLINE",
+    "STALL",
+    "STALL",
+    "STALL",
+    "DECLINE",
+    "DECLINE",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "STALL",
+    "DECLINE",
+    "STALL",
+    "DECLINE"
+   ],
+   [
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE"
+   ]
+  ],
+  "horizons": {
+   "0": {
+    "L3_geo_max_sd_units": 0.762104376911325,
+    "L3_geo_rms_sd_units": 0.2771391877971024,
+    "L2": {
+     "risk_mean": [
+      0.4908925427156629,
+      0.5044544263602423
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.43212938894533043,
+      0.3633636216334928
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L0": {
+     "risk_mean": [
+      0.4941617574555963,
+      0.5080953737659959
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L1": {
+     "risk_mean": [
+      0.4306378250175318,
+      0.3618365280309298
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.002": {
+    "L2_max_se_units": 0.7945644791152404,
+    "L2_rms_se_units": 0.34388403940061013,
+    "L2_worst": "J_G_slope",
+    "L3_geo_max_sd_units": 0.7979329505008917,
+    "L3_geo_rms_sd_units": 0.5351189696065043,
+    "L2": {
+     "risk_mean": [
+      0.5039007563670165,
+      0.5140855786716685
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.4532325918577566,
+      0.4004035299572861
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.005": {
+    "L2_max_se_units": 0.6098800365836765,
+    "L2_rms_se_units": 0.3101691670942726,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 0.7867422929682197,
+    "L3_geo_rms_sd_units": 0.42148015511115766,
+    "L2": {
+     "risk_mean": [
+      0.517810410384288,
+      0.5277401154814073
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.4734117311700474,
+      0.3321200928722485
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.01": {
+    "L2_max_se_units": 0.49919012840116084,
+    "L2_rms_se_units": 0.18842958622288625,
+    "L2_worst": "J_G_slope",
+    "L3_geo_max_sd_units": 0.6274395456965483,
+    "L3_geo_rms_sd_units": 0.3346689157173974,
+    "L2": {
+     "risk_mean": [
+      0.5142238438568801,
+      0.5153366358933442
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.41317853329560306,
+      0.3429651471378916
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.02": {
+    "L2_max_se_units": 0.4064570903573414,
+    "L2_rms_se_units": 0.23312999753019514,
+    "L2_worst": "J_V_h",
+    "L3_geo_max_sd_units": 0.619017378153725,
+    "L3_geo_rms_sd_units": 0.3486257591599382,
+    "L2": {
+     "risk_mean": [
+      0.450642704779709,
+      0.46146510813471686
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.3771139976525164,
+      0.32728672020034966
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.05": {
+    "L2_max_se_units": 0.5613458286864955,
+    "L2_rms_se_units": 0.3045851515523913,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 1.232277522455326,
+    "L3_geo_rms_sd_units": 0.5189578395238853,
+    "L2": {
+     "risk_mean": [
+      0.2868598081133793,
+      0.3188121150080029
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.35259895463076935,
+      0.33462811664194714
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.1": {
+    "L2_max_se_units": 3.012800033786235,
+    "L2_rms_se_units": 1.604053691533223,
+    "L2_worst": "FPR_h",
+    "L3_geo_max_sd_units": 2.3406606486515074,
+    "L3_geo_rms_sd_units": 1.3438864892306095,
+    "L2": {
+     "risk_mean": [
+      0.17766138876959345,
+      0.33429984806748725
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.3006526397319964,
+      0.46671039173290874
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   }
+  }
+ },
+ "DYN-YA/R": {
+  "kind": "B",
+  "accepted_stage0b": {
+   "mf": true,
+   "sampled": true
+  },
+  "anchor": "YA1-I-24",
+  "mechanisms": [
+   "YA",
+   "R"
+  ],
+  "axes": [
+   "INVERTED",
+   "ALIGNED"
+  ],
+  "failure_fraction": [
+   1.0,
+   0.0
+  ],
+  "categories": [
+   [
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE"
+   ],
+   [
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS"
+   ]
+  ],
+  "horizons": {
+   "0": {
+    "L3_geo_max_sd_units": 1.1690803235689775,
+    "L3_geo_rms_sd_units": 0.4066497198937067,
+    "L2": {
+     "risk_mean": [
+      0.4532711077815106,
+      0.43958016260424126
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.556640625,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.3742800339638743,
+      0.1696379273540406
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.8828125,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L0": {
+     "risk_mean": [
+      0.45365102730323803,
+      0.43968962655435095
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.556640625,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L1": {
+     "risk_mean": [
+      0.3737347023266795,
+      0.16945552997051833
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.8828125,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.002": {
+    "L2_max_se_units": 0.41181210762234444,
+    "L2_rms_se_units": 0.21413409275061104,
+    "L2_worst": "FNR_h",
+    "L3_geo_max_sd_units": 0.6064837342559473,
+    "L3_geo_rms_sd_units": 0.3778636311555844,
+    "L2": {
+     "risk_mean": [
+      0.44690521925620824,
+      0.4643917025411868
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.42578125,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.3596260025576721,
+      0.17761052449827938
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.8447265625,
+     "pair_mech_accuracy": 0.546875,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.005": {
+    "L2_max_se_units": 0.6077884540071022,
+    "L2_rms_se_units": 0.2681599234132471,
+    "L2_worst": "FNR_h",
+    "L3_geo_max_sd_units": 0.45313545877887723,
+    "L3_geo_rms_sd_units": 0.29886500359491125,
+    "L2": {
+     "risk_mean": [
+      0.4586462560781859,
+      0.42680273045019923
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.6416015625,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.388118334408184,
+      0.18863687679027347
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.8779296875,
+     "pair_mech_accuracy": 0.5625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.01": {
+    "L2_max_se_units": 0.29798922664338995,
+    "L2_rms_se_units": 0.13095856965247812,
+    "L2_worst": "FNR_slope",
+    "L3_geo_max_sd_units": 0.7966720582252568,
+    "L3_geo_rms_sd_units": 0.41819503221283566,
+    "L2": {
+     "risk_mean": [
+      0.4649198805962671,
+      0.42925871461299914
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.603515625,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.3854032540706043,
+      0.19998505188662496
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.86328125,
+     "pair_mech_accuracy": 0.71875,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.02": {
+    "L2_max_se_units": 0.5031977873856199,
+    "L2_rms_se_units": 0.33599566711269546,
+    "L2_worst": "J_V_h",
+    "L3_geo_max_sd_units": 0.44985807247589676,
+    "L3_geo_rms_sd_units": 0.327349181698357,
+    "L2": {
+     "risk_mean": [
+      0.4368163519120304,
+      0.42627395890088726
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.5478515625,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.3374015673684141,
+      0.17037208383579808
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.89453125,
+     "pair_mech_accuracy": 0.65625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.05": {
+    "L2_max_se_units": 0.794456244485274,
+    "L2_rms_se_units": 0.4563440859302414,
+    "L2_worst": "J_V_h",
+    "L3_geo_max_sd_units": 0.9795555916581004,
+    "L3_geo_rms_sd_units": 0.3944030469630834,
+    "L2": {
+     "risk_mean": [
+      0.34743180516552097,
+      0.35998946309093727
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4736328125,
+     "pair_mech_accuracy": 0.546875,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.2871761813547987,
+      0.22305134949141955
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.8271484375,
+     "pair_mech_accuracy": 0.640625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.1": {
+    "L2_max_se_units": 2.3995514638556648,
+    "L2_rms_se_units": 1.4797019864375727,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 2.126497914769012,
+    "L3_geo_rms_sd_units": 0.8329508760271569,
+    "L2": {
+     "risk_mean": [
+      0.26595266955160995,
+      0.33870558320172023
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.275390625,
+     "pair_mech_accuracy": 0.734375,
+     "top1_mech": [
+      "YA",
+      "R"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.257653823998924,
+      0.13896946172776417
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.8515625,
+     "pair_mech_accuracy": 0.734375,
+     "top1_mech": [
+      "YA",
+      "R"
+     ]
+    }
+   }
+  },
+  "C_measurability": {
+   "0": {
+    "C_hat_mean": [
+     0.18056892708527178,
+     0.09324502419543049
+    ],
+    "C_hat_sd": [
+     0.06700515976726742,
+     0.08166304900095997
+    ],
+    "C_exact_mean": [
+     0.12112347519955091,
+     0.12115676929017061
+    ],
+    "std_mean_diff": 1.1690803235689773,
+    "single_run_auroc": 0.853515625
+   },
+   "0.001": {
+    "C_hat_mean": [
+     0.20163206557798763,
+     2.3677552781751303
+    ],
+    "C_hat_sd": [
+     0.07987962142952268,
+     6.570641712805037
+    ],
+    "C_exact_mean": [
+     0.1665406024483217,
+     1.7170631706884185
+    ],
+    "std_mean_diff": -0.46618498025377986,
+    "single_run_auroc": 0.7099609375
+   },
+   "0.002": {
+    "C_hat_mean": [
+     0.17529403301825786,
+     0.8393023807527138
+    ],
+    "C_hat_sd": [
+     0.07480679674529947,
+     2.9088115704796906
+    ],
+    "C_exact_mean": [
+     0.15502770297562324,
+     1.2993992851626701
+    ],
+    "std_mean_diff": -0.3227225992023863,
+    "single_run_auroc": 0.7568359375
+   },
+   "0.0025": {
+    "C_hat_mean": [
+     0.2091370451648027,
+     2.5734894068785588
+    ],
+    "C_hat_sd": [
+     0.06089367310121705,
+     11.811291727197279
+    ],
+    "C_exact_mean": [
+     0.15076113617387973,
+     0.8487668086257663
+    ],
+    "std_mean_diff": -0.28308967529302315,
+    "single_run_auroc": 0.8330078125
+   },
+   "0.005": {
+    "C_hat_mean": [
+     0.18518760591233818,
+     0.4555037488613275
+    ],
+    "C_hat_sd": [
+     0.08756757388299304,
+     2.040963462423728
+    ],
+    "C_exact_mean": [
+     0.14419754540472307,
+     0.5717944288493799
+    ],
+    "std_mean_diff": -0.1871338634547116,
+    "single_run_auroc": 0.8310546875
+   },
+   "0.01": {
+    "C_hat_mean": [
+     0.19023687590481347,
+     3.0405073375509466
+    ],
+    "C_hat_sd": [
+     0.07697160312817744,
+     14.45165478423124
+    ],
+    "C_exact_mean": [
+     0.1451490160203891,
+     0.30303069696579576
+    ],
+    "std_mean_diff": -0.2789185066277794,
+    "single_run_auroc": 0.8046875
+   },
+   "0.02": {
+    "C_hat_mean": [
+     0.18030311924860631,
+     0.656642313877369
+    ],
+    "C_hat_sd": [
+     0.0660041304250513,
+     3.12293967854987
+    ],
+    "C_exact_mean": [
+     0.15288121795825688,
+     0.20826734531831306
+    ],
+    "std_mean_diff": -0.2156605668617001,
+    "single_run_auroc": 0.8310546875
+   },
+   "0.025": {
+    "C_hat_mean": [
+     0.18180221324563767,
+     0.33095089753063844
+    ],
+    "C_hat_sd": [
+     0.05924378528324474,
+     1.305504056383783
+    ],
+    "C_exact_mean": [
+     0.1573356305682249,
+     0.2061259382873888
+    ],
+    "std_mean_diff": -0.16140221019858736,
+    "single_run_auroc": 0.83203125
+   },
+   "0.05": {
+    "C_hat_mean": [
+     0.19692446941776504,
+     0.439931764109171
+    ],
+    "C_hat_sd": [
+     0.07688186688216982,
+     2.0426498750896007
+    ],
+    "C_exact_mean": [
+     0.18624006106150692,
+     0.14531360938167365
+    ],
+    "std_mean_diff": -0.16812526215247312,
+    "single_run_auroc": 0.8955078125
+   }
+  }
+ },
+ "DYN-YB/B": {
+  "kind": "B",
+  "accepted_stage0b": {
+   "mf": false,
+   "sampled": false
+  },
+  "anchor": "YB1-A-18",
+  "mechanisms": [
+   "YB",
+   "B"
+  ],
+  "axes": [
+   "ALIGNED",
+   "ALIGNED"
+  ],
+  "failure_fraction": [
+   0.0,
+   0.0
+  ],
+  "categories": [
+   [
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS"
+   ],
+   [
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS"
+   ]
+  ],
+  "horizons": {
+   "0": {
+    "L3_geo_max_sd_units": 1.1511898311320754,
+    "L3_geo_rms_sd_units": 0.4186203537038114,
+    "L2": {
+     "risk_mean": [
+      0.20946713332132377,
+      0.20739952482066495
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.142130766638953,
+      0.10215957986344854
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.640625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L0": {
+     "risk_mean": [
+      0.2057849794331863,
+      0.20418645099509966
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L1": {
+     "risk_mean": [
+      0.14234923654547926,
+      0.10204309757948621
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.640625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.002": {
+    "L2_max_se_units": 0.5098786012042036,
+    "L2_rms_se_units": 0.3181408699387269,
+    "L2_worst": "FNR_h",
+    "L3_geo_max_sd_units": 0.7417304061884618,
+    "L3_geo_rms_sd_units": 0.41741289702259127,
+    "L2": {
+     "risk_mean": [
+      0.18226696438443266,
+      0.18927369978474595
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.11316854235612744,
+      0.08865837993055654
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.65625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.005": {
+    "L2_max_se_units": 0.2750387736789333,
+    "L2_rms_se_units": 0.16982246623595848,
+    "L2_worst": "J_G_slope",
+    "L3_geo_max_sd_units": 0.40107039862734023,
+    "L3_geo_rms_sd_units": 0.30037489304453585,
+    "L2": {
+     "risk_mean": [
+      0.16934332388349083,
+      0.1711862279029125
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.1006491577887936,
+      0.07271707854432499
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.01": {
+    "L2_max_se_units": 0.4882029998099877,
+    "L2_rms_se_units": 0.24705070205461413,
+    "L2_worst": "FPR_h",
+    "L3_geo_max_sd_units": 0.7451330650881609,
+    "L3_geo_rms_sd_units": 0.31630658422444613,
+    "L2": {
+     "risk_mean": [
+      0.1672656106659523,
+      0.17496874497573872
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.0948354407133658,
+      0.08349990565659948
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.02": {
+    "L2_max_se_units": 0.471173721170529,
+    "L2_rms_se_units": 0.1999956570463215,
+    "L2_worst": "FPR_h",
+    "L3_geo_max_sd_units": 1.2305654419242027,
+    "L3_geo_rms_sd_units": 0.6466476641889805,
+    "L2": {
+     "risk_mean": [
+      0.15074903736376494,
+      0.16066596646684092
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.46875,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.08127937847476269,
+      0.06028741129546969
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.59375,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.05": {
+    "L2_max_se_units": 0.8730421803693069,
+    "L2_rms_se_units": 0.6003276422127205,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 2.3136339974438127,
+    "L3_geo_rms_sd_units": 1.0956394191046481,
+    "L2": {
+     "risk_mean": [
+      0.1077327538771719,
+      0.12671401441852
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.53125,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.06768693108732385,
+      0.06461279400824842
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.6875,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.1": {
+    "L2_max_se_units": 3.1871300065189856,
+    "L2_rms_se_units": 1.8793997370178275,
+    "L2_worst": "FPR_h",
+    "L3_geo_max_sd_units": 2.9057832067198777,
+    "L3_geo_rms_sd_units": 1.8303114263342997,
+    "L2": {
+     "risk_mean": [
+      0.0765174541811508,
+      0.18091218024522956
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.53125,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.055509169130312175,
+      0.21784221736057113
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.5625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   }
+  }
+ },
+ "DYN-D/B": {
+  "kind": "B",
+  "accepted_stage0b": {
+   "mf": false,
+   "sampled": false
+  },
+  "anchor": "D3-I-12",
+  "mechanisms": [
+   "D",
+   "B"
+  ],
+  "axes": [
+   "INVERTED",
+   "ALIGNED"
+  ],
+  "failure_fraction": [
+   1.0,
+   0.0
+  ],
+  "categories": [
+   [
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE"
+   ],
+   [
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS"
+   ]
+  ],
+  "horizons": {
+   "0": {
+    "L3_geo_max_sd_units": 1.5500223041815016,
+    "L3_geo_rms_sd_units": 0.7472112622449081,
+    "L2": {
+     "risk_mean": [
+      0.4299692121558868,
+      0.4502390315051023
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4306640625,
+     "pair_mech_accuracy": 0.453125,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.8102785686344867,
+      0.4639167250842999
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.9169921875,
+     "pair_mech_accuracy": 0.90625,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L0": {
+     "risk_mean": [
+      0.4304601861517796,
+      0.4512759026051468
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4345703125,
+     "pair_mech_accuracy": 0.4375,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L1": {
+     "risk_mean": [
+      0.8098740653518508,
+      0.46425776486533776
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.91796875,
+     "pair_mech_accuracy": 0.90625,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    }
+   },
+   "0.002": {
+    "L2_max_se_units": 0.674765889538415,
+    "L2_rms_se_units": 0.3187478993735882,
+    "L2_worst": "FNR_slope",
+    "L3_geo_max_sd_units": 0.9464860130292737,
+    "L3_geo_rms_sd_units": 0.48886987135202387,
+    "L2": {
+     "risk_mean": [
+      0.4402344381031532,
+      0.45328132491047013
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.451171875,
+     "pair_mech_accuracy": 0.515625,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.7945843414294498,
+      0.4283582857543836
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.9248046875,
+     "pair_mech_accuracy": 0.875,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    }
+   },
+   "0.005": {
+    "L2_max_se_units": 0.43330867474513746,
+    "L2_rms_se_units": 0.21039369739068664,
+    "L2_worst": "J_G_d",
+    "L3_geo_max_sd_units": 1.544120992076825,
+    "L3_geo_rms_sd_units": 0.7409084468187077,
+    "L2": {
+     "risk_mean": [
+      0.46054398883621483,
+      0.4595399379892765
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.484375,
+     "pair_mech_accuracy": 0.609375,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.8300248254740876,
+      0.4044346511425749
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.9521484375,
+     "pair_mech_accuracy": 0.90625,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    }
+   },
+   "0.01": {
+    "L2_max_se_units": 0.3736739230401838,
+    "L2_rms_se_units": 0.2491270382233369,
+    "L2_worst": "FNR_h",
+    "L3_geo_max_sd_units": 1.5885262377899898,
+    "L3_geo_rms_sd_units": 0.6560057661256783,
+    "L2": {
+     "risk_mean": [
+      0.4822303856441911,
+      0.495386436693611
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.482421875,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.9006148635775401,
+      0.5102699286622558
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.955078125,
+     "pair_mech_accuracy": 0.921875,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    }
+   },
+   "0.02": {
+    "L2_max_se_units": 0.41430284229102,
+    "L2_rms_se_units": 0.2534841396460333,
+    "L2_worst": "J_G_d",
+    "L3_geo_max_sd_units": 2.7732246221040793,
+    "L3_geo_rms_sd_units": 1.262811997655948,
+    "L2": {
+     "risk_mean": [
+      0.5051577298682023,
+      0.5168036968222053
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.46875,
+     "pair_mech_accuracy": 0.546875,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.9470854570598974,
+      0.5045950599852399
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.98828125,
+     "pair_mech_accuracy": 0.9375,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    }
+   },
+   "0.05": {
+    "L2_max_se_units": 6.281512283340832,
+    "L2_rms_se_units": 2.839175527195417,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 6.228861761121982,
+    "L3_geo_rms_sd_units": 3.3009120695479197,
+    "L2": {
+     "risk_mean": [
+      0.7260824740553109,
+      0.4458659190613078
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.9609375,
+     "pair_mech_accuracy": 0.953125,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.980328541159055,
+      0.24874828593975415
+     ],
+     "risk_auroc_fail_vs_nonfail": 1.0,
+     "pair_mech_accuracy": 0.953125,
+     "top1_mech": [
+      "D",
+      "YB"
+     ]
+    }
+   },
+   "0.1": {
+    "L2_max_se_units": 18.64715394825564,
+    "L2_rms_se_units": 7.872778310262262,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 6.3667073700245735,
+    "L3_geo_rms_sd_units": 3.296882260124603,
+    "L2": {
+     "risk_mean": [
+      0.9136465108769736,
+      0.21924523091953865
+     ],
+     "risk_auroc_fail_vs_nonfail": 1.0,
+     "pair_mech_accuracy": 1.0,
+     "top1_mech": [
+      "D",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.9883713252079835,
+      0.10627080261424995
+     ],
+     "risk_auroc_fail_vs_nonfail": 1.0,
+     "pair_mech_accuracy": 1.0,
+     "top1_mech": [
+      "D",
+      "B"
+     ]
+    }
+   }
+  }
+ },
+ "DYN-YA-I/YA-A": {
+  "kind": "B",
+  "accepted_stage0b": {
+   "mf": false,
+   "sampled": false
+  },
+  "anchor": "YA2-I-25",
+  "mechanisms": [
+   "YA",
+   "YA"
+  ],
+  "axes": [
+   "INVERTED",
+   "ALIGNED"
+  ],
+  "failure_fraction": [
+   0.0,
+   0.0
+  ],
+  "categories": [
+   [
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS"
+   ],
+   [
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS"
+   ]
+  ],
+  "horizons": {
+   "0": {
+    "L3_geo_max_sd_units": 0.5071055487780124,
+    "L3_geo_rms_sd_units": 0.18710147020716225,
+    "L2": {
+     "risk_mean": [
+      0.2664710684667198,
+      0.276011087886715
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.14173738788814913,
+      0.15298079448566462
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L0": {
+     "risk_mean": [
+      0.2623749856789803,
+      0.2726416803251767
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L1": {
+     "risk_mean": [
+      0.14337490706623424,
+      0.15436876143714362
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.002": {
+    "L2_max_se_units": 0.7497840609945977,
+    "L2_rms_se_units": 0.4068300034460867,
+    "L2_worst": "J_V_h",
+    "L3_geo_max_sd_units": 0.5364467907105612,
+    "L3_geo_rms_sd_units": 0.4160201660319606,
+    "L2": {
+     "risk_mean": [
+      0.2489254285314907,
+      0.25577727346588675
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.12162889687849691,
+      0.12493128949315607
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.005": {
+    "L2_max_se_units": 0.33866761853727334,
+    "L2_rms_se_units": 0.1736101916892384,
+    "L2_worst": "FPR_slope",
+    "L3_geo_max_sd_units": 0.4042593214712154,
+    "L3_geo_rms_sd_units": 0.2660080461608112,
+    "L2": {
+     "risk_mean": [
+      0.24902856804604012,
+      0.24885228758886282
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.12393711800788992,
+      0.14237875905544944
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.01": {
+    "L2_max_se_units": 0.23799003911278288,
+    "L2_rms_se_units": 0.15568692386591126,
+    "L2_worst": "FPR_h",
+    "L3_geo_max_sd_units": 0.5006309240108018,
+    "L3_geo_rms_sd_units": 0.3080560959909695,
+    "L2": {
+     "risk_mean": [
+      0.22872554621226482,
+      0.23359940286896427
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.1229751578674251,
+      0.12239488136749188
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.02": {
+    "L2_max_se_units": 0.2910112434229116,
+    "L2_rms_se_units": 0.1553955385743323,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 0.43221566600639644,
+    "L3_geo_rms_sd_units": 0.20358034997548044,
+    "L2": {
+     "risk_mean": [
+      0.23067238213126717,
+      0.23954927877709453
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.10390366264055406,
+      0.10260286929965576
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.05": {
+    "L2_max_se_units": 0.4293784953820547,
+    "L2_rms_se_units": 0.23523310173518847,
+    "L2_worst": "FPR_slope",
+    "L3_geo_max_sd_units": 1.6008422857237437,
+    "L3_geo_rms_sd_units": 0.8723936814707112,
+    "L2": {
+     "risk_mean": [
+      0.17275893723785657,
+      0.17307342352559055
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.08388417968272266,
+      0.09551861073044846
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.1": {
+    "L2_max_se_units": 1.484575662798853,
+    "L2_rms_se_units": 0.784661326627357,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 1.2318267720778566,
+    "L3_geo_rms_sd_units": 0.7286969704081583,
+    "L2": {
+     "risk_mean": [
+      0.15961517355647994,
+      0.12952633531216956
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.0678203147208177,
+      0.08034517644623788
+     ],
+     "risk_auroc_fail_vs_nonfail": null,
+     "pair_mech_accuracy": 0.0,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   }
+  }
+ },
+ "DYN-X/YB": {
+  "kind": "B",
+  "accepted_stage0b": {
+   "mf": false,
+   "sampled": false
+  },
+  "anchor": "X1-A-27",
+  "mechanisms": [
+   "X",
+   "YB"
+  ],
+  "axes": [
+   "ALIGNED",
+   "ALIGNED"
+  ],
+  "failure_fraction": [
+   0.375,
+   0.0
+  ],
+  "categories": [
+   [
+    "STALL",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "STALL",
+    "SUCCESS",
+    "STALL",
+    "SUCCESS",
+    "SUCCESS",
+    "STALL",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "STALL",
+    "STALL",
+    "SUCCESS",
+    "STALL",
+    "SUCCESS",
+    "SUCCESS",
+    "STALL",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "STALL",
+    "SUCCESS",
+    "STALL",
+    "STALL",
+    "SUCCESS",
+    "STALL"
+   ],
+   [
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS"
+   ]
+  ],
+  "horizons": {
+   "0": {
+    "L3_geo_max_sd_units": 0.20760896649387098,
+    "L3_geo_rms_sd_units": 0.07939455493742836,
+    "L2": {
+     "risk_mean": [
+      0.3979608411587786,
+      0.4145025276468701
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4519230769230769,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.5042464439379497,
+      0.518480362966548
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.6794871794871795,
+     "pair_mech_accuracy": 0.546875,
+     "top1_mech": [
+      "X",
+      "X"
+     ]
+    },
+    "L0": {
+     "risk_mean": [
+      0.39569116206699506,
+      0.41230395160296285
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4599358974358974,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L1": {
+     "risk_mean": [
+      0.5056793935309053,
+      0.5199907154749872
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.6810897435897436,
+     "pair_mech_accuracy": 0.53125,
+     "top1_mech": [
+      "X",
+      "X"
+     ]
+    }
+   },
+   "0.002": {
+    "L2_max_se_units": 0.5835892856439231,
+    "L2_rms_se_units": 0.3513439023785628,
+    "L2_worst": "J_G_slope",
+    "L3_geo_max_sd_units": 0.7115406045880708,
+    "L3_geo_rms_sd_units": 0.44778555174983414,
+    "L2": {
+     "risk_mean": [
+      0.4138419534651836,
+      0.4241721233908623
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.532051282051282,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.5171298447426951,
+      0.5555006076545651
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.6458333333333334,
+     "pair_mech_accuracy": 0.625,
+     "top1_mech": [
+      "X",
+      "YB"
+     ]
+    }
+   },
+   "0.005": {
+    "L2_max_se_units": 0.6869149377324452,
+    "L2_rms_se_units": 0.3562538957580994,
+    "L2_worst": "FNR_slope",
+    "L3_geo_max_sd_units": 0.5239652850698014,
+    "L3_geo_rms_sd_units": 0.26977693626209026,
+    "L2": {
+     "risk_mean": [
+      0.4189241314250091,
+      0.42561227879121344
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4567307692307692,
+     "pair_mech_accuracy": 0.46875,
+     "top1_mech": [
+      "YB",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.5468427514043033,
+      0.5355627818608587
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.6378205128205128,
+     "pair_mech_accuracy": 0.546875,
+     "top1_mech": [
+      "X",
+      "YA"
+     ]
+    }
+   },
+   "0.01": {
+    "L2_max_se_units": 0.7156905596919388,
+    "L2_rms_se_units": 0.46284675302429534,
+    "L2_worst": "FNR_slope",
+    "L3_geo_max_sd_units": 0.532338025954717,
+    "L3_geo_rms_sd_units": 0.2036977553771421,
+    "L2": {
+     "risk_mean": [
+      0.4101323868476917,
+      0.41837646908241094
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4791666666666667,
+     "pair_mech_accuracy": 0.515625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.5614773680101286,
+      0.5816186326784265
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.6794871794871795,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "X",
+      "X"
+     ]
+    }
+   },
+   "0.02": {
+    "L2_max_se_units": 0.9355315985732213,
+    "L2_rms_se_units": 0.47457575543642716,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 0.7625782748234208,
+    "L3_geo_rms_sd_units": 0.34733022815616477,
+    "L2": {
+     "risk_mean": [
+      0.39240240317738306,
+      0.416753637196867
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.3541666666666667,
+     "pair_mech_accuracy": 0.484375,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.5744258687074033,
+      0.5667641621672993
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.6730769230769231,
+     "pair_mech_accuracy": 0.546875,
+     "top1_mech": [
+      "X",
+      "X"
+     ]
+    }
+   },
+   "0.05": {
+    "L2_max_se_units": 0.6873998675237079,
+    "L2_rms_se_units": 0.30278812956904166,
+    "L2_worst": "FPR_h",
+    "L3_geo_max_sd_units": 0.334038174780565,
+    "L3_geo_rms_sd_units": 0.22272058621138666,
+    "L2": {
+     "risk_mean": [
+      0.33802180934575465,
+      0.37358212142976066
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4326923076923077,
+     "pair_mech_accuracy": 0.5625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.4817415215625359,
+      0.4676627566799887
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.6394230769230769,
+     "pair_mech_accuracy": 0.609375,
+     "top1_mech": [
+      "X",
+      "YA"
+     ]
+    }
+   },
+   "0.1": {
+    "L2_max_se_units": 0.8653273042836933,
+    "L2_rms_se_units": 0.4224872230984182,
+    "L2_worst": "J_V_h",
+    "L3_geo_max_sd_units": 0.8838681971266037,
+    "L3_geo_rms_sd_units": 0.5304680924731026,
+    "L2": {
+     "risk_mean": [
+      0.3335834553187652,
+      0.31570410535305077
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.32371794871794873,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.499797262313592,
+      0.365966227254653
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.5865384615384616,
+     "pair_mech_accuracy": 0.5625,
+     "top1_mech": [
+      "X",
+      "X"
+     ]
+    }
+   }
+  }
+ },
+ "DYN-YA/B": {
+  "kind": "B",
+  "accepted_stage0b": {
+   "mf": false,
+   "sampled": false
+  },
+  "anchor": "YA1-I-06",
+  "mechanisms": [
+   "YA",
+   "B"
+  ],
+  "axes": [
+   "INVERTED",
+   "ALIGNED"
+  ],
+  "failure_fraction": [
+   1.0,
+   0.0
+  ],
+  "categories": [
+   [
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE",
+    "DECLINE"
+   ],
+   [
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS",
+    "SUCCESS"
+   ]
+  ],
+  "horizons": {
+   "0": {
+    "L3_geo_max_sd_units": 0.34457523621067754,
+    "L3_geo_rms_sd_units": 0.14007171760588547,
+    "L2": {
+     "risk_mean": [
+      0.4639998456528397,
+      0.4782732464936269
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4638671875,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.2857634158221094,
+      0.3023588361473924
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.5078125,
+     "pair_mech_accuracy": 0.5625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L0": {
+     "risk_mean": [
+      0.46792911215762617,
+      0.4823369333344936
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4658203125,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L1": {
+     "risk_mean": [
+      0.2857701172911034,
+      0.30227612251520297
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.51171875,
+     "pair_mech_accuracy": 0.5625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.002": {
+    "L2_max_se_units": 0.4914311711670139,
+    "L2_rms_se_units": 0.21837351923499468,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 0.7554878034551913,
+    "L3_geo_rms_sd_units": 0.3049651413602117,
+    "L2": {
+     "risk_mean": [
+      0.4647429773147738,
+      0.47740903908935195
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4482421875,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.30604506593042724,
+      0.32626778971703535
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.49609375,
+     "pair_mech_accuracy": 0.515625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.005": {
+    "L2_max_se_units": 0.5870276934077393,
+    "L2_rms_se_units": 0.358131291520391,
+    "L2_worst": "FNR_h",
+    "L3_geo_max_sd_units": 0.7120943165947368,
+    "L3_geo_rms_sd_units": 0.32879395094875263,
+    "L2": {
+     "risk_mean": [
+      0.498367351067088,
+      0.46989433840075007
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.6396484375,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YB",
+      "YB"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.3360573224676733,
+      0.31513748559933397
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.60546875,
+     "pair_mech_accuracy": 0.625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.01": {
+    "L2_max_se_units": 0.6045975582533997,
+    "L2_rms_se_units": 0.23580334428370536,
+    "L2_worst": "FNR_slope",
+    "L3_geo_max_sd_units": 0.4759345980771938,
+    "L3_geo_rms_sd_units": 0.26911267135104233,
+    "L2": {
+     "risk_mean": [
+      0.4982821813907251,
+      0.4842515200732672
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.5576171875,
+     "pair_mech_accuracy": 0.484375,
+     "top1_mech": [
+      "YB",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.2940594642035983,
+      0.3072951342167546
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.51171875,
+     "pair_mech_accuracy": 0.5625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.02": {
+    "L2_max_se_units": 0.34183706570687594,
+    "L2_rms_se_units": 0.19903927354770684,
+    "L2_worst": "J_V_slope",
+    "L3_geo_max_sd_units": 0.4882645078112465,
+    "L3_geo_rms_sd_units": 0.32058549987976914,
+    "L2": {
+     "risk_mean": [
+      0.4503559827569773,
+      0.4665541079075474
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.462890625,
+     "pair_mech_accuracy": 0.484375,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.25261776068115394,
+      0.28575523696810057
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.4248046875,
+     "pair_mech_accuracy": 0.578125,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.05": {
+    "L2_max_se_units": 0.6360677187251322,
+    "L2_rms_se_units": 0.33089368390101687,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 0.5298122664992236,
+    "L3_geo_rms_sd_units": 0.2834775255641835,
+    "L2": {
+     "risk_mean": [
+      0.4157692805715435,
+      0.385368470470948
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.5625,
+     "pair_mech_accuracy": 0.515625,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.27128152934889826,
+      0.2745243951376779
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.5576171875,
+     "pair_mech_accuracy": 0.546875,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    }
+   },
+   "0.1": {
+    "L2_max_se_units": 0.6433797470548093,
+    "L2_rms_se_units": 0.28019764855150814,
+    "L2_worst": "J_G_h",
+    "L3_geo_max_sd_units": 0.764441604442438,
+    "L3_geo_rms_sd_units": 0.453017816773814,
+    "L2": {
+     "risk_mean": [
+      0.37698688685549064,
+      0.3501838177474136
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.5830078125,
+     "pair_mech_accuracy": 0.5,
+     "top1_mech": [
+      "YA",
+      "YA"
+     ]
+    },
+    "L3": {
+     "risk_mean": [
+      0.32204378981014475,
+      0.2830424886205707
+     ],
+     "risk_auroc_fail_vs_nonfail": 0.623046875,
+     "pair_mech_accuracy": 0.53125,
+     "top1_mech": [
+      "YA",
+      "R"
+     ]
+    }
+   }
+  }
+ },
+ "criterion_iii": {
+  "pairs_at_chance": [
+   "HP-A",
+   "HP-D"
+  ],
+  "l3_accuracy": 0.75,
+  "p_one_sided": 6.4208819330465575e-09,
+  "pass": false,
+  "per_pair": {
+   "HP-A": {
+    "l2_acc": 0.5,
+    "l3_acc": 0.5,
+    "l2_p_two_sided": 1.0
+   },
+   "HP-D": {
+    "l2_acc": 0.453125,
+    "l3_acc": 1.0,
+    "l2_p_two_sided": 0.5323087760278422
+   }
+  }
+ }
+}
