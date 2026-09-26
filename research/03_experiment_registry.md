@@ -2182,3 +2182,328 @@ per cap (16 excluded for low clean gain), 2 + 2 seeds, sampled Adam, `T = 2700`.
 - **[observation]** Every cap is in band, so accessibility barely moves the YB failure rate. The
   Axis-B flag dominates: ALIGNED YB fails in 0.08–0.35 of runs, INVERTED YB in 0.64–1.00. The
   Stage 0 YB imbalance (0.946) came mainly from the hidden inversion, not from accessibility.
+
+### E004a — Stage 0b record (DESIGN SPLIT ONLY; 2026-09-26)
+
+No test or shift structure was generated, no Stage 1 predictor was fitted, the Stage 1 criteria
+were not touched, and no E004b work was started. Everything below is an oracle/design analysis on
+the frozen Stage 0b design panel.
+
+**Runs.**
+
+| step | commit | output |
+| --- | --- | --- |
+| amendment | `52ed06c` | Amendment 3 (before any Stage 0b code) |
+| implementation | `c7e69fa` | TDD, RED observed for every new test; 8/8 mutants caught |
+| YB calibration | `f768e38` → record `6156b88` | `results/E004a-stage0b-calibration/20260926T010125Z_f768e38` (cap 0.2) |
+| panel | `83591a9` → frozen `203ff31` | `configs/e004/design_panel_0b.json`, sha256 `c7da2c31…da84` (768 structures) |
+| runs | `a5e0ca0` → output `71dc4f9` | `results/E004a-stage0b/20260926T010655Z_a5e0ca0` (raw `runs.npz` local) |
+| analysis | `f4c5c90` script; run at `71dc4f9` → output `594d7f9` | `results/E004a-stage0b-analysis/20260926T012014Z_71dc4f9` |
+| provenance fix | `38e14e9` | see disclosures |
+| hard pairs | run at `594d7f9` → output `324bbf8` | `results/E004a-stage0b-hardpairs/20260926T013006Z_594d7f9`; frozen `hardpairs_frozen.json`, sha256 `0dfecbb0…6e8a` |
+| [post-hoc] | script `bbf941b`; run at `324bbf8` → output `13f92a5` | `results/E004a-stage0b-posthoc/20260926T015308Z_324bbf8` |
+
+All run-directory names carry no `-dirty` suffix: every run started from a clean tree.
+
+**Process and provenance disclosures.**
+
+- **`meta.json` dirty flag.** Every Stage 0b `meta.json` written before `38e14e9` (calibration,
+  runs, analysis; also every earlier E004a run) says `"dirty": true`. The cause is that
+  `write_metadata` ran `git status` after `create_run_dir` had created the untracked run
+  directory, so the run directory counted as a change. The run-directory name is computed before
+  the directory exists and is the authoritative clean/dirty record. Fixed in `38e14e9` (TDD, RED
+  observed): the run directory being written is ignored, and any other change still counts. The
+  hard-pair and post-hoc `meta.json` files record `"dirty": false`.
+- **Copied config.** The `config.toml` copied into each run directory is `configs/e004/e004a.toml`,
+  which still holds the Stage 0 constants (`root_seed = 20260930`, Stage 0 panel sha256
+  `e49753e9…`). The Stage 0b values are recorded as top-level `meta.json` fields:
+  - runs and analysis: `root_seed = 20261001` and `panel_sha256 = c7da2c31…`;
+  - calibration: no root-seed field (the script draws stream 4 of `SeedSequence(20261001)`);
+  - hard pairs: `root_seed` only (panel file unchanged since `203ff31`; sha256 re-verified
+    `c7da2c31…` at record time).
+- **Hard-pair seeds.** The partner-base draw uses `default_rng([20261001, 8])`, outside the
+  registered spawn tree. Verification seeds use `SeedSequence(20261001).spawn(5)[3].spawn(10)[8]`
+  as registered.
+- **Cosmetic.** `fig_alpha_reward_vs_update.png` keeps the Stage 0 axis range `[-3, 6]`; all Stage 0b
+  points lie in `[-1.7, 0.8]`.
+
+**Panel composition** (768 structures; actual Axis B from `toy.axis_b`).
+
+| mechanism | ALIGNED | INVERTED |
+| --- | --- | --- |
+| R | 96 | 0 |
+| X | 96 | 0 |
+| YA | 85 | 107 (incl. 11 noise-induced) |
+| YB | 86 | 106 (incl. 10 noise-induced) |
+| B | 96 | 0 |
+| D | 0 | 96 |
+
+- **Noise-induced inversions** (intended ALIGNED, actual INVERTED; flagged, kept): 21 in total
+  (YA1 3, YA2 2, YA3 6, YB1 4, YB2 3, YB3 3); 18 after exclusion.
+- **Axis redraws** (intended INVERTED not actually inverted): YA2 2, YB2 3, D1 2.
+- **Calibration rejections** (channel / target redraws):
+  - R1 1100 / 24; R3 620 / 12;
+  - X1 2977 / 62; X2 883 / 22; X3 955 / 26;
+  - YA1 1767 / 39; YA3 2629 / 58;
+  - YB1 1942 / 40; YB3 2925 / 67;
+  - D3 2861 / 64; D2 233 / 9;
+  - the others ≤ 206 / ≤ 16.
+- **Exclusions** (clean gain < 0.1): 43 structures:
+
+  | R1 | R3 | X1 | X2 | X3 | YA1 | YA2 | YA3 | YB1 | YB2 | YB3 | B1 | B3 | D1 | D2 | D3 |
+  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+  | 1 | 3 | 3 | 3 | 3 | 2 | 3 | 5 | 2 | 4 | 5 | 1 | 4 | 2 | 1 | 1 |
+
+  R2 and B2 had none.
+- **Horizon** (registered rule): sampled Adam `T = 2700` (median clean `t95` 880); NG `T = 23.4`
+  (median 7.80). Identical to Stage 0 because the rule rounds to a grid.
+
+#### Gates (Amendment 3 §11)
+
+| gate | result | detail |
+| --- | --- | --- |
+| **G1** leakage | **PASS** | L0 → construction macro-F1 0.057 (chance 0.056; threshold 0.156). L1 → construction 0.257 (reported, not gating). L0 → mechanism 0.118 (chance 0.167). L0 → Axis B AUROC 0.58. |
+| **G2** outcome diversity | **PASS** | Sampled-Adam failure: X 0.572, YA 0.353, YB 0.532, D 0.677 (all in `[0.2, 0.8]`); R 0.01, B 0.01. |
+| **G3** theory nulls | **PASS** | F1 max deviation inside the §7 domain 7.0e-10 (1273 of 1408 states; 9.6% excluded). **Over all states 2.6e-9**, so the pass does not depend on the domain. F2 8.6e-8. Canonical R1 `alpha_r + 2 eps` 4.4e-16. |
+| **G4** cross-construction | **PASS** | Test D, L3 at `h*`: mean macro-F1 0.540 (folds 0.541 / 0.369 / 0.711; threshold 0.317). L3 − L0 = 0.438, 95% CI [0.398, 0.477]. |
+| **G5** within-mechanism | **PASS** | L3 − L2 ≥ 0.02 with CI lower bound > 0 in 4 mechanisms: X (failure +0.164 [0.076, 0.254]; `Dn` +0.151 [0.086, 0.210]); YA (`Dn` +0.026 [0.008, 0.046]); YB (failure +0.036 [0.007, 0.067]); D (`Dn` +0.052 [0.007, 0.092]). |
+| **G6** optimizer validity | **PASS** | Material: YA, Adam − NG failure = **+0.309** (≥ 0.3). Robust: X (Adam 0.57 / NG 0.54) and D (0.68 / 0.82). |
+
+#### Registered Stage 0b predictions (§12)
+
+- **S0b-P1: HOLDS.** DECLINE fraction, INVERTED vs ALIGNED (sampled Adam, actual Axis B):
+  - YA 0.556 vs 0.003;
+  - YB 0.732 vs 0.015.
+  - With the intended axis instead: YA 0.578 vs 0.037, YB 0.747 vs 0.069.
+- **S0b-P2: HOLDS.** Failure, INVERTED vs ALIGNED: YA 0.596 vs 0.044; YB 0.914 vs 0.100.
+- **S0b-P3: HOLDS.** `alpha_r < 0` at `t = 0` for every kept R structure, under both the Adam
+  and the NG metric.
+- **Agent's priors:**
+  - "G2 at risk for D": wrong (D 0.68);
+  - "G5 passes through X and YA": right, and it also passes through YB and D;
+  - "geometry mostly encodes Axis A": largely right in the primary panel (below).
+
+#### Outcome map
+
+Failure / DECLINE / STALL fraction per construction × actual Axis B (runs = kept structures × 4
+seeds; NG and canonical twins are deterministic, one run each, same kept structures):
+
+| cell | sampled Adam | NG | MF-Adam | Adam, canonical | NG, canonical |
+| --- | --- | --- | --- | --- | --- |
+| R1 / R2 / R3 | .00 / .00 / .03 | .00 / .00 / .07 | .00 / .00 / .03 | 0 | .00 / .00 / .07 |
+| X1 | .48/.00/.48 | .41/.00/.41 | .48/.00/.48 | .48/.00/.48 | .52/.00/.52 |
+| X2 | .64/.00/.64 | .62/.00/.62 | .62/.00/.62 | .62/.00/.62 | .62/.00/.62 |
+| X3 | .59/.00/.59 | .59/.00/.59 | .62/.00/.62 | .58/.00/.58 | .66/.00/.66 |
+| YA1 A | .08/.01/.07 | 0 | .03/.03/.00 | 0 | 0 |
+| YA1 I | .75/.71/.04 | .06/.00/.06 | .79/.79/.00 | .78/.77/.01 | .09/.00/.09 |
+| YA2 A | .01/.00/.01 | 0 | 0 | 0 | 0 |
+| YA2 I | .29/.23/.07 | .03/.00/.03 | .29/.24/.06 | .36/.29/.07 | 0 |
+| YA3 A | .04/.00/.04 | 0 | .04/.00/.04 | 0 | 0 |
+| YA3 I | .74/.73/.01 | .14/.09/.06 | .66/.66/.00 | .78/.75/.03 | .14/.06/.09 |
+| YB1 A | .04/.00/.04 | .07/.00/.07 | .04/.00/.04 | 0 | 0 |
+| YB1 I | 1.0/.98/.02 | .91/.85/.06 | 1.0/.94/.06 | .89/.88/.01 | .82/.82/.00 |
+| YB2 A | .07/.00/.07 | 0 | .07/.00/.07 | 0 | 0 |
+| YB2 I | .75/.22/.53 | .48/.16/.32 | .74/.29/.45 | .76/.44/.32 | .45/.16/.29 |
+| YB3 A | .19/.04/.14 | .18/.00/.18 | .14/.04/.11 | 0 | .04/.00/.04 |
+| YB3 I | .98/.98/.01 | .94/.77/.16 | 1.0/1.0/.00 | .94/.94/.00 | .81/.71/.10 |
+| B1 / B2 / B3 | .00 / .03 / .00 | 0 | .00 / .03 / .00 | 0 | 0 |
+| D1 | .83/.60/.23 | .90/.40/.50 | .83/.63/.20 | .68/.39/.29 | .90/.30/.60 |
+| D2 | .60/.28/.32 | 1.0/.58/.42 | .61/.29/.32 | .48/.23/.25 | 1.0/.35/.65 |
+| D3 | .60/.59/.01 | .55/.39/.16 | .65/.58/.06 | .44/.39/.05 | .42/.29/.13 |
+
+Pooled failure (Adam / NG / MF-Adam):
+
+- ALIGNED 0.15 / 0.13 / 0.14 (X is almost all of it: STALL on deleted prompts);
+- INVERTED 0.73 / 0.54 / 0.73.
+- YA: ALIGNED 0.04 / 0.00, INVERTED 0.60 / 0.08.
+- YB: ALIGNED 0.10 / 0.08, INVERTED 0.91 / 0.78.
+- D 0.68 / 0.82.
+
+Observations:
+
+- **Designed inversion now yields DECLINE even in the canonical twins** (e.g. YA1-I, Adam
+  canonical DECLINE 0.77). In Stage 0 the canonical twins only stalled. Axis B is now a designed
+  property, not a background-noise artifact.
+- **ALIGNED Y failures are noise-driven.** The canonical twins of ALIGNED Y fail 0.00 under Adam.
+  The primary panel's 0.01–0.19 (YB3 A 0.19, mostly STALL) comes from background coins and
+  coupling.
+- **Optimizer dependence is mechanism-specific and changes sign:**
+  - YA-INVERTED fails 0.60 under Adam but 0.08 under NG;
+  - D2 fails 0.60 under Adam but 1.00 under NG;
+  - X, YB-I and D3 are close under both.
+  - MF-Adam tracks sampled Adam at the cell level (max |Δ| 0.08).
+
+#### Two alphas (update vs reward level; `t = 0`)
+
+Medians per construction:
+
+- **NG:** `alpha_u = alpha_r` exactly, by construction.
+- **Adam metric:** `alpha_u` is lower than `alpha_r` by up to 0.13 (R2 −0.35 vs −0.24; X2 −0.63 vs
+  −0.50; D3 −0.47 vs −0.37); X1 and D2 are about equal. The GRPO population normalization moves the update direction
+  slightly further from gold than the raw reward gradient. It never changes the sign pattern.
+- **Primary-panel `alpha_u0` is negative for every construction except part of B:**
+  - R, YA, YB about −0.25 to −0.35; X −0.42 to −0.63; D −0.47 to −0.74;
+  - B1 −0.05, B3 −0.08, B2 −0.21;
+  - the fraction positive is 0.26 / 0.09 / 0.25 for B1 / B2 / B3.
+- **The Stage 0 artefact (`alpha > 0` almost everywhere) is gone** at the update level: the
+  normalized gold direction removes the GRPO gain.
+
+#### Signatures: canonical vs coupled/noisy
+
+Values at `t = 0`, sampled Adam unless stated.
+
+- **`C_out/C` is ≈ 0 for R, X, B1 and B3, and 0.88–0.99 for YA1, YA3, YB, B2 and D** (YA2 0.51).
+  - This holds in both twins and under both optimizers.
+  - It encodes whether the verifier reads out-of-context features. That is an **Axis-A
+    (structure)** indicator; it now also covers B2 (process credit via `z3`), so it no longer
+    separates exploit from benign credit.
+- **`alpha_u0` carries the Axis-B (preference) signal only in the canonical twins.** INVERTED vs
+  ALIGNED AUROC of `-alpha_u0`:
+  - canonical Adam: YA 0.90, YB 0.82;
+  - primary Adam: 0.61 / 0.61; primary NG: 0.67 / 0.67.
+  - Background coins pull every `alpha` to about −0.3 and mask the preference relation.
+- **Canonical twin values:**
+  - `alpha_u0`: X1/X2 −1.00 (Adam); B +0.06 to +0.19; YA −0.01 to −0.11; R1 −0.15 (Adam), −0.09
+    (NG);
+  - `d(C/A)` over 10% of `T` is about 1.5× larger in the canonical twins for YA1 and YB1 (+0.46
+    vs +0.30; +0.59 vs +0.40).
+- **D under Adam:** `C/A` *falls* over the first 10% of `T` (−0.07 to −0.11). Under NG it rises for
+  D1 and D2 (+0.07, +0.06); D3 is −0.02.
+
+#### Leakage tests (Amendment 3 §9)
+
+- **A (construction recognition, per structure, t = 0):**
+  - L0 0.057 (chance 0.056);
+  - L1 0.257;
+  - L0 → mechanism 0.118; L0 → Axis B AUROC 0.58.
+- **B (leave-one-construction-out mechanism recognition, `h*`), macro-F1:**
+  - L0 0.00, L1 0.35, L2 0.20, L3 0.46, L3+ 0.61.
+  - Observables alone do not transfer mechanism identity to an unseen construction; geometry does.
+- **C (within mechanism, `h*`):** grouped CV inside each mechanism; L0 / L1 / L2 / L3.
+
+  | mechanism, target | L0 | L1 | L2 | L3 | L3 − L2 [95% CI] | L3 − L1 [95% CI] |
+  | --- | --- | --- | --- | --- | --- | --- |
+  | X failure | .581 | .833 | .697 | .861 | +.164 [.076, .254] | +.028 [−.017, .085] |
+  | X `Dn` | .444 | .759 | .617 | .768 | +.151 [.086, .210] | +.009 [−.018, .036] |
+  | YA failure | .739 | .892 | .829 | .860 | +.031 [−.012, .070] | **−.033 [−.062, −.008]** |
+  | YA `Dn` | .621 | .714 | .664 | .690 | +.026 [.008, .046] | **−.024 [−.045, −.005]** |
+  | YA Axis B | .695 | .723 | .712 | .740 | +.027 [−.007, .061] | +.017 [−.022, .053] |
+  | YB failure | .723 | .846 | .817 | .853 | +.036 [.007, .067] | +.007 [−.017, .029] |
+  | YB `Dn` | .640 | .741 | .715 | .735 | +.020 [−.003, .041] | −.006 [−.023, .010] |
+  | YB Axis B | .681 | .780 | .774 | .756 | −.018 [−.062, .023] | **−.024 [−.049, −.001]** |
+  | D failure | .773 | .904 | .915 | .926 | +.011 [−.058, .076] | +.022 [−.042, .090] |
+  | D `Dn` | .519 | .681 | .690 | .742 | +.052 [.007, .092] | +.060 [.027, .091] |
+  | R `Dn` | .670 | .670 | .639 | .625 | −.014 [−.035, .005] | **−.046 [−.091, −.009]** |
+  | B `Dn` | .419 | .476 | .492 | .497 | +.006 [−.030, .043] | +.022 [−.011, .054] |
+
+  R and B failure: skipped (< 10 failing runs).
+- **D (cross-construction, `h*`), mean macro-F1:**
+  - L0 0.124, L1 0.476, L2 0.280, L3 0.540, L3+ 0.659;
+  - L3 − L2 = +0.259 [0.221, 0.296].
+- **E (type oracles, leave-one-structure-out):**
+  - mechanism: C-index `Dn` 0.608, AUROC failure 0.662;
+  - mechanism × Axis B: 0.725 / 0.857.
+
+#### Oracle information ceilings
+
+Exact observables, grouped 5-fold CV, design split; not Stage 1 predictors.
+
+Sampled Adam at `h* = 2%`:
+
+| level | C-index `Dn` | AUROC failure | not-yet-visible AUROC (355 failing) | mechanism macro-F1 | Axis-B AUROC |
+| --- | --- | --- | --- | --- | --- |
+| L0 | 0.597 | 0.667 | 0.708 | 0.121 | 0.586 |
+| L1 (`t = 0` geometry) | 0.722 | 0.876 | 0.871 | 0.520 | 0.768 |
+| L2-G | 0.614 | 0.712 | 0.645 | 0.175 | 0.597 |
+| L2 | 0.632 | 0.756 | 0.712 | 0.368 | 0.663 |
+| L3 | 0.724 | 0.887 | 0.866 | 0.640 | 0.795 |
+| L3+ | 0.717 | 0.891 | 0.871 | 0.781 | 0.862 |
+
+- **At 10% of `T`:** L2 0.679 / 0.820 / 0.768; L3 0.738 / 0.926 / 0.897.
+- **NG (secondary), `h*`:** L1 0.787 / 0.919; L2 0.686 / 0.860; L3 0.802 / 0.952. Not-yet-visible
+  NG failures: n = 6 (uninformative).
+- The mechanism × Axis-B type oracle (0.725 / 0.857) is at the level of L1 and L3.
+
+#### [post-hoc, not pre-registered] Robustness of the gate passes and the L1 question
+
+Script `experiments/e004/stage0b_posthoc.py`, run `results/E004a-stage0b-posthoc/20260926T015308Z_324bbf8`
+(clean tree). Nothing below changes a gate.
+
+- **G6 margin:**
+  - YA Adam − NG = 0.309, 95% structure-bootstrap CI [0.246, 0.374].
+  - The material-dependence criterion is met at the point estimate only; the CI straddles 0.3.
+- **G5 under multiplicity:**
+  - Holm correction over the 12 evaluated L3 − L2 targets, one-sided, normal approximation from
+    the bootstrap CIs.
+  - Passing: X `Dn`, X failure and YA `Dn` (p = 0.0034 vs 0.0050).
+  - Two mechanisms still pass, so G5 survives, but its second mechanism is marginal.
+- **Within mechanism × Axis-B cells** (beyond the type oracle), sampled Adam, `h*`, AUROC failure,
+  L0 / L1 / L2 / L3:
+
+  | cell | L0 | L1 | L2 | L3 |
+  | --- | --- | --- | --- | --- |
+  | X-A | .58 | .83 | .70 | .86 |
+  | YA-I | .63 | .92 | .89 | .92 |
+  | YB-I | .66 | **.94** | .81 | .83 |
+  | D-I | .77 | .90 | .92 | .93 |
+  | YB-A (10% failing) | .52 | .58 | .68 | .71 |
+
+  The oracle geometry carries outcome information beyond the mechanism × Axis-B type.
+- **Almost all of the L3 advantage is already in L1, the geometry at `t = 0`.**
+  - Full-panel ceilings at `h*`: L1 0.876 vs L3 0.887 (failure AUROC); 0.871 vs 0.866
+    (not-yet-visible failures).
+  - Within mechanism, L3 − L1 is ≈ 0 or negative (YA, R, YB Axis B), and positive only for D `Dn`
+    (+0.060 [0.027, 0.091]).
+  - The dynamic part of L3 (change and slope over `[h/2, h]`) adds mechanism recognition (0.52 →
+    0.64), not outcome information.
+  - This is the main caveat for Stage 1. See the decision section.
+
+#### Hard pairs (frozen)
+
+MF-Adam search (100 restarts, 10 per type, 1242 s); verification with sampled Adam, 32 + 8 clean
+seeds per member. The search objective has no outcome or Axis-B term; the lowest-SSE restart is
+taken as is.
+
+| type | anchor / partner base | accepted (MF / sampled) | sampled failure (anchor, partner) | detail |
+| --- | --- | --- | --- | --- |
+| HP-A (B vs YA) | B3-A-22 / YA3-A-26 | yes / yes | 0.00, 0.00 | both ALIGNED, both SUCCESS: a **mechanism pair only**; Correction A max ratio 0.012 |
+| HP-D (D vs B) | D1-I-00 / B2-A-21 | yes / yes | 1.00, 0.00 | `Dn` 0.77 vs 0.00; max ratio 0.083. **Latent-decline outcome pair**, as in Stage 0 |
+| HP-B (YA vs YB) | YA1-A-00 / YB3-A-27 | yes / yes | 0.03, 0.00 | both ALIGNED; mechanism pair |
+| HP-I (YA-I vs YA-A) | YA1-A-12 / YA1-A-16 | no / no | 1.00, 1.00 | L2-matched, but the fitted partner is INVERTED: the axis constraint fails |
+| DYN-YA/R | YA1-I-24 / R3-A-30 | **yes / yes** | 1.00, 0.00 | L0 ratio 0.008; L1 within tolerance; L2 ratio 0.030. L3 diverges at **1%** of `T` (sampled; MF 7%); the failing member's median visible onset is at **2%** (MF 24%) |
+| DYN-YB/B | YB1-A-18 / B2-A-22 | no / no | 0.00, 0.00 | both ALIGNED; no failing member |
+| DYN-D/B | D3-I-12 / B2-A-17 | no / no | 1.00, 0.00 | infeasible: L1 cannot be matched (max scaled residual 3.79); no L3 divergence (as in Stage 0) |
+| DYN-YA-I/YA-A | YA2-I-25 / YA1-A-29 | no / no | 0.00, 0.00 | the INVERTED anchor succeeds in both tiers (inverted but not accessible) |
+| DYN-X/YB | X1-A-27 / YB2-A-10 | no / no | 0.375, 0.00 | failure below 0.5; divergence (15–17%) after the onset (1%) |
+| DYN-YA/B | YA1-I-06 / B3-A-06 | no / no | 1.00, 0.00 | outcome-divergent, but no L3 divergence before the onset (1.5% of `T`) |
+
+- **Accepted in both tiers:** HP-A, HP-D, HP-B and DYN-YA/R. **Outcome-divergent among them:**
+  HP-D and DYN-YA/R only.
+- **Stage 0's HP-A outcome pair (B SUCCESS vs YA DECLINE) is not reproduced.** The best match now
+  pairs B with an ALIGNED YA.
+- **One dynamic pair survives (DYN-YA/R).** Its sampled-Adam lead is one grid step (1% of `T` = 27
+  steps) before visible failure.
+- [post-hoc interpretation] Failures under sampled Adam become visible early:
+  - 698 of 1097 failing runs (64%) are visible by 1% of `T`, and 742 (68%) by `h* = 2%`;
+  - the failing hard-pair members have median onset ≤ 2%.
+  - This leaves little room for a dynamic lead.
+
+#### Decision rule outcome (Amendment 3 §11)
+
+All of G1–G6 pass, so the registered recommendation is **PROCEED TO E004a STAGE 1**. Stage 1 does
+not start without collaborator approval.
+
+Caveats for the collaborator (observations; the Stage 1 criteria are unchanged):
+
+1. G6's material criterion passes by 0.009 (CI [0.25, 0.37]), and G5's second mechanism is
+   marginal under a multiplicity correction.
+2. **The oracle's predictive content is mostly the `t = 0` update geometry (L1), not the early
+   trajectory.** A Stage 1 success of L3 over L2 would, on this panel, largely be a success of the
+   initial geometry. A pure "short-horizon dynamics" reading would be too strong.
+3. In the primary panel, geometry mainly encodes Axis A (`C_out/C`). Background coins mask the
+   Axis-B signal in `alpha` (AUROC 0.61 vs 0.82–0.90 canonical).
+4. The frozen dynamic hard-pair set is thin: one pair (DYN-YA/R), with a 1%-of-`T` lead under
+   sampled Adam.
+5. These are oracle quantities: `g_G` is not observable in a real verifier setting.
+
+---
