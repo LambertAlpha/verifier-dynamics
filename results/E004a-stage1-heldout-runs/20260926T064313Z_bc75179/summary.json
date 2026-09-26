@@ -1,0 +1,109 @@
+{
+ "T_adam": 2700,
+ "T_ng": 23.4,
+ "feature_fracs": [
+  0.0,
+  0.001,
+  0.002,
+  0.0025,
+  0.005,
+  0.01,
+  0.02,
+  0.025,
+  0.05,
+  0.1
+ ],
+ "splits": {
+  "test": {
+   "n_structures": 767,
+   "excluded_low_clean_gain": [
+    "T-R1-A-06",
+    "T-R2-A-15",
+    "T-R3-A-29",
+    "T-R3-A-31",
+    "T-X1-A-01",
+    "T-X1-A-05",
+    "T-X2-A-28",
+    "T-X3-A-17",
+    "T-YA1-I-03",
+    "T-YA1-I-08",
+    "T-YA1-I-11",
+    "T-YA1-I-13",
+    "T-YA1-I-21",
+    "T-YA1-I-31",
+    "T-YA2-A-16",
+    "T-YA2-A-20",
+    "T-YA2-A-31",
+    "T-YA2-I-10",
+    "T-YA2-I-24",
+    "T-YA2-I-29",
+    "T-YA3-A-16",
+    "T-YA3-A-17",
+    "T-YA3-A-31",
+    "T-YA3-I-11",
+    "T-YA3-I-18",
+    "T-YA3-I-25",
+    "T-YB1-A-04",
+    "T-YB1-A-08",
+    "T-YB1-I-00",
+    "T-YB1-I-11",
+    "T-YB1-I-14",
+    "T-YB1-I-18",
+    "T-YB2-A-06",
+    "T-YB2-I-25",
+    "T-YB2-I-29",
+    "T-YB2-I-31",
+    "T-YB3-A-23",
+    "T-YB3-A-31",
+    "T-YB3-I-21",
+    "T-B1-A-21",
+    "T-B2-A-14",
+    "T-B2-A-20",
+    "T-B2-A-22",
+    "T-B2-A-25",
+    "T-B3-A-05",
+    "T-B3-A-15",
+    "T-B3-A-24",
+    "T-D1-I-23",
+    "T-D2-I-14",
+    "T-D2-I-18"
+   ],
+   "infeasible_excluded": [
+    "T-D3-I-24"
+   ],
+   "n_excluded": 50,
+   "adam_failure_rate": 0.3737796373779637
+  },
+  "shift": {
+   "n_structures": 765,
+   "excluded_low_clean_gain": [],
+   "infeasible_excluded": [
+    "S-D3-I-07",
+    "S-D3-I-16",
+    "S-D3-I-31"
+   ],
+   "n_excluded": 0,
+   "adam_failure_rate": 0.4565359477124183
+  }
+ },
+ "panel_sha256": {
+  "test": "90f3cae29bfb5e32af812427046a6322a8c0dcd93132e4d69e2555fd025b2f70",
+  "shift": "79b6d381b3cb9e743160084926c52f6916fb07d3790ffefed518ea0f066b0553"
+ },
+ "timing": {
+  "panels": 177.18349899997702,
+  "test_adam": 118.10975229099859,
+  "test_ng": 13.759235417004675,
+  "shift_adam": 80.54375308402814
+ },
+ "peak_memory": {
+  "self_maxrss_bytes": 160956416,
+  "children_maxrss_bytes": 375095296
+ },
+ "predictors_frozen_sha256": "e0b2ea9d73a3f8b7f820e5274c507a626b39f84193d9359aa2ed67436bdfd210",
+ "shift_batch": [
+  4,
+  4
+ ],
+ "shift_geometry": "audit-only (the pooled estimator needs equal groups)"
+}
