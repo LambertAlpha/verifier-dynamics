@@ -44,7 +44,9 @@ def load(run_dir: Path) -> dict[str, Any]:
     summ = json.loads((run_dir / "summary.json").read_text())
     lab = json.loads((run_dir / "labels.json").read_text())
     structs = [toy.Structure.from_dict(d) for d in json.loads(PANEL.read_text())["structures"]]
-    return {"arr": arr, "summary": summ, "labels": lab, "structs": structs}
+    excluded = set(summ["excluded_low_clean_gain"])  # registry §4: clean gain < 0.1
+    keep = [s.sid not in excluded for s in structs]
+    return {"arr": arr, "summary": summ, "labels": lab, "structs": structs, "keep": keep}
 
 
 def hidx(fracs: list[float], h: float) -> tuple[int, int, int]:
@@ -60,14 +62,17 @@ def run_table(d: dict[str, Any], group: str, lab_key: str, seeds: bool) -> dict[
     n, s = obs.shape[:2]
     labs = d["labels"][lab_key]
     rows = []
-    for i in range(n):
+    kept = [i for i in range(n) if d["keep"][i]]
+    for i in kept:
         for r in range(s):
             lb = labs[i][r]
             rows.append({"i": i, "r": r, "sid": d["structs"][i].sid,
                          "construction": d["structs"][i].construction,
                          "mechanism": d["structs"][i].mechanism, **lb})  # fmt: skip
-    return {"obs": obs.reshape(n * s, *obs.shape[2:]), "ctx": ctx.reshape(n * s, *ctx.shape[2:]),
-            "geo": geo.reshape(n * s, *geo.shape[2:]), "rows": rows}  # fmt: skip
+    obs, ctx, geo = obs[kept], ctx[kept], geo[kept]
+    m = len(kept) * s
+    return {"obs": obs.reshape(m, *obs.shape[2:]), "ctx": ctx.reshape(m, *ctx.shape[2:]),
+            "geo": geo.reshape(m, *geo.shape[2:]), "rows": rows}  # fmt: skip
 
 
 def features(tab: dict[str, Any], fracs: list[float], h: float, level: str) -> np.ndarray:
@@ -122,7 +127,8 @@ def outcome_map(d: dict[str, Any]) -> dict[str, Any]:
         per: dict[str, Any] = {}
         for scope in (*pn.CONSTRUCTIONS, *pn.MECHANISMS):
             sel = [lb for i, st in enumerate(d["structs"])
-                   if scope in (st.construction, st.mechanism) for lb in labs[i]]  # fmt: skip
+                   if d["keep"][i] and scope in (st.construction, st.mechanism)
+                   for lb in labs[i]]  # fmt: skip
             cats = {c: sum(lb["category"] == c for lb in sel) / len(sel)
                     for c in ("SUCCESS", "SLOW", "STALL", "DECLINE")}  # fmt: skip
             per[scope] = {
@@ -135,6 +141,8 @@ def outcome_map(d: dict[str, Any]) -> dict[str, Any]:
     # MF-Adam vs sampled Adam, per structure
     agree_bin, agree_cat, dn_pairs = [], [], []
     for i in range(len(d["structs"])):
+        if not d["keep"][i]:
+            continue
         mf = d["labels"]["mf_prim"][i][0]
         sa = d["labels"]["adam_prim"][i]
         maj_fail = np.mean([lb["failure"] for lb in sa]) >= 0.5
@@ -336,7 +344,7 @@ def signatures(d: dict[str, Any], fracs: list[float]) -> dict[str, Any]:
             geo = geo.mean(1)
         res = {}
         for c in pn.CONSTRUCTIONS:
-            sel = [i for i, s in enumerate(d["structs"]) if s.construction == c]
+            sel = [i for i, s in enumerate(d["structs"]) if s.construction == c and d["keep"][i]]
             g = geo[sel]
             res[c] = {
                 "alpha0": float(np.nanmedian(g[:, i0, 1])),
@@ -374,7 +382,11 @@ def fig_optimizer(d: dict[str, Any], omap: dict[str, Any], path: Path) -> None:
         ys = []
         for key in ("adam_b16", "adam_b64_sweep", "adam_b256"):
             labs = d["labels"][key]
-            sel = [labs[k] for k, i in enumerate(sweep) if d["structs"][i].mechanism == m]
+            sel = [
+                labs[k]
+                for k, i in enumerate(sweep)
+                if d["structs"][i].mechanism == m and d["keep"][i]
+            ]
             ys.append(np.mean([lb["failure"] for s in sel for lb in s]))
         ax.plot([16, 64, 256], ys, marker="o", label=m)
     ax.set_xscale("log", base=2)
@@ -421,7 +433,9 @@ def fig_trajectories(d: dict[str, Any], fracs: list[float], path: Path) -> None:
         for col, (nm, a, j) in enumerate(names):
             ax = axes[row, col]
             for c in which:
-                sel = [i for i, s in enumerate(d["structs"]) if s.construction == c]
+                sel = [
+                    i for i, s in enumerate(d["structs"]) if s.construction == c and d["keep"][i]
+                ]
                 ax.plot(t, np.nanmedian(a[sel][:, :, :, j].mean(1), axis=0), label=c)
             ax.set_title(nm, fontsize=10)
             if row == 1:
@@ -466,7 +480,10 @@ def main(argv: list[str]) -> int:
     fig_ceilings(ceil_a, out_dir / "fig_ceilings_adam.png", "Oracle ceilings, sampled Adam (CV)")
     fig_ceilings(ceil_n, out_dir / "fig_ceilings_ng.png", "Oracle ceilings, NG (CV)")
     fig_trajectories(d, fr, out_dir / "fig_trajectories.png")
-    report = {"gates": gates, "outcome_map": omap, "leakage": leak, "cross_construction": cross,
+    dropped = [s.construction for s, k in zip(d["structs"], d["keep"], strict=True) if not k]
+    excl = {c: dropped.count(c) for c in pn.CONSTRUCTIONS}
+    report = {"excluded_per_construction": excl,
+              "gates": gates, "outcome_map": omap, "leakage": leak, "cross_construction": cross,
               "theory_nulls": nulls, "ceilings_adam": ceil_a, "ceilings_ng": ceil_n,
               "single_variable": single, "signatures": sig}  # fmt: skip
     (out_dir / "stage0_analysis.json").write_text(
