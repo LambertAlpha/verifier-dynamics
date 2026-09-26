@@ -1790,3 +1790,192 @@ recorded as a dated amendment and re-run on a new design draw.
   bound is ≤ 0.55.
 - **Mechanistic-only** if early warning fails and mechanistic value succeeds.
 - **Proceed to E004b** if RQ1, early warning and generalization all succeed.
+
+---
+
+### E004a — Stage 0 record (DESIGN SPLIT ONLY; 2026-09-25/26)
+
+No test or shift structure was generated, no Stage 1 predictor was fitted, and no E004b work was
+started.
+
+**Runs.**
+
+| step | commit | output |
+| --- | --- | --- |
+| panel | `ec9a139` | `configs/e004/design_panel.json`, sha256 `e49753e9…a30d` (480 structures, 33 s) |
+| runs | `cf78799` | `results/E004a-stage0/20260925T235505Z_cf78799` (431 s; raw `runs.npz` local) |
+| analysis | `139fa62` | `results/E004a-stage0-analysis/20260926T000358Z_139fa62` |
+| hard pairs | `fc24ae1` | `results/E004a-stage0-hardpairs/20260926T000852Z_fc24ae1`; frozen pairs `hardpairs_frozen.json`, sha256 `f4765fe4…4f9b` |
+| [post-hoc] | `5421de3` | `results/E004a-stage0-posthoc/20260926T002907Z_5421de3` |
+
+All run directories are clean.
+
+**Horizon and exclusions.**
+
+- `T` (registered rule): sampled Adam 2700 steps (median clean `t95` 880); NG 23.4 (median `t95`
+  7.80).
+- Excluded for clean gain < 0.1: 31 structures (R1 3, R2 4, X1 2, X2 2, YA1 3, YA2 3, YB1 4,
+  YB2 2, B1 3, B2 4, D1 1, D2 0).
+- Calibration rejections:
+  - R1: 1050 channel rejections, 31 target redraws (`FNR >= FPR` by construction);
+  - X1: 3412 / 79;
+  - X2: 1645 / 37;
+  - D2: 441 / 13;
+  - the others ≤ 62 / ≤ 7.
+
+**Process disclosures.**
+
+- **Tests without an observed RED.** The panel and dynamics tests were written before their code,
+  but the failing run was not observed. Mutation testing caught 6 of 7 mutants; the missed one is
+  equivalent (coins on deleted prompts have no effect).
+- **Exclusion added late.** The first analysis launch lacked the registered clean-gain exclusion.
+  It was stopped before writing any output, its partial directory was deleted, and it was re-run
+  after the fix (`139fa62`).
+- **A commit with a failing test.** Commit `3a31dde` went in with one failing test, because a
+  piped exit code hid it. The failure was E002's approval-file test, which had been failing since
+  the approved unsealing `83b6737`. It was fixed in `690a430`.
+
+#### Gates (registered §10)
+
+| gate | result | detail |
+| --- | --- | --- |
+| **G1** family recognition | **PASS** | L0 → mechanism macro-F1 0.185 (logistic; GBM 0.213; chance 0.167). L0 → construction 0.075 / 0.077 (chance 0.083). Type oracle: C-index 0.74, AUROC 0.871. |
+| **G2** outcome diversity | **FAIL** | Sampled-Adam failure: X 0.47, YA 0.67, **YB 0.946 (> 0.9)**, D 0.82; R 0, B 0. |
+| **G3** theory nulls | **FAIL by the letter** | F1 max relative deviation 2.6e-7 > 1e-8. F2 3.5e-8 (pass). |
+| **G4** cross-construction | **PASS** (marginal) | Best (L3) cross-construction macro-F1 0.474, within-panel 0.740: 0.474 ≥ 0.33 and ≥ 0.444. L2: 0.344 / 0.542; L3+: 0.587 / 0.799. |
+
+**[post-hoc] G3 diagnosis.** The deviation arises at `t = T_ng` states with FPR → 1
+(`alpha = -1.000`, `cond(F) ≈ 1e8`), through cancellation in `J_G'/(1 - FPR)`. Damping does not
+matter. On non-saturated states the deviation is ≤ 1.2e-8. The failure is numerical; the gate
+remains FAILED as registered.
+
+**Registered Stage 0 predictions.**
+
+- **S0-P1:** the identity part fails by tolerance, as for G3. "Oracle L3 − L2 = 0" was not
+  testable as registered, because the L2 summaries are finite-difference slopes, not derivatives
+  (a registration imprecision).
+- **S0-P2: PASS.**
+- **S0-P3: FALSIFIED.** Failure of YA ∪ YB is **higher** under sampled Adam (0.81) than under NG
+  (0.45). Design-check F5 (memo §2) does not generalize to the panel.
+- **S0-P4: holds** (D fails 0.82 under Adam, 0.95 under NG).
+- **S0-P5: holds** (B fails 0 / 0).
+
+#### Outcome map (failure / DECLINE / STALL fraction; median `Dn`)
+
+| construction | sampled Adam | NG | MF-Adam | Adam, canonical | NG, canonical |
+| --- | --- | --- | --- | --- | --- |
+| R1, R2, B1, B2 | 0 | 0 | 0 | 0 | 0 |
+| X1 | .43/.00/.43 (0.09) | .38/.00/.38 | .45/.00/.45 | .45/.00/.45 | .42/.00/.42 |
+| X2 | .51/.00/.51 (0.11) | .53/.00/.53 | .50/.00/.50 | .53/.00/.53 | .53/.00/.53 |
+| YA1 | .72/.66/.06 (1.12) | .07/.03/.05 | .72/.70/.03 | .56/.00/.56 | .03/.00/.03 |
+| YA2 | .56/.47/.09 (0.30) | .03/.03/.00 | .55/.45/.10 | .14/.00/.14 | .00 |
+| YB1 | .93/.89/.03 (1.36) | .90/.53/.38 | .90/.90/.00 | .97/.00/.97 | .78/.00/.78 |
+| YB2 | .93/.87/.06 (1.47) | .80/.50/.30 | .88/.88/.00 | 1.0/.00/1.0 | .50/.00/.50 |
+| D1 | .82/.66/.16 (1.24) | .95/.55/.40 | .82/.62/.20 | .71/.42/.29 | .95/.38/.57 |
+| D2 | .82/.66/.16 (1.43) | .95/.68/.28 | .90/.65/.25 | .85/.65/.20 | .95/.68/.28 |
+
+- The table is before exclusion; the gates use the post-exclusion values.
+- **MF-Adam vs sampled Adam, per structure:** binary agreement 0.962, category agreement 0.955,
+  Kendall `Dn` 0.872.
+- **Batch sweep** (sampled Adam, rollouts per step 16 / 64 / 256): YA failure **rises** 0.49 →
+  0.67 → 0.79. The other mechanisms are flat. [post-hoc interpretation: discovering the exploit is
+  itself learning that benefits from signal.]
+- **Background FN turns feature exploits into preference inversions.** With the top-up FN coins,
+  correct answers are rejected sometimes while triggered wrong answers are always accepted.
+  - Primary Y structures DECLINE in 47–89% of runs.
+  - Canonical twins (no background coins) never decline; they STALL.
+
+#### Signatures, canonical vs primary
+
+Values at `t = 0` and changes to 10% of `T`; medians per construction in the analysis JSON.
+
+- **`C_out/C` at `t = 0`** is ≈ 0 for R, X, B and 0.94–1.00 for YA, YB, D, under both optimizers
+  and both twins. It is effectively a mechanism indicator (generator encoding).
+- **Adam-metric `alpha_0` is positive for almost every construction** (R1 +0.86, B1 +1.45,
+  YA1 +0.74; D2 −0.17). The GRPO std-normalization gain enters `alpha`, because `g~` is decomposed
+  against the raw `g_G`. So `alpha > 0` does not isolate benign amplification under GRPO-lite (a
+  measurement-definition issue).
+- NG `alpha_0` is ≤ 0 except for canonical B (+0.07 to +0.19).
+- **Coupling and background noise shift the signatures:**
+  - Adam `alpha_0` for X1: +0.23 primary vs −1.00 canonical;
+  - `d(C/A)` over 10% of `T` for YA1: +0.79 vs +2.04.
+
+#### Oracle information ceilings
+
+Exact observables, grouped 5-fold CV, design split; not final predictors. Sampled Adam at
+`h* = 2%`:
+
+| level | C-index `Dn` | AUROC failure | not-yet-visible AUROC (322 failing) | mechanism macro-F1 | YA vs YB AUROC |
+| --- | --- | --- | --- | --- | --- |
+| L0 | 0.55 | 0.47 | 0.39 | 0.18 | 0.41 |
+| L1 | 0.73 | 0.89 | 0.89 | 0.59 | 0.90 |
+| L2-G | 0.59 | 0.58 | 0.45 | 0.24 | 0.40 |
+| L2 | 0.64 | 0.75 | 0.71 | 0.54 | 0.91 |
+| L3 | 0.75 | 0.92 | 0.91 | 0.74 | 0.91 |
+| L3+ | 0.75 | 0.93 | 0.93 | 0.80 | 0.89 |
+
+- **At 10% of `T`:** L2 0.70 / 0.83 / 0.77 / 0.55; L3 0.78 / 0.94 / 0.92 / 0.76.
+- **NG (secondary):** L1 0.83 / 0.96; L2 0.68 / 0.82; L3 0.81 / 0.97. Not-yet-visible failures
+  under NG are too few (n = 6 at `h*`).
+- **Single variables** (sampled Adam, `h*`), C-index / AUROC:
+
+  | variable | C-index | AUROC |
+  | --- | --- | --- |
+  | `C0/A0` | 0.68 | 0.85 |
+  | ΔFPR | 0.64 | 0.76 |
+  | ΔC | 0.68 | 0.82 |
+  | −ΔJ_G | 0.57 | 0.61 |
+  | FPR0 | 0.52 | 0.53 |
+
+**[post-hoc, not pre-registered] Beyond mechanism recognition.** Sampled Adam, `h*`, AUROC
+failure / C-index `Dn`:
+
+| level | alone | + one-hot mechanism type |
+| --- | --- | --- |
+| L0 | 0.47 / 0.55 | 0.89 / 0.79 |
+| L1 | — | 0.93 / 0.79 |
+| L2 | — | 0.92 / 0.78 |
+| L3 | — | 0.94 / 0.78 |
+
+- **Within mechanism**, from full-panel CV predictions:
+  - X: L3 0.81 vs L2 0.53 (with type: 0.78 vs 0.45);
+  - YA: 0.84 vs 0.65 (0.78 vs 0.67);
+  - D: 0.72 vs 0.67 (0.65 vs 0.66);
+  - YB has too few successes to evaluate.
+- Most of the oracle geometry advantage is mechanism recognition. Within X and YA, geometry still
+  adds 0.1–0.3 AUROC, and most of it is already present at `t = 0` (L1: X 0.80, YA 0.81).
+
+#### Hard pairs (frozen)
+
+MF-Adam search (86 restarts, 1030 s); verification with sampled Adam, 32 + 8 clean seeds per
+member.
+
+**Correction A:**
+
+- **HP-A (B2 vs YA1): accepted in both tiers.** Sampled max ratio 0.049. B SUCCESS vs YA DECLINE
+  (sampled failure 0.00 vs 1.00), so this is an outcome pair as well. *Caveat:* the B anchor's
+  credit channel is weak (channel FPR 0.016 of 0.274).
+- **HP-D (D1 vs B2): accepted in both tiers, with FNR matched** (0.217 each). Sampled max ratio
+  0.232. D DECLINE (`Dn` 1.98) vs B SUCCESS (failure 1.00 vs 0.00). **The latent-decline outcome
+  pair is feasible under the corrected criterion.**
+- **HP-B (YA1 vs YB1): accepted in both tiers.** Both DECLINE, so this is a mechanism pair.
+
+**Correction B (dynamic):**
+
+- **DYN-YA/R (YA1 vs R2): accepted in both tiers.**
+  - L0 max ratio 0.027; L1 within tolerance; L2 matched over `[0, 2%]`.
+  - L3 diverges at 5% of `T`: `C` 0.060 vs 0.034, `alpha` 0.49 vs 0.60.
+  - Visible failure is at 35% of `T` (YA DECLINE, R SUCCESS).
+- **DYN-YB/B (YB2 vs B1): accepted in both tiers.** Divergence at 1–4% of `T`, but FPR also
+  separates by 5%, so the geometric lead is small.
+- **DYN-YA/B:** accepted in the sampled tier only (MF-Adam predicts both succeed).
+- **DYN-D/B and DYN-D/R: infeasible.** L1 cannot be matched: displacement differs already at
+  `t = 0`, so no dynamic-only pair exists.
+- **DYN-X/YB:** matched, but there is no L3 divergence before onset.
+- *Caveat:* the dynamic divergences are modest (|ΔC| ≈ 0.03). Whether they are detectable at audit
+  size is a Stage 1 question.
+
+#### Decision rule outcome (registered §10)
+
+G2 and G3 failed, so the recommendation is **REVISE PANEL**. The exact reasons are in the Stage 0
+report; no amendment has been made yet.
