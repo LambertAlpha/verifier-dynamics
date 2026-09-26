@@ -2507,3 +2507,215 @@ Caveats for the collaborator (observations; the Stage 1 criteria are unchanged):
 5. These are oracle quantities: `g_G` is not observable in a real verifier setting.
 
 ---
+
+### E004a — Stage 1 execution note (design round; 2026-09-26)
+
+Written and committed **before any Stage 1 code or output.**
+
+**Status.**
+
+- Governs the Stage 1 design round ("Proceed with E004a Stage 1").
+- **Unchanged:**
+  - the panel (Stage 0b design panel);
+  - the outcomes (pre-registration §7);
+  - the horizons and `h* = 2%`;
+  - the model families;
+  - the Stage 1 success criteria (§12).
+- This note only operationalizes points that §6, §12, memo §5–§11 and Amendment 3 leave open. It
+  is written before any Stage 1 sampled output. The Stage 0b oracle results are known and
+  disclosed.
+- Where the brief and the frozen text differ, the frozen text governs; see §9 below.
+- This round: design split only. No test or shift panel is generated; no E004b work.
+
+**1. Data and outcomes.**
+
+- **Panel:** `configs/e004/design_panel_0b.json` (sha256 `c7da2c31…`). 725 kept structures (43
+  excluded by the registered clean-gain rule).
+- **Runs:** 2900 sampled-Adam runs (4 seeds each) and 725 NG runs.
+- **Adam trajectories** are re-run with the Stage 0b seeds (runs stream, roles `prim_ver` /
+  `prim_clean`), so they are identical to Stage 0b. Asserted: exact `J_G` at every checkpoint
+  equals the committed Stage 0b values within 1e-12.
+- **Outcomes** (`Dn`, category, failure, `t_on`) are recomputed and asserted equal to the committed
+  Stage 0b labels.
+- **NG:** the exact flow, `T_ng = 23.4`.
+- Outcomes use exact gold values (§7); finite samples enter the features only.
+
+**2. Finite-sample measurement.**
+
+Per run, at the feature checkpoints `H ∪ {h/2}`: Adam steps 0, 3, 5, 7, 14, 27, 54, 68, 135, 270;
+NG times at the same fractions of `T_ng`.
+
+- **Audit:** 256 fresh rollouts from the current policy, as 32 prompt groups × 8 responses
+  (prompts ~ `w`). Each rollout has a gold label `G` and one verifier call `V` (fresh coin). One
+  audit per run and checkpoint, shared by every level.
+- **Training batch (Adam):** the batch drawn from the checkpoint policy for the next update
+  (8 groups × 8). It is recorded without changing the training random stream.
+- **Observables:**
+  - `J_G` = audit mean of `G`;
+  - `J_V` = mean `V` over the audit plus the training batch (320 verifier calls; NG: audit only,
+    256);
+  - `FPR = #(V=1, G=0)/#(G=0)` and `FNR = #(V=0, G=1)/#(G=1)` on the audit; an empty denominator
+    gives NaN;
+  - FP mass = `#(V=1, G=0)/256`.
+- **Geometry:** the plug-in estimator with a pooled verifier gradient (the E002 G1 tuning winner).
+  - Scores: the exact score function of each sampled row at the current `theta`.
+  - **Update level.** GRPO advantages within each group, `(R − group mean)/(group std + 1e-6)`,
+    applied identically to `V` and `G`.
+    - `g~_V` = mean over all 40 pooled groups (audit + training) of the group-mean
+      advantage·score.
+    - `g~_G` = the same over the 32 audit groups, with `G`.
+  - **Reward level.** Leave-one-out baseline within each group (RLOO); `g_V` pooled, `g_G` audit.
+  - **Metric:**
+    - Adam at `t > 0`: the run's bias-corrected `v_hat` (the actual optimizer state),
+      `diag(1/(sqrt(v_hat) + 1e-8))`;
+    - Adam at `t = 0`: `v_hat_0 = mean(gamma)^2 + var(gamma)/8` per coordinate, where `gamma_k` is
+      the verifier update contribution of pooled group `k` (40 groups). This is the
+      finite-sample analogue of the registered `g~^2 + sigma~^2/64`;
+    - NG: the damped inverse of the audit Fisher estimate, `(F_hat + 0.1·tr(F_hat)/d·I)^-1`
+      (E002 winner `lam = 0.1`).
+    - The Adam metric only approximates the effective geometry (momentum, `v_hat` history,
+      noise correlation). Every report states this.
+  - `(A, alpha, C)` by `toy.decompose`.
+    - `A = 0` gives `alpha = NaN` and `alpha_defined = False`; recorded estimates are never
+      imputed.
+    - `C_in` / `C_out` (L3+ only): the residual projected on the span of the per-prompt audit
+      gold contributions. Prompts absent from the audit contribute no direction.
+- **Levels** (registry §6; Amendment 3 §6):
+  - L0; L1 = L0 + `(A_u, alpha_u, C_u)` at 0; L2; L2-G; L3 = L2 + summaries of
+    `(A_u, alpha_u, C_u)`; L2+ and L3+ secondary.
+  - Summaries: the value at `h`, the change `0 → h`, and the slope over `[h/2, h]` per 1% of
+    `T`. At `h = 0` the change and slope are 0.
+  - `alpha_r` (reward level) is reported at every horizon. It enters only a secondary
+    sensitivity arm: L1r = L1 + `alpha_r0`; L3r = L3 + summaries of `alpha_r`. It is never used
+    for a criterion.
+
+**3. Predictors (design split only).**
+
+- **Pipeline:** median imputation (fit on the training fold) → standardization → model. There
+  are no missingness indicators, so dimensions stay as registered. NaN counts are reported.
+- **Primary models:**
+  - `Dn`: ridge;
+  - failure: L2 logistic;
+  - mechanism: 6-class multinomial logistic.
+  - Penalty grid `logspace(-3, 3, 13)` (alpha for ridge, C for logistic), selected by 5-fold
+    `GroupKFold` by structure inside the training data. Logistic selection uses log-loss.
+- **Evaluation:** out-of-fold predictions from 5-fold `StratifiedGroupKFold` by structure
+  (stratified by mechanism; fixed shuffle seed). The same folds are used for every level and
+  horizon, so comparisons are paired.
+- **Secondary:** gradient boosting (depth 2, 100 trees, learning rate 0.1), same folds, no
+  tuning.
+- **Single-variable diagnostics** (fixed sign; memo §8): L0 `FPR(0)`; L1 `C_0/A_0`; L2 `ΔFPR(h)`
+  and `−ΔJ_G(h)`; L3 `ΔC(h)` and `−Δalpha(h)`.
+- **Noise control** (memo §8): L2 + 9 permuted-noise features. Each of L3's 9 geometry columns is
+  permuted across runs with a fixed seed.
+- **Frozen model:** the same pipeline refit on all kept design runs, at each horizon.
+
+**4. Metrics.**
+
+- **Standard metrics:**
+  - C-index of `Dn`; AUROC of failure (STALL ∪ DECLINE);
+  - mechanism macro-F1, balanced accuracy and the confusion matrix;
+  - Route A vs B AUROC: among YA ∪ YB runs, the score `p_YA/(p_YA + p_YB)` from the 6-class
+    out-of-fold probabilities.
+- **Not yet visible (NYV) at `h`:** runs with `t_on > h`; AUROC of eventual failure among them.
+- **Warning threshold and lead time** (L2 primary; also L0, L1, L3):
+  - running score `m_h` = the maximum over registered `h' <= h` of the out-of-fold failure
+    probability `p_h'`;
+  - `tau_h` = the 90th percentile of `m_h` over design SUCCESS runs, so the cumulative
+    false-alarm rate among SUCCESS runs is 10%;
+  - a run is warned at `h` iff `m_h > tau_h`; `t_warn` = the first `h' <= h` with
+    `p_h' > tau_h`;
+  - lead time = `t_on − t_warn` (% of `T`), for failures with `t_on > h`.
+  - **Criterion value:** the median lead time over the warned NYV failures (where `t_warn` is
+    defined).
+  - Also reported: sensitivity (the warned fraction) and a conservative median that counts
+    missed failures at lead 0.
+  - Held-out use: the `tau_h` computed here (out-of-fold, design) are frozen and applied to the
+    frozen models' held-out probabilities.
+- **Within mechanism:** models fitted inside each mechanism (same pipeline, grouped CV) for L0,
+  L1, L2 and L3, on `Dn` and failure. Failure is fitted only when both classes have ≥ 10 runs.
+- **Type oracles:** leave-one-structure-out mechanism-mean and mechanism × Axis-B-mean `Dn`.
+- **Cross-construction mechanism test:** 3 folds by construction slot (train on the other two
+  constructions of every mechanism); L0, L2 and L3 at `h*`.
+- **Design-side leave-one-mechanism-out diagnostic:** fit on 5 mechanisms, evaluate on the held-out
+  mechanism's design runs. §12's generalization split B uses test structures and is not
+  evaluated here.
+
+**5. Inference.**
+
+- **Hierarchical bootstrap, B = 2000:**
+  - structures with replacement, then seeds with replacement within each drawn structure;
+  - out-of-fold predictions held fixed;
+  - arms paired through shared resamples;
+  - the bootstrap seed comes from the registered tree.
+- **p-values and bounds:**
+  - one-sided `p = (1 + #{Δ* <= 0})/(B+1)`;
+  - "lower 95% bound" = the 5th percentile (one-sided, matching the one-sided p);
+  - two-sided 95% intervals are also reported.
+- **Claims:**
+  - "beats" = Holm-adjusted `p <= 0.05` within the family **and** a point estimate ≥ the margin
+    (`δ_out = 0.02`, `δ_mech = 0.03`); ties are within ±0.01;
+  - RQ1 family = 2 tests; mechanistic (i)–(iii) is a conjunction (no correction).
+
+**6. Hard pairs** (frozen file sha256 `0dfecbb0…`; evaluated after the predictor freeze; no new
+search).
+
+- **Runs:**
+  - every frozen pair's anchor (a panel structure) and partner (frozen parameters);
+  - 32 verifier + 8 clean seeds per member: the Stage 0b verification seeds (hard-pair role), so
+    the trajectories reproduce the verification runs;
+  - audits from the spare role (§7).
+- **Predictors:** the frozen pipeline refit on the design panel without the pair's anchor
+  structure (leave-anchor-out).
+- **Reported per horizon:**
+  - the L2 feature distance in audit-SE units (member means; registered SE formulas at the pair
+    mean);
+  - the L3 geometry distance in pooled across-seed SD units;
+  - failure risk scores, mechanism predictions and the actual outcomes.
+- **Criterion (iii), operationalized:**
+  - instances = runs of HP-A and HP-D (32 per member);
+  - task: binary, the pair's two mechanisms. A run is correct iff the frozen 6-class model gives
+    its true mechanism a higher probability than the partner's;
+  - L2 is "at chance" on a pair iff a two-sided exact binomial test of L2 accuracy against 0.5
+    does not reject at 0.05;
+  - (iii) holds iff, pooled over the pairs where L2 is at chance, L3 accuracy ≥ 0.80 **and** a
+    one-sided exact binomial test against 0.5 rejects at 0.05;
+  - if L2 is at chance on neither pair, (iii) cannot be satisfied and counts as failed.
+- **DYN-YA/R:** the per-run finite-sample `C_hat` distributions of the two members at each
+  horizon ≤ 5%, with the single-run AUROC and the standardized mean difference.
+
+**7. Seeds (registered tree).**
+
+- Runs stream = `SeedSequence(20261001).spawn(5)[3]` → 10 roles.
+- Training: roles `prim_ver` / `prim_clean` (as Stage 0b). Hard-pair training: role `hardpair`
+  (as the Stage 0b verification).
+- Audits and resampling: role `spare` → `spawn(4)` = [Adam audits, NG audits, hard-pair audits,
+  bootstrap / permutation]. Within each branch: spawn per structure (panel order), then per seed.
+
+**8. Provenance.**
+
+- A Stage 1 config file (`configs/e004/e004a_stage1.toml`) holds the actual Stage 0b / Stage 1
+  constants and is copied into every run directory.
+- `meta.json` records:
+  - the commit and dirty status;
+  - the root seed, panel sha256 and config sha256;
+  - package versions and `split = design`;
+  - for hard-pair runs, the hard-pair file sha256.
+
+**9. Brief vs frozen text** (resolved in favour of the frozen text; flagged to the collaborator).
+
+- **Geometry in L1/L3.** The brief lists `alpha_reward` among the L1 and L3 inputs. Amendment 3
+  §6 fixes L1/L3 at the update level, and the frozen dimension-matched control has 9 geometry
+  columns. The primary levels follow the registry; `alpha_reward` enters only L1r/L3r.
+- **Inner CV.** The Stage 0 oracle ceilings used 3 inner folds. Stage 1 uses 5 (memo §8; brief).
+- Otherwise the brief matches the frozen text.
+
+**10. Round deliverables, then stop.**
+
+- Design-CV results.
+- The frozen predictor configuration (JSON, committed).
+- Hard-pair finite-sample results.
+- The runtime / power report.
+- Then STOP for collaborator approval.
+
+---
