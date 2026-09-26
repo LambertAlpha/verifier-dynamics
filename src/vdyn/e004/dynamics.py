@@ -45,8 +45,10 @@ def adam_step(theta: np.ndarray, grad: np.ndarray, state: AdamState, lr: float =
 
 
 def grpo_gradient(tb: toy.Tables, theta: np.ndarray, rngs: list[np.random.Generator],
-                  n_prompts: int = 8, n_resp: int = 8) -> np.ndarray:  # fmt: skip
-    """GRPO-lite gradient estimate for each run (one random stream per run)."""
+                  n_prompts: int = 8, n_resp: int = 8,
+                  return_batch: bool = False) -> Any:  # fmt: skip
+    """GRPO-lite gradient estimate for each run (one random stream per run). With
+    `return_batch`, also the sampled batch (prompt per group, rows, verifier outcomes)."""
     n = theta.shape[0]
     P, S = toy.probs(tb, theta), toy.scores(tb, theta)
     total = n_prompts + 2 * n_prompts * n_resp
@@ -63,7 +65,8 @@ def grpo_gradient(tb: toy.Tables, theta: np.ndarray, rngs: list[np.random.Genera
     V = (u_v < ev).astype(np.float64)
     adv = (V - V.mean(-1, keepdims=True)) / (V.std(-1, keepdims=True) + 1e-6)
     s = S[idx[:, :, None], x[:, :, None], row]  # (n, prompts, resp, D)
-    return (adv[..., None] * s).mean(axis=(1, 2))
+    g = (adv[..., None] * s).mean(axis=(1, 2))
+    return (g, {"x": x, "row": row, "V": V}) if return_batch else g
 
 
 def _record(checkpoints: list[int] | list[float]) -> tuple[list[Any], dict[Any, int]]:
@@ -73,24 +76,39 @@ def _record(checkpoints: list[int] | list[float]) -> tuple[list[Any], dict[Any, 
 
 def run_sampled_adam(structures: list[toy.Structure], seeds: Sequence[Any], steps: int,
                      checkpoints: list[int], clean: bool = False, n_prompts: int = 8,
-                     n_resp: int = 8, lr: float = LR) -> dict[str, Any]:  # fmt: skip
+                     n_resp: int = 8, lr: float = LR,
+                     record_batches: bool = False) -> dict[str, Any]:  # fmt: skip
+    """With `record_batches`, the training batch drawn from each checkpoint policy (the one used
+    for the next update) is recorded; x = -1 where no further update exists."""
     tb = toy.Tables.of(structures)
     tb = tb.clean() if clean else tb
+    n = len(structures)
     theta = np.stack([s.theta0 for s in structures])
-    state = AdamState.zeros(len(structures))
+    state = AdamState.zeros(n)
     rngs = [np.random.default_rng(s) for s in seeds]  # int lists or SeedSequence objects
     ck, pos = _record(checkpoints)
-    th_rec = np.zeros((len(structures), len(ck), toy.D))
+    th_rec = np.zeros((n, len(ck), toy.D))
     v_rec = np.zeros_like(th_rec)
+    bx = np.full((n, len(ck), n_prompts), -1)
+    brow = np.full((n, len(ck), n_prompts, n_resp), -1)
+    bV = np.zeros((n, len(ck), n_prompts, n_resp))
     if 0 in pos:
         th_rec[:, pos[0]] = theta
     for step in range(1, steps + 1):
-        g = grpo_gradient(tb, theta, rngs, n_prompts, n_resp)
+        if record_batches and step - 1 in pos:
+            g, batch = grpo_gradient(tb, theta, rngs, n_prompts, n_resp, return_batch=True)
+            k = pos[step - 1]
+            bx[:, k], brow[:, k], bV[:, k] = batch["x"], batch["row"], batch["V"]
+        else:
+            g = grpo_gradient(tb, theta, rngs, n_prompts, n_resp)
         theta = adam_step(theta, g, state, lr)
         if step in pos:
             th_rec[:, pos[step]] = theta
             v_rec[:, pos[step]] = state.v_hat()
-    return {"theta": th_rec, "v_hat": v_rec, "checkpoints": ck}
+    out: dict[str, Any] = {"theta": th_rec, "v_hat": v_rec, "checkpoints": ck}
+    if record_batches:
+        out["batches"] = {"x": bx, "row": brow, "V": bV}
+    return out
 
 
 def run_mf_adam(

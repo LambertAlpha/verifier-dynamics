@@ -102,3 +102,31 @@ def test_geometry2_reports_reward_and_update_levels(structs):
     ng = dy.geometry2(tb, th, "ng")
     for k in ("A", "alpha", "C", "C_in", "C_out"):
         assert ng[f"{k}_u"][0] == pytest.approx(ng[f"{k}_r"][0], rel=1e-12)
+
+
+def test_recording_training_batches_leaves_trajectories_unchanged(structs):
+    seeds = [(1, 2, 3), (4, 5, 6)]
+    ck = [0, 5, 20]
+    a = dy.run_sampled_adam(structs[:2], seeds, steps=20, checkpoints=ck)
+    b = dy.run_sampled_adam(structs[:2], seeds, steps=20, checkpoints=ck, record_batches=True)
+    np.testing.assert_array_equal(a["theta"], b["theta"])
+    np.testing.assert_array_equal(a["v_hat"], b["v_hat"])
+    bt = b["batches"]
+    assert bt["x"].shape == (2, 3, 8)
+    assert bt["row"].shape == (2, 3, 8, 8) and bt["V"].shape == (2, 3, 8, 8)
+    assert np.all(bt["x"][:, :2] >= 0) and np.all(bt["x"][:, 2] == -1)  # no batch after the end
+
+
+def test_grpo_batch_regenerates_the_gradient(structs):
+    tb = toy.Tables.of(structs[:3])
+    th = np.stack([s.theta0 for s in structs[:3]])
+    rngs = [np.random.default_rng(k) for k in range(3)]
+    g, batch = dy.grpo_gradient(tb, th, rngs, return_batch=True)
+    S = toy.scores(tb, th)
+    idx = np.arange(3)[:, None, None]
+    s = S[idx, batch["x"][:, :, None], batch["row"]]
+    V = batch["V"]
+    adv = (V - V.mean(-1, keepdims=True)) / (V.std(-1, keepdims=True) + 1e-6)
+    np.testing.assert_allclose((adv[..., None] * s).mean(axis=(1, 2)), g, rtol=0, atol=1e-15)
+    again = dy.grpo_gradient(tb, th, [np.random.default_rng(k) for k in range(3)])
+    np.testing.assert_array_equal(again, g)

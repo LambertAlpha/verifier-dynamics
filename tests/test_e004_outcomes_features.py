@@ -62,3 +62,42 @@ def test_l2_feature_ses_combine_endpoints():
     s_h = np.sqrt(0.3 * 0.7 / 256)
     s_0 = np.sqrt(0.2 * 0.8 / 256)
     assert se[0] == pytest.approx(s_h) and se[1] == pytest.approx(np.hypot(s_h, s_0))
+
+
+def _series(rng, c=3):
+    keys = ("J_G", "J_V", "FPR", "FNR", "A_u", "alpha_u", "C_u", "alpha_r", "C_in", "C_out")
+    s = {k: rng.uniform(0.05, 0.6, c) for k in keys}
+    s["FPM"] = (1 - s["J_G"]) * s["FPR"]
+    return s
+
+
+def test_finite_levels_match_the_oracle_levels_and_add_the_reward_arms():
+    rng = np.random.default_rng(0)
+    s = _series(rng)
+    ctx = rng.uniform(0, 1, (3, 4))
+    idx = (0, 1, 2)
+    fin = fe.finite_levels(s, ctx, 0.02, idx)
+    obs = {k: s[k] for k in ("J_G", "J_V", "FPR", "FNR")}
+    geo = {"A": s["A_u"], "alpha": s["alpha_u"], "C": s["C_u"], "C_in": s["C_in"],
+           "C_out": s["C_out"]}  # fmt: skip
+    ora = fe.level_features(obs, geo, ctx, 0.02, idx)
+    for lv in fe.LEVELS:
+        np.testing.assert_allclose(fin[lv], ora[lv], rtol=1e-12)
+        assert len(fin[lv]) == len(fe.names(lv))
+    np.testing.assert_allclose(fin["L1r"], np.append(fin["L1"], s["alpha_r"][0]))
+    np.testing.assert_allclose(fin["L3r"][:-3], fin["L3"])
+    np.testing.assert_allclose(fin["L3r"][-3:], fe.summaries(s["alpha_r"], 0.02))
+    assert len(fin["L1r"]) == len(fe.names("L1r")) and len(fin["L3r"]) == len(fe.names("L3r"))
+
+
+def test_finite_levels_keep_missing_values():
+    rng = np.random.default_rng(1)
+    s = _series(rng)
+    s["FNR"][2] = np.nan
+    s["alpha_u"][0] = np.nan
+    fin = fe.finite_levels(s, rng.uniform(0, 1, (3, 4)), 0.02, (0, 1, 2))
+    names = fe.names("L3")
+    got = dict(zip(names, fin["L3"], strict=True))
+    assert np.isnan(got["FNR_h"]) and np.isnan(got["FNR_d"]) and np.isnan(got["FNR_slope"])
+    assert np.isnan(got["alpha_d"]) and np.isfinite(got["alpha_slope"])
+    assert np.isnan(dict(zip(fe.names("L1"), fin["L1"], strict=True))["alpha0"])

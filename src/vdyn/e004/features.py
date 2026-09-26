@@ -48,6 +48,33 @@ def level_features(obs: dict[str, np.ndarray], geo: dict[str, np.ndarray], ctx: 
     return {k: np.nan_to_num(np.array(v, dtype=float)) for k, v in feats.items()}
 
 
+def finite_levels(series: dict[str, np.ndarray], ctx: np.ndarray, h_frac: float,
+                  idx: tuple[int, int, int]) -> dict[str, np.ndarray]:  # fmt: skip
+    """Stage 1 (execution note §2): the registered levels from finite-sample estimates, with
+    missing values kept (NaN). Geometry = update level (A_u, alpha_u, C_u); the sensitivity arms
+    L1r / L3r add the reward-level alpha."""
+    i0, _, ih = idx
+    l0 = [float(series[k][i0]) for k in ("J_G", "J_V", "FPR", "FNR", "FPM")]
+    geo = {"A": series["A_u"], "alpha": series["alpha_u"], "C": series["C_u"],
+           "C_in": series["C_in"], "C_out": series["C_out"]}  # fmt: skip
+    l1 = l0 + [float(geo[k][i0]) for k in L3_VARS]
+    l2 = l0 + _summ(series, L2_VARS, idx, h_frac)
+    l3 = l2 + _summ(geo, L3_VARS, idx, h_frac)
+    ctx = np.asarray(ctx)
+    feats = {
+        "L0": l0,
+        "L1": l1,
+        "L1r": l1 + [float(series["alpha_r"][i0])],
+        "L2-G": l0 + _summ(series, ("J_G",), idx, h_frac),
+        "L2": l2,
+        "L2+": l2 + list(ctx[ih] - ctx[i0]),
+        "L3": l3,
+        "L3r": l3 + _summ(series, ("alpha_r",), idx, h_frac),
+        "L3+": l3 + _summ(geo, PLUS_VARS, idx, h_frac),
+    }
+    return {k: np.array(v, dtype=float) for k, v in feats.items()}
+
+
 def audit_se(v: dict[str, float], n: int = AUDIT_N) -> dict[str, float]:
     jg = v["J_G"]
     out = {
@@ -84,10 +111,12 @@ def names(level: str) -> list[str]:
     table: dict[str, Any] = {
         "L0": base,
         "L1": base + ["A0", "alpha0", "C0"],
+        "L1r": base + ["A0", "alpha0", "C0", "alpha_r0"],
         "L2-G": base + summ(("J_G",)),
         "L2": base + summ(L2_VARS),
         "L2+": base + summ(L2_VARS) + [f"dJ_G_ctx{x}" for x in range(4)],
         "L3": base + summ(L2_VARS) + summ(L3_VARS),
+        "L3r": base + summ(L2_VARS) + summ(L3_VARS) + summ(("alpha_r",)),
         "L3+": base + summ(L2_VARS) + summ(L3_VARS) + summ(PLUS_VARS),
     }
     return table[level]

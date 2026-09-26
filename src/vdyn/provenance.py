@@ -1,5 +1,6 @@
 """Run directories and metadata: every experiment output records its config and git commit."""
 
+import hashlib
 import json
 import platform
 import shutil
@@ -83,6 +84,7 @@ def write_metadata(
         "experiment_id": experiment_id,
         "created_utc": datetime.now(UTC).isoformat(timespec="seconds"),
         "git": git_state(repo, ignore=run_dir),
+        "config_sha256": hashlib.sha256(config_path.read_bytes()).hexdigest(),
         "config": load_config(config_path),
         "python": sys.version,
         "platform": platform.platform(),

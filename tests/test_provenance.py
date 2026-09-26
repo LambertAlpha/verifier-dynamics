@@ -74,3 +74,15 @@ def test_metadata_ignores_the_run_directory_itself_inside_the_repo(tmp_path):
     assert meta["git"]["dirty"] is False  # the new, untracked run directory is not a change
     (repo / "other.txt").write_text("untracked elsewhere")  # any other change still counts
     assert provenance.write_metadata(run_dir, "E999", config, repo)["git"]["dirty"] is True
+
+
+def test_metadata_records_the_config_checksum(tmp_path):
+    import hashlib
+
+    repo = _make_repo(tmp_path / "repo")
+    config = tmp_path / "cfg.toml"
+    config.write_text('experiment_id = "E999"\nroot_seed = 7\n')
+    run_dir = provenance.create_run_dir(repo / "results", "E999", repo)
+    meta = provenance.write_metadata(run_dir, "E999", config, repo)
+    assert meta["config_sha256"] == hashlib.sha256(config.read_bytes()).hexdigest()
+    assert (run_dir / "config.toml").read_bytes() == config.read_bytes()
