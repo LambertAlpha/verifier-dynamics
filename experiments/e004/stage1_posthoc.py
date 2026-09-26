@@ -65,7 +65,7 @@ def main(argv: list[str]) -> int:
                                      "root_seed": pn.ROOT_SEED,
                                      "panel_sha256": cfg["panel_sha256"],
                                      "runs": str(runs_dir.relative_to(REPO)),
-                                     "extra_audit_seeds": "spare -> resample branch child 3"})  # fmt: skip
+                                     "extra_audit_seeds": "spare -> resample child 3"})  # fmt: skip
     structs = d["structs"]
     train_seeds = s0b.seed_table(len(structs))["prim_ver"]
     resample = s1r.audit_tree(len(structs))["resample"].spawn(4)
