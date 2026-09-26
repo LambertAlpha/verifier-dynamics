@@ -39,7 +39,8 @@ def test_heldout_panels_are_sealed(tmp_path):
 
 def test_test_panel_is_fresh_and_reproducible(tmp_path):
     ok = _approve(tmp_path)
-    a, b = hd.test_panel(ok, SHA, n_per=1), hd.test_panel(ok, SHA, n_per=1)
+    (a, inf_a), (b, _) = hd.test_panel(ok, SHA, n_per=1), hd.test_panel(ok, SHA, n_per=1)
+    assert inf_a == []
     assert [x.to_dict() for x in a] == [y.to_dict() for y in b]
     design = pb.design_panel(n_per=1, yb_cap=0.2)
     assert len(a) == len(pb.CELLS) and all(s.sid.startswith("T-") for s in a)
@@ -50,7 +51,7 @@ def test_test_panel_is_fresh_and_reproducible(tmp_path):
 
 
 def test_shift_panel_has_the_harder_registered_difficulty(tmp_path):
-    sp = hd.shift_panel(_approve(tmp_path), SHA, n_per=1)
+    sp, _ = hd.shift_panel(_approve(tmp_path), SHA, n_per=1)
     assert all(s.sid.startswith("S-") for s in sp)
     for st in sp:
         jg = st.meta["targets"]["J_G"]
@@ -97,3 +98,28 @@ def test_fixed_threshold_warnings_reproduce_the_design_procedure():
         np.testing.assert_array_equal(got[k], ref[k])
     for k in ("false_alarm", "median_lead", "sensitivity", "median_lead_conservative"):
         assert got[k] == pytest.approx(ref[k])
+
+
+def _impossible(rng: np.random.Generator) -> dict[str, float]:
+    rng.random()
+    return {"J_G": 0.999, "FPR": 0.1, "FNR": 0.1}  # always fails the J_G check
+
+
+def test_target_redraw_cap_terminates_an_infeasible_structure():
+    rng = np.random.default_rng(0)
+    with pytest.raises(pb.p0.Infeasible):
+        pb.build("x", "R1", "ALIGNED", rng, 0.2, _impossible, max_target_redraws=5)
+
+
+def test_parallel_generation_matches_the_sequential_generator_and_reports_infeasible():
+    structs, infeasible = hd.generate(hd.TEST_STREAM, "T-", shift=False, n_per=1, workers=1)
+    ref = pb._cells_panel(hd.TEST_STREAM, pb.CELLS, 1, 0.2, prefix="T-")
+    assert infeasible == []
+    for got, want in zip(structs, ref, strict=True):
+        meta = dict(got.meta)
+        assert meta.pop("panel_index") == pb.CELLS.index((got.construction,
+                                                          got.meta["intended_axis"]))  # fmt: skip
+        assert got.with_(meta=meta).to_dict() == want.to_dict()
+    none, bad = hd.generate(hd.TEST_STREAM, "T-", shift=False, n_per=1, workers=1,
+                            targets=_impossible, cap=3)  # fmt: skip
+    assert none == [] and len(bad) == len(pb.CELLS)

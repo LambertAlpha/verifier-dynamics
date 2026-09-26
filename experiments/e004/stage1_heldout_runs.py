@@ -126,12 +126,16 @@ def main() -> int:
     T_adam, T_ng = cfg["runs"]["T_adam"], cfg["runs"]["T_ng"]
     run_dir = provenance.create_run_dir(REPO / "results", "E004a-stage1-heldout-runs", REPO)
     t0 = time.perf_counter()
-    panels = {"test": hd.test_panel(hd.APPROVAL, FROZEN_SHA),
-              "shift": hd.shift_panel(hd.APPROVAL, FROZEN_SHA)}  # fmt: skip
+    gen = {"test": hd.test_panel(hd.APPROVAL, FROZEN_SHA, workers=WORKERS),
+           "shift": hd.shift_panel(hd.APPROVAL, FROZEN_SHA, workers=WORKERS)}  # fmt: skip
+    panels = {k: v[0] for k, v in gen.items()}
+    infeasible = {k: v[1] for k, v in gen.items()}
     t_panels = time.perf_counter() - t0
     shas = {}
     for split, structs in panels.items():  # written inside the run directory first (clean meta)
         doc = {"split": split, "root_seed": pn.ROOT_SEED, "yb_cap": 0.2,
+               "max_target_redraws": hd.MAX_TARGET_REDRAWS,
+               "infeasible_excluded": infeasible[split],
                "structures": [s.to_dict() for s in structs]}  # fmt: skip
         body = json.dumps(doc, indent=1) + "\n"
         (run_dir / PANELS[split].name).write_text(body)
@@ -142,30 +146,37 @@ def main() -> int:
                                      "test_panel_sha256": shas["test"],
                                      "shift_panel_sha256": shas["shift"],
                                      "predictors_frozen_sha256": frozen_sha,
+                                     "infeasible_excluded": infeasible,
                                      "approval": appr})  # fmt: skip
     for split in panels:  # frozen copies next to the design panel, after the metadata
         PANELS[split].write_bytes((run_dir / PANELS[split].name).read_bytes())
     print(f"panels generated in {t_panels:.0f} s: {shas}", flush=True)
     timing: dict[str, float] = {"panels": t_panels}
-    n = len(panels["test"])
+    full = len(pn.CELLS) * pn.N_PER_CELL  # seeds are indexed by the position in the full layout
     test, shift = panels["test"], panels["shift"]
+
+    def pick(seeds: list[Any], structs: list[toy.Structure]) -> list[Any]:
+        return [seeds[s.meta["panel_index"]] for s in structs]
+
     with ProcessPoolExecutor(max_workers=WORKERS) as pool:
         t0 = time.perf_counter()
-        tv = runs_all(pool, s1r._adam_chunk, test, hd.run_seeds("prim_ver", "test", n),
-                      hd.audit_seeds("adam", "test", n), T_adam)  # fmt: skip
-        tc = s0b.sampled(pool, test, hd.run_seeds("prim_clean", "test", n), T_adam, True)
+        tv = runs_all(pool, s1r._adam_chunk, test,
+                      pick(hd.run_seeds("prim_ver", "test", full), test),
+                      pick(hd.audit_seeds("adam", "test", full), test), T_adam)  # fmt: skip
+        tc = s0b.sampled(pool, test, pick(hd.run_seeds("prim_clean", "test", full), test), T_adam,
+                         True)  # fmt: skip
         timing["test_adam"] = time.perf_counter() - t0
         t0 = time.perf_counter()
-        ngv = s1r.ng_all(pool, test, T_ng, hd.audit_seeds("ng", "test", n))
+        ngv = s1r.ng_all(pool, test, T_ng, pick(hd.audit_seeds("ng", "test", full), test))
         ngc = s0b.ng(pool, test, T_ng, True)
         timing["test_ng"] = time.perf_counter() - t0
         t0 = time.perf_counter()
-        m = len(shift)
         n_p, n_r = hd.SHIFT_BATCH
-        sv = runs_all(pool, _shift_chunk, shift, hd.run_seeds("prim_ver", "shift", m),
-                      hd.audit_seeds("adam", "shift", m), T_adam)  # fmt: skip
-        sc = s0b.sampled(pool, shift, hd.run_seeds("prim_clean", "shift", m), T_adam, True,
-                         n_p, n_r)  # fmt: skip
+        sv = runs_all(pool, _shift_chunk, shift, pick(hd.run_seeds("prim_ver", "shift", full),
+                                                      shift),
+                      pick(hd.audit_seeds("adam", "shift", full), shift), T_adam)  # fmt: skip
+        sc = s0b.sampled(pool, shift, pick(hd.run_seeds("prim_clean", "shift", full), shift),
+                         T_adam, True, n_p, n_r)  # fmt: skip
         timing["shift_adam"] = time.perf_counter() - t0
         print(json.dumps(timing), flush=True)
     grid = [s0b.FRACS.index(i / 100) for i in range(101)]
@@ -186,6 +197,7 @@ def main() -> int:
         fails = [lb["failure"] for i, s in enumerate(structs) if s.sid not in excluded
                  for lb in lab["adam_prim"][i]]  # fmt: skip
         out[split] = {"n_structures": len(structs), "excluded_low_clean_gain": excluded,
+                      "infeasible_excluded": infeasible[split],
                       "n_excluded": len(excluded),
                       "adam_failure_rate": float(np.mean(fails))}  # fmt: skip
     usage = {

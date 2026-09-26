@@ -10,6 +10,8 @@
 """
 
 import json
+from collections.abc import Callable
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 from typing import Any
 
@@ -27,6 +29,7 @@ TEST_STREAM, SHIFT_STREAM = 1, 2
 SHIFT_JG = (0.01, 0.05)
 SHIFT_BATCH = (4, 4)
 N_SEEDS = 4
+MAX_TARGET_REDRAWS = 200  # execution deviation 1: > 8x the design maximum (24)
 
 
 def require_approval(path: Path, predictors_sha: str) -> dict[str, Any]:
@@ -47,17 +50,53 @@ def shift_targets(rng: np.random.Generator) -> dict[str, float]:
     }
 
 
+Targets = Callable[[np.random.Generator], dict[str, float]]
+
+
+def _build_one(args: tuple[Any, ...]) -> dict[str, Any]:
+    stream, i, j, n_per, prefix, targets, yb_cap, cap = args
+    construction, axis = pb.CELLS[i]
+    ss = np.random.SeedSequence(pb.ROOT_SEED).spawn(5)[stream].spawn(len(pb.CELLS))[i]
+    sid = f"{prefix}{construction}-{axis[0]}-{j:02d}"
+    rng = np.random.default_rng(ss.spawn(n_per)[j])
+    try:
+        st = pb.build(sid, construction, axis, rng, yb_cap, targets, max_target_redraws=cap)
+    except pb.p0.Infeasible:
+        return {"infeasible": sid, "panel_index": i * n_per + j}
+    return st.with_(meta={**st.meta, "panel_index": i * n_per + j}).to_dict()
+
+
+def generate(stream: int, prefix: str, shift: bool, n_per: int = pb.N_PER_CELL,
+             yb_cap: float = 0.2, workers: int = 8, targets: Targets | None = None,
+             cap: int = MAX_TARGET_REDRAWS) -> tuple[list[toy.Structure], list[str]]:  # fmt: skip
+    """Held-out panel generation: the registered per-structure seeds of pb._cells_panel, run in
+    parallel; structures above the redraw cap are excluded without replacement and reported.
+    `meta.panel_index` keeps the position in the full layout (seeds are indexed by it)."""
+    tg = targets or (shift_targets if shift else pb.p0._targets)
+    jobs = [(stream, i, j, n_per, prefix, tg, yb_cap, cap)
+            for i in range(len(pb.CELLS)) for j in range(n_per)]  # fmt: skip
+    if workers <= 1:
+        out = [_build_one(a) for a in jobs]
+    else:
+        with ProcessPoolExecutor(max_workers=workers) as pool:
+            out = list(pool.map(_build_one, jobs, chunksize=4))
+    structs = [toy.Structure.from_dict(d) for d in out if "infeasible" not in d]
+    return structs, [d["infeasible"] for d in out if "infeasible" in d]
+
+
+Panel = tuple[list[toy.Structure], list[str]]
+
+
 def test_panel(approval: Path, predictors_sha: str, n_per: int = pb.N_PER_CELL,
-               yb_cap: float = 0.2) -> list[toy.Structure]:  # fmt: skip
+               yb_cap: float = 0.2, workers: int = 1) -> Panel:  # fmt: skip
     require_approval(approval, predictors_sha)
-    return pb._cells_panel(TEST_STREAM, pb.CELLS, n_per, yb_cap, prefix="T-")
+    return generate(TEST_STREAM, "T-", shift=False, n_per=n_per, yb_cap=yb_cap, workers=workers)
 
 
 def shift_panel(approval: Path, predictors_sha: str, n_per: int = pb.N_PER_CELL,
-                yb_cap: float = 0.2) -> list[toy.Structure]:  # fmt: skip
+                yb_cap: float = 0.2, workers: int = 1) -> Panel:  # fmt: skip
     require_approval(approval, predictors_sha)
-    return pb._cells_panel(SHIFT_STREAM, pb.CELLS, n_per, yb_cap, prefix="S-",
-                           targets=shift_targets)  # fmt: skip
+    return generate(SHIFT_STREAM, "S-", shift=True, n_per=n_per, yb_cap=yb_cap, workers=workers)
 
 
 def _roles() -> list[np.random.SeedSequence]:

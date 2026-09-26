@@ -161,13 +161,21 @@ def _channel(
 
 def build(sid: str, construction: str, axis: str, rng: np.random.Generator, yb_cap: float,
           targets: Callable[[np.random.Generator], dict[str, float]] = p0._targets,
-          ) -> toy.Structure:  # fmt: skip
+          max_target_redraws: int | None = None) -> toy.Structure:  # fmt: skip
+    """`max_target_redraws` (held-out execution deviation 1): raise Infeasible instead of looping
+    forever when a structure's common draw admits no feasible target. None = unlimited."""
     rejections = {"channel": 0, "targets": 0, "axis": 0}
     c = p0._common(rng)
+
+    def redraw() -> None:
+        rejections["targets"] += 1
+        if max_target_redraws is not None and rejections["targets"] > max_target_redraws:
+            raise p0.Infeasible(f"{sid}: more than {max_target_redraws} target redraws")
+
     while True:
         t = targets(rng)
         if t["J_G"] >= 0.9 * float(c["w"] @ c["p"]):
-            rejections["targets"] += 1
+            redraw()
             continue
         for _ in range(MAX_TRIES):
             st = _base(sid, construction, c)
@@ -199,7 +207,7 @@ def build(sid: str, construction: str, axis: str, rng: np.random.Generator, yb_c
                 phi0=np.asarray(c["phi0"]).tolist(),
             )
             return st.with_(meta=meta)
-        rejections["targets"] += 1
+        redraw()
 
 
 def _cells_panel(stream: int, cells: list[tuple[str, str]], n_per: int, yb_cap: float,
