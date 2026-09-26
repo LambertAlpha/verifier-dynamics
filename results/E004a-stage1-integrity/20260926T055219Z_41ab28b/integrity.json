@@ -1,0 +1,85 @@
+{
+ "verdict": "PASS",
+ "head": "41ab28bf48074284631a8e5783778c22531104fb",
+ "failed": [],
+ "checks": {
+  "1_working_tree_clean": {
+   "ok": true,
+   "detail": ""
+  },
+  "2_head_commit": {
+   "ok": true,
+   "detail": "41ab28bf48074284631a8e5783778c22531104fb"
+  },
+  "3_predictors_frozen_sha": {
+   "ok": true,
+   "detail": "e0b2ea9d73a3f8b7f820e5274c507a626b39f84193d9359aa2ed67436bdfd210"
+  },
+  "4_panel_and_config_sha": {
+   "ok": true,
+   "detail": {
+    "panel": "c7da2c3154294ae62424d13444dcf7dfafc4fad3c8fa52fbb8db5c0c35b0da84",
+    "config": "2f8db710541c27ea7c92eb3b29d64fbb10b7f9fbd308ee58bfa653bc4a798321"
+   }
+  },
+  "5a_pytest": {
+   "ok": true,
+   "detail": "353 passed in 93.83s (0:01:33)"
+  },
+  "5b_ruff": {
+   "ok": true,
+   "detail": "All checks passed!"
+  },
+  "5c_ruff_format": {
+   "ok": true,
+   "detail": "101 files already formatted"
+  },
+  "5d_mypy": {
+   "ok": true,
+   "detail": "Success: no issues found in 101 source files"
+  },
+  "6a_features_models_thresholds_horizons": {
+   "ok": true,
+   "detail": {
+    "names": true,
+    "models": true,
+    "tau": true,
+    "horizons": true
+   }
+  },
+  "6b_frozen_path_sources_unchanged_since_freeze": {
+   "ok": true,
+   "detail": ""
+  },
+  "6c_frozen_models_refit_reproduce_penalties": {
+   "ok": true,
+   "detail": {
+    "n_models": 156,
+    "mismatches": {}
+   }
+  },
+  "7_no_heldout_outcomes_computed": {
+   "ok": true,
+   "detail": {
+    "existing": [],
+    "git_history": ""
+   }
+  },
+  "8_seed_tree_loader_approval": {
+   "ok": true,
+   "detail": {
+    "sealed_without_approval": true,
+    "design_seeds_unchanged": true,
+    "splits_disjoint": true,
+    "approval_file": "configs/e004/HELDOUT_APPROVED",
+    "test_stream": 1,
+    "shift_stream": 2,
+    "offsets": {
+     "design": 0,
+     "test": 768,
+     "shift": 1536
+    }
+   }
+  }
+ }
+}

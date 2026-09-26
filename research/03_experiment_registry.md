@@ -3007,3 +3007,71 @@ a primary label).
   analyses cannot change the label.
 
 ---
+
+### E004a Stage 1 — pre-unseal integrity log and held-out execution protocol (2026-09-26)
+
+Written and committed **before the approval file, and before any held-out or shift structure or
+outcome exists.**
+
+**Integrity check: PASS** (`results/E004a-stage1-integrity/20260926T055219Z_41ab28b`; HEAD
+`41ab28b`). All 13 checks passed:
+
+1. working tree clean;
+2. HEAD recorded;
+3. `predictors_frozen.json` sha256 `e0b2ea9d…d210` (tracked in git);
+4. design panel sha256 `c7da2c31…` and Stage 1 config sha256 `2f8db710…` (equal to the value
+   recorded in the frozen configuration);
+5. pytest (353 passed), ruff check, ruff format and mypy (clean cache, 101 files) — all exit 0;
+6. frozen horizons, feature names, grids, CV and GBM settings, and the warning thresholds (every
+   primary level and horizon) equal the code:
+   - **all 156 frozen linear models refit on design reproduce the recorded penalties exactly**;
+   - the frozen-path sources are unchanged since the freeze commit `341851a` (audit, features,
+     predict, dynamics, toy, outcomes, stage1_runs, stage1_analysis, the Stage 1 config, the
+     design panel);
+7. no test/shift panel, approval file, held-out run or outcome exists in the working tree or in
+   git history;
+8. the held-out loader is sealed without the approval file; the seed-tree extension keeps every
+   design seed; the design, test and shift seeds are disjoint.
+
+**Execution protocol.** This fixes procedural details that §12, memo §10 and the execution note
+left unspecified. It changes no threshold, definition, predictor or panel rule.
+
+- **Test panel (split A).**
+  - The Stage 0b generator, **seed stream 1** of `SeedSequence(20261001).spawn(5)`.
+  - 24 cells × 32 = 768 structures (the design size); sids `T-…`.
+  - The registered clean-gain exclusion applies.
+- **Shift panel (split C, memo §10 C).**
+  - The same generator on **stream 2**, with `J_G(0) ~ U(0.01, 0.05)`: only the target draw
+    changes; the number of draws is unchanged.
+  - Training uses **4 × 4 GRPO batches**; `T = 2700`; 768 structures; sids `S-…`.
+  - The audit stays 32 × 8. `J_V` pools the audit and the 4 × 4 training batch, as registered.
+  - Shift geometry is **audit-only**, because the frozen pooled estimator needs equal group sizes.
+    This affects only descriptive L1/L3 on shift. The shift criterion uses L0 and L2.
+  - Predictors are the frozen design models; nothing is refit on shift.
+- **Seeds** (registered tree):
+  - every role and audit branch indexes structures globally: design 0–767, test 768–1535,
+    shift 1536–2303;
+  - training seeds: roles `prim_ver` / `prim_clean`; audits: spare branches [0] Adam and [1] NG;
+  - bootstrap weights and permutations: resample branch children [4] test Adam, [5] test NG,
+    [6] shift, [7] test/shift L2N permutation, [8] reserved for post-hoc.
+- **Frozen predictors on held-out data.** The frozen pipeline is refit on all kept design runs
+  (verified above) and applied unchanged. The warning thresholds are the frozen design `tau_h`.
+- **Scoring details.**
+  - **RQ1 and EW:** as registered; lower bound = 5th percentile (execution note §5); hierarchical
+    bootstrap over the test structures, then seeds, B = 2000.
+  - **LOMO:** for each mechanism `m`, fit on the design runs of the other five mechanisms and
+    evaluate on the test runs of `m` at `h*`.
+    - `m` succeeds iff `L2 − L0` has a lower bound > 0 for the C-index of `Dn`, **and**, when
+      evaluable (≥ 10 failing and ≥ 10 non-failing test runs), for the AUROC of failure.
+    - GEN-LOMO passes iff ≥ 4 of 6 mechanisms succeed.
+  - **Shift:** `L2 − L0` at `h*` has a lower bound > −0.01 for **both** the C-index and the AUROC.
+  - **GEN** = GEN-LOMO ∧ shift.
+  - The decision label follows Amendment 4.
+- **Secondary** (reported, never scored):
+  - NG on the test panel (design-fitted NG models);
+  - optimizer transfer (NG design → Adam test; Adam design → NG test) at `h*`.
+- **Hard pairs:** the frozen pairs are re-run, which is deterministic (same seeds), with added
+  descriptive fields (L1 distance, finite-sample alpha/C uncertainty). Criterion (iii) must
+  reproduce 0.75.
+
+---
