@@ -3111,3 +3111,213 @@ is computed.**
   sources are unchanged.
 
 ---
+
+### E004a Stage 1 — FINAL held-out results (CONFIRMATORY; 2026-09-26)
+
+**Registered label (Amendment 4): B — EARLY ASSOCIATION, NO ROBUST EARLY-WARNING CLAIM.**
+
+| component | result |
+| --- | --- |
+| RQ1 | **PASS** |
+| EW (early warning) | **FAIL** |
+| GEN (generalization) | **FAIL**: shift pass, LOMO 1 of 6 |
+| mechanistic criterion | not satisfied: (iii) fixed at 0.75 < 0.80. Descriptive support is reported under C |
+| abandonment flag | not triggered |
+| recommendation | not E004b under the frozen rule; the synthetic conclusions are frozen |
+
+**Runs** (every `meta.json` records the commit, `dirty: false`, root seed, panel / config /
+predictor-config sha256, split and package versions):
+
+| step | commit | output |
+| --- | --- | --- |
+| Amendment 4 (decision tree) | `3521294` | registry |
+| held-out code (TDD) | `41ab28b` | `vdyn.e004.heldout`, held-out runs / analysis / integrity scripts |
+| integrity (13/13 PASS) + protocol | `463cf18` | `results/E004a-stage1-integrity/20260926T055219Z_41ab28b` |
+| approval | `b9fff65` | `configs/e004/HELDOUT_APPROVED` |
+| deviation 1 (note + code) | `be91152`, `bc75179` | redraw cap; see the deviation entry |
+| raw held-out results | run at `bc75179` → `f8d4497` | `results/E004a-stage1-heldout-runs/20260926T064313Z_bc75179` (393 s; 375 MB) |
+| registered analysis | run at `f8d4497` → `348e076` | `results/E004a-stage1-heldout-analysis/20260926T065020Z_f8d4497` (164 s; 838 MB) |
+| frozen hard pairs (re-run) | run at `348e076` → `8b0e60f` | `results/E004a-stage1-hardpairs/20260926T065319Z_348e076` |
+| [post-hoc] | `48ad758` → `96ee624` | `results/E004a-stage1-heldout-posthoc/20260926T065617Z_48ad758` |
+
+**Panels.**
+
+- **Test:** sha256 `90f3cae2…`. 767 structures (T-D3-I-24 infeasible, excluded); 50 excluded for
+  clean gain; 2868 Adam runs; failure rate 0.374.
+- **Shift:** sha256 `79b6d381…`. 765 structures (S-D3-I-07/16/31 infeasible); 0 excluded; 3060
+  runs; failure rate 0.457.
+- **Frozen models:** all 225 refit on design with penalties equal to the frozen record. The frozen
+  `tau` values were used.
+
+#### Scored criteria (test split unless stated)
+
+- **RQ1** (`L2 − L0` at `h*`):
+  - C-index +0.027 (lo95 0.017; Holm p 0.001);
+  - AUROC +0.043 (lo95 0.026; Holm p 0.001);
+  - **PASS.**
+- **EW** (L2, `t_on > h*`):
+  - NYV AUROC 0.684, **lo95 0.642 < 0.65**;
+  - median lead 9.5% of `T` (≥ 5%);
+  - **FAIL.**
+- **GEN:**
+  - **shift:** `L2 − L0` = +0.044 (lo95 0.033) C-index and +0.051 (0.033) AUROC, both > −0.01:
+    **pass**;
+  - **LOMO:** 1 of 6 (D: +0.062 [0.040] / +0.079 [0.043]):
+    - X −0.018 / −0.024; YA −0.004 / +0.022 [−0.011]; YB +0.012 [−0.009] / +0.008;
+    - R and B (no failing test runs; C-index only) −0.009 / −0.041;
+    - **fail.**
+- **Abandonment:** RQ1 holds at 1%, 2% and 5%, so the flag is not triggered.
+
+#### Information curves (test; point [lo95]; the NYV restriction uses `t_on > h`)
+
+| h | L0 | L1 | L2-G | L2 | L3 | L2 − L0 | L3 − L2 | L3 − L1 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| C-index 0 | .578 | .659 | .578 | .579 | .659 | .000 | +.080 | −.001 |
+| 0.2% | | | .579 | .594 | .644 | +.015 | +.050 | −.015 |
+| 0.5% | | | .577 | .589 | .658 | +.011 | +.069 | −.001 |
+| 1% | | | .579 | .601 | .680 | +.022 | +.080 | +.021 |
+| **2%** | .578 | .659 | .582 | .606 | .689 | **+.027 [.016]** | **+.084 [.070]** | **+.030 [.021]** |
+| 5% | | | .597 | .634 | .706 | +.056 | +.072 | +.047 |
+| 10% | | | .636 | .677 | .727 | +.099 | +.050 | +.067 |
+| AUROC 0 | .629 | .779 | .629 | .629 | .780 | .000 | +.150 | .000 |
+| 1% | | | .629 | .654 | .813 | +.025 | +.160 | +.034 |
+| **2%** | .629 | .779 | .637 | .672 | .831 | **+.043 [.026]** | **+.159 [.133]** | **+.052 [.037]** |
+| 5% | | | .659 | .719 | .844 | +.090 | +.126 | +.065 |
+| 10% | | | .713 | .777 | .872 | +.148 | +.094 | +.092 |
+
+- **Controls:** L2N − L2 ≈ 0 (noise control) and L3r − L3 ≈ 0.
+- **GBM at `h*`:** L3 − L2 +0.080 / +0.152; L3 − L1 +0.021 / +0.041; L2 − L0 +0.025 / +0.053.
+- **Single diagnostic:** the best is `C_0/A_0` (AUROC 0.712).
+
+#### Not-yet-visible curve and lead time (test)
+
+- **NYV failures / non-failures:** 1% 440 / 1214; 2% 395 / 1166; 5% 336 / 1116; 10% 272 / 1089.
+- **NYV AUROC** (L0 / L1 / L2 / L3):
+  - 1%: .647 / .752 / .671 / .798;
+  - **2%: .641 / .745 / .684 [.642] / .822 [.790]**;
+  - 5%: .639 / .741 / .716 / .831;
+  - 10%: .624 / .724 / .767 / .845.
+- **At `h*` with the frozen thresholds:**
+
+  | level | warned NYV failures | sensitivity | false alarms | median lead |
+  | --- | --- | --- | --- | --- |
+  | L2 | 48 of 395 | 0.122 | 0.106 | 9.5% of `T` (IQR 5.7–13.6%) |
+  | L3 | 133 | 0.337 | 0.093 | 10% |
+  | L1 | 105 | 0.266 | 0.103 | 10% |
+  | L0 | 44 | 0.111 | 0.116 | 9% |
+
+- **Onset noise** (non-failing runs that cross the registered onset threshold):
+  - test: 0.324 by 1%, 0.351 by 2%, 0.394 by 10% (design: 0.303 / 0.331 / 0.369);
+  - shift: about 65% by 2%.
+
+#### Mechanism diagnosis (test; C = descriptive support; the pre-registered criterion is not met)
+
+- **At `h*`** (L1 / L2 / L3):
+  - macro-F1: .356 / .170 / .438;
+  - balanced accuracy: .371 / .214 / .430;
+  - Route A vs B: .825 / .664 / .847;
+  - B vs D: .968 / .559 / .990;
+  - X vs Y: .674 / .587 / .721.
+- (i) L3 − L2 macro-F1 +0.268 (lo95 0.242); (ii) Route A/B +0.183 (0.151).
+- L3 − L1: macro-F1 +0.082 (0.062); Route A/B +0.022 (0.007).
+- **Cross-construction** (train on design constructions of the other slots; test on held-out
+  construction runs): L0 .118, L1 .345, L2 .147, L3 .405; L3 − L1 +0.060 (0.039).
+- **Within mechanism at `h*`** (L3 − L2; C-index | AUROC):
+  - X: +.178 [.116] | +.229 [.157];
+  - YA: +.039 [.023] | +.080 [.049];
+  - YB: +.055 [.031] | +.095 [.051];
+  - D: +.027 [−.012] | +.055 [.022];
+  - B: C-index +.055 [.033]; R: −.001.
+  - L3 − L1 is positive but small (X +.028 | +.055; YA +.025 | +.049; YB +.020 | +.012;
+    D +.014 | +.042).
+- **Type oracles** (design type means applied to test):
+  - mechanism: .684 / .748;
+  - mechanism × Axis B: **.781 / .906**, above L3 (.689 / .831).
+  - Geometry carries information within types, but does not reach the type ceiling.
+
+#### Hard pairs (frozen; deterministic re-run)
+
+- **Criterion (iii) = 0.75** (HP-A 0.50, HP-D 1.00; L2 at chance on both).
+- **HP-D:**
+  - the L1 distance is already large (alpha 3.98 SD, C 3.71 SD);
+  - L1 risk is .84 / .32 at `t = 0`; L3 risk is .92 / .24 at `h*`.
+- **HP-A:** L1 distance ≤ 0.28 SD; L2 and L3 are both at chance.
+- **DYN-YA/R:**
+  - L1 distance: alpha 0.04 SD, C 1.17 SD (the noise floor differs by structure, although exact
+    `C` is equal at `t = 0`);
+  - at `h*`, exact `C` is .153 vs .208, while `C_hat` is .18 (SD .066) vs .66 (SD 3.1);
+  - **the oracle dynamic separation does not survive finite sampling as a `C` difference;** the
+    L3 risk separation (.34 / .17) is already present in L1 at `t = 0` (.37 / .17).
+
+#### Estimator stability (test vs design)
+
+- **Replicated:**
+  - `J_G` error SD / audit SE = 1.23–1.26 (design 1.25–1.31);
+  - `C_u` bias +0.044–0.047 (design +0.042–0.048);
+  - `alpha_u` r = 0.82 (design 0.83–0.84).
+- **Early Adam-metric instability** (`t ≤ 0.5%`): `A_u` error SD 2.1 at `t = 0`; `C_u` r = 0.03 at
+  0.5%.
+- **Undefined values:** 3e-5 on test. Shift: 0.9%, where the audit contains no correct answer at
+  `J_G(0) ≈ 0.01`.
+- **Shift geometry** (audit-only; 4 × 4 batches) is unstable (e.g. `C_u` error SD 35 at 0.5%).
+  It is descriptive only; the shift criterion uses L0 and L2.
+
+#### Secondary (not scored)
+
+- **NG test:** RQ1 not met (C-index +0.002); NYV failures at `h* = 4` (uninterpretable).
+- **Optimizer transfer:**
+  - NG-design → Adam-test: L3 .678 / .796, L2 .592 / .645;
+  - Adam-design → NG-test: L3 .649 / .835.
+- **Optimizer dependence** (test failure, Adam vs NG):
+  - YA-I .684 vs .121;
+  - D .587 vs .750;
+  - YB-I .968 vs .755;
+  - X .454 vs .435.
+
+#### [post-hoc, not pre-registered] Sensitivity (the label is unchanged)
+
+- **Equal audit budget (test).**
+  - L1x3 − L1 = +0.014 C-index, +0.029 AUROC.
+  - At `h*`, L3 − (L2 + mean `t = 0` geometry over three audits): +0.014 [0.006] C-index, +0.019
+    [0.006] AUROC, +0.034 [0.013] NYV, +0.023 [0.003] macro-F1.
+  - At 5%: +0.030 / +0.029 / +0.035 / +0.015.
+  - The trajectory adds a **small** increment (≈ 0.02–0.03) on top of an equally measured `t = 0`
+    snapshot. Most of the geometric signal is present at `t = 0`.
+- **Persistent onset** (the ratio stays > 0.1 from `t` on):
+  - non-failing crossing drops from 0.35 to 0.017 at `h*`; 558 NYV failures;
+  - NYV AUROC L0 .603, L1 .693, **L2 .639 [.604]**, L3 .755 [.723].
+  - The EW failure is not an artifact of the noisy registered onset.
+
+#### Design → held-out replication
+
+| quantity | design | held-out |
+| --- | --- | --- |
+| RQ1 `L2 − L0` (C-index / AUROC) | +.023 / +.028 | +.027 / +.043 |
+| EW lo95 | .64996 | .642 |
+| LOMO | 1/6 (D) | 1/6 (D) |
+| L1 | .668 / .796 | .659 / .779 |
+| L3 at `h*` | .695 / .846 | .689 / .831 |
+| L3 macro-F1 | .447 | .438 |
+| Route A/B (L3) | .818 | .847 |
+| (iii) | 0.75 | 0.75 |
+
+Every registered conclusion replicated.
+
+#### Interpretation (strongest statement the held-out evidence supports)
+
+- **Not supported:** "early gradient dynamics predict long-run failure". The trajectory adds
+  ≈ 0.02 over an equal-audit `t = 0` snapshot, and the registered early-warning test fails.
+- **Contradicted:** "simple early probes predict outcome; geometry explains mechanism". At `h*`
+  the observable probe L2 (AUROC 0.672) is far weaker than `t = 0` geometry (0.779) for the
+  outcome itself.
+- **Most accurate:** "initial optimization geometry reveals future verifier-induced failure
+  modes", in this synthetic panel and with these limits:
+  - the geometry needs a gold-labelled audit (256 rollouts) and gradient estimates;
+  - its finite-sample `C` is dominated by a structure-dependent noise floor;
+  - L2 is a passive probe and not budget-matched to E002's active probes (where G1 lost to the
+    best probe);
+  - outcome prediction does not transfer across mechanisms (LOMO 1/6), although mechanism
+    identification transfers across constructions.
+- **E004a synthetic experimentation is closed.**
+
+---
