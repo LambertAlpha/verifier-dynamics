@@ -2157,3 +2157,28 @@ ENGINEERING AND DESIGN E004b.
   - G2 is at risk for D (> 0.8);
   - G5 is likely to pass through X and YA (Stage 0 post-hoc);
   - geometry may still mostly encode Axis A.
+
+**E004a Stage 0b — YB calibration record** (Amendment 3 §4; committed before the panel and before
+any Stage 0b oracle or predictor analysis)
+
+Run `results/E004a-stage0b-calibration/20260926T010125Z_f768e38`: 128 kept calibration structures
+per cap (16 excluded for low clean gain), 2 + 2 seeds, sampled Adam, `T = 2700`.
+
+- **Original range:** `S_E0 = omega × FPR_target ∈ [≈0.01, 0.4]`.
+- **Rule:** the largest `c ∈ {0.2, 0.1, 0.05, 0.02, 0.01}` with YB failure in `[0.30, 0.70]`;
+  otherwise the one closest to 0.5.
+- **Results** (YB failure rate):
+
+  | cap | overall | ALIGNED cells (YB1 / YB2 / YB3) | INVERTED cells (YB1 / YB2 / YB3) |
+  | --- | --- | --- | --- |
+  | 0.2 | 0.641 | 0.35 / 0.30 / 0.27 | 1.00 / 0.95 / 1.00 |
+  | 0.1 | 0.613 | 0.26 / 0.25 / 0.27 | 1.00 / 0.93 / 1.00 |
+  | 0.05 | 0.605 | 0.30 / 0.23 / 0.18 | 1.00 / 0.95 / 1.00 |
+  | 0.02 | 0.566 | 0.26 / 0.18 / 0.16 | 1.00 / 0.84 / 1.00 |
+  | 0.01 | 0.520 | 0.28 / 0.08 / 0.16 | 1.00 / 0.64 / 1.00 |
+
+- **New range: `S_E0 = min(omega × FPR_target, 0.2)`** (chosen cap 0.2; design calibration
+  failure 0.641).
+- **[observation]** Every cap is in band, so accessibility barely moves the YB failure rate. The
+  Axis-B flag dominates: ALIGNED YB fails in 0.08–0.35 of runs, INVERTED YB in 0.64–1.00. The
+  Stage 0 YB imbalance (0.946) came mainly from the hidden inversion, not from accessibility.
