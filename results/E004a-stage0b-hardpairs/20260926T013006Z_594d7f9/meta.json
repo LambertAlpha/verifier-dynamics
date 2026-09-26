@@ -1,0 +1,78 @@
+{
+  "experiment_id": "E004a-stage0b-hardpairs",
+  "created_utc": "2026-09-26T01:30:06+00:00",
+  "git": {
+    "commit": "594d7f93ee4c6fff8e45fc3e8235a1d7c3ab74ac",
+    "dirty": false
+  },
+  "config": {
+    "experiment_id": "E004a",
+    "registry": "research/03_experiment_registry.md#e004a",
+    "root_seed": 20260930,
+    "panel_sha256": "e49753e9f8dd016436fdfbe454dca874219694b97da2a43ad8684ef9b817a30d",
+    "runs": {
+      "n_seeds": 4,
+      "provisional_adam_steps": 4000,
+      "provisional_ng_time": 60.0,
+      "t_rule": "3 x median clean t95 (Adam rounded up to a multiple of 100 steps)",
+      "roles": [
+        "prim_ver",
+        "prim_clean",
+        "can_ver",
+        "can_clean",
+        "b16_ver",
+        "b16_clean",
+        "b256_ver",
+        "b256_clean",
+        "hardpair",
+        "spare"
+      ]
+    },
+    "adam": {
+      "lr": 0.01,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "prompts_per_step": 8,
+      "responses_per_prompt": 8,
+      "sweep": [
+        [
+          4,
+          4
+        ],
+        [
+          16,
+          16
+        ]
+      ]
+    },
+    "horizons": {
+      "fractions": [
+        0.0,
+        0.002,
+        0.005,
+        0.01,
+        0.02,
+        0.05,
+        0.1
+      ],
+      "primary": 0.02,
+      "audit_n": 256
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "split": "design",
+  "T_adam": 2700,
+  "runs": "/Users/lambertlin/Documents/01Project/verifier-dynamics/results/E004a-stage0b/20260926T010655Z_a5e0ca0",
+  "root_seed": 20261001
+}

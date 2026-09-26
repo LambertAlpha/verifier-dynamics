@@ -1,0 +1,831 @@
+{
+ "T_adam": 2700,
+ "pair_types": {
+  "HP-A": {
+   "restarts": 10,
+   "errors": 0,
+   "best_max_scaled_residual": 4.3412476214709e-05,
+   "best": {
+    "anchor": "B3-A-22",
+    "base": "YA3-A-26",
+    "x": [
+     -3.0462261398750425,
+     -3.4286256955452252,
+     -2.823487648086625,
+     -1.4053857323871533,
+     -2.828930590835006,
+     -7.042299629368672,
+     -5.23557125108689,
+     1.1680808225794133,
+     0.048330273798358976,
+     0.17153236380848702,
+     0.5000101348424
+    ],
+    "max_scaled_residual": 4.3412476214709e-05,
+    "sse": 1.2868250496359608e-08
+   },
+   "evaluation": {
+    "mf": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 2.17062381073545e-05,
+      "worst": "J_G_d@0.005"
+     },
+     "labels": [
+      {
+       "Dn": 7.095660608134654e-05,
+       "category": "SUCCESS",
+       "failure": false,
+       "t_on": null,
+       "peak_drop": 0.0
+      },
+      {
+       "Dn": 0.00047690210064484323,
+       "category": "SUCCESS",
+       "failure": false,
+       "t_on": null,
+       "peak_drop": 0.0
+      }
+     ]
+    },
+    "sampled": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.01230479690876358,
+      "worst": "J_G_h@0.01"
+     },
+     "failure_fraction": [
+      0.0,
+      0.0
+     ],
+     "Dn_mean": [
+      8.418666369811536e-05,
+      0.004853079415668992
+     ]
+    }
+   },
+   "axes": [
+    "ALIGNED",
+    "ALIGNED"
+   ],
+   "axis_ok": true,
+   "accepted": {
+    "mf": true,
+    "sampled": true
+   }
+  },
+  "HP-D": {
+   "restarts": 10,
+   "errors": 0,
+   "best_max_scaled_residual": 0.0008235170726496165,
+   "best": {
+    "anchor": "D1-I-00",
+    "base": "B2-A-21",
+    "x": [
+     5.258393423396648,
+     0.793136575463243,
+     -2.4566526119754974,
+     0.8295225506984253,
+     -0.33777299172733954,
+     -2.783972987590477,
+     -2.8611588611544105,
+     0.5117324371458432,
+     0.0518888850504307,
+     0.2425570272911779,
+     0.31362254194115685
+    ],
+    "max_scaled_residual": 0.0008235170726496165,
+    "sse": 4.618696366685699e-06
+   },
+   "evaluation": {
+    "mf": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.00041175853632480826,
+      "worst": "J_G_slope@0.01"
+     },
+     "labels": [
+      {
+       "Dn": 0.7141002551165357,
+       "category": "STALL",
+       "failure": true,
+       "t_on": 0.01,
+       "peak_drop": 0.03552503353861869
+      },
+      {
+       "Dn": 0.0003290901790399244,
+       "category": "SUCCESS",
+       "failure": false,
+       "t_on": null,
+       "peak_drop": 0.0
+      }
+     ]
+    },
+    "sampled": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.08323727779680731,
+      "worst": "FPR_h@0.02"
+     },
+     "failure_fraction": [
+      1.0,
+      0.0
+     ],
+     "Dn_mean": [
+      0.7749055710696541,
+      0.00046247569163362044
+     ]
+    }
+   },
+   "axes": [
+    "INVERTED",
+    "ALIGNED"
+   ],
+   "axis_ok": true,
+   "accepted": {
+    "mf": true,
+    "sampled": true
+   }
+  },
+  "HP-B": {
+   "restarts": 10,
+   "errors": 0,
+   "best_max_scaled_residual": 0.004651046682354692,
+   "best": {
+    "anchor": "YA1-A-00",
+    "base": "YB3-A-27",
+    "x": [
+     -0.20124268535586975,
+     -1.4425878156729104,
+     -3.4298183081130023,
+     -2.129752480410399,
+     -3.488883608344852,
+     -4.079544853856757,
+     -4.70188019839314,
+     -0.1130243363251707,
+     0.13279130694122368,
+     0.21117891717060916,
+     0.500000056932924
+    ],
+    "max_scaled_residual": 0.004651046682354692,
+    "sse": 0.00012019544712682298
+   },
+   "evaluation": {
+    "mf": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.002325523341177346,
+      "worst": "FPR_d@0.01"
+     },
+     "labels": [
+      {
+       "Dn": 0.07850749706911,
+       "category": "SUCCESS",
+       "failure": false,
+       "t_on": 0.01,
+       "peak_drop": 0.0
+      },
+      {
+       "Dn": 0.0046563765977708305,
+       "category": "SUCCESS",
+       "failure": false,
+       "t_on": 0.01,
+       "peak_drop": 0.0
+      }
+     ]
+    },
+    "sampled": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.10290661223062422,
+      "worst": "J_G_h@0.02"
+     },
+     "failure_fraction": [
+      0.03125,
+      0.0
+     ],
+     "Dn_mean": [
+      0.15119616714776468,
+      0.013218141596748636
+     ]
+    }
+   },
+   "axes": [
+    "ALIGNED",
+    "ALIGNED"
+   ],
+   "axis_ok": true,
+   "accepted": {
+    "mf": true,
+    "sampled": true
+   }
+  },
+  "HP-I": {
+   "restarts": 10,
+   "errors": 0,
+   "best_max_scaled_residual": 0.002177461596025888,
+   "best": {
+    "anchor": "YA1-A-12",
+    "base": "YA1-A-16",
+    "x": [
+     2.5259437677641485,
+     -0.6126388514342711,
+     -0.3474638863350719,
+     -0.7300022062635028,
+     -0.21062609564287035,
+     5.999999927309347,
+     -4.305109136822972,
+     5.999999552014072,
+     0.11170391137980874,
+     0.21893144491486297,
+     0.8999999999999813
+    ],
+    "max_scaled_residual": 0.002177461596025888,
+    "sse": 3.0271441632797127e-05
+   },
+   "evaluation": {
+    "mf": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.001088730798012944,
+      "worst": "J_G_d@0.005"
+     },
+     "labels": [
+      {
+       "Dn": 0.20057064353965628,
+       "category": "DECLINE",
+       "failure": true,
+       "t_on": 0.53,
+       "peak_drop": 0.06710398349757929
+      },
+      {
+       "Dn": 1.2596021366712986,
+       "category": "DECLINE",
+       "failure": true,
+       "t_on": 0.49,
+       "peak_drop": 0.6393952253620911
+      }
+     ]
+    },
+    "sampled": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.04586996753330348,
+      "worst": "FPR_h@0.02"
+     },
+     "failure_fraction": [
+      1.0,
+      1.0
+     ],
+     "Dn_mean": [
+      0.1863527348736919,
+      1.271264045179195
+     ]
+    }
+   },
+   "axes": [
+    "INVERTED",
+    "INVERTED"
+   ],
+   "axis_ok": false,
+   "accepted": {
+    "mf": false,
+    "sampled": false
+   }
+  },
+  "DYN-YA/R": {
+   "restarts": 10,
+   "errors": 0,
+   "best_max_scaled_residual": 0.051207184884032864,
+   "best": {
+    "anchor": "YA1-I-24",
+    "base": "R3-A-30",
+    "x": [
+     -0.7149943426193736,
+     -5.6888372335244295,
+     -2.752274702981851,
+     -5.971621307121155,
+     -0.8650506535955614,
+     -9.99990969602442,
+     -9.999999079025805,
+     -9.999989491042454,
+     0.04293944791220925,
+     0.15642542365473502,
+     0.33999829802893855
+    ],
+    "max_scaled_residual": 0.051207184884032864,
+    "sse": 0.01698135708256299
+   },
+   "evaluation": {
+    "mf": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.023269367488674662,
+      "worst": "J_G_slope@0.02"
+     },
+     "labels": [
+      {
+       "Dn": 1.1705706530432625,
+       "category": "DECLINE",
+       "failure": true,
+       "t_on": 0.24,
+       "peak_drop": 0.4648309797242009
+      },
+      {
+       "Dn": 0.06264800980674215,
+       "category": "SUCCESS",
+       "failure": false,
+       "t_on": 0.53,
+       "peak_drop": 0.0
+      }
+     ],
+     "l0": {
+      "accept": true,
+      "max_ratio": 0.008207559270345959
+     },
+     "l1": true,
+     "l3_divergence_time": 0.07
+    },
+    "sampled": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.03004214489056239,
+      "worst": "J_G_slope@0.02"
+     },
+     "failure_fraction": [
+      1.0,
+      0.0
+     ],
+     "Dn_mean": [
+      1.1603956807123272,
+      0.030921554967329977
+     ],
+     "l0": {
+      "accept": true,
+      "max_ratio": 0.008207559270348243
+     },
+     "l1": true,
+     "l3_divergence_time": 0.01,
+     "median_t_on": [
+      0.02,
+      0.06
+     ]
+    }
+   },
+   "axes": [
+    "INVERTED",
+    "ALIGNED"
+   ],
+   "axis_ok": true,
+   "accepted": {
+    "mf": true,
+    "sampled": true
+   }
+  },
+  "DYN-YB/B": {
+   "restarts": 10,
+   "errors": 0,
+   "best_max_scaled_residual": 0.28744865711622153,
+   "best": {
+    "anchor": "YB1-A-18",
+    "base": "B2-A-22",
+    "x": [
+     5.208852817266976,
+     1.222965022426684,
+     4.295107566950907,
+     1.804857399547117,
+     1.5353640643528106,
+     -9.999420472139356,
+     5.999999999303901,
+     -2.1245736154348074,
+     0.017700447648592625,
+     0.05393815481517473,
+     0.9999999996429225
+    ],
+    "max_scaled_residual": 0.28744865711622153,
+    "sse": 0.38087919811093157
+   },
+   "evaluation": {
+    "mf": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.14372432855811076,
+      "worst": "FPR_h@0.02"
+     },
+     "labels": [
+      {
+       "Dn": 0.004682878314788643,
+       "category": "SUCCESS",
+       "failure": false,
+       "t_on": null,
+       "peak_drop": 0.0
+      },
+      {
+       "Dn": 0.001724175563687698,
+       "category": "SUCCESS",
+       "failure": false,
+       "t_on": 0.18,
+       "peak_drop": 0.0
+      }
+     ],
+     "l0": {
+      "accept": true,
+      "max_ratio": 0.05247246026183766
+     },
+     "l1": true,
+     "l3_divergence_time": 0.06
+    },
+    "sampled": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.1441359217508089,
+      "worst": "FPR_h@0.02"
+     },
+     "failure_fraction": [
+      0.0,
+      0.0
+     ],
+     "Dn_mean": [
+      0.009687658353040304,
+      0.0024057203065076986
+     ],
+     "l0": {
+      "accept": true,
+      "max_ratio": 0.052472460261836586
+     },
+     "l1": true,
+     "l3_divergence_time": 0.06,
+     "median_t_on": [
+      1.0,
+      1.0
+     ]
+    }
+   },
+   "axes": [
+    "ALIGNED",
+    "ALIGNED"
+   ],
+   "axis_ok": true,
+   "accepted": {
+    "mf": false,
+    "sampled": false
+   }
+  },
+  "DYN-D/B": {
+   "restarts": 10,
+   "errors": 0,
+   "best_max_scaled_residual": 3.7904464129086892,
+   "best": {
+    "anchor": "D3-I-12",
+    "base": "B2-A-17",
+    "x": [
+     -1.9052816568457316,
+     6.338227383463529,
+     7.3319644926946665,
+     6.660322822894235,
+     0.7194612669810019,
+     5.999999999999999,
+     5.999999999999999,
+     -3.8713098258229763,
+     0.03349016233105712,
+     0.16131857224246676,
+     0.9999999999999999
+    ],
+    "max_scaled_residual": 3.7904464129086892,
+    "sse": 25.576225268722226
+   },
+   "evaluation": {
+    "mf": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.4663024639341563,
+      "worst": "FPR_d@0.02"
+     },
+     "labels": [
+      {
+       "Dn": 1.28950290041546,
+       "category": "DECLINE",
+       "failure": true,
+       "t_on": 0.01,
+       "peak_drop": 0.15534411254472152
+      },
+      {
+       "Dn": 6.929601359188468e-05,
+       "category": "SUCCESS",
+       "failure": false,
+       "t_on": null,
+       "peak_drop": 0.0
+      }
+     ],
+     "l0": {
+      "accept": true,
+      "max_ratio": 0.28997094153300507
+     },
+     "l1": false,
+     "l3_divergence_time": null
+    },
+    "sampled": {
+     "correction_a": {
+      "accept": false,
+      "max_ratio": 0.535603883408577,
+      "worst": "J_G_d@0.02"
+     },
+     "failure_fraction": [
+      1.0,
+      0.0
+     ],
+     "Dn_mean": [
+      1.2873532857108234,
+      0.00030421628529419913
+     ],
+     "l0": {
+      "accept": true,
+      "max_ratio": 0.2899709415330067
+     },
+     "l1": false,
+     "l3_divergence_time": null,
+     "median_t_on": [
+      0.01,
+      0.01
+     ]
+    }
+   },
+   "axes": [
+    "INVERTED",
+    "ALIGNED"
+   ],
+   "axis_ok": true,
+   "accepted": {
+    "mf": false,
+    "sampled": false
+   }
+  },
+  "DYN-YA-I/YA-A": {
+   "restarts": 10,
+   "errors": 0,
+   "best_max_scaled_residual": 0.14124654045320373,
+   "best": {
+    "anchor": "YA2-I-25",
+    "base": "YA1-A-29",
+    "x": [
+     -0.5980429951717913,
+     2.0896183107227326,
+     -1.2427977636920169,
+     1.2269367315732063,
+     -5.780468524796815,
+     -1.8174068112236195,
+     -3.9631167268427445,
+     -0.5403411750929497,
+     0.14241157711170574,
+     0.06744447277053504,
+     0.6092810606934367
+    ],
+    "max_scaled_residual": 0.14124654045320373,
+    "sse": 0.08242073391809894
+   },
+   "evaluation": {
+    "mf": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.05480100133724798,
+      "worst": "FNR_d@0.02"
+     },
+     "labels": [
+      {
+       "Dn": -0.0025036022554416897,
+       "category": "SUCCESS",
+       "failure": false,
+       "t_on": null,
+       "peak_drop": 0.0
+      },
+      {
+       "Dn": -0.0007723787794600274,
+       "category": "SUCCESS",
+       "failure": false,
+       "t_on": null,
+       "peak_drop": 0.0
+      }
+     ],
+     "l0": {
+      "accept": true,
+      "max_ratio": 0.031212776658333045
+     },
+     "l1": true,
+     "l3_divergence_time": 0.11
+    },
+    "sampled": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.06080233564142288,
+      "worst": "J_G_h@0.01"
+     },
+     "failure_fraction": [
+      0.0,
+      0.0
+     ],
+     "Dn_mean": [
+      -0.0017945714709317348,
+      0.0033971424493293148
+     ],
+     "l0": {
+      "accept": true,
+      "max_ratio": 0.031212776658333552
+     },
+     "l1": true,
+     "l3_divergence_time": 0.11,
+     "median_t_on": [
+      0.01,
+      0.01
+     ]
+    }
+   },
+   "axes": [
+    "INVERTED",
+    "ALIGNED"
+   ],
+   "axis_ok": true,
+   "accepted": {
+    "mf": false,
+    "sampled": false
+   }
+  },
+  "DYN-X/YB": {
+   "restarts": 10,
+   "errors": 0,
+   "best_max_scaled_residual": 0.2636377256128719,
+   "best": {
+    "anchor": "X1-A-27",
+    "base": "YB2-A-10",
+    "x": [
+     1.5319247361647745,
+     -0.5815876213079082,
+     1.0896208047965141,
+     1.7031720460995232,
+     -1.3549786241667952,
+     1.2345910652905256,
+     5.999960088212147,
+     5.158147269247593,
+     0.07937949077567583,
+     0.20923147284482732,
+     0.6160062735227503
+    ],
+    "max_scaled_residual": 0.2636377256128719,
+    "sse": 0.14982050034456354
+   },
+   "evaluation": {
+    "mf": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.0620043290080859,
+      "worst": "FNR_d@0.02"
+     },
+     "labels": [
+      {
+       "Dn": 0.09580301775062958,
+       "category": "SUCCESS",
+       "failure": false,
+       "t_on": 0.01,
+       "peak_drop": 0.0
+      },
+      {
+       "Dn": 0.010884345482099806,
+       "category": "SUCCESS",
+       "failure": false,
+       "t_on": 0.01,
+       "peak_drop": 0.0
+      }
+     ],
+     "l0": {
+      "accept": true,
+      "max_ratio": 0.03754222209947464
+     },
+     "l1": true,
+     "l3_divergence_time": 0.15
+    },
+    "sampled": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.055840631943696685,
+      "worst": "FNR_d@0.02"
+     },
+     "failure_fraction": [
+      0.375,
+      0.0
+     ],
+     "Dn_mean": [
+      0.09482217794707794,
+      0.018745269573232998
+     ],
+     "l0": {
+      "accept": true,
+      "max_ratio": 0.03754222209947463
+     },
+     "l1": true,
+     "l3_divergence_time": 0.17,
+     "median_t_on": [
+      0.01,
+      0.01
+     ]
+    }
+   },
+   "axes": [
+    "ALIGNED",
+    "ALIGNED"
+   ],
+   "axis_ok": true,
+   "accepted": {
+    "mf": false,
+    "sampled": false
+   }
+  },
+  "DYN-YA/B": {
+   "restarts": 10,
+   "errors": 0,
+   "best_max_scaled_residual": 0.048158870340087034,
+   "best": {
+    "anchor": "YA1-I-06",
+    "base": "B3-A-06",
+    "x": [
+     -2.595856456229729,
+     1.1791371446344965,
+     -1.863554075393325,
+     -0.3489692290260062,
+     -1.6019277029009285,
+     0.3792368606607443,
+     -9.822540764306455,
+     -0.04432805680735459,
+     0.19006741628482932,
+     0.1577293632541593,
+     0.12764406335056974
+    ],
+    "max_scaled_residual": 0.048158870340087034,
+    "sse": 0.011367505459718694
+   },
+   "evaluation": {
+    "mf": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.022472191659557328,
+      "worst": "FNR_d@0.02"
+     },
+     "labels": [
+      {
+       "Dn": 0.5709563434829631,
+       "category": "DECLINE",
+       "failure": true,
+       "t_on": 0.01,
+       "peak_drop": 0.23101685309762116
+      },
+      {
+       "Dn": 0.0007292257809767992,
+       "category": "SUCCESS",
+       "failure": false,
+       "t_on": 0.01,
+       "peak_drop": 0.0
+      }
+     ],
+     "l0": {
+      "accept": true,
+      "max_ratio": 0.012430408616702691
+     },
+     "l1": true,
+     "l3_divergence_time": null
+    },
+    "sampled": {
+     "correction_a": {
+      "accept": true,
+      "max_ratio": 0.03170530024136863,
+      "worst": "J_G_h@0.005"
+     },
+     "failure_fraction": [
+      1.0,
+      0.0
+     ],
+     "Dn_mean": [
+      0.7396294118933429,
+      0.001970759033495621
+     ],
+     "l0": {
+      "accept": true,
+      "max_ratio": 0.01243040861670363
+     },
+     "l1": true,
+     "l3_divergence_time": null,
+     "median_t_on": [
+      0.015,
+      0.01
+     ]
+    }
+   },
+   "axes": [
+    "INVERTED",
+    "ALIGNED"
+   ],
+   "axis_ok": true,
+   "accepted": {
+    "mf": false,
+    "sampled": false
+   }
+  }
+ }
+}
