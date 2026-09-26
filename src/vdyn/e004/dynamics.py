@@ -159,6 +159,29 @@ def geometry(tb: toy.Tables, theta: np.ndarray, kind: str,
     return toy.decompose(ex["g_G"], ex["g_V"], np.linalg.inv(F), ex["g_G_ctx"])
 
 
+def geometry2(tb: toy.Tables, theta: np.ndarray, kind: str,
+              v_hat: np.ndarray | None = None) -> dict[str, np.ndarray]:  # fmt: skip
+    """Amendment 3 §6: reward level (grad J_V vs grad J_G; suffix _r) and update level (the
+    GRPO-effective verifier direction vs the equally normalized gold direction; suffix _u), both in
+    the optimizer metric. NG has no normalization, so the two levels coincide."""
+    ex = toy.exact(tb, theta)
+    if kind == "adam":
+        assert v_hat is not None
+        M = 1 / (np.sqrt(v_hat) + EPS)
+        upd = toy.decompose(ex["g_effG"], ex["g_eff"], M, ex["g_effG_ctx"])
+    else:
+        F = ex["F"] + NG_DAMP * np.trace(ex["F"], axis1=1, axis2=2)[:, None, None] / toy.D * np.eye(
+            toy.D
+        )
+        M = np.linalg.inv(F)
+        upd = None
+    rew = toy.decompose(ex["g_G"], ex["g_V"], M, ex["g_G_ctx"])
+    upd = rew if upd is None else upd
+    out = {f"{k}_r": rew[k] for k in ("A", "alpha", "C", "C_in", "C_out")}
+    out.update({f"{k}_u": upd[k] for k in ("A", "alpha", "C", "C_in", "C_out")})
+    return out
+
+
 def observables(tb: toy.Tables, theta: np.ndarray) -> dict[str, np.ndarray]:
     ex = toy.exact(tb, theta)
     return {k: ex[k] for k in ("J_G", "J_V", "FPR", "FNR", "J_G_ctx")}

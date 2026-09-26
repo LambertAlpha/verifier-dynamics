@@ -84,3 +84,21 @@ def test_geometry_at_checkpoints_uses_the_optimizer_metric(structs):
     ref = toy.decompose(ex["g_G"][0], ex["g_eff"][0], 1 / (np.sqrt(v[0]) + 1e-8), ex["g_G_ctx"][0])
     for k in ("A", "alpha", "C", "C_in", "C_out"):
         assert geo[k][0] == pytest.approx(ref[k], rel=1e-10)
+
+
+def test_geometry2_reports_reward_and_update_levels(structs):
+    st = structs[4]  # YA1
+    tb = toy.Tables.of([st])
+    th = st.theta0[None]
+    v = np.full((1, toy.D), 0.03)
+    ex = toy.exact(tb, th)
+    M = 1 / (np.sqrt(v[0]) + 1e-8)
+    g2 = dy.geometry2(tb, th, "adam", v_hat=v)
+    upd = toy.decompose(ex["g_effG"][0], ex["g_eff"][0], M, ex["g_effG_ctx"][0])
+    rew = toy.decompose(ex["g_G"][0], ex["g_V"][0], M, ex["g_G_ctx"][0])
+    for k in ("A", "alpha", "C", "C_in", "C_out"):
+        assert g2[f"{k}_u"][0] == pytest.approx(upd[k], rel=1e-10)
+        assert g2[f"{k}_r"][0] == pytest.approx(rew[k], rel=1e-10)
+    ng = dy.geometry2(tb, th, "ng")
+    for k in ("A", "alpha", "C", "C_in", "C_out"):
+        assert ng[f"{k}_u"][0] == pytest.approx(ng[f"{k}_r"][0], rel=1e-12)

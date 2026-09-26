@@ -30,7 +30,7 @@ ROW_S = np.array([r[0] for r in ROWS])
 ROW_XI = np.array([r[1] for r in ROWS])
 ROW_Z = np.array([r[2] for r in ROWS], dtype=np.float64)  # (R, 3)
 R = len(ROWS)
-EVENTS = ("none", "single", "or2", "and2", "and3")
+EVENTS = ("none", "single", "or2", "and2", "and3", "thr23", "z1", "z3")
 
 
 def event(kind: str) -> np.ndarray:
@@ -45,7 +45,18 @@ def event(kind: str) -> np.ndarray:
         return z[:, 0] & z[:, 1]
     if kind == "and3":
         return z[:, 0] & z[:, 1] & z[:, 2]
+    if kind == "thr23":
+        return z.sum(axis=1) >= 2
+    if kind == "z1":
+        return z[:, 0]
+    if kind == "z3":
+        return z[:, 2]
     raise ValueError(kind)
+
+
+def _mask(kind: str) -> np.ndarray:
+    """Condition for a channel: 'none' means unconditional."""
+    return np.ones(R, bool) if kind == "none" else event(kind)
 
 
 def _arr(x: Any, dtype: Any = np.float64) -> np.ndarray:
@@ -69,6 +80,8 @@ class Structure:
     beta: np.ndarray
     deleted: np.ndarray
     v0: float
+    credit_event: str = "none"  # attempt credit only when this feature pattern is present
+    hack_event: str = "none"  # HACK accepted only when this feature pattern is present
     meta: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
@@ -101,8 +114,9 @@ def verifier_table(st: Structure) -> np.ndarray:
     g = gold_table(st)
     ev = event(st.event).astype(np.float64)
     keep = (1 - st.fp[:, None]) * (1 - st.trig[:, None] * ev[None, :])
-    keep = keep * (1 - st.rho[:, None] * (ROW_S == HACK)[None, :])
-    keep = keep * (1 - st.beta[:, None] * ((ROW_S == SOLVE) & (ROW_XI == 0))[None, :])
+    keep = keep * (1 - st.rho[:, None] * ((ROW_S == HACK) & _mask(st.hack_event))[None, :])
+    failed = (ROW_S == SOLVE) & (ROW_XI == 0) & _mask(st.credit_event)
+    keep = keep * (1 - st.beta[:, None] * failed[None, :])
     out = np.where(g > 0, 1 - st.fn[:, None], 1 - keep)
     return np.where(st.deleted[:, None], st.v0, out)
 
@@ -199,8 +213,13 @@ def exact(tb: Tables, theta: np.ndarray) -> dict[str, np.ndarray]:
     g_eff = np.einsum("nkr,nkri->ni", wP * adv, S)
     second = (EV * (1 - 2 * b[:, :, None]) + b[:, :, None] ** 2) * inv[:, :, None] ** 2
     var_eff = np.einsum("nkr,nkri->ni", wP * second, S**2) - g_eff**2
+    bG = (P * G).sum(2)
+    sdG = np.sqrt(np.clip(bG * (1 - bG), 0, None))
+    invG = np.where(sdG > 0, 1 / np.where(sdG > 0, sdG, 1), 0.0)
+    g_effG_ctx = np.einsum("nkr,nkri->nki", wP * (G - bG[:, :, None]) * invG[:, :, None], S)
     return {
         "J_G": jg, "J_V": jv, "FPR": fpr, "FNR": fnr, "J_G_ctx": (wP * G).sum(2),
+        "g_effG": g_effG_ctx.sum(1), "g_effG_ctx": g_effG_ctx,
         "g_G": g_G, "g_V": g_V, "g_FPR": g_fpr, "g_FNR": g_fnr, "g_G_ctx": g_ctx, "F": F,
         "g_eff": g_eff, "var_eff": np.clip(var_eff, 0, None),
     }  # fmt: skip
@@ -238,6 +257,24 @@ def decompose(
     if single:
         out = {k: float(v[0]) for k, v in out.items()}
     return out
+
+
+def preference_gaps(st: Structure) -> np.ndarray:
+    """Per prompt: best wrong behaviour minus best genuine attempt, in expected verifier reward
+    (Amendment 3 §3); NaN on deleted prompts."""
+    ev = verifier_table(st)
+    solve0 = (ROW_S == SOLVE) & (ROW_XI == 0)
+    solve1 = (ROW_S == SOLVE) & (ROW_XI == 1)
+    wrong = ROW_S != SOLVE
+    v_solve = (st.p[:, None] * ev[:, solve1] + (1 - st.p[:, None]) * ev[:, solve0]).max(axis=1)
+    gaps = ev[:, wrong].max(axis=1) - v_solve
+    return np.where(st.deleted, np.nan, gaps)
+
+
+def axis_b(st: Structure, delta: float = 0.02, w_min: float = 0.05) -> str:
+    gaps = preference_gaps(st)
+    relevant = ~st.deleted & (st.w >= w_min)
+    return "INVERTED" if np.any(gaps[relevant] > delta) else "ALIGNED"
 
 
 def single(st: Structure, theta: np.ndarray) -> dict[str, Any]:
