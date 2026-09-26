@@ -2960,3 +2960,50 @@ The recommendation is given in the Stage 1 design report; held-out work waits fo
 approval.
 
 ---
+
+### E004a Amendment 4 — Stage 1 decision-tree completion (2026-09-26)
+
+Written and committed **before any held-out or shift structure, trajectory or outcome exists.**
+
+**Status.**
+
+- Collaborator request: "Proceed with the FINAL held-out evaluation for E004a Stage 1."
+- This amendment only names the result combinations that §12 left undefined.
+- **No registered criterion, threshold, definition, predictor or panel changes.**
+
+**Registered components** (as frozen in §12 and in the Stage 1 execution note):
+
+- **RQ1:** `L2 − L0 >= δ_out` with lower bound > 0 for both the C-index of `Dn` and the AUROC of
+  failure, at `h*` on split A (Holm over 2).
+- **EW (early warning):** among runs with `t_on > h*`, the L2 AUROC lower bound is ≥ 0.65
+  **and** the median lead time at the design-calibrated 10% false-alarm threshold is ≥ 5% of `T`.
+- **GEN (generalization):** the shift split has `L2 − L0` lower bound > −0.01, **and**
+  leave-one-mechanism-out has `L2 − L0` lower bound > 0 in ≥ 4 of 6 held-out mechanisms.
+- **MECH (mechanistic value), (i)–(iii):** already unsatisfiable. (iii) failed on the frozen,
+  design-side hard pairs with the frozen predictors, and a held-out evaluation reproduces the same
+  instances.
+
+**Primary label.** Exactly one of three:
+
+| label | condition | interpretation | consequence |
+| --- | --- | --- | --- |
+| **A — FULL EARLY-WARNING SUCCESS** | RQ1 ∧ EW ∧ GEN | confirmatory evidence that a short policy–verifier prefix predicts long-run failure before it becomes visible | the only branch that qualifies for **PROCEED TO E004b** |
+| **B — EARLY ASSOCIATION, NO ROBUST EARLY-WARNING CLAIM** | RQ1 ∧ (¬EW ∨ ¬GEN) | early information is associated with the long-run outcome, but the evidence does not establish a robust, transferable early-warning system | the result is **not** called "early warning"; no E004b under the frozen rule |
+| **D — NO CONFIRMATORY EARLY-PREDICTION RESULT** | ¬RQ1 | no confirmatory early-prediction claim | earlier mechanistic and static-insufficiency findings are retained only as such |
+
+**C — mechanistic support without pre-registered mechanistic success** (reported separately; not
+a primary label).
+
+- If geometry remains useful for mechanism diagnosis on held-out data, it is reported as
+  descriptive / supporting mechanistic evidence.
+- The report states explicitly that **the pre-registered mechanistic-success criterion was not
+  satisfied**, and §12's "mechanistic-only" branch is not invoked.
+
+**Further rules.**
+
+- **Abandonment flag.** §12's "abandon early warning" rule (at every `h <= 5%`, RQ1 fails or the
+  NYV AUROC lower bound is ≤ 0.55) is scored and reported as a flag. It does not create a label.
+- **Fixed label set.** No other label may be introduced after held-out data are seen. Post-hoc
+  analyses cannot change the label.
+
+---
