@@ -2719,3 +2719,244 @@ search).
 - Then STOP for collaborator approval.
 
 ---
+
+### E004a — Stage 1 design-round record (DESIGN SPLIT ONLY; 2026-09-26)
+
+No test or shift structure was generated or opened. No E004b work was done. The panel, outcomes,
+horizons, model families and Stage 1 success criteria are unchanged. The predictor configuration
+was frozen (`predictors_frozen.json`, sha256 `e0b2ea9d…d210`) **before** the hard-pair evaluation.
+All numbers are design-CV (out-of-fold) results; they are not confirmatory.
+
+**Runs.**
+
+| step | commit | output |
+| --- | --- | --- |
+| execution note | `b157fad` | registry (before any Stage 1 code or output) |
+| implementation (TDD) | `63ea693` | `vdyn.e004.audit`, `vdyn.e004.predict`, batch recording, finite levels, provenance config sha |
+| sampled runs + audits | run at `63ea693` → `26b1790` | `results/E004a-stage1-runs/20260926T045733Z_63ea693` (149 s; peak RSS 379 MB workers, 168 MB main) |
+| design-CV analysis + **frozen predictors** | run at `26b1790` → `341851a` | `results/E004a-stage1-analysis/20260926T050431Z_26b1790` (349 s; 661 MB) |
+| hard pairs (frozen pairs, frozen predictors) | run at `9426135` → `23183b4` | `results/E004a-stage1-hardpairs/20260926T051047Z_9426135` (80 s; 264 MB) |
+| [post-hoc] snapshot vs trajectory | script `a9afb8c` / `90e0341`; run → `385cb79` | `results/E004a-stage1-posthoc/20260926T051523Z_90e0341` |
+
+- Every run directory is clean.
+- **Every `meta.json` records:** `dirty: false`, root seed 20261001, panel sha256, config sha256
+  (`configs/e004/e004a_stage1.toml`), package versions and `split = design`. The hard-pair
+  `meta.json` also records the hard-pair and frozen-predictor sha256.
+
+**Integrity and reproduction.**
+
+- Adam and NG trajectories are identical to Stage 0b (max |Δ| = 0.0). The recomputed outcome
+  labels equal the committed Stage 0b labels exactly.
+- The hard-pair member failure fractions equal the frozen Stage 0b verification exactly
+  (asserted).
+
+**Process disclosures.**
+
+- **RED observed after the code was written.** `audit.py` and `predict.py` were written before
+  their first test run. RED was observed by moving each module aside (ImportError), then GREEN.
+- **Three test-design errors were fixed in the tests, not the code:**
+  - identical rollout rows (zero RLOO residual by construction);
+  - an AUROC threshold that was unreachable for the synthetic signal-to-noise ratio;
+  - a wrong keyword name.
+- **Two commits went in after a failing check chain.** `a9afb8c` and `23183b4` were committed
+  after a check chain that did not stop on failure:
+  - ruff reported one E501, fixed in `90e0341`;
+  - mypy reported 23 errors, all a stale `.mypy_cache` artifact. Full-scope mypy with a clean
+    cache reports 0 issues.
+- **BLAS oversubscription** (load ≈ 32 on 8 workers) during the analysis. It affects runtime
+  only.
+
+#### Finite-sample estimator checks (Adam; estimate − exact at the same states)
+
+- **Observables are unbiased** (|bias| ≤ 0.002).
+- **The empirical error SD exceeds the registered audit-SE formula:**
+  - `J_G`: ×1.26–1.38 (32 groups × 8 is cluster sampling, which has a design effect);
+  - FPR: ×1.11–1.15; FNR: ×1.02–1.08.
+- **Geometry at `h*`:**
+  - `alpha_u`: r = 0.84, error SD 0.15;
+  - `C_u`: r = 0.87, bias **+0.042** (plug-in noise floor);
+  - `A_u`: r = 0.77, bias −0.056;
+  - `alpha_r`: r = 0.86.
+- **Instability of the Adam metric at `t ≤ 0.5%` of `T`.** `v_hat` estimated from a few steps
+  gives heavy tails:
+  - `A_u` at `t = 0`: error SD 2.09;
+  - `C_u` at 0.5%: r = 0.16, error SD 1.26.
+- **NG** (damped audit Fisher): r ≈ 0.86–0.95 for the geometry at every checkpoint.
+- **No undefined values:** alpha, FPR and FNR were never NaN (0 of 29 000 Adam audits).
+
+#### Frozen criteria (§12) evaluated on design CV
+
+| criterion | design-CV result | status on design |
+| --- | --- | --- |
+| **RQ1** `L2 − L0` at `h*` | C-index +0.023 (lo95 0.013; Holm p 0.001); AUROC +0.028 (lo95 0.012; Holm p 0.001) | met; the C-index point is 0.003 above `δ_out` |
+| **Early warning** (L2, `t_on > h*`) | NYV AUROC 0.696, **lo95 0.64996**; median lead 8.9% of `T` (52 warned of 355 NYV failures; sensitivity 0.146; conservative median 0) | **not met**: the lower bound misses 0.65 by 4e-5 |
+| **Mechanistic (i)** `L3 − L2` macro-F1 | +0.291 (lo95 0.266) | met |
+| **Mechanistic (ii)** Route A vs B | +0.204 (lo95 0.168) | met |
+| **Mechanistic (iii)** hard pairs | L2 at chance on HP-A (0.50) and HP-D (0.45); L3 0.50 and 1.00; pooled 0.75 < 0.80 | **not met** |
+| Generalization B (design-side LOMO analog only) | `L2 − L0` lo95 > 0 in 1 of 6 mechanisms (D) | the design analog fails; the registered test uses held-out structures |
+
+- **(iii) cannot change at held-out.** The pairs are frozen and design-side, and the predictors are
+  frozen. A held-out evaluation would reproduce the same instances, so mechanistic value (all of
+  (i)–(iii)) **cannot succeed**, and §12's "mechanistic-only" branch is unreachable.
+- **NG (secondary).** RQ1 is not met (C-index −0.003; AUROC +0.039). Only 6 NYV failures remain at
+  `h ≥ 1%`, so NG early warning cannot be interpreted.
+
+#### Information curve (sampled Adam; point [lo95])
+
+C-index of `Dn`:
+
+| h | L0 | L1 | L2-G | L2 | L3 | L2 − L0 | L3 − L2 | L3 − L1 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 0 | .581 | .668 | .580 | .580 | .667 | −.001 | +.088 | −.001 |
+| 0.2% | | | .580 | .592 | .646 | +.012 | +.054 | −.022 |
+| 0.5% | | | .578 | .590 | .661 | +.009 | +.071 | −.008 |
+| 1% | | | .579 | .593 | .688 | +.012 | +.095 | +.020 |
+| **2%** | .581 | .668 | .581 | .604 | .695 | **+.023 [.013]** | +.091 [.077] | +.026 [.017] |
+| 5% | | | .597 | .637 | .706 | +.057 | +.069 | +.038 |
+| 10% | | | .624 | .667 | .717 | +.086 | +.051 | +.049 |
+
+AUROC of failure:
+
+| h | L0 | L1 | L2-G | L2 | L3 | L2 − L0 | L3 − L2 | L3 − L1 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 0 | .652 | .796 | .652 | .650 | .796 | −.001 | +.146 | .000 |
+| 1% | | | .656 | .668 | .834 | +.017 | +.165 | +.038 |
+| **2%** | .652 | .796 | .660 | .680 | .846 | **+.028 [.012]** | +.166 [.137] | +.050 [.037] |
+| 5% | | | .684 | .738 | .849 | +.086 | +.112 | +.053 |
+| 10% | | | .733 | .785 | .870 | +.134 | +.084 | +.074 |
+
+- **Gold-only early dynamics add almost nothing at `h*`:** L2-G − L0 = +0.000 C-index and +0.008
+  AUROC. The verifier-side observables are what L2 adds (L2 − L2-G = +0.023 / +0.020).
+- **Controls:**
+  - noise control: L2N − L2 = −0.004 / −0.005, so L3's gain is not "more columns";
+  - L3r − L3 ≈ 0: the reward-level alpha adds nothing;
+  - the GBM check agrees (at `h*`: L3 − L2 +0.082 / +0.160; L2 − L0 +0.025 / +0.045).
+- **Single diagnostics** (at `h*`, AUROC): `C_0/A_0` 0.723 (the best), ΔFPR 0.593, −ΔJ_G 0.563,
+  ΔC 0.599, −Δalpha 0.541.
+
+#### Not-yet-visible curve and lead time
+
+- **NYV failures / NYV non-failures:**
+  - `h < 1%`: 1097 / 1803 (all runs; `t_on` lives on the 1% grid);
+  - 1%: 399 / 1257;
+  - 2%: 355 / 1207;
+  - 5%: 308 / 1165;
+  - 10%: 233 / 1138.
+- **NYV AUROC** (L0 / L1 / L2 / L3):
+  - 1%: .676 / .752 / .688 / .804;
+  - **2%: .683 / .749 / .696 [.650] / .811 [.774]**;
+  - 5%: .680 / .738 / .733 / .800;
+  - 10%: .662 / .704 / .760 / .801.
+- **Lead time at `h*`** (10% false alarms among SUCCESS runs):
+
+  | level | warned NYV failures | sensitivity | median lead (warned) |
+  | --- | --- | --- | --- |
+  | L2 | 52 of 355 | 0.146 | 8.9% of `T` (IQR 5.4–14%) |
+  | L3 | 112 | 0.315 | 9.0% |
+  | L1 | 91 | 0.256 | 9.0% |
+  | L0 | 50 | 0.141 | 10.0% |
+
+  38% of the L2 warnings (20 of 52) are issued at `t = 0`.
+- **[observation] The registered `t_on` is noise-sensitive early.** 30% of *non-failing* runs
+  already cross the 10% onset threshold at 1% of `T` (546 of 1803). The clean progress in the
+  denominator is still small there. So "not yet visible" at `h <= 2%` partly selects on noise.
+  The definition is frozen and unchanged; this is a measurement caveat.
+
+#### Mechanism diagnosis
+
+- **Macro-F1** (L2 / L3; chance 0.167):
+  - 0.2%: .118 / .409;
+  - 1%: .132 / .434;
+  - **2%: .156 / .447**;
+  - 5%: .275 / .477;
+  - 10%: .339 / .495;
+  - L1 (`t = 0`): .371.
+- **L2 is almost blind to mechanism at `h*`.** It predicts YA/YB for nearly every run.
+- **Pairwise AUROCs at `h*`** (L2 / L3 / L1):
+  - Route A vs B: .614 / .818 / .791;
+  - B vs D (benign vs displacement): .484 / .992 / .954;
+  - X vs Y (deletion vs exploit): .627 / .777 / .749.
+- **Cross-construction** (train on 2 constructions per mechanism, test on the third; `h*`):
+  L0 .116, L1 .359, L2 .154, L3 .415; L3 − L2 = +0.261 (lo95 0.237).
+
+#### Within-mechanism outcome prediction (`h*`; C-index of `Dn` | AUROC of failure)
+
+| mechanism | L2 | L3 | L3 − L2 [lo95] | L3 − L1 [lo95] |
+| --- | --- | --- | --- | --- |
+| X | .451 \| .585 | .731 \| .813 | +.280 [.215] \| +.228 [.154] | +.036 [.011] \| +.061 [.022] |
+| YA | .605 \| .715 | .664 \| .806 | +.059 [.040] \| +.091 [.053] | +.046 [.026] \| +.060 [.027] |
+| YB | .669 \| .722 | .720 \| .784 | +.051 [.028] \| +.062 [.027] | +.018 [.005] \| +.005 [−.019] |
+| D | .555 \| .797 | .644 \| .874 | +.089 [.042] \| +.077 [.027] | .000 [−.034] \| +.016 [−.014] |
+| R, B | ≤ 4 failures | | C-index only: −.002 / +.018 | |
+
+- The overall gain is not only mechanism recognition: geometry adds within X, YA, YB and D.
+- **Type oracles** (leave-one-structure-out mechanism-mean `Dn`):
+  - mechanism: C-index .608, AUROC .662;
+  - mechanism × Axis B: .725 / **.857**.
+  - The finite-sample L3 at `h*` (.695 / .846) does not exceed the mechanism × Axis-B oracle.
+
+#### L1 vs L3 (first-class question)
+
+- **Registered comparison:** in finite samples L3 − L1 > 0 from 1% of `T` on (at `h*`: +0.026
+  C-index, +0.050 AUROC, +0.062 NYV AUROC, +0.076 macro-F1). Unlike the oracle, L1 ≠ L3.
+- **[post-hoc, not pre-registered] Equal audit budget.** L3 uses three independent audits; L1
+  uses one. Two extra `t = 0` audits per run (seed: spare → resample branch child 3):
+  - L1x3 − L1 = +0.018 C-index, +0.029 AUROC, +0.042 macro-F1, +0.035 Route A/B. This is
+    measurement noise alone.
+  - At `h*`, **L3 − (L2 + mean `t = 0` geometry over three audits)**:
+    - C-index +0.008 (lo95 0.001);
+    - AUROC +0.017 (0.007);
+    - NYV AUROC +0.021 (0.001);
+    - macro-F1 +0.027 (0.008);
+    - Route A/B −0.008.
+  - At 10%: C-index +0.013, AUROC +0.016, NYV −0.003, macro-F1 −0.013.
+- **Conclusion:** L3's advantage over L1 is mostly (a) the observable dynamics in L2 and (b) more
+  audits of the same static geometry. The geometry *trajectory* adds < `δ_out` for outcome and
+  nothing for Route A/B. **Useful geometry is mostly a snapshot property in this panel.** It
+  should not be described as "early geometry dynamics".
+
+#### Hard pairs (frozen; leave-anchor-out predictors)
+
+| pair | sampled failure | L2 distance at `h*` (max, audit-SE units) | L3 geometry distance (max, SD units) | L2 / L3 mechanism accuracy at `h*` | L2 / L3 risk AUROC |
+| --- | --- | --- | --- | --- | --- |
+| HP-A (B vs YA-A) | 0 / 0 | 0.96 | 0.61 | .50 / .50 | — |
+| HP-D (D vs B) | 1 / 0 | 0.49 | 3.84 | .45 / **1.00** | .48 / **1.00** |
+| HP-B (YA-A vs YB-A) | .03 / 0 | 0.47 | 0.87 | .56 / .42 | — |
+| DYN-YA/R | 1 / 0 | 0.50 | 0.45 | .50 / .66 | .55 / .89 |
+| DYN-D/B (not accepted) | 1 / 0 | 0.41 | 2.77 | .55 / .94 | .47 / .99 |
+
+- **HP-D: L2 is blind and L3 separates** (risk .92 vs .24). **L1 already separates at `t = 0`**
+  (.84 vs .32; AUROC 1.0).
+- **DYN-YA/R: L1 at `t = 0` gives AUROC .88**, the same as L3.
+- **DYN-YA/R C measurability.** The oracle C separation does not survive sampling as a C
+  difference:
+  - at `t = 0` the exact `C` of the two members is identical (0.1211 vs 0.1212), yet `C_hat` is
+    0.18 vs 0.09 (single-run AUROC 0.85). The plug-in noise floor depends on the structure;
+  - at `h*` the exact `C` is 0.153 vs 0.208, while `C_hat` has SD 3.1 in the R member (unstable
+    early Adam metric). The standardized mean difference is −0.22.
+  - The pair's L3 separation comes from structure-dependent `t = 0` estimates, not from the
+    registered C dynamics.
+
+#### Runtime and power
+
+- **Runtime:** runs 149 s, analysis 349 s, hard pairs 80 s (8 workers).
+- **Peak memory:** ≤ 0.66 GB.
+- **Held-out estimate:** test panel ≈ 1.5 min, runs ≈ 2.5 min, frozen-model evaluation with
+  bootstrap ≈ 5 min, plus the shift panel ≈ 10 min. Total ≈ 15–25 min.
+- **Power at `h*`:** 355 NYV failures and 1207 NYV non-failures (≈ 0.23 prevalence) on 725
+  structures. The two-sided NYV-AUROC interval half-width is ≈ 0.055. That is enough events for
+  inference, but the early-warning criterion sits at the boundary.
+
+#### Decision position
+
+On design data:
+
+- RQ1 is met with a small margin;
+- early warning misses by 4e-5;
+- mechanistic value is met on (i) and (ii) but is **unreachable** through (iii);
+- the design analog of generalization B fails.
+
+The recommendation is given in the Stage 1 design report; held-out work waits for collaborator
+approval.
+
+---
