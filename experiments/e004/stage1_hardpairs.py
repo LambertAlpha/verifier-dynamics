@@ -17,7 +17,11 @@ from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 from typing import Any
 
-import numpy as np
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt  # noqa: E402
+import numpy as np  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import stage0b_hardpairs as s0h  # noqa: E402
@@ -114,6 +118,53 @@ def distances(fa: dict[str, np.ndarray], fb: dict[str, np.ndarray], h: float,
     out["L3_geo_max_sd_units"] = float(np.nanmax(d3)) if h > 0 else float(d3[[0, 3, 6]].max())
     out["L3_geo_rms_sd_units"] = float(np.sqrt(np.nanmean(d3**2)))
     return out
+
+
+def l1_distance(ma: dict[str, Any], mb: dict[str, Any]) -> dict[str, float]:
+    """t = 0 geometry (A_u, alpha_u, C_u): |mean diff| / pooled across-seed SD."""
+    out = {}
+    for k in ("A_u", "alpha_u", "C_u"):
+        a, b = ma["est"][k][:, 0], mb["est"][k][:, 0]
+        sd = np.sqrt((np.nanvar(a) + np.nanvar(b)) / 2)
+        out[k] = float(abs(np.nanmean(a) - np.nanmean(b)) / max(sd, 1e-12))
+    return out
+
+
+def geo_uncertainty(ma: dict[str, Any], mb: dict[str, Any], j: int) -> dict[str, Any]:
+    return {k: {"mean": [float(np.nanmean(m["est"][k][:, j])) for m in (ma, mb)],
+                "sd": [float(np.nanstd(m["est"][k][:, j])) for m in (ma, mb)],
+                "exact_mean": [float(np.nanmean(m["exact"]["geo_u"][:, j, i])) for m in (ma, mb)]}
+            for i, k in ((1, "alpha_u"), (2, "C_u"))}  # fmt: skip
+
+
+def fig_pairs(report: dict[str, Any], path: Path) -> None:
+    names = [n for n in ("HP-D", "HP-A", "HP-B", "DYN-YA/R") if n in report]
+    fig, axes = plt.subplots(1, len(names), figsize=(4.2 * len(names), 3.6))
+    for ax, name in zip(np.atleast_1d(axes), names, strict=True):
+        e = report[name]
+        xs = [100 * h for h in an.H]
+        for lv, ls in (("L2", "--"), ("L3", "-")):
+            for k, col in ((0, "C3"), (1, "C0")):
+                ys = [e["horizons"][f"{h:g}"][lv]["risk_mean"][k] for h in an.H]
+                ax.plot(
+                    xs,
+                    ys,
+                    ls=ls,
+                    color=col,
+                    marker="o",
+                    ms=3,
+                    label=f"{lv} {e['mechanisms'][k]} (fail {e['failure_fraction'][k]:.2f})",
+                )
+        ax.set_xscale("symlog", linthresh=0.2)
+        ax.set_ylim(0, 1)
+        ax.set_title(name, fontsize=10)
+        ax.set_xlabel("% of T observed")
+        ax.legend(frameon=False, fontsize=7)
+    np.atleast_1d(axes)[0].set_ylabel("predicted failure risk (frozen models)")
+    fig.suptitle("Fig 6. Frozen hard pairs: L2 vs L3 risk (member means over 32 seeds)")
+    fig.tight_layout()
+    fig.savefig(path, dpi=130)
+    plt.close(fig)
 
 
 def c_measurability(ma: dict[str, Any], mb: dict[str, Any]) -> dict[str, Any]:
@@ -218,12 +269,16 @@ def main(argv: list[str]) -> int:
                                         str(classes[P[N_VER:].mean(0).argmax()])]}  # fmt: skip
                 if h == an.H_STAR and name in ("HP-A", "HP-D") and lv in LEVELS_DYN:
                     (l2_ok if lv == "L2" else l3_ok)[name] = correct
+            ma, mb = e["members"]
+            he["geometry_uncertainty"] = geo_uncertainty(ma, mb, s1r.FEAT_FRACS.index(h))
             ent["horizons"][f"{h:g}"] = he
+        ent["L1_geo_sd_units"] = l1_distance(*e["members"])
         if name == "DYN-YA/R":
             ent["C_measurability"] = c_measurability(*e["members"])
         report[name] = ent
     report["criterion_iii"] = pr.criterion_iii(l2_ok, l3_ok)
     (out_dir / "hardpairs_stage1.json").write_text(json.dumps(an.strip(report), indent=1) + "\n")
+    fig_pairs(report, out_dir / "fig6_hard_pairs.png")
     print(json.dumps(an.strip(report["criterion_iii"])))
     print(f"run directory: {out_dir.relative_to(REPO)}")
     return 0

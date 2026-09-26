@@ -7,6 +7,7 @@ otherwise); intended-aligned structures that background noise inverts are kept a
 Calibration and background (top-up) coins follow Stage 0 (panel.py helpers).
 """
 
+from collections.abc import Callable
 from typing import Any
 
 import numpy as np
@@ -158,12 +159,13 @@ def _channel(
     return st.with_(meta=meta)
 
 
-def build(sid: str, construction: str, axis: str, rng: np.random.Generator,
-          yb_cap: float) -> toy.Structure:  # fmt: skip
+def build(sid: str, construction: str, axis: str, rng: np.random.Generator, yb_cap: float,
+          targets: Callable[[np.random.Generator], dict[str, float]] = p0._targets,
+          ) -> toy.Structure:  # fmt: skip
     rejections = {"channel": 0, "targets": 0, "axis": 0}
     c = p0._common(rng)
     while True:
-        t = p0._targets(rng)
+        t = targets(rng)
         if t["J_G"] >= 0.9 * float(c["w"] @ c["p"]):
             rejections["targets"] += 1
             continue
@@ -201,14 +203,16 @@ def build(sid: str, construction: str, axis: str, rng: np.random.Generator,
 
 
 def _cells_panel(stream: int, cells: list[tuple[str, str]], n_per: int, yb_cap: float,
-                 prefix: str = "") -> list[toy.Structure]:  # fmt: skip
+                 prefix: str = "",
+                 targets: Callable[[np.random.Generator], dict[str, float]] = p0._targets,
+                 ) -> list[toy.Structure]:  # fmt: skip
     ss = np.random.SeedSequence(ROOT_SEED).spawn(5)[stream]
     children = ss.spawn(len(cells))
     out = []
     for i, (construction, axis) in enumerate(cells):
         for j, s in enumerate(children[i].spawn(n_per)):
             sid = f"{prefix}{construction}-{axis[0]}-{j:02d}"
-            out.append(build(sid, construction, axis, np.random.default_rng(s), yb_cap))
+            out.append(build(sid, construction, axis, np.random.default_rng(s), yb_cap, targets))
     return out
 
 
