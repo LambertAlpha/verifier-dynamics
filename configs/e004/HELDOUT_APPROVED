@@ -1,0 +1,10 @@
+{
+ "experiment": "E004a Stage 1",
+ "approved": "Proceed with the FINAL held-out evaluation for E004a Stage 1. This round is CONFIRMATORY.",
+ "approved_by": "research collaborator (brief relayed by the user in the session), 2026-09-26",
+ "scope": ["test", "shift"],
+ "predictors_frozen_sha256": "e0b2ea9d73a3f8b7f820e5274c507a626b39f84193d9359aa2ed67436bdfd210",
+ "decision_tree": "E004a Amendment 4 (commit 3521294)",
+ "integrity": "results/E004a-stage1-integrity/20260926T055219Z_41ab28b (PASS; commit 463cf18)",
+ "rule": "held-out results are never used to retune anything; no refit on test"
+}
