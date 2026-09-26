@@ -1979,3 +1979,181 @@ member.
 
 G2 and G3 failed, so the recommendation is **REVISE PANEL**. The exact reasons are in the Stage 0
 report; no amendment has been made yet.
+
+---
+
+**E004a Amendment 3 — Stage 0b** (2026-09-26; written and committed **before any Stage 0b code or
+output**)
+
+**Status.**
+
+- This is the FINAL synthetic-panel revision, approved by the collaborator after Stage 0.
+- Every change is **data-informed** by the recorded Stage 0 failures and is disclosed as such.
+  The only permitted reasons:
+  1. YB outcome imbalance (failure 0.946);
+  2. the preference-inversion confound hidden in background FN;
+  3. the G3 numerical pathology near FPR saturation;
+  4. GRPO `alpha` semantic contamination;
+  5. generator / construction leakage.
+- The Stage 0 results and failed gates remain recorded as they are.
+- The Stage 1 success criteria (E004a pre-registration §12) are **unchanged**.
+- No test or shift panel is generated; no Stage 1 predictor is fitted; E004b is not started.
+- **No further panel revision is allowed after Stage 0b.** If material gates fail, the synthetic
+  conclusions are frozen and work moves to E004b design.
+
+**1. Outcomes.**
+
+- Unchanged: SUCCESS / SLOW / STALL / DECLINE (descriptive).
+- Primary: `Dn`, and FAILURE = STALL ∪ DECLINE.
+- Mechanism labels are never used as outcome proxies.
+
+**2. Optimizers.**
+
+- Unchanged: sampled GRPO-lite Adam (primary); exact NG flow (theory anchor); MF-Adam (design
+  approximation only).
+- The optimizer is a crossed factor. NG → Adam transfer is never inferred without being
+  observed.
+
+**3. Two axes.**
+
+- **Axis A** = error / signal structure (the mechanism label describes the causal mechanism).
+- **Axis B** = the preference relation, computed from the actual verifier (after all coins):
+  - For each non-deleted prompt `x`:
+    - `v_solve(x) = max_z [ p_x (1 - fn_x) + (1 - p_x) EV(x, SOLVE, failed, z) ]`;
+    - `v_wrong(x) = max_{s ∈ {HACK, OTHER}, z} EV(x, s, z)`;
+    - `gap_x = v_wrong(x) - v_solve(x)`.
+  - **INVERTED** iff `max gap_x > 0.02` over non-deleted prompts with `w_x >= 0.05`; else
+    **ALIGNED**. Deleted prompts carry no preference.
+  - The intended level (from the construction) and the actual flag are both recorded. When
+    background noise creates an inversion, the structure is **kept and flagged INVERTED**.
+- **Crossing:**
+  - YA and YB are crossed with {ALIGNED, INVERTED}.
+  - R, X and B are aligned-only (negative controls / deletion).
+  - D is inverted by definition.
+- **Intended ALIGNED Y:** fractional trigger acceptance `t ~ U(0.5, 0.9)`, no channel FN.
+- **Intended INVERTED Y:** trigger acceptance 1, plus explicit correct-answer strictness
+  `fn_x ~ U(0.1, 0.4)` on the triggered prompts. The exploit is accepted more reliably than a
+  correct answer.
+
+**4. YB accessibility** (data-informed; design-only calibration, run and recorded before any
+Stage 0b oracle or predictor analysis).
+
+- Original: `S_E0 = omega × FPR_target ∈ [≈0.01, 0.4]`.
+- New: `S_E0 = min(omega × FPR_target, c)`.
+- **Rule:**
+  - candidates `c ∈ {0.2, 0.1, 0.05, 0.02, 0.01}`;
+  - choose the **largest** `c` whose YB sampled-Adam failure rate lies in `[0.30, 0.70]`; if none
+    does, choose the `c` closest to 0.5;
+  - calibration set: 24 structures per YB construction × Axis-B cell (144 per `c`), 2 seeds each,
+    `T = 2700` (the Stage 0 value), calibration seed stream (§8);
+  - the calibration structures are never part of the panel.
+- Recorded before the analyses: the original range, the new range, the rule, and the resulting
+  design failure rate.
+
+**5. Coupling and background noise.**
+
+- As in Stage 0 (`lam ~ N(0, 0.5^2)`; top-up coins to the common targets).
+- Canonical twins (uncoupled, no top-up coins) are kept for theory and signature checks.
+- Inversion caused by noise is flagged, never hidden (§3).
+
+**6. Two alphas.** Metric `M` = the optimizer's preconditioner: `diag(1/(sqrt(v_hat)+eps))` for
+Adam; `F^-1` for NG.
+
+- **Reward level** `(A_r, alpha_r, C_r)`: the raw `grad J_V` against the raw `grad J_G` in `M`
+  (before GRPO normalization).
+- **Update level** `(A_u, alpha_u, C_u, C_in, C_out)`: the GRPO-effective verifier direction
+  `g~_V` against the gold direction `g~_G` computed with the **same** per-prompt centering and std
+  normalization (population statistics of `G`), in `M`. `C_in/C_out` use the span of the per-prompt
+  `g~_G,x`.
+- There is no clipping in GRPO-lite. For NG (no normalization) the two levels coincide.
+- **L1/L3 use the update level.** The reward level is reported for semantics.
+- `alpha_u > 0` does **not** imply benign reward amplification.
+- **Registered test:** for symmetric coins, `alpha_r = -2 eps` exactly in any metric, while
+  `alpha_u` may take either sign.
+
+**7. G3 numerical domain** (data-informed).
+
+- The F1 identity is scored only where the first-order rounding bound
+  `u·κ(F)/(1 - FPR) <= 2.2e-9` holds (`u = 2.2e-16`), i.e. `κ(F)/(1 - FPR) <= 1e7`, with the
+  tolerance 1e-8.
+- The bound is chosen from rounding analysis only: it stays a factor of about 4.5 below the
+  tolerance.
+- Reported: the all-state deviation, the valid-domain deviation, and the fraction of states
+  excluded.
+- The Stage 0 G3 failure stays recorded.
+
+**8. Constructions (≥ 3 per mechanism) and panel.**
+
+| mechanism | constructions |
+| --- | --- |
+| R (aligned) | R1 symmetric uniform coins; R2 asymmetric heterogeneous coins; R3 "lazy verifier", symmetric per-prompt coins `eps_x ~ U(0.02, 0.3)` |
+| X (aligned) | X1 accept-all subset (`v0 = 1`); X2 reject-all subset (`v0 = 0`); X3 constant intermediate score (`v0 ~ U(0.3, 0.7)`); subset size 1–2 |
+| YA (× A/I) | YA1 AND2/AND3 global; YA2 AND2 on a prompt subset (1–3); YA3 THR23 (≥ 2 of 3) global; all with `S_E0 ~ LogUniform(0.001, 0.05)` |
+| YB (× A/I) | YB1 single-feature global trigger; YB2 single-feature trigger on the 1–2 hardest prompts (lowest initial skill); YB3 OR2 global; `S_E0` per §4 |
+| B (aligned) | B1 attempt credit, all prompts; B2 process credit (failed attempts credited only when the process feature `z3 = 1`); B3 attempt credit on a prompt subset (1–3) |
+| D (inverted) | D1 shared hack action, `rho ~ U(0.3, 0.9)` with `p_x < rho` somewhere; D2 prompt-specific shortcut (`rho_x` on 1–2 prompts only, `rho_x > p_x(1 - fn_x)`); D3 feature-triggered wrong strategy (HACK accepted w.p. `rho` only when `z1 = 1`, with `rho > p_x` somewhere) |
+
+- 32 structures per construction × intended-Axis-B cell: 24 cells, **768 structures**.
+- Common draws and calibration as in Stage 0: targets `J_G(0) ~ U(0.05, 0.5)`,
+  `FPR(0) ~ LogU(0.02, 0.4)`, `FNR(0) ~ U(0, 0.25)`; `omega`; top-ups; redraws counted.
+- Fresh seeds: `SeedSequence(20261001).spawn(5)` = `[design panel, test (reserved), shift
+  (reserved), runs, YB calibration]`.
+- The runs, `T` rule, horizons, features (L1/L3 at the update level) and outcomes follow the
+  E004a pre-registration, as in Stage 0.
+
+**9. Anti-generator-leakage tests** (oracle, design split).
+
+- **A.** Construction recognition (18 classes) from L0 and from L1: macro-F1 vs chance 1/18.
+- **B.** Mechanism recognition with the construction hidden: leave-one-construction-out
+  (train on all other constructions, test on the held-out one), for L0/L1/L2/L3/L3+.
+- **C.** Within-mechanism outcome and state prediction, controlling for the mechanism:
+  - per mechanism, grouped-CV models fitted within that mechanism only;
+  - targets: failure (AUROC), `Dn` (C-index), and the actual Axis-B flag (AUROC; YA/YB);
+  - L3 vs L2 compared by a paired bootstrap over structures (1000 resamples).
+- **D.** Cross-construction mechanism generalization: fold `k` trains on the other two
+  constructions of every mechanism and tests on construction `k` (3 folds); mean macro-F1.
+- **E.** Mechanism-type oracle (leave-one-structure-out mechanism-mean `Dn`), and the
+  mechanism × Axis-B oracle: C-index / AUROC.
+
+**10. Hard pairs.**
+
+- **Correction A** as registered (every L2 feature ≤ 0.5 audit-SE) for HP-A (B vs YA), HP-D
+  (D vs B) and HP-B (YA vs YB).
+- **New Axis-B pair:** HP-I (YA-INVERTED vs YA-ALIGNED).
+- **Correction B** (dynamic) for YA/R, YB/B, D/B, YA-I/YA-A, X/YB and YA/B, with the Stage 0
+  tolerances.
+- Same search and verification protocol; frozen before any Stage 1 work.
+
+**11. Stage 0b gates** (frozen now).
+
+- **G1** (leakage): L0 → construction macro-F1 ≤ 1/18 + 0.10 = 0.156. L1 construction
+  recognition is reported but not gating.
+- **G2** (outcome diversity, sampled Adam): the failure rate of X, YA, YB and D each lies in
+  `[0.20, 0.80]`. R and B are exempt.
+- **G3** (theory nulls):
+  - inside the §7 domain, F1 identity deviation ≤ 1e-8 on the canonical twins of YA1, YA3, YB1
+    and YB3 (ALIGNED, global triggers) under NG;
+  - F2 coupling invariance ≤ 1e-6;
+  - canonical R1 `alpha_r = -2 eps` within 1e-10.
+- **G4** (cross-construction, test D, L3 at `h*`): macro-F1 ≥ 1/6 + 0.15 = 0.317, **and**
+  L3 − L0 ≥ 0.05 with bootstrap (structures) lower 95% bound > 0.
+- **G5** (within-mechanism information, test C, at `h*`): in ≥ 2 mechanisms, L3 − L2 ≥ 0.02 with
+  bootstrap lower bound > 0, on failure AUROC, `Dn` C-index, or (YA/YB) Axis-B AUROC.
+- **G6** (optimizer validity):
+  - at least one mechanism with `|failure_Adam - failure_NG| >= 0.3`; **and**
+  - at least one failure mechanism with failure ≥ 0.5 under both optimizers and
+    `|difference| <= 0.2`.
+
+**Decision:** all of G1–G6 pass → recommend PROCEED TO STAGE 1; any fails → STOP SYNTHETIC PANEL
+ENGINEERING AND DESIGN E004b.
+
+**12. Stage 0b registered predictions.**
+
+- **S0b-P1:** within YA and YB, the DECLINE fraction among INVERTED is ≥ 3× that among ALIGNED
+  (sampled Adam).
+- **S0b-P2:** under sampled Adam, INVERTED fails more often than ALIGNED, for both YA and YB.
+- **S0b-P3:** `alpha_r < 0` for every R structure at `t = 0` (Adam metric and NG metric).
+- **Agent's prior (not hypotheses):**
+  - G2 is at risk for D (> 0.8);
+  - G5 is likely to pass through X and YA (Stage 0 post-hoc);
+  - geometry may still mostly encode Axis A.
