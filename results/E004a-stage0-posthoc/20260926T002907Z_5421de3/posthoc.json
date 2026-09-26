@@ -1,0 +1,358 @@
+{
+ "adam": {
+  "L0": {
+   "auroc_failure": 0.4732967099770112,
+   "cindex_Dn": 0.5470348840816175,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.516070885636103,
+     "cindex_Dn": 0.5053196109084592
+    },
+    "YA": {
+     "auroc_failure": 0.3676101112649336,
+     "cindex_Dn": 0.5283783783783784
+    },
+    "YB": {
+     "auroc_failure": 0.7714285714285715,
+     "cindex_Dn": 0.7625973431058177
+    },
+    "D": {
+     "auroc_failure": 0.5728849149901781,
+     "cindex_Dn": 0.654812135824794
+    }
+   }
+  },
+  "L0+type": {
+   "auroc_failure": 0.8858503826718922,
+   "cindex_Dn": 0.7846995179631617,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.425900186769752,
+     "cindex_Dn": 0.5016284523189161
+    },
+    "YA": {
+     "auroc_failure": 0.5062554478798134,
+     "cindex_Dn": 0.5376316994961062
+    },
+    "YB": {
+     "auroc_failure": 0.4785714285714286,
+     "cindex_Dn": 0.734837379752634
+    },
+    "D": {
+     "auroc_failure": 0.4972905236063131,
+     "cindex_Dn": 0.6495077355836849
+    }
+   }
+  },
+  "L1": {
+   "auroc_failure": 0.8898352817405523,
+   "cindex_Dn": 0.7331135113002587,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.8004821265690831,
+     "cindex_Dn": 0.6198323779746395
+    },
+    "YA": {
+     "auroc_failure": 0.8136953289237553,
+     "cindex_Dn": 0.6165139715987173
+    },
+    "YB": {
+     "auroc_failure": 0.8321428571428572,
+     "cindex_Dn": 0.6304855703160788
+    },
+    "D": {
+     "auroc_failure": 0.6089209510262141,
+     "cindex_Dn": 0.6255173799477597
+    }
+   }
+  },
+  "L1+type": {
+   "auroc_failure": 0.9325476432398768,
+   "cindex_Dn": 0.7850109497428517,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.7540937323546019,
+     "cindex_Dn": 0.5818351571999305
+    },
+    "YA": {
+     "auroc_failure": 0.7860072809311388,
+     "cindex_Dn": 0.5752404947320201
+    },
+    "YB": {
+     "auroc_failure": 0.8678571428571429,
+     "cindex_Dn": 0.715048098946404
+    },
+    "D": {
+     "auroc_failure": 0.5517509991194202,
+     "cindex_Dn": 0.6698412698412698
+    }
+   }
+  },
+  "L2": {
+   "auroc_failure": 0.7467666117068196,
+   "cindex_Dn": 0.6392348208026503,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.5331624896842289,
+     "cindex_Dn": 0.4894693416710092
+    },
+    "YA": {
+     "auroc_failure": 0.6485668871455673,
+     "cindex_Dn": 0.5652542372881356
+    },
+    "YB": {
+     "auroc_failure": 0.5765625,
+     "cindex_Dn": 0.6106504809894641
+    },
+    "D": {
+     "auroc_failure": 0.6696470906997223,
+     "cindex_Dn": 0.704319871408479
+    }
+   }
+  },
+  "L2+type": {
+   "auroc_failure": 0.9152787134185149,
+   "cindex_Dn": 0.7791514414576496,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.45141814707032096,
+     "cindex_Dn": 0.4934861907243356
+    },
+    "YA": {
+     "auroc_failure": 0.6739475978054659,
+     "cindex_Dn": 0.5515574896930829
+    },
+    "YB": {
+     "auroc_failure": 0.6919642857142857,
+     "cindex_Dn": 0.6897388914338067
+    },
+    "D": {
+     "auroc_failure": 0.6604348709611868,
+     "cindex_Dn": 0.7319067711472774
+    }
+   }
+  },
+  "L3": {
+   "auroc_failure": 0.9193839534615399,
+   "cindex_Dn": 0.7461347097542667,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.8095817226252009,
+     "cindex_Dn": 0.6173137050547159
+    },
+    "YA": {
+     "auroc_failure": 0.8421781264420858,
+     "cindex_Dn": 0.6214612918002749
+    },
+    "YB": {
+     "auroc_failure": 0.5696428571428571,
+     "cindex_Dn": 0.6001603298213468
+    },
+    "D": {
+     "auroc_failure": 0.7206529838108785,
+     "cindex_Dn": 0.7059875426964034
+    }
+   }
+  },
+  "L3+type": {
+   "auroc_failure": 0.9395615370395872,
+   "cindex_Dn": 0.7828408533975222,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.7811319115666941,
+     "cindex_Dn": 0.5634227896473858
+    },
+    "YA": {
+     "auroc_failure": 0.7846997897759319,
+     "cindex_Dn": 0.5647732478240953
+    },
+    "YB": {
+     "auroc_failure": 0.8169642857142857,
+     "cindex_Dn": 0.6732707283554741
+    },
+    "D": {
+     "auroc_failure": 0.6462101198943304,
+     "cindex_Dn": 0.7355635925256179
+    }
+   }
+  }
+ },
+ "ng": {
+  "L0": {
+   "auroc_failure": 0.5533680917622523,
+   "cindex_Dn": 0.5729995227489659,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.48249299719887956,
+     "cindex_Dn": 0.5505263157894736
+    },
+    "YA": {
+     "auroc_failure": 0.8714285714285714,
+     "cindex_Dn": 0.6379118844872269
+    },
+    "YB": {
+     "auroc_failure": 0.9139784946236559,
+     "cindex_Dn": 0.7778600518326546
+    },
+    "D": {
+     "auroc_failure": 0.6466666666666666,
+     "cindex_Dn": 0.6121389159363843
+    }
+   }
+  },
+  "L0+type": {
+   "auroc_failure": 0.9443378519290928,
+   "cindex_Dn": 0.8080953706649697,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.4635854341736695,
+     "cindex_Dn": 0.5487719298245614
+    },
+    "YA": {
+     "auroc_failure": 0.7642857142857142,
+     "cindex_Dn": 0.664938911514254
+    },
+    "YB": {
+     "auroc_failure": 0.7190860215053764,
+     "cindex_Dn": 0.7919289152165865
+    },
+    "D": {
+     "auroc_failure": 0.30333333333333334,
+     "cindex_Dn": 0.6007789678675755
+    }
+   }
+  },
+  "L1": {
+   "auroc_failure": 0.9607090719499478,
+   "cindex_Dn": 0.8301682309895004,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.7962184873949579,
+     "cindex_Dn": 0.712280701754386
+    },
+    "YA": {
+     "auroc_failure": 0.9607142857142857,
+     "cindex_Dn": 0.5938541281007035
+    },
+    "YB": {
+     "auroc_failure": 0.9099462365591398,
+     "cindex_Dn": 0.8374676045908923
+    },
+    "D": {
+     "auroc_failure": 0.53,
+     "cindex_Dn": 0.7351509250243428
+    }
+   }
+  },
+  "L1+type": {
+   "auroc_failure": 0.9752867570385818,
+   "cindex_Dn": 0.8079164015272033,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.7892156862745098,
+     "cindex_Dn": 0.7171929824561404
+    },
+    "YA": {
+     "auroc_failure": 0.9607142857142857,
+     "cindex_Dn": 0.6127360236949279
+    },
+    "YB": {
+     "auroc_failure": 0.9314516129032258,
+     "cindex_Dn": 0.8382080710847835
+    },
+    "D": {
+     "auroc_failure": 0.5066666666666667,
+     "cindex_Dn": 0.7205452775073028
+    }
+   }
+  },
+  "L2": {
+   "auroc_failure": 0.8235662148070907,
+   "cindex_Dn": 0.6824192650334076,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.5833333333333334,
+     "cindex_Dn": 0.5484210526315789
+    },
+    "YA": {
+     "auroc_failure": 0.85,
+     "cindex_Dn": 0.6205109218807849
+    },
+    "YB": {
+     "auroc_failure": 0.8817204301075269,
+     "cindex_Dn": 0.8267308404294705
+    },
+    "D": {
+     "auroc_failure": 0.7366666666666667,
+     "cindex_Dn": 0.7929243752028562
+    }
+   }
+  },
+  "L2+type": {
+   "auroc_failure": 0.9636704900938478,
+   "cindex_Dn": 0.7929625357938276,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.5560224089635855,
+     "cindex_Dn": 0.508421052631579
+    },
+    "YA": {
+     "auroc_failure": 0.9107142857142857,
+     "cindex_Dn": 0.6153276564235468
+    },
+    "YB": {
+     "auroc_failure": 0.9314516129032258,
+     "cindex_Dn": 0.814142910033321
+    },
+    "D": {
+     "auroc_failure": 0.4666666666666667,
+     "cindex_Dn": 0.7977929243752029
+    }
+   }
+  },
+  "L3": {
+   "auroc_failure": 0.9734932221063608,
+   "cindex_Dn": 0.8109290486796055,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.8669467787114846,
+     "cindex_Dn": 0.6382456140350877
+    },
+    "YA": {
+     "auroc_failure": 0.9785714285714285,
+     "cindex_Dn": 0.6482784154017031
+    },
+    "YB": {
+     "auroc_failure": 0.9354838709677419,
+     "cindex_Dn": 0.8370973713439467
+    },
+    "D": {
+     "auroc_failure": 0.6233333333333333,
+     "cindex_Dn": 0.8143459915611815
+    }
+   }
+  },
+  "L3+type": {
+   "auroc_failure": 0.9755787278415016,
+   "cindex_Dn": 0.8105114540248171,
+   "within_mechanism": {
+    "X": {
+     "auroc_failure": 0.8256302521008403,
+     "cindex_Dn": 0.5996491228070175
+    },
+    "YA": {
+     "auroc_failure": 0.9678571428571429,
+     "cindex_Dn": 0.6275453535727509
+    },
+    "YB": {
+     "auroc_failure": 0.9381720430107527,
+     "cindex_Dn": 0.8448722695298038
+    },
+    "D": {
+     "auroc_failure": 0.5366666666666666,
+     "cindex_Dn": 0.8234339500162285
+    }
+   }
+  }
+ }
+}
