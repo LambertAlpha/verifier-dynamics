@@ -14,17 +14,32 @@ from typing import Any
 TRACKED_PACKAGES = ("numpy", "scipy", "torch", "matplotlib", "verifier-dynamics")
 
 
-def git_state(repo: Path) -> dict[str, Any]:
-    """Current commit and whether the working tree has uncommitted changes (None outside git)."""
+def git_state(repo: Path, ignore: Path | None = None) -> dict[str, Any]:
+    """Current commit and whether the working tree has uncommitted changes (None outside git).
+
+    Changes under `ignore` (the run directory being written) do not count as dirty.
+    """
 
     def run(*args: str) -> str | None:
         result = subprocess.run(["git", *args], cwd=repo, capture_output=True, text=True)
-        return result.stdout.strip() if result.returncode == 0 else None
+        return result.stdout if result.returncode == 0 else None
 
     commit = run("rev-parse", "HEAD")
     if commit is None:
         return {"commit": None, "dirty": None}
-    return {"commit": commit, "dirty": bool(run("status", "--porcelain"))}
+    status = run("status", "--porcelain", "-z", "--untracked-files=all") or ""
+    top = Path((run("rev-parse", "--show-toplevel") or str(repo)).strip()).resolve()
+    skip = ignore.resolve() if ignore is not None else None
+    changed, tokens = [], iter(status.split("\0"))
+    for entry in tokens:
+        if not entry:
+            continue
+        if entry[0] in "RC":
+            next(tokens, None)  # the rename/copy source path
+        path = (top / entry[3:]).resolve()
+        if skip is None or not path.is_relative_to(skip):
+            changed.append(path)
+    return {"commit": commit.strip(), "dirty": bool(changed)}
 
 
 def load_config(path: Path) -> dict[str, Any]:
@@ -67,7 +82,7 @@ def write_metadata(
     meta = {
         "experiment_id": experiment_id,
         "created_utc": datetime.now(UTC).isoformat(timespec="seconds"),
-        "git": git_state(repo),
+        "git": git_state(repo, ignore=run_dir),
         "config": load_config(config_path),
         "python": sys.version,
         "platform": platform.platform(),

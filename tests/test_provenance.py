@@ -62,3 +62,15 @@ def test_dirty_tree_is_visible_in_run_directory_name(tmp_path):
     (repo / "a.txt").write_text("changed")
     run_dir = provenance.create_run_dir(tmp_path / "results", "E999", repo)
     assert run_dir.name.endswith("-dirty")
+
+
+def test_metadata_ignores_the_run_directory_itself_inside_the_repo(tmp_path):
+    repo = _make_repo(tmp_path / "repo")
+    config = tmp_path / "cfg.toml"
+    config.write_text('experiment_id = "E999"\n')
+    run_dir = provenance.create_run_dir(repo / "results", "E999", repo)
+    assert not run_dir.name.endswith("-dirty")
+    meta = provenance.write_metadata(run_dir, "E999", config, repo)
+    assert meta["git"]["dirty"] is False  # the new, untracked run directory is not a change
+    (repo / "other.txt").write_text("untracked elsewhere")  # any other change still counts
+    assert provenance.write_metadata(run_dir, "E999", config, repo)["git"]["dirty"] is True
