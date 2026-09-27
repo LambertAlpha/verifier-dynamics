@@ -105,7 +105,7 @@ def h_beh(base: dict[str, Any], table: np.ndarray) -> np.ndarray:
 
 
 def s_for_alpha(base: dict[str, Any], con: str | None, rho: float, alpha: float) -> float:
-    """Verifier scale s_V giving exactly alpha: 1 + alpha = s_V[(1-rho) a' + rho <h_con,h_G>/A^2]."""
+    """Scale s_V giving exactly alpha: 1 + alpha = s_V [(1-rho) a' + rho <h_con,h_G>/A^2]."""
     hG = h_beh(base, gold())
     lin = (1 - rho) * base["a1"]
     if rho > 0 and con is not None:
@@ -391,35 +391,72 @@ def build_panel(split: str, limit_bases: int | None = None, n_groups: int = 2000
                     sol[(con, alpha, dose)] = None
                     dropped.append(f"{sid}|{con}|{alpha}|{dose}")
                 else:
-                    sol[(con, alpha, dose)] = {"rho": rho,
-                                               "sV": s_for_alpha(base, con, rho, alpha)}
+                    sol[(con, alpha, dose)] = {"rho": rho, "sV": s_for_alpha(base, con, rho, alpha)}
         a1 = base["a1"]
         c_med = {alpha: c_star[(alpha, "medium")] for alpha in ALPHA_NUIS}
         specs: list[dict[str, Any]] = []
         for alpha in ALPHA_CLEAN:
-            specs.append({"case": "clean", "construction": None, "dose": "null", "alpha": alpha,
-                          "rho": 0.0, "sV": (1 + alpha) / a1, "bonus": None,
-                          "matched_null": f"null|{sid}|{alpha}", "matched_dose": None})
+            specs.append(
+                {
+                    "case": "clean",
+                    "construction": None,
+                    "dose": "null",
+                    "alpha": alpha,
+                    "rho": 0.0,
+                    "sV": (1 + alpha) / a1,
+                    "bonus": None,
+                    "matched_null": f"null|{sid}|{alpha}",
+                    "matched_dose": None,
+                }
+            )
         for (con, alpha, dose), s in sol.items():
             if s is not None:
-                specs.append({"case": "dose", "construction": con, "dose": dose, "alpha": alpha,
-                              "rho": s["rho"], "sV": s["sV"], "bonus": None,
-                              "matched_null": None, "matched_dose": f"dose|{sid}|{dose}|{alpha}"})
+                specs.append(
+                    {
+                        "case": "dose",
+                        "construction": con,
+                        "dose": dose,
+                        "alpha": alpha,
+                        "rho": s["rho"],
+                        "sV": s["sV"],
+                        "bonus": None,
+                        "matched_null": None,
+                        "matched_dose": f"dose|{sid}|{dose}|{alpha}",
+                    }
+                )
         for alpha in ALPHA_NUIS:
             if c_med[alpha] is not None:
-                specs.append({"case": "nuis", "construction": None, "dose": "null",
-                              "alpha": alpha, "rho": 0.0, "sV": (1 + alpha) / a1,
-                              "bonus": c_med[alpha], "matched_null": f"null|{sid}|{alpha}",
-                              "matched_dose": None})
+                specs.append(
+                    {
+                        "case": "nuis",
+                        "construction": None,
+                        "dose": "null",
+                        "alpha": alpha,
+                        "rho": 0.0,
+                        "sV": (1 + alpha) / a1,
+                        "bonus": c_med[alpha],
+                        "matched_null": f"null|{sid}|{alpha}",
+                        "matched_dose": None,
+                    }
+                )
         for con in CONSTRUCTIONS:
             for alpha in ALPHA_PARTIAL:
                 s = sol[(con, alpha, "medium")]
                 if s is None:
                     continue
-                specs.append({"case": "partial", "construction": con, "dose": "medium",
-                              "alpha": alpha, "rho": s["rho"], "sV": s["sV"],
-                              "bonus": c_star[(alpha, "medium")], "matched_null": None,
-                              "matched_dose": f"dose|{sid}|medium|{alpha}"})
+                specs.append(
+                    {
+                        "case": "partial",
+                        "construction": con,
+                        "dose": "medium",
+                        "alpha": alpha,
+                        "rho": s["rho"],
+                        "sV": s["sV"],
+                        "bonus": c_star[(alpha, "medium")],
+                        "matched_null": None,
+                        "matched_dose": f"dose|{sid}|medium|{alpha}",
+                    }
+                )
         cache: dict[tuple[Any, ...], dict[str, float]] = {}
         for spec in specs:
             for (d, spec_name), vs in zip(nuis_cfg, v_seeds, strict=True):
@@ -427,8 +464,9 @@ def build_panel(split: str, limit_bases: int | None = None, n_groups: int = 2000
                 if spec["bonus"] is not None:
                     probe = Context.build(base, spec["construction"], spec["rho"], spec["sV"],
                                           0.0, d, spec_name, vs)  # fmt: skip
-                    lam_bonus = spec["bonus"] / float(np.linalg.norm(h_surf(probe.lam_spec,
-                                                                            probe.v)))
+                    lam_bonus = spec["bonus"] / float(
+                        np.linalg.norm(h_surf(probe.lam_spec, probe.v))
+                    )
                 ctx = Context.build(base, spec["construction"], spec["rho"], spec["sV"],
                                     lam_bonus, d, spec_name, vs)  # fmt: skip
                 o = oracle(ctx)
@@ -440,14 +478,30 @@ def build_panel(split: str, limit_bases: int | None = None, n_groups: int = 2000
                 orc = {k: v for k, v in o.items() if not k.startswith("h_")}
                 orc |= st | {"trLam2": float(ctx.lam_spec @ ctx.lam_spec),
                              "trLam": float(ctx.lam_spec.sum())}  # fmt: skip
-                pid = (f"{sid}-{spec['case']}-{spec['construction'] or 'none'}-{spec['dose']}"
-                       f"-a{spec['alpha']}-d{d}-{spec_name}")
-                points.append({"pid": pid, "sid": sid, "r": r, "btype": btype,
-                               "case": spec["case"], "construction": spec["construction"],
-                               "dose": spec["dose"], "alpha_target": spec["alpha"], "d": d,
-                               "spectrum": spec_name, "rho": spec["rho"], "sV": spec["sV"],
-                               "lam_bonus": lam_bonus, "v_seed": vs,
-                               "matched_null": spec["matched_null"],
-                               "matched_dose": spec["matched_dose"], "oracle": orc})
+                pid = (
+                    f"{sid}-{spec['case']}-{spec['construction'] or 'none'}-{spec['dose']}"
+                    f"-a{spec['alpha']}-d{d}-{spec_name}"
+                )
+                points.append(
+                    {
+                        "pid": pid,
+                        "sid": sid,
+                        "r": r,
+                        "btype": btype,
+                        "case": spec["case"],
+                        "construction": spec["construction"],
+                        "dose": spec["dose"],
+                        "alpha_target": spec["alpha"],
+                        "d": d,
+                        "spectrum": spec_name,
+                        "rho": spec["rho"],
+                        "sV": spec["sV"],
+                        "lam_bonus": lam_bonus,
+                        "v_seed": vs,
+                        "matched_null": spec["matched_null"],
+                        "matched_dose": spec["matched_dose"],
+                        "oracle": orc,
+                    }
+                )
     return {"split": split, "root_seed": ROOT_SEED, "anchors": tau, "bases": bases,
             "points": points, "dropped": dropped}  # fmt: skip
