@@ -1,0 +1,63 @@
+{
+ "experiment": "E005a-R",
+ "status": "FROZEN before the calibration TEST split is opened (research/09_e005ar_design.md \u00a79)",
+ "selected": {
+  "rep": "R4",
+  "k": 0
+ },
+ "description": "functional geometry: per-group contributions mapped by W^1/2 J_f, f = class probabilities p(b|x) on the 8 probe prompt types (32 outputs), W = diag(w_x / p_xb) (Fisher-Rao), exact Jacobian-vector products; E3 point estimate; group sign-flip null test",
+ "selection": {
+  "rule": "\u00a79: no candidate passes G1-G7 at any N; most criteria passed at N = 1024 (5 of 7), ties by medium power",
+  "analysis_run": "results/E005aR-analysis-design/20260927T233127Z_778d7db",
+  "selection_json": "configs/e005ar/e005ar_selection.json",
+  "selection_json_sha256": "cf27e46ca37f8d34a8ba94cefe8619026e19cb35aeec9400b24e6d165299b161"
+ },
+ "implementation": {
+  "git_commit": "4a7f107",
+  "entry_point": "vdyn.e005ar.calibrate.run_point, representation 'R4|0'",
+  "sha256": {
+   "src/vdyn/e005ar/env.py": "9d1ab891126d4bef1f25aa99a0dec996101677f84569e876ee8cae7320f06316",
+   "src/vdyn/e005ar/sampling.py": "8adadb9dd99c4552f80af5b1f89b80fa0671ad740994ee7077bb0ed37afc2ba9",
+   "src/vdyn/e005ar/stats.py": "01dcd3623a9d925f4687f6f4903390e9771b54b314b1b94e4148feebd91a0238",
+   "src/vdyn/e005ar/represent.py": "c3b96b2abbb7fa049ccf5ccc07c70711effe6495d4028fe709c11a9c1111cf45",
+   "src/vdyn/e005ar/calibrate.py": "9b51e6c2a5748c8b1be0dc5cfcbb79132e14960d5918ff7b555022822babf52b",
+   "src/vdyn/e005/estimators.py": "b3e50c4d186ea868cec02d861cb028b9111c880623b2be692287e4df2acaed0d"
+  }
+ },
+ "representation": {
+  "probe": "class probabilities p(b|x), x in the 8 prompt types, weights 1/8",
+  "metric": "Fisher-Rao W = diag(w_x / p_xb)",
+  "jacobian": "exact (JVP); no finite virtual steps",
+  "map": "vdyn.e005ar.env.functional_map(base, 'main', d)"
+ },
+ "estimator": "E3 (vdyn.e005.estimators.estimate_all(...)['E3'], unchanged E005a code)",
+ "A_near_zero_rule": "jackknife A^2 <= 0 -> alpha undefined, C^2 := jackknife Q (E005a)",
+ "null_test": {
+  "statistic": "T = sum_{i != j} z_i . z_j, z_k = P_hat_perp (x_k^e - alpha_hat x_k^G)",
+  "reference": "B = 199 Rademacher group sign flips",
+  "p": "(1 + #{T_b >= T}) / 200",
+  "level": 0.05
+ },
+ "legacy_test": "E3 - 1.645 jackknife SE > 0 (reported only)",
+ "budgets": {
+  "N": [
+   32,
+   64,
+   128,
+   256,
+   512,
+   1024
+  ],
+  "N_primary": [
+   64,
+   128,
+   256,
+   512,
+   1024
+  ],
+  "m": 8,
+  "R": 100
+ },
+ "undefined_handling": "Amendment 2: undefined replications are non-finite (G5) and non-rejections",
+ "test_rules": "research/09_e005ar_design.md \u00a79 gate G1-G7 on test; \u00a710 decision tree"
+}
