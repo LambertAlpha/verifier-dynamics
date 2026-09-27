@@ -3532,3 +3532,133 @@ increased to rescue it.
   found no practical budget, the geometry arm is gated on a revised measurement calibration in a
   declared low-dimensional subspace (E005a-R, §9 of the document). If G0 fails, the geometry arm
   is reported as "not measurable" and E005b runs as static vs active probe only.
+
+### E005a-R — pre-registration: low-dimensional / functional geometry (2026-09-27)
+
+Written and committed **before any E005a-R method code exists.**
+
+- E004a and E005a are closed and are not modified, rerun or reinterpreted.
+- This is the **final** measurement reformulation. There is no E005a-R2.
+
+**Design document:** `research/09_e005ar_design.md` v1. Its §3–§11 are frozen by this entry.
+Constants: `configs/e005ar/e005ar.toml`.
+
+**Inherited constraints (§0 of the document):**
+
+- E005a's negative result stands: full-space `C` is not practically measurable at `N ≤ 1024`.
+- E3 fixed the structure-dependent bias, not the variance barrier.
+- E002's failed claim stands: unbiased Gram entries do not give an unbiased `C^2`, because of the
+  ratio.
+- No claim that geometry beats a budget-matched active probe.
+
+**Question.** Is the full-space failure mainly nuisance dimension? Can a pre-declared
+behavior-relevant low-dimensional representation retain the signal while reducing the noise?
+Signal retention and noise reduction are measured separately.
+
+**Theory (§2):**
+
+- **Dimensional noise.**
+  - The plug-in floor is `tr Σ_⊥/n`, so `C_noise ∝ sqrt(D/N)`. This is the brief's hypothesis,
+    and it holds for the plug-in.
+  - A bias-corrected estimator's null SD is `sqrt(2 tr Σ_⊥^2/(n(n−1)))`, so
+    `C_noise ∝ d_eff^(1/4)/sqrt(N)`.
+  - Hypothesis H-dim: `N_required ∝ sqrt(tr Σ_⊥^2)/C^2` in the null-dominated regime; it is
+    dimension-free in the signal-dominated regime.
+- **Projection.**
+  - It preserves `C = 0` and can only lose signal.
+  - It improves a bias-corrected estimator iff `rho_signal > rho_noise`, where `rho_noise` is
+    the second-moment (not the energy) fraction.
+  - A random `k`-projection changes detectability by `≈ sqrt(k/(k + d_eff)) < 1`: it **hurts**,
+    and is neutral only for the plug-in.
+  - PCA selection retains behavior signal only above the BBP threshold `1 + sqrt(d/N_s)`.
+- **Functional geometry** = parameter geometry in the pull-back metric `J_f^T W J_f` (the probe
+  Fisher under Fisher–Rao). Invariances are stated in §2.5.
+- **Null test.** The E005a §10 lesson: a group sign-flip test of the residualized projected
+  U-statistic `T` (`B = 199`, level 0.05). It is registered for every representation; the E3
+  point estimate is unchanged; the jackknife-Wald test is reported only.
+- **Level.** Reward level only. The update-level translation is written in §2.7 and not tested.
+
+**Signal anchors (§3).**
+
+- E004a's oracle `C` is not comparable: update level, Adam metric, U-toy parameterization.
+- The anchor is the dimensionless per-group detectability `tau = C^2/sqrt(2 tr Σ_⊥^2)`
+  (reward level, M_I, `m = 8`), computed for all 768 E004a design structures with their own
+  verifiers.
+- Step-0 run `results/E005aR-anchors/20260927T214225Z_0693aa6` (commit `0693aa6`).
+- Nonzero Q25 / Q50 / Q75: **small 0.003078, medium 0.02099, large 0.07878**. They are
+  frozen.
+
+**Environment (§4).**
+
+- `R^d = S* ⊕ nuisance`:
+  - 8 prompt types, 4 behavior classes;
+  - `r ∈ {4, 8, 16}`;
+  - 3 base types (ordinary, low reward variance, low `A`);
+  - Gaussian surface features with bulk / flat / spiked spectra;
+  - `d ∈ {64, 256, 1024}`.
+- **Verifier:** `V = s_V Bern(EV_rho) + λ 1[v^T w > 0]`.
+  - 3 behavior-error constructions (shortcut, deletion, partial);
+  - exact `alpha` via `s_V`;
+  - behavior dose via `rho` (bisection to the anchor `tau`);
+  - behavior-irrelevant error via `λ`.
+- **Cases:** clean nulls, inside `S*`, nuisance-only, partial, orthogonal (`alpha = 0`).
+- **Composition:** 9 bases per split, 2106 points per split before drops.
+- **Matched sets:** across constructions, `d` and spectra, with identical `C_beh`, `A`, `alpha`
+  and `r`.
+
+**Representations (§5; frozen list):**
+
+| id | representation | role |
+| --- | --- | --- |
+| R0 | full E3 | baseline |
+| R1 | random `k` | control |
+| R2 | gold second moment, independent half | candidate |
+| R3 | cross-fitted `[gold; verifier]` second moment | candidate |
+| R4 | class-probability probe, Fisher–Rao, exact JVP | candidate |
+| R5 | oracle `S*` | ceiling |
+
+- `k ∈ {4, 8, 16, 32, 64}`.
+- R4 sensitivity variants (sub, dup, scale, const, surf) on design only.
+
+**Budgets (§6).**
+
+- `N ∈ {64, …, 1024}` primary, plus 32 for diagnostics; `m = 8`; `R = 100`.
+- Selection data counts toward `N`.
+- `(B_roll, B_gold, B_bwd)` per representation.
+
+**Metrics (§7).** Quality, nulls, retention, noise, SNR and power, by `d`, `k`, `N` and
+spectrum.
+
+**Theory predictions (§8):**
+
+- TP-R1: the floor law;
+- TP-R2: dimension scaling of R0 vs R5;
+- TP-R3: random projection hurts;
+- TP-R4: oracle gain;
+- TP-R5: ceiling power ±0.15;
+- TP-R6: PCA retention ordering.
+
+**Selection (§9).**
+
+- Design only; one of R2 × `k`, R3 × `k` or R4.
+- **Practical gate G1–G7:**
+  - FPR ≤ 0.05 pooled (and ≥ 90% of null points ≤ 0.10);
+  - `SDB_null ≤ 0.5`;
+  - Spearman ≥ 0.70 with `C_beh^2`;
+  - medium power ≥ 0.80;
+  - non-finite rate ≤ 0.01;
+  - SNR ≥ 2× full space;
+  - ≥ random control + 0.20 power and 2× SNR.
+- Pick the smallest `N*`, with the stated tie-breaks, then freeze
+  `e005ar_estimator_frozen.json`.
+
+**Test and decision (§10).**
+
+- One test run behind `E005AR_TEST_APPROVED`.
+- Labels:
+  - **A** — practically viable (a minimum practical budget ≤ 1024);
+  - **C** — representation failure (retention < 0.5, or R4 oracle Spearman < 0.7, or
+    G7 fails);
+  - **B** — mechanistically valid, not practically measurable (large-dose power ≥ 0.8);
+  - fallback → C.
+- No rescue round; the budget is not raised beyond 1024.
