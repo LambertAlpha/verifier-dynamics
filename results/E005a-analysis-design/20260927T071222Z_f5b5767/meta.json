@@ -1,0 +1,117 @@
+{
+  "experiment_id": "E005a-analysis-design",
+  "created_utc": "2026-09-27T07:12:22+00:00",
+  "git": {
+    "commit": "f5b57674ce8f3e1e9e5dc27ff6db81a4f507980a",
+    "dirty": false
+  },
+  "config_sha256": "85e400d3b9a682c2741fa2735b6e531dccf0efa509953aa79e8429b9efa62b28",
+  "config": {
+    "experiment_id": "E005a",
+    "registry": "research/03_experiment_registry.md (E005a \u2014 pre-registration)",
+    "design_doc": "research/07_e005a_measurement.md",
+    "root_seed": 20261101,
+    "streams": [
+      "design panel",
+      "test panel",
+      "design Monte Carlo",
+      "test Monte Carlo"
+    ],
+    "panel": {
+      "variants": [
+        "theta_0",
+        "theta_hot",
+        "theta_cold",
+        "theta_lowA"
+      ],
+      "doses": {
+        "null": 0.0,
+        "vsmall": 0.05,
+        "small": 0.2,
+        "medium": 0.6
+      },
+      "d_extra": [
+        0,
+        56
+      ],
+      "max_target_redraws": 200
+    },
+    "budgets": {
+      "N": [
+        32,
+        64,
+        128,
+        256,
+        512,
+        1024
+      ],
+      "m": [
+        4,
+        8
+      ],
+      "unlabeled_per_audit": 1,
+      "R": 100
+    },
+    "estimators": {
+      "candidates": [
+        "E0",
+        "E1",
+        "E2",
+        "E3"
+      ],
+      "metrics": [
+        "I",
+        "D",
+        "F"
+      ],
+      "primary_metric": "I",
+      "damping": 0.1,
+      "interval": "estimate +- 1.96 jackknife SE (delete-one-group)",
+      "null_test": "reject iff C2 - 1.645 SE > 0"
+    },
+    "selection": {
+      "metric": "I",
+      "m": 8,
+      "N_ref": 256,
+      "tolerances": {
+        "sdb_rel": 0.2,
+        "null_abs": 0.02,
+        "spearman_abs": 0.02,
+        "rmse_rel": 0.1
+      },
+      "order": [
+        "E0",
+        "E1",
+        "E2",
+        "E3"
+      ]
+    },
+    "solved": {
+      "sdb_max": 0.5,
+      "null_fpr_band": [
+        0.02,
+        0.1
+      ],
+      "null_fraction": 0.9,
+      "spearman_min": 0.8,
+      "power_min": 0.8,
+      "max_budget": 1024
+    },
+    "theory": {
+      "oracle_groups": 1000000
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "split": "design",
+  "root_seed": 20261101,
+  "calibration_run": "results/E005a-calibration-design/20260927T061955Z_a34321e"
+}
