@@ -1,0 +1,50 @@
+{
+  "experiment_id": "E005aR-anchors",
+  "created_utc": "2026-09-27T21:42:25+00:00",
+  "git": {
+    "commit": "0693aa6204221ff0fd688844138b7653dbfaa38c",
+    "dirty": false
+  },
+  "config_sha256": "bd25789f2ca4c648caea3fb5e6016fe2ef51355415425225f9b03d06b97b1c53",
+  "config": {
+    "experiment_id": "E005a-R-anchors",
+    "root_seed": 20261201,
+    "streams": [
+      "anchors",
+      "design panel",
+      "test panel",
+      "design Monte Carlo",
+      "test Monte Carlo",
+      "theory"
+    ],
+    "source": "configs/e004/design_panel_0b.json (E004a Stage 0b / Stage 1 design structures, 768)",
+    "crosscheck": "configs/e005/calibration_panel_design.json (natural dose, theta_0, d_extra = 0)",
+    "anchor": {
+      "level": "reward",
+      "metric": "I",
+      "group_size_m": 8,
+      "theta": "theta0 (E004a base policy)",
+      "verifier": "the structure's own (natural) verifier, rho = 1",
+      "statistic": "tau = C^2 / sqrt(2 tr((P_perp Sigma_delta P_perp)^2)), per group",
+      "nonzero": "C / A > 1e-6",
+      "quantiles": {
+        "small": 0.25,
+        "medium": 0.5,
+        "large": 0.75
+      },
+      "oracle_groups": 1000000
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "root_seed": 20261201,
+  "source": "design_panel_0b.json"
+}
