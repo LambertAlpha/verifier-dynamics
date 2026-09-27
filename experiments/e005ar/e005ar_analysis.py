@@ -10,6 +10,9 @@ Analysis conventions fixed here before any calibration result was read:
   - TP-R3/TP-R4 predictions use the matched clean null's covariances, because z is standardized
     by that null's SD (fixed after the 1-base smoke test, before the registered design run);
   - Spearman: per replication across non-null points against C_beh^2, averaged over replications.
+  - Amendment 2 (design, before the selection was frozen): a replication without a defined
+    estimate (e.g. R2 when the gold contributions have rank < k) counts as non-finite (G5) and as
+    a non-rejection; Spearman uses the points defined in that replication.
 """
 
 import hashlib
@@ -80,7 +83,19 @@ class Split:
         return np.array([self.stat(i, k, q) for i in idx])
 
     def has(self, k: str) -> bool:
-        return all(k in self.S[self.pts[i]["pid"]] for i in self.nonnull + self.null)
+        return any(k in self.S[self.pts[i]["pid"]] for i in self.nonnull + self.null)
+
+    def frac_defined(self, i: int, k: str) -> float:
+        st = self.S[self.pts[i]["pid"]].get(k)
+        return 0.0 if st is None else st["n"] / cb.R_REPS
+
+    def reject(self, idx: list[int], k: str, q: str = "reject") -> np.ndarray:
+        """Per-point rejection rate over all R replications (undefined ones do not reject)."""
+        return np.array([np.nan_to_num(self.stat(i, k, q)) * self.frac_defined(i, k) for i in idx])
+
+    def nonfinite(self, idx: list[int], k: str) -> np.ndarray:
+        return np.array([1 - self.frac_defined(i, k) * (1 - np.nan_to_num(self.stat(i, k,
+                         "nonfinite"))) for i in idx])  # fmt: skip
 
     def z(self, i: int, k: str) -> float:
         j = self.match[i]
@@ -95,17 +110,25 @@ def config_metrics(s: Split, rep: str, k: int, N: int) -> dict[str, Any]:
     if not s.has(kk):
         return {}
     P = s.pts
-    fpr = s.col(s.null, kk, "reject")
+    fpr = s.reject(s.null, kk)
     mean_c2 = {i: s.stat(i, kk, "mean") for i in s.null}
     sdb_terms = []
     for idx in s.null_sets.values():
         if len(idx) >= 3:
             sd_within = np.nanmedian([np.sqrt(s.stat(i, kk, "var")) for i in idx])
             sdb_terms.append(np.nanstd([mean_c2[i] for i in idx], ddof=1) / sd_within)
-    X = np.stack([s.d["reps"][f"{P[i]['pid']}::{kk}"] for i in s.nonnull]).astype(float)
+    X = np.full((len(s.nonnull), cb.R_REPS), np.nan)
+    for row, i in enumerate(s.nonnull):
+        name = f"{P[i]['pid']}::{kk}"
+        if name in s.d["reps"]:
+            v = np.asarray(s.d["reps"][name], dtype=float)
+            X[row, : len(v)] = v
     truth = np.array([P[i]["oracle"]["C2_beh"] for i in s.nonnull])
-    rho = [spearmanr(X[:, r], truth).statistic for r in range(X.shape[1])
-           if np.isfinite(X[:, r]).all()]  # fmt: skip
+    rho = []
+    for r in range(X.shape[1]):
+        ok_r = np.isfinite(X[:, r])
+        if ok_r.sum() >= 10:
+            rho.append(spearmanr(X[ok_r, r], truth[ok_r]).statistic)
     zs = np.array([s.z(i, kk) for i in s.medium])
     own = s.col(s.nonnull, kk, "oracle_mean")
     mean_est = s.col(s.nonnull, kk, "mean")
@@ -115,15 +138,16 @@ def config_metrics(s: Split, rep: str, k: int, N: int) -> dict[str, Any]:
     out = {
         "fpr_pooled": float(np.nanmean(fpr)),
         "fpr_point_ok": float(np.nanmean(fpr <= 0.10)),
-        "fpr_by_case": {c: float(np.nanmean([s.stat(i, kk, "reject") for i in s.null
-                                             if P[i]["case"] == c])) for c in ("clean", "nuis")},
-        "fpr_wald": float(np.nanmean(s.col(s.null, kk, "reject_wald"))),
+        "fpr_by_case": {c: float(np.nanmean(s.reject([i for i in s.null if P[i]["case"] == c],
+                                                     kk))) for c in ("clean", "nuis")},
+        "fpr_wald": float(np.nanmean(s.reject(s.null, kk, "reject_wald"))),
         "sdb_null": float(np.sqrt(np.nanmean(np.square(sdb_terms)))) if sdb_terms else np.nan,
         "spearman": float(np.mean(rho)) if rho else float("nan"),
-        "power": {ds: float(np.nanmean(s.col(ix, kk, "reject"))) for ds, ix in s.by_dose.items()},
-        "power_medium": float(np.nanmean(s.col(s.medium, kk, "reject"))),
-        "power_medium_wald": float(np.nanmean(s.col(s.medium, kk, "reject_wald"))),
-        "nonfinite": float(np.nanmean(s.col(s.null + s.nonnull, kk, "nonfinite"))),
+        "power": {ds: float(np.nanmean(s.reject(ix, kk))) for ds, ix in s.by_dose.items()},
+        "power_medium": float(np.nanmean(s.reject(s.medium, kk))),
+        "power_medium_wald": float(np.nanmean(s.reject(s.medium, kk, "reject_wald"))),
+        "nonfinite": float(np.nanmean(s.nonfinite(s.null + s.nonnull, kk))),
+        "undefined_points": int(sum(s.frac_defined(i, kk) == 0 for i in s.null + s.nonnull)),
         "z_medium_median": float(np.nanmedian(zs)),
         "retention_median": float(np.nanmedian(s.col(in_s, kk, "retention_mean"))),
         "leak_mean": (float(np.nanmean(s.col(leak_pts, kk, "leak_mean"))) if leak_pts

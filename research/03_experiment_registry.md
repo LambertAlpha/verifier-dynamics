@@ -3684,3 +3684,28 @@ verifier's own noise, the two cannot both hold; the panel test showed it.
 - The realized `tau` per point is reported; it equals the anchor for the median construction.
 - Nuisance-only and partial points use the same `C*`.
 - Nothing else changes.
+
+### E005a-R Amendment 2 — undefined cells in the analysis (design split, before the selection freeze; 2026-09-27)
+
+**What happened.** The first registered design analysis
+(`results/E005aR-analysis-design/20260927T232852Z_b413406`, kept as a record) silently dropped
+some candidates.
+
+- A candidate × `N` configuration was scored only if **every** point had it.
+- R2 is undefined where the gold RLOO contributions of the selection half have rank < `k`. That
+  happens at low-`A` bases, where there are almost no correct answers: at `N = 1024`, 35 of the
+  414 low-`A` points have no defined replication and 68 have some; at `N = 256`, all 414.
+- R3 at `k = 64` is undefined at 6 points.
+- **As a result, R2 (all `k`) and R3 (`k = 64`) were excluded from the selection instead of being
+  scored.** Their metrics had not been inspected.
+
+**Fix,** following the registered rules (§5: undefined cells are reported; §9 G5: non-finite
+rate ≤ 0.01). A replication without a defined estimate:
+
+- counts as non-finite for G5;
+- counts as a non-rejection for power and FPR;
+- is left out of that replication's Spearman.
+
+The selection rule, the thresholds and the candidate list are unchanged. The corrected analysis
+is rerun from a clean tree. The first run's selection (R4, 5 of 7 criteria at `N = 1024`) is
+reported alongside.
