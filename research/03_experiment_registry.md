@@ -3321,3 +3321,58 @@ Every registered conclusion replicated.
 - **E004a synthetic experimentation is closed.**
 
 ---
+
+### E005a — pre-registration: geometry measurement calibration (2026-09-26)
+
+Written and committed **before any E005 code exists.** E004a is closed and is not revisited.
+
+**Design document:** `research/07_e005a_measurement.md` v1. Its §3–§9 are frozen by this entry.
+
+- **Question.** Can `A`, `alpha` and `C` be estimated from a finite gold audit without the
+  estimator leaking structure? The plug-in `C` has a structure-dependent positive null floor
+  (E002a post-hoc; E004 Stage 1).
+- **Estimand.** Reward-level geometry of the exact `∇J_G`, `∇J_V` in three declared metrics:
+  - **M_I** (identity; primary);
+  - **M_D** (damped diagonal Fisher);
+  - **M_F** (damped full Fisher; legacy).
+  - The update level (GRPO-normalized) is not an E005a estimand and stays a legacy baseline for
+    E005b. This choice is flagged to the collaborator.
+- **Candidates** (frozen):
+  - **E0:** legacy plug-in (gold RLOO, pooled verifier RLOO, same-batch metric);
+  - **E1:** cross-fit group U-statistic;
+  - **E2:** first-order noise-floor-corrected plug-in;
+  - **E3:** delete-one-group jackknife.
+  - Each has its target, noise sources, dependence, RLOO and group-size effects, metric
+    estimation, `A ≈ 0` behaviour, the impossibility of exact unbiasedness, and its
+    leading-order bias derived in §2.
+- **Historical evidence.** E002's failed claim ("U-statistic `C^2` unbiased") is kept as history
+  and is not repeated. Only the Gram entries are unbiased.
+- **Theory predictions TP1–TP4** (§2.7):
+  - TP1: plug-in null floor `= tr(P_perp Σ_δ)/n`;
+  - TP2: U-statistic null bias `= −u^T Σ_δ u/n`;
+  - TP3: the floor scales with nuisance dimensions;
+  - TP4: E2 and E3 are second-order unbiased.
+- **Calibration panel** (§3):
+  - fresh seeds `SeedSequence(20261101)`; design and test splits;
+  - 24 Stage 0b-generator bases (all six mechanisms);
+  - 4 policy variants, including a low-`A` one;
+  - affine-null verifier dose `EV_rho = (1−rho)(aG+b) + rho EV_base`, exactly linear in `C`, with
+    matched nulls and matched equal-`C` sets across mechanisms;
+  - nuisance dimensions `d_extra ∈ {0, 56}`.
+- **Budgets** (§4): `N ∈ {32, …, 1024}`, `m ∈ {4, 8}`, `N_u = N` unlabeled, `R = 100` MC
+  replications. `(B_roll, B_gold, B_bwd)` are recorded.
+- **Metrics** (§6):
+  - bias, RMSE, variance, coverage, undefined rate;
+  - Spearman and calibration slope;
+  - null floor, null false-positive rate;
+  - the matched-set between-structure shift `SDB`.
+- **Selection** (§7): design only; M_I, `m = 8`, `N = 256`; lexicographic with tolerances (SDB,
+  null calibration, ranking, efficiency, low-`A` stability). The configuration is then frozen
+  and committed.
+- **Held-out test, practical budget, negative-result condition and recommendation rule** (§8):
+  - "solved" = `SDB ≤ 0.5`, null FPR in [0.02, 0.10] for ≥ 90% of nulls, and Spearman ≥ 0.8;
+  - the practical budget additionally needs small-dose power ≥ 0.8;
+  - no qualifying `N ≤ 1024` → "C not practically measurable at the intended scale";
+  - PROCEED TO E005b iff a practical budget `≤ 1024` exists on test.
+
+---
