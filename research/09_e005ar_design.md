@@ -491,9 +491,17 @@ EV_rho = (1 − rho)(a' G + c0) + rho EV_con(x, b).
   ```
 
   The surface bonus has zero projection on `h_G`, so `alpha` is independent of `λ`.
-- **Behavior dose:** `C_beh = s_V rho C_con,⊥`, exactly linear for fixed `s_V`. `rho` is solved
-  by bisection (with common random numbers) so that the behavior detectability `tau` equals the
-  anchor (§3). Points with no solution in `rho ∈ (0, 1]` are dropped and counted.
+- **Behavior dose:** `C_beh = s_V rho C_con,⊥`, exactly linear for fixed `s_V` [Amendment 1,
+  before any data]:
+  1. for each (base, `alpha`, dose) and each construction, `rho` is solved by bisection (with
+     common random numbers) so that the behavior detectability `tau` equals the anchor (§3);
+  2. the dose's common target `C*` = the median over constructions of the resulting `C_beh`;
+  3. each construction's `rho` is then solved **exactly** for `C_beh = C*` (`C_beh` is
+     increasing in `rho` at fixed `alpha`).
+
+  So `tau` at a point is close to the anchor (exact for the median construction), while
+  `C_beh` is identical across constructions, as the brief requires. Points with no solution in
+  `rho ∈ (0, 1]` are dropped and counted.
 - **Nuisance (behavior-irrelevant) error:** `λ h_surf` with `h_surf = Λ v / sqrt(2π v^T Λ v)`
   [proved]. It lies in the nuisance block, so `C_beh` is unchanged and `C_full^2 = C_beh^2 +
   λ^2 ||h_surf||^2`.
@@ -504,10 +512,10 @@ EV_rho = (1 − rho)(a' G + c0) + rho EV_con(x, b).
 | --- | --- | --- | --- | --- | --- |
 | clean null (4: aligned) | `rho = 0` | −0.6, −0.3, 0 | 0 | 0 | 9 |
 | inside `S*` (1); orthogonal & behavior-relevant (5) when `alpha = 0` | 3 constructions | −0.3, 0 | small, medium, large | 0 | 9 |
-| nuisance only (2); orthogonal & behavior-irrelevant (6) when `alpha = 0` | `rho = 0` | −0.3, 0 | 0 | `λ ||h_surf|| = C_med(base, alpha)` | 9 |
+| nuisance only (2); orthogonal & behavior-irrelevant (6) when `alpha = 0` | `rho = 0` | −0.3, 0 | 0 | `λ ||h_surf|| = C*(base, alpha, medium)` | 9 |
 | partial inside / outside (3) | 3 constructions | −0.3 | medium (the same behavior verifier as the matched in-`S*` point) | `λ ||h_surf|| = C_beh` | 9 |
 
-- `C_med(base, alpha)` is the median over constructions of the medium `C_beh`.
+- `C*(base, alpha, medium)` is the medium dose's common `C_beh` (Amendment 1).
 - The **9 nuisance configs** are `d ∈ {64, 256, 1024}` × {bulk, flat, spiked}.
 - **Composition:** 26 behavior configurations × 9 = 234 points per base, **2106 per split**
   (before drops).

@@ -3662,3 +3662,25 @@ spectrum.
   - **B** — mechanistically valid, not practically measurable (large-dose power ≥ 0.8);
   - fallback → C.
 - No rescue round; the budget is not raised beyond 1024.
+
+### E005a-R Amendment 1 — dosing across constructions (pre-data; found in TDD; 2026-09-27)
+
+Registered before any E005a-R panel or calibration data exists.
+
+**The contradiction.** §4.3 of the design dosed each construction to the anchor `tau`. §4.4
+required identical `C_beh` within matched sets across constructions. Since `tau` depends on each
+verifier's own noise, the two cannot both hold; the panel test showed it.
+
+**Resolution** (§4.3 updated):
+
+1. For each (base, `alpha`, dose), each construction is `tau`-anchored.
+2. The common `C*` is the median of the resulting `C_beh` over constructions.
+3. Each construction's `rho` is solved exactly for `C_beh = C*`.
+
+**Consequences:**
+
+- The brief's requirement — identical `C_behavior` across constructions, `d` and nuisance
+  covariance — takes priority.
+- The realized `tau` per point is reported; it equals the anchor for the median construction.
+- Nuisance-only and partial points use the same `C*`.
+- Nothing else changes.
