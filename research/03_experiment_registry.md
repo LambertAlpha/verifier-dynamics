@@ -3376,3 +3376,159 @@ Written and committed **before any E005 code exists.** E004a is closed and is no
   - PROCEED TO E005b iff a practical budget `≤ 1024` exists on test.
 
 ---
+
+### E005a — results record (design selection + CONFIRMATORY test split; 2026-09-27)
+
+**Outcome (registered rule, §8):** the selected estimator **E3** is not "solved" at any
+`N ≤ 1024` on the test split. There is **no practical audit budget**. Recorded, as registered:
+**"C is mechanistically meaningful but not practically measurable at the intended scale."**
+Recommendation: **REVISE MEASUREMENT THEORY BEFORE NEURAL EXPERIMENTS.** The audit size was not
+increased to rescue it.
+
+**Trail** (every run from a clean tree; `dirty = False` in every `meta.json`):
+
+| step | commit | run |
+| --- | --- | --- |
+| pre-registration + theory (`research/07_e005a_measurement.md`) | `10f40c1` | — |
+| implementation (TDD) | `7a492bb` | — |
+| frozen panels (design 788 points, sha `87f1505f…`; test 770 points, sha `12f1f157…`) | `1fe917f` | `results/E005a-panel/20260927T061706Z_7a492bb` |
+| calibration + theory scripts; analysis script | `a34321e`, `8e5e07b` | — |
+| DESIGN calibration (2548 s wall) | `39477a0` | `results/E005a-calibration-design/20260927T061955Z_a34321e` |
+| TP1–TP3 oracle covariances (10^6 groups per null point × m) | `f5b5767` | `results/E005a-theory/20260927T070317Z_39477a0` |
+| DESIGN analysis + selection | `e1098df` | `results/E005a-analysis-design/20260927T071222Z_f5b5767` |
+| frozen estimator config (sha `3b20ff3d…`) + test unseal | `67ec484` | `configs/e005/estimator_frozen.json`, `E005A_TEST_APPROVED` |
+| TEST calibration (single run; 1880 s) | `1453c4c` | `results/E005a-calibration-test/20260927T071454Z_67ec484` |
+| TEST analysis (§8) | `6dbe1a1` | `results/E005a-analysis-test/20260927T074649Z_1453c4c` |
+| post-hoc diagnostics (exploratory) | `5afadbd`, `cd1ef72`, `c19983f` | `results/E005a-posthoc-{design,test}/…` |
+
+**Provenance.**
+
+- Root seed `20261101`; config sha `85e400d3…`.
+- Python 3.12.11, numpy 2.5.3, scipy 1.18.1, torch 2.14.0 (unused), scikit-learn 1.9.1.
+- The raw per-replication arrays (`reps.npz`) and the uncompressed `summary.json` stay local.
+  Their sha256 values are in each run's `checksums.sha256`; the gzip copies are committed.
+
+#### Theory predictions (DESIGN split, M_I)
+
+| prediction | registered criterion | result |
+| --- | --- | --- |
+| **TP1** plug-in null floor `tr(P_perp Σ_δ)/n` | ratio in [0.8, 1.25] for ≥ 90% | **PASS**: 97.0% of 1536 (median ratio 0.98) |
+| **TP2** U-statistic null bias `−u^T Σ_δ u/n` | ratio in [0.7, 1.4] for ≥ 80% (where resolvable) | **PASS**: 84.8% of 302 (median 1.06) |
+| **TP3** dimension scaling | plug-in increment ratio in [0.8, 1.25] for ≥ 90% **and** E1 unchanged for ≥ 90% | **FAIL**: the plug-in scaling holds (99.1%, median 0.99), but E1 is unchanged for only 86.8% (< 90%) |
+| **TP4** E2/E3 second-order unbiased | `|bias| ≤ 3 MCSE` for ≥ 90% of points with `A^2 > 10 sqrt(tr Σ_G/n)` | **NOT EVALUABLE as registered** (n = 0; erratum E1 below) |
+
+- The leading-order bias theory is confirmed: the legacy floor is exactly the orthogonal noise
+  energy per group, and it scales with dimension.
+- The E1 part of TP3 fails narrowly. E1's `C^2` is a ratio with heavy tails at small `A_U^2`,
+  so a 3-MCSE rule is fragile there.
+
+**Erratum E1** (registration error, found at analysis; changes no gate):
+
+- The TP4 condition `A^2 > 10 sqrt(tr(Σ~_G)/n)` is dimensionally inconsistent: it compares
+  `A^2` with a quantity in units of `A`. So does the E2 validity statement in §2.4 of the design
+  document. In the calibration units, `sqrt(tr/n) ≫ A^2` for every point, hence n = 0.
+- The intended condition is `A^2 > 10 tr(Σ~_G)/n`. **Post-hoc**, with that condition, E2 and
+  E3 have `|bias| ≤ 3 MCSE`:
+  - design: 99.7% and 99.5% of 1042;
+  - test: 99.4% and 99.4% of 984.
+- TP4 is therefore supported post-hoc; it is not a registered pass.
+
+#### Selection (DESIGN; M_I, m = 8, N = 256; §7)
+
+| step | E0 | E1 | E2 | E3 | kept |
+| --- | --- | --- | --- | --- | --- |
+| SDB (min, rel 0.20) | 1.604 | 3.5e12 | 0.148 | 0.142 | E2, E3 |
+| mean `|FPR − 0.05|` over nulls (abs 0.02) | — | — | 0.0469 | 0.0493 | E2, E3 |
+| Spearman, `C > 0` (abs 0.02) | — | — | 0.211 | 0.209 | E2, E3 |
+| median RMSE / `C_ref^2` (rel 0.10) | — | — | 5.06 | 5.03 | E2, E3 |
+| low-A unstable rate (min) | — | — | 0.1930 | 0.1925 | **E3** |
+
+- E3 and E2 are practically equivalent. The last step separates them by 0.0005, which is Monte
+  Carlo noise; the registered rule was applied as written.
+- E1's `C^2` explodes when `A_U^2` is a tiny positive number, which gives the SDB of 1e12.
+
+#### Held-out TEST result (selected E3; M_I, m = 8; frozen config)
+
+| N | SDB | null FPR mean | nulls with FPR in [0.02, 0.10] | Spearman (`C > 0`) | small-dose power | C² coverage | calibration slope | solved |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 32 | 0.115 | 0.011 | 27.6% | 0.051 | 0.012 | 0.86 | 0.99 | no |
+| 64 | 0.116 | 0.004 | 12.0% | 0.076 | 0.003 | 0.93 | 1.01 | no |
+| 128 | 0.129 | 0.003 | 4.2% | 0.119 | 0.003 | 0.95 | 1.01 | no |
+| 256 | 0.126 | 0.001 | 1.0% | 0.175 | 0.002 | 0.96 | 1.02 | no |
+| 512 | 0.114 | 0.002 | 1.0% | 0.245 | 0.002 | 0.96 | 0.99 | no |
+| 1024 | 0.122 | 0.001 | 0.5% | 0.319 | 0.002 | 0.96 | 0.98 | no |
+
+**Legacy plug-in E0 at the same settings** (test): SDB 0.76–1.45 (it grows with N), null FPR
+0.42–0.52, Spearman 0.14–0.30.
+
+- E0's small-dose "power" of ≈ 0.53 is the null false-positive rate, not detection.
+- m = 4 gives the same picture (N = 1024: SDB 0.115, FPR in band 2%, Spearman 0.305).
+- M_D and M_F (reported; not gating), E3 at N = 1024: SDB 0.21 and 0.25; Spearman 0.43 and
+  0.43; null FPR in band ≤ 1%; small-dose power 0.002. The Fisher metrics rank slightly better
+  but have higher relative noise (RMSE / `C_ref^2` ≈ 9.7 vs 1.45).
+
+**Which part of "solved" failed:**
+
+1. **Structure-dependent bias: SOLVED.**
+   - E3's SDB is 0.11–0.13 at every N (threshold 0.5); E0's is 0.76–1.45.
+   - E3's null mean `C^2` by mechanism is within ±1e-5 of 0 at N = 1024, i.e. ≤ 2% of E0's null
+     mean (≈ 5e-4).
+   - Calibration slope ≈ 1.0 and coverage ≈ 0.96 across the panel.
+2. **Null calibration: FAILED — the test is too conservative, not anti-conservative.**
+   - The FPR is ≈ 0.001–0.01 where 0.05 is nominal.
+3. **Ranking and power: FAILED.** The variance floor is far above the planted doses.
+
+#### Post-hoc diagnostics (exploratory; NOT registered; gate nothing)
+
+- **Why the null test is conservative** [theory, derived post-hoc]:
+  - At `C = 0` the first-order influence function of `C^2` vanishes, so the estimator behaves
+    like a degenerate order-2 U-statistic.
+  - For such statistics the jackknife variance estimate has expectation ≈ 2× the true variance,
+    so the SE is inflated by ≈ √2. A scratch simulation of a pure degenerate U-statistic
+    (n = 64, d = 8) gives a variance ratio of 1.93.
+  - Observed median `SE_jack / SD_MC` at nulls: 1.40–1.57 (E3, N ≥ 64, both splits).
+  - A Wald test using the Monte Carlo SD would have FPR 0.057–0.068.
+  - §2.6 of the design document did not anticipate this.
+- **The variance floor is the binding constraint** (E3, test):
+  - the null 95th percentile of `C^2` scales as `N^-1.04`;
+  - at N = 1024 the floor corresponds to `C ≈ 1.29 C_ref` (0.93 at `d = 8`, 2.37 at `d = 64`);
+  - only 13% of non-null test points lie above it.
+  - Planted doses are 0.05 / 0.2 / 0.6 `C_ref`. Power by dose at N = 1024 is 0.002 / 0.002 /
+    0.007, and 0.22 at the natural dose.
+  - A naive log-log extrapolation of the floor needs **N ≈ 4.5k gold labels for 0.6 `C_ref`,
+    ≈ 37k for 0.2 `C_ref`, ≈ 1.7k for `C_ref`**.
+  - Fixing the null test would not change the recommendation.
+- **Dimension:** the E3 null floor at N = 1024 is 6.4× larger at `d = 64` than at `d = 8`
+  (5.6e-5 → 3.6e-4). Bias correction removes the mean, not the variance.
+- **Ranking where measurable:**
+  - Spearman among test points whose true `C^2` exceeds the floor: 0.84 (n = 74; N = 1024);
+  - among natural-dose points only: 0.68.
+  - The registered Spearman ≥ 0.8 is taken over all non-null points, and 87% of them are below
+    the floor.
+- **alpha is unstable:**
+  - undefined (jackknife `A^2 ≤ 0`) in 10–22% of replications (N = 1024–256);
+  - the calibration slope is erratic (−0.3 to 0.4 at N ≥ 128; unbounded at N ≤ 64, driven by
+    low-`A` points);
+  - `A^2` interval coverage is 0.75–0.92 (below nominal at small N).
+
+#### Limitations
+
+- Aligned-inflation geometry (`alpha > 0.05`) is rare in the panel (30 design / 10 test
+  points); `alpha ≈ 0` is represented by 20 / 18 points. The panel inherits the Stage 0b
+  generator's bias toward attenuation (`alpha < 0`).
+- Oracle geometry is exact, but the policy is the 4-prompt U-toy with `d = 8` (+56 nuisance
+  dimensions). The neural-scale implication (dimension) is an extrapolation.
+- Only reward-level geometry was calibrated. The GRPO-normalized update level (E004's) was not.
+- The unlabeled budget was tied to `N_u = N`. Designs with `B_roll ≫ B_gold` (cheap verifier
+  rollouts) were not explored.
+- The practical-budget criterion (80% power at 0.2 `C_ref`) is demanding by design. It was
+  registered and is not relaxed here.
+
+### E005b — design draft (NOT registered; awaiting collaborator approval; 2026-09-27)
+
+- **Document:** `research/08_e005b_design.md` v1 (design only). No transformer has been trained,
+  no GRPO run exists, and there is no E005b code.
+- **Measurement gate G0:** the draft imports only E005a's measurement conclusions. Because E005a
+  found no practical budget, the geometry arm is gated on a revised measurement calibration in a
+  declared low-dimensional subspace (E005a-R, §9 of the document). If G0 fails, the geometry arm
+  is reported as "not measurable" and E005b runs as static vs active probe only.

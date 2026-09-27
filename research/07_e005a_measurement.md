@@ -412,3 +412,27 @@ but the selection is fixed).
   - Python / numpy / scipy / torch / scikit-learn versions.
 - The test split runs only after the estimator configuration is committed, via an approval file
   naming its sha256.
+
+---
+
+## 10. Post-run errata and theory lessons (appended 2026-09-27; §1–§9 unchanged)
+
+See the registry entry "E005a — results record" for the evidence.
+
+- **Erratum (dimensional).** The validity condition written as `A^2 ≫ sqrt(tr Σ~_G / n)`
+  (§2.4, TP4 in §2.7) should read `A^2 ≫ tr(Σ~_G)/n`, equivalently `A ≫ sqrt(tr Σ~_G / n)`.
+  - As registered, TP4 selects no point (n = 0).
+  - With the corrected condition (post-hoc), E2 and E3 are within 3 MCSE for > 99% of eligible
+    points.
+- **Lesson 1 — the null test at the boundary** [derived post-hoc; matches the calibration].
+  - At `C = 0` the first-order influence function of `C^2` vanishes, and every bias-corrected
+    estimator behaves like a degenerate second-order U-statistic.
+  - The delete-one-group jackknife variance then has expectation ≈ 2× the true variance, so the
+    Wald test of §2.6 is conservative; observed FPR ≈ 0.001–0.01.
+  - A null test must use the degenerate null distribution: e.g. SE / √2 at the boundary, a
+    weighted-χ² approximation from `Σ_hat_δ`, or a group sign-flip / permutation calibration.
+- **Lesson 2 — variance, not bias, binds.**
+  - After bias correction, the `C^2` noise floor falls as `1/n` but grows with the number of
+    gradient dimensions (≈ 6.4× from `d = 8` to `d = 64`).
+  - Measurement for high-dimensional policies must be done in a declared low-dimensional
+    subspace, or with variance reduction. A larger audit alone is not the lever.
