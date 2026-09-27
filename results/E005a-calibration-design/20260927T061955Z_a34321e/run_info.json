@@ -1,0 +1,8 @@
+{
+ "split": "design",
+ "n_points": 788,
+ "seconds": 1927.7653580829501,
+ "reps_npz_sha256": "6de8512e96af028d09dc25a8e091664a2c332fe55762826763e2323b13f0172d",
+ "reps_npz_committed": false,
+ "peak_rss_children": 380977152
+}

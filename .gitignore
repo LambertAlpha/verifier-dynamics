@@ -18,3 +18,6 @@ dist/
 # Raw experiment arrays stay local; configs, metadata, check summaries and figures are committed.
 results/**/*.npz
 results/**/scratch/
+
+# E005a per-point calibration summaries are large (> 100 MB); the gzip copy is committed
+results/E005a-calibration-*/*/summary.json
