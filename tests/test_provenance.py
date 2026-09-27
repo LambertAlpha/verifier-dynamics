@@ -86,3 +86,12 @@ def test_metadata_records_the_config_checksum(tmp_path):
     meta = provenance.write_metadata(run_dir, "E999", config, repo)
     assert meta["config_sha256"] == hashlib.sha256(config.read_bytes()).hexdigest()
     assert (run_dir / "config.toml").read_bytes() == config.read_bytes()
+
+
+def test_metadata_records_the_scikit_learn_and_torch_versions(tmp_path):
+    repo = _make_repo(tmp_path / "repo")
+    config = tmp_path / "cfg.toml"
+    config.write_text('experiment_id = "E999"\n')
+    run_dir = provenance.create_run_dir(repo / "results", "E999", repo)
+    meta = provenance.write_metadata(run_dir, "E999", config, repo)
+    assert {"scikit-learn", "torch", "numpy", "scipy"} <= set(meta["packages"])

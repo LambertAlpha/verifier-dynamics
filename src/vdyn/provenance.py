@@ -12,7 +12,7 @@ from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from typing import Any
 
-TRACKED_PACKAGES = ("numpy", "scipy", "torch", "matplotlib", "verifier-dynamics")
+TRACKED_PACKAGES = ("numpy", "scipy", "torch", "scikit-learn", "matplotlib", "verifier-dynamics")
 
 
 def git_state(repo: Path, ignore: Path | None = None) -> dict[str, Any]:
