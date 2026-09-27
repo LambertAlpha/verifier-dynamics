@@ -1,0 +1,6 @@
+{
+ "estimator_config_sha256": "3b20ff3d58c00804f1cdb89d6d6e271db550224abcb2b47e3ef986d033d652e5",
+ "estimator_config": "configs/e005/estimator_frozen.json",
+ "authorization": "E005 brief step 7: after design-only selection and freezing, open the calibration TEST split exactly once",
+ "created_utc": "2026-09-27T07:14:43Z"
+}

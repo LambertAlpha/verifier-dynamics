@@ -1,0 +1,65 @@
+{
+ "experiment": "E005a",
+ "status": "FROZEN before the calibration TEST split is opened (research/07_e005a_measurement.md \u00a77)",
+ "selected": "E3",
+ "description": "delete-one-group jackknife bias-corrected plug-in of the reward-level geometry (A^2, alpha, C^2)",
+ "selection": {
+  "rule": "research/07_e005a_measurement.md \u00a77 (M_I, m = 8, N_ref = 256, lexicographic with tolerances)",
+  "analysis_run": "results/E005a-analysis-design/20260927T071222Z_f5b5767",
+  "selection_json": "configs/e005/estimator_selection.json",
+  "selection_json_sha256": "fbaefe38f31d35ea49a58409193d4a5fbdc816221afcd91efe37af221e9e7a49"
+ },
+ "implementation": {
+  "git_commit": "e1098df",
+  "entry_point": "vdyn.e005.estimators.estimate_all(xG, xe)['E3'] via vdyn.e005.calibrate._estimates",
+  "sha256": {
+   "src/vdyn/e005/estimators.py": "b3e50c4d186ea868cec02d861cb028b9111c880623b2be692287e4df2acaed0d",
+   "src/vdyn/e005/calibrate.py": "80d8d61f0628b672ec579491d80d9304138be5cb4a2e6cfd71a8fef5a0d5c77c",
+   "src/vdyn/e005/sampling.py": "5bf9129dab4db04571c7743c19ec91824f2890e73139b91d4fa6a3ebea3d3e19",
+   "src/vdyn/e005/panel.py": "9873fb358a1e8b3702d44f3fabe2bf97da9478a99c2fa36cf41eb90970c7c1d2"
+  }
+ },
+ "preprocessing": {
+  "unit": "group-level RLOO contributions gamma_k (gold G, paired difference e = V - G), n = N / m groups",
+  "whitening": "x~ = M^1/2 gamma with the metric estimated from an independent unlabeled batch of N rollouts",
+  "group_size_m": {
+   "primary": 8,
+   "reported": [
+    4
+   ]
+  }
+ },
+ "metric": {
+  "primary": "I",
+  "reported": [
+   "D",
+   "F"
+  ],
+  "definition": {
+   "I": "identity",
+   "D": "diag(F)_damped^-1 with damping 0.1 * mean(diag F)",
+   "F": "(F + 0.1 * tr(F)/d * I)^-1"
+  },
+  "fisher": "empirical score second moment of the unlabeled rollouts (fisher_hat); W = M^1/2 (metric_sqrt)"
+ },
+ "A_near_zero_rule": "jackknife A^2 <= 0 -> alpha undefined (NaN) and C^2 := jackknife Q (E002/E004 convention)",
+ "interval": "estimate +- 1.96 delete-one-group jackknife SE",
+ "null_test": "reject C = 0 iff C^2 - 1.645 SE > 0 (one-sided, nominal 0.05)",
+ "budgets": {
+  "N": [
+   32,
+   64,
+   128,
+   256,
+   512,
+   1024
+  ],
+  "m": [
+   4,
+   8
+  ],
+  "R": 100,
+  "unlabeled_per_audit": "N"
+ },
+ "test_rules": "research/07_e005a_measurement.md \u00a78 (solved: SDB <= 0.5, null FPR in [0.02, 0.10] for >= 90% of nulls, Spearman >= 0.8; practical: + small-dose power >= 0.8; PROCEED iff min practical budget <= 1024)"
+}
