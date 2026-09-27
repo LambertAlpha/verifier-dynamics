@@ -1,0 +1,17 @@
+# E005a-R step 0: signal anchors from FROZEN historical data only (before any E005a-R code).
+experiment_id = "E005a-R-anchors"
+root_seed = 20261201
+streams = ["anchors", "design panel", "test panel", "design Monte Carlo", "test Monte Carlo", "theory"]
+source = "configs/e004/design_panel_0b.json (E004a Stage 0b / Stage 1 design structures, 768)"
+crosscheck = "configs/e005/calibration_panel_design.json (natural dose, theta_0, d_extra = 0)"
+
+[anchor]
+level = "reward"
+metric = "I"
+group_size_m = 8
+theta = "theta0 (E004a base policy)"
+verifier = "the structure's own (natural) verifier, rho = 1"
+statistic = "tau = C^2 / sqrt(2 tr((P_perp Sigma_delta P_perp)^2)), per group"
+nonzero = "C / A > 1e-6"
+quantiles = { small = 0.25, medium = 0.50, large = 0.75 }
+oracle_groups = 1000000
