@@ -1,0 +1,19 @@
+{
+ "design": {
+  "n_points": 788,
+  "c_ref": 0.008000539319744104,
+  "dropped_unattainable": 172,
+  "infeasible_bases": []
+ },
+ "test": {
+  "n_points": 770,
+  "c_ref": 0.008000539319744104,
+  "dropped_unattainable": 190,
+  "infeasible_bases": []
+ },
+ "sha256": {
+  "design": "87f1505f160c452caf9ea2f3382baa4921c5dd03d88775f4e41bc25def65f991",
+  "test": "12f1f157c01c35b271b443103f82511076cc6c51769cae35236aa1e8769f0aac"
+ },
+ "seconds": 9.234847916057333
+}
