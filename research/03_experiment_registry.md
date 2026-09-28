@@ -3875,3 +3875,32 @@ requires.
   functional geometry at the reward level. It is never a practical predictor.
 - **No update-level geometry claim** is made unless the translation is calibrated first.
 - No transformer is trained and no GRPO run exists.
+
+### E005b-0 — pilot protocol: small-Transformer feasibility (2026-09-28)
+
+**Exploratory feasibility pilot**, committed before any substantive training. It tests no E004
+or E005 hypothesis; those experiments are closed.
+
+- **Protocol:** `research/10_e005b0_pilot.md`; constants in `configs/e005b/pilot.toml`.
+- **Questions:**
+  1. Can a genuinely autoregressive Transformer learn a verifiable task?
+  2. Is clean GRPO with Adam stable and interpretable?
+  3. What does the pipeline cost?
+- **Task:** two-digit addition with character tokens; exact gold reward; splits by unordered
+  pair.
+- **Model:** a 2-layer, `d = 128`, 4-head decoder (402k parameters), bounded SFT.
+- **Base selection (dev only):** the first checkpoint with dev sampled accuracy in [0.20, 0.40]
+  and valid rate ≥ 0.95.
+- **Clean GRPO:**
+  - `P = 32`, `G = 8`, temperature 1;
+  - group mean/std advantages, zero-variance groups → 0;
+  - token-level clipped loss, `μ = 1`, `β = 0`;
+  - fresh Adam, lr 1e-4, gradient clip 1.0;
+  - 500 steps; seeds 1–3, with a bit-exact rerun of seed 1.
+  - Standard components and deliberate simplifications are listed in §3.
+- **Device:** CPU, 4 threads. MPS was 3–5× faster but not bitwise deterministic.
+- **Stop conditions:** NaN/Inf; failed reproducibility; no clean learning after 500 steps, which
+  triggers a check of implementation, sparsity and competence, then **one** lr-3e-4 diagnostic.
+- **Next matrix** (4 verifiers × 3 seeds) is proposed only; not run.
+- **Challenged assumption:** the draft's "passive early trajectory" and "active short probe" are
+  the same protocol unless a distinct intervention is defined.
