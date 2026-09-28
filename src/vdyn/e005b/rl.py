@@ -30,15 +30,28 @@ def rollout(net: nn.Module, pairs: list[tuple[int, int]], group: int, gen: torch
             "P": len(pairs), "G": group, **out}  # fmt: skip
 
 
-def score(roll: dict[str, Any], kind: str, rng: np.random.Generator,
-          deleted: set[tuple[int, int]]) -> dict[str, torch.Tensor]:  # fmt: skip
+def score(
+    roll: dict[str, Any],
+    kind: str,
+    rng: np.random.Generator,
+    deleted: set[tuple[int, int]],
+    f0: float | None = None,
+) -> dict[str, torch.Tensor]:
     toks = roll["tokens"].tolist()
     parsed = [tk.parse_completion(t) for t in toks]
     G = [tk.gold_reward(a, b, *pv) for (a, b), pv in zip(roll["pairs"], parsed, strict=True)]
-    V = [
-        vf.reward(kind, a, b, t, rng, deleted)
-        for (a, b), t in zip(roll["pairs"], toks, strict=True)
-    ]
+    if kind == "randfp":
+        if f0 is None:
+            raise ValueError("the random false-positive rule needs f0")
+        V = [
+            vf.reward_randfp(a, b, t, rng, f0)
+            for (a, b), t in zip(roll["pairs"], toks, strict=True)
+        ]
+    else:
+        V = [
+            vf.reward(kind, a, b, t, rng, deleted)
+            for (a, b), t in zip(roll["pairs"], toks, strict=True)
+        ]
     shape = (roll["P"], roll["G"])
     return {"V": torch.tensor(V).view(shape), "G": torch.tensor(G).view(shape),
             "valid": torch.tensor([float(v) for v, _ in parsed]).view(shape)}  # fmt: skip

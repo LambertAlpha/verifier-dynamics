@@ -5,6 +5,7 @@ touch model parameters, so they cannot change training. Conditional rates whose 
 are NaN, and the denominators are returned.
 """
 
+from collections import Counter
 from typing import Any
 
 import numpy as np
@@ -62,10 +63,12 @@ def variability(V: np.ndarray, G: np.ndarray) -> dict[str, float]:
 
 
 def evaluate_matrix(net: nn.Module, pairs: list[tuple[int, int]], samples: int, seed: int,
-                    deleted: set[tuple[int, int]]) -> dict[str, Any]:  # fmt: skip
+                    deleted: set[tuple[int, int]],
+                    with_concentration: bool = False) -> dict[str, Any]:  # fmt: skip
     """The calibration evaluation (identical numbers) plus mechanism measurements on the same
     samples: V3 suffix statistics and accuracy on dev items inside / outside the fixed-rule
-    subset (dev items are never trained on; they only share the rule-defined membership)."""
+    subset (dev items are never trained on; they only share the rule-defined membership).
+    with_concentration adds constant-output concentration of the same samples (§14)."""
     es = cal.eval_samples(net, pairs, samples, seed)
     ev = cal.summarize_samples(pairs, es, samples)
     rep = es["rep"]
@@ -82,9 +85,28 @@ def evaluate_matrix(net: nn.Module, pairs: list[tuple[int, int]], samples: int, 
             "sampled": float(gold[m].mean()) if m.any() else float("nan"),
             "greedy": float(ggold[gm].mean()) if gm.any() else float("nan"),
         }
-    return {
+    out = {
         **ev,
         "suffix": suffix_stats(rep, es["tokens"]),
         "suffix_greedy": suffix_stats(pairs, es["greedy_tokens"]),
         "subset": sub,
     }
+    if with_concentration:
+        out["concentration"] = concentration(es["tokens"])
+    return out
+
+
+def concentration(toks: list[list[int]], top: int = 5) -> dict[str, Any]:
+    """Constant-output concentration: the modal valid answer's share, distinct answers, top list."""
+    vals = []
+    for t in toks:
+        ok, val = tk.parse_completion(t)
+        if ok and val is not None:
+            vals.append(val)
+    if not vals:
+        return {"valid": 0, "modal_answer": None, "modal_share": float("nan"), "distinct": 0,
+                "top": []}  # fmt: skip
+    counts = Counter(vals).most_common()
+    return {"valid": len(vals), "modal_answer": counts[0][0],
+            "modal_share": counts[0][1] / len(vals), "distinct": len(counts),
+            "top": [[v, c] for v, c in counts[:top]]}  # fmt: skip

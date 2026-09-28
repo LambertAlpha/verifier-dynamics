@@ -46,3 +46,11 @@ def error_rates(V: np.ndarray, G: np.ndarray) -> dict[str, float]:
     return {"fpr": float(V[neg].mean()) if neg.any() else float("nan"),
             "fnr": float(1 - V[pos].mean()) if pos.any() else float("nan"),
             "mean_v": float(V.mean()), "mean_g": float(G.mean())}  # fmt: skip
+
+
+def reward_randfp(a: int, b: int, toks: list[int], rng: np.random.Generator, f0: float) -> float:
+    """Random false positives (research/10_e005b0_pilot.md §14): every correct answer is accepted;
+    every G = 0 response (valid-but-wrong or invalid) is accepted with a FRESH Bern(f0) coin."""
+    if tk.gold_reward(a, b, *tk.parse_completion(toks)) == 1.0:
+        return 1.0
+    return 1.0 if rng.random() < f0 else 0.0
