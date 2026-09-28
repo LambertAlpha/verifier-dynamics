@@ -78,8 +78,12 @@ def update(
     loss_v = float(loss.detach())
     finite = bool(np.isfinite(loss_v)) and bool(np.isfinite(gn))
     t1 = time.perf_counter()
+    before = torch.cat([q.detach().flatten() for q in net.parameters()])
     if finite:
         opt.step()
+    after = torch.cat([q.detach().flatten() for q in net.parameters()])
+    out["update_norm"] = float((after - before).norm())
+    out["clipped"] = float(gn > max_grad_norm)
     if timing is not None:
         timing["diag"] = t0 - td
         timing["fwd_bwd"] = t1 - t0

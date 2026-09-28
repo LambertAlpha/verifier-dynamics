@@ -74,3 +74,13 @@ def make_splits(seed: int) -> dict[str, list[tuple[int, int]]]:
         else:
             out["train"] += pairs
     return {k: sorted(v) for k, v in out.items()}
+
+
+CATEGORIES = ("no carry", "units carry", "three-digit")
+
+
+def category(a: int, b: int) -> str:
+    """Structural difficulty category (research/10_e005b0_pilot.md §10 A2)."""
+    if a + b >= 100:
+        return "three-digit"
+    return "units carry" if a % 10 + b % 10 >= 10 else "no carry"
