@@ -1,0 +1,75 @@
+{
+  "experiment_id": "E005b0-matrix-analysis",
+  "created_utc": "2026-09-28T20:14:06+00:00",
+  "git": {
+    "commit": "26793660bab0acfa2fe86fd94eb04aac582a0202",
+    "dirty": false
+  },
+  "config_sha256": "5f16147c585bca699bbb39eae2a25b2c63763316f3ff44ab1af81460a5753840",
+  "config": {
+    "experiment_id": "E005b0-matrix",
+    "protocol": "research/10_e005b0_pilot.md \u00a712",
+    "base_pointer": "configs/e005b/base_checkpoint_v2.json",
+    "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+    "verifiers": [
+      "clean",
+      "flip",
+      "deleted",
+      "exploit"
+    ],
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "clip": 1.0,
+    "steps": 1000,
+    "eval_every": 25,
+    "eval_samples_per_item": 4,
+    "eval_seed": 20261312,
+    "verifier_noise_seed": 20261320,
+    "max_concurrent": 2,
+    "integrity": {
+      "clean_final_sha256": {
+        "1": "7eedb6b4ae91e992",
+        "2": "7072deabbb5cbcc5",
+        "3": "8a4891d53f5a928e"
+      },
+      "calibration_runs": {
+        "1": "results/E005b0-calib-new-c1-s1/20260928T182829Z_ed04bed",
+        "2": "results/E005b0-calib-new-c1-s2/20260928T183143Z_3277a0d",
+        "3": "results/E005b0-calib-new-c1-s3/20260928T183244Z_3277a0d"
+      }
+    },
+    "labels": {
+      "final_evals": 4,
+      "effect": 0.05,
+      "exploit_rise": 0.05,
+      "window": 50
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "runs": {
+    "clean-s1": "results/E005b0-matrix-clean-s1/20260928T200026Z_02bec59",
+    "clean-s2": "results/E005b0-matrix-clean-s2/20260928T200128Z_02bec59",
+    "clean-s3": "results/E005b0-matrix-clean-s3/20260928T200229Z_02bec59",
+    "deleted-s1": "results/E005b0-matrix-deleted-s1/20260928T200639Z_02bec59",
+    "deleted-s2": "results/E005b0-matrix-deleted-s2/20260928T200741Z_02bec59",
+    "deleted-s3": "results/E005b0-matrix-deleted-s3/20260928T200842Z_02bec59",
+    "exploit-s1": "results/E005b0-matrix-exploit-s1/20260928T200943Z_02bec59",
+    "exploit-s2": "results/E005b0-matrix-exploit-s2/20260928T201043Z_02bec59",
+    "exploit-s3": "results/E005b0-matrix-exploit-s3/20260928T201145Z_02bec59",
+    "flip-s1": "results/E005b0-matrix-flip-s1/20260928T200330Z_02bec59",
+    "flip-s2": "results/E005b0-matrix-flip-s2/20260928T200434Z_02bec59",
+    "flip-s3": "results/E005b0-matrix-flip-s3/20260928T200536Z_02bec59"
+  }
+}
