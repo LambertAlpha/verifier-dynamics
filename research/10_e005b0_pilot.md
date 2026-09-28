@@ -466,3 +466,79 @@ selection: 68 checkpoints × 5,005 responses + confirmation, 22 s.
 2×2 directories; it was stopped before the first run finished, the partial seed-2 directory
 (aborted, no summary) was deleted, and the runs were relaunched with exact names. No committed
 data was affected.
+
+---
+
+## 12. Exploratory verifier matrix — protocol (frozen before any matrix run, 2026-09-28)
+
+**Question.** How do four reward rules change genuine learning (gold accuracy) and observable
+behaviour, from one calibrated base? **Not** a matched-static-error-rate experiment, **not** a
+failure-predictor evaluation, **not** evidence about other initial models. Exploratory; no
+hypothesis tests or minimum-detectable-difference claims from three seeds.
+
+**Fixed configuration (no recalibration).** Base `configs/e005b/base_checkpoint_v2.json` (SFT step
+600, sha `74865408…`); every run starts from it with a **fresh Adam**; gradient clip 1.0; T = 1000;
+RL seeds 1, 2, 3; P = 32, G = 8, temperature 1, group mean/std advantages, token-mean clipped loss,
+μ = 1, β = 0, lr 1e-4 — identical to the calibrated clean baseline (§10–§11). CPU, 4 threads;
+host `mac-mini-remote`; at most 2 concurrent runs; exact output paths.
+
+**Reward rules (unchanged, `vdyn.e005b.verifiers`):** V0 clean `V = G`; V1 independent symmetric
+flips with probability 0.2; V2 `V = 1` on the fixed prompt subset (`deleted_prompts(0.25, 20261305)`,
+by unordered pair), `V = G` elsewhere; V3 `V = 1` if correct or a valid number ending in 0.
+Anticipated structure (not hypotheses): V2's constant groups have exactly zero advantage, so those
+prompts give no direct gradient; V1 is affine in expectation (`E[V|G] = 0.2 + 0.6 G`); V3's false
+positives are available on every prompt.
+
+**RNG streams.** Prompt selection `torch.Generator(10000 + seed)`, policy sampling
+`torch.Generator(seed)` (both as in the calibration, so V0 must reproduce it bit-exactly),
+verifier noise `numpy.default_rng(SeedSequence([20261320, seed]))`, evaluation
+`torch.Generator(20261312)` per evaluation. Diagnostics use no RNG and do not touch parameters.
+
+**Evaluation.** Dev every 25 steps: 4 samples per item (temperature 1) + greedy, overall and per
+category (§10), computed exactly as in the calibration, plus mechanism measurements on the same
+samples. Test: see below.
+
+**Primary outcome.** Mean sampled dev gold accuracy over the final four evaluations (steps 925,
+950, 975, 1000) and its **paired difference from V0 under the same RL seed**; all three seed
+differences, their mean and range are reported.
+
+**Secondary.** Final-checkpoint sampled and greedy dev accuracy; per-category accuracy; batch gold
+and verifier trajectories; FPR `P(V=1|G=0)`, FNR `P(V=0|G=1)` (undefined when the denominator is 0,
+denominators reported), false-positive mass `P(V=1, G=0)`; mixed-reward groups under V and under G;
+valid-output rate; entropy; k3 KL to the base; clipping frequency, pre-clip and update norms.
+
+**Mechanism measurements** (training batches every step; dev samples at every evaluation; all
+runs, so every flaw is compared with V0 on the same items):
+- *V3:* frequency of valid answers ending in 0; `P(G=0 ∧ valid ∧ ends in 0)` (the exploitable
+  false-positive mass); frequency of the answer "0". A rising suffix rate alone is not evidence of
+  exploitation.
+- *V2:* training gold accuracy on prompts in the fixed-rule subset vs retained prompts; dev
+  accuracy on the dev items that belong to the fixed-rule subset vs the others (dev items were
+  never trained on; they are only *members of the same rule-defined subset*).
+- *V1:* verifier-reward variance, mixed groups under V vs under G. More mixed groups is not
+  assumed to mean better learning.
+
+**Descriptive labels (fixed now; not significance tests).** With `d_s` = primary(flaw) −
+primary(V0) for seed s:
+- *weakened learning*: mean `d` ≤ −0.05 and all three `d_s` < 0;
+- *little effect*: |mean `d`| < 0.05, or signs inconsistent across seeds;
+- *improved*: mean `d` ≥ +0.05 and all `d_s` > 0;
+- *exploited* (V3, additionally): in all three seeds the training false-positive mass
+  `P(G=0 ∧ valid ∧ ends in 0)` over the last 50 steps exceeds its first-50-step level by ≥ 0.05
+  **and** the batch verifier–gold gap `mean V − mean G` rises by ≥ 0.05 over the same windows.
+The 0.05 scale is about twice the clean seed spread seen in calibration (0.024); it is a
+description threshold, not a detection limit.
+
+**Integrity.** V0 seeds 1–3 run first; their final sha256 must equal the calibration runs
+(`7eedb6b4…`, `7072deab…`, `8a4891d5…`) and their dev evaluation logs must match; otherwise STOP.
+Failed or aborted runs are kept with a disposition record
+(`results/E005b0-matrix-dispositions.json`). No configuration is changed after flawed-verifier
+results are seen.
+
+**Test split.** Evaluated once, on the 12 final checkpoints, **only after** the matrix analysis
+script is committed (frozen) and the dev analysis is complete. **Disclosure:** this test split was
+inspected during the pilot (§9); it is a previously-seen held-out split, not a newly sealed
+confirmatory test.
+
+**Costs.** As §10 A5 (responses, tokens, backward calls, gold-checker and verifier calls, wall
+time, memory), separating training from diagnostic/evaluation cost.

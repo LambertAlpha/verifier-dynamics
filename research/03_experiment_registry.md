@@ -3956,3 +3956,16 @@ three-digit 0.06 → 0.08) vs +0.37 (clip 10, three-digit 0.06 → 0.41 after a 
 256k training responses and gold-checker calls, 205k evaluation responses and gold-checker calls.
 Verifier rules at the new base: V1 FPR/FNR 0.20/0.20; V2 25% deleted; V3 FPR 0.118. The 4 × 3
 matrix is not run.
+
+### E005b-0 — exploratory verifier matrix protocol (frozen before running; 2026-09-28)
+
+`research/10_e005b0_pilot.md` §12; `configs/e005b/matrix.toml`. 4 reward rules (V0 clean, V1 flip
+0.2, V2 constant 1 on the fixed 25% subset, V3 correct-or-ends-in-0) × RL seeds 1–3 from base v2
+(sha `74865408…`), clip 1.0, T = 1000, fresh Adam, all else as the calibrated clean baseline.
+Primary: mean sampled dev gold accuracy over the final 4 evaluations and its paired difference from
+V0 per seed (all three reported; no tests). Secondary and mechanism measurements (V3 false-positive
+suffix mass and "0" rate; V2 fixed-rule subset vs retained on train and dev; V1 reward variability)
+on the same items for all runs. Descriptive labels fixed in advance (±0.05 with sign consistency;
+V3 "exploited" needs a ≥ 0.05 rise in false-positive mass and in the V − G gap). Integrity: V0 must
+reproduce the calibration runs bit-exactly. Test evaluated once after the analysis is frozen; it
+was inspected in the pilot and is disclosed as not newly sealed.
