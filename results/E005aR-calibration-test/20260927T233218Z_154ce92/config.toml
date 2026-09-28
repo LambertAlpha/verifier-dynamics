@@ -1,0 +1,78 @@
+# E005a-R frozen constants (registry "E005a-R — pre-registration"; research/09_e005ar_design.md).
+# Scripts assert that they match the code.
+experiment_id = "E005a-R"
+registry = "research/03_experiment_registry.md (E005a-R — pre-registration)"
+design_doc = "research/09_e005ar_design.md"
+root_seed = 20261201
+streams = ["anchors", "design panel", "test panel", "design Monte Carlo", "test Monte Carlo", "theory"]
+
+[anchors]
+run = "results/E005aR-anchors/20260927T214225Z_0693aa6"
+tau = { small = 0.0030775117222044015, medium = 0.020992935971183818, large = 0.078780131088946 }
+
+[environment]
+level = "reward"
+prompts = 8
+classes = 4
+r = [4, 8, 16]
+base_types = { ordinary = [0.3, 0.7], lowvar = [0.08, 0.2], lowA = [0.005, 0.02] }
+incorrect_dirichlet = 2.0
+d = [64, 256, 1024]
+spectra = ["bulk", "flat", "spiked"]
+spectrum_levels = { bulk = 0.25, flat = 1.0, spiked_mean = 1.0, spiked_power = -0.5 }
+affine = { a = [0.5, 0.95], c0_max_frac = 0.3 }
+constructions = ["shortcut", "deletion", "partial"]
+alpha_clean_null = [-0.6, -0.3, 0.0]
+alpha_dose = [-0.3, 0.0]
+alpha_nuisance_only = [-0.3, 0.0]
+alpha_partial = [-0.3]
+doses = ["small", "medium", "large"]
+dose_mc_groups = 200000
+bisection_iters = 40
+
+[budgets]
+N = [32, 64, 128, 256, 512, 1024]
+N_primary = [64, 128, 256, 512, 1024]
+m = 8
+R = 100
+k = [4, 8, 16, 32, 64]
+
+[representations]
+candidates = ["R2", "R3", "R4"]
+control = "R1"
+baseline = "R0"
+ceiling = "R5"
+estimator = "E3 (vdyn.e005.estimators, unchanged)"
+null_test = { kind = "group sign-flip on the residualized projected U-statistic T", B = 199, level = 0.05 }
+legacy_test = "E3 - 1.645 jackknife SE > 0 (E005a; reported only)"
+r4_probe = "class probabilities p(b|x) on the 8 prompt types; W = diag(w_x / p_xb); exact JVP"
+r4_sensitivity = ["sub", "dup", "scale", "const", "surf"]
+
+[gate]
+fpr_pooled_max = 0.05
+fpr_point_max = 0.10
+fpr_point_fraction = 0.90
+sdb_null_max = 0.5
+spearman_min = 0.70
+power_medium_min = 0.80
+nonfinite_max = 0.01
+snr_ratio_min = 2.0
+random_power_margin = 0.20
+max_budget = 1024
+
+[decision]
+retention_min = 0.5
+r4_oracle_spearman_min = 0.7
+large_power_min = 0.80
+
+[theory]
+tp_r1_band = [0.8, 1.25]
+tp_r1_fraction = 0.80
+tp_r2_band = [0.8, 1.25]
+tp_r2_fraction = 0.80
+tp_r3_band = [0.67, 1.5]
+tp_r3_fraction = 0.70
+tp_r4_band = [0.67, 1.5]
+tp_r4_fraction = 0.80
+tp_r5_tolerance = 0.15
+tp_r6_fraction = 0.667

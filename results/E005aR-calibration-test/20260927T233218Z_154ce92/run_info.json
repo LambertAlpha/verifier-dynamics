@@ -1,0 +1,8 @@
+{
+ "split": "test",
+ "n_points": 1728,
+ "seconds": 4156.75368545801,
+ "reps_npz_sha256": "3c0cf917341ea8fc84e33e91c016cede448caebfec3b1b3ccad4e3e1d06821af",
+ "reps_npz_committed": false,
+ "peak_rss_children": 1739505664
+}
