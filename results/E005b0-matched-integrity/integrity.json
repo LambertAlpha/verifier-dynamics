@@ -1,0 +1,24 @@
+{
+ "purpose": "confirm the rl.score refactor (randfp dispatch) leaves the matrix rules bit-identical (\u00a714.1)",
+ "commit": "6ecfb37",
+ "host": "mac-mini-remote",
+ "runs": {
+  "clean-s1": {
+   "rerun": "7eedb6b4ae91e992ab505c3ad8fec6953fe853e4100c8ad50148ca0105427448",
+   "committed": "7eedb6b4ae91e992ab505c3ad8fec6953fe853e4100c8ad50148ca0105427448",
+   "equal": true
+  },
+  "flip-s1": {
+   "rerun": "34a088fddba96f7ec5affd501a0a161313e0a09c5db1d7e3e4905f5e885ae84d",
+   "committed": "34a088fddba96f7ec5affd501a0a161313e0a09c5db1d7e3e4905f5e885ae84d",
+   "equal": true
+  },
+  "exploit-s1": {
+   "rerun": "321f92a7aa5469264c278ce30cda3f7c5b7e36d530a68145b65024150673d81e",
+   "committed": "321f92a7aa5469264c278ce30cda3f7c5b7e36d530a68145b65024150673d81e",
+   "equal": true
+  }
+ },
+ "pass": true,
+ "note": "reruns of matrix_run.py moved out of the matrix result dirs; checkpoints not copied"
+}
