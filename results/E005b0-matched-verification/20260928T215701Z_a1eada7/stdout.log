@@ -1,0 +1,14 @@
+{
+ "pass": true,
+ "f0": 0.1083,
+ "fpr_v3": 0.11761901518763196,
+ "abs_diff": 0.009319015187631965,
+ "tolerance": 0.015,
+ "reasons": [],
+ "f0_file_sha256": "f52fa6cff1303e2516b54efe711f00725e0ab62c3bc45dcf01402b6b74e78de6",
+ "note": "global, initial-policy matching only; per-category and per-prompt matching are not required and not claimed"
+}
+clean    FPR 0.0000 [0.0, 0.0] FNR 0.0000 acc 0.3882 FP mass 0.0000 mixed 0.790 | by cat FPR no carry: 0.000 units carry: 0.000 three-digit: 0.000
+exploit  FPR 0.1176 [0.1099, 0.1252] FNR 0.0000 acc 0.3882 FP mass 0.0720 mixed 0.887 | by cat FPR no carry: 0.099 units carry: 0.139 three-digit: 0.117
+randfp   FPR 0.1084 [0.1035, 0.1135] FNR 0.0000 acc 0.3882 FP mass 0.0663 mixed 0.892 | by cat FPR no carry: 0.105 units carry: 0.110 three-digit: 0.109
+run directory: results/E005b0-matched-verification/20260928T215701Z_a1eada7
