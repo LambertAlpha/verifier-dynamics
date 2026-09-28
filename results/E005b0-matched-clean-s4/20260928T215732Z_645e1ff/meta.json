@@ -1,0 +1,79 @@
+{
+  "experiment_id": "E005b0-matched-clean-s4",
+  "created_utc": "2026-09-28T21:57:32+00:00",
+  "git": {
+    "commit": "645e1fff71861259e377b8723f4a322913730da8",
+    "dirty": false
+  },
+  "config_sha256": "1d53f9bbaf19740771999e1c7c964ea76978ab598fa762ebcae5e63e99345bad",
+  "config": {
+    "experiment_id": "E005b0-matched",
+    "base_pointer": "configs/e005b/base_checkpoint_v2.json",
+    "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+    "arms": [
+      "clean",
+      "randfp",
+      "exploit"
+    ],
+    "seeds": [
+      4,
+      5,
+      6
+    ],
+    "clip": 1.0,
+    "steps": 1000,
+    "eval_every": 25,
+    "eval_samples_per_item": 4,
+    "eval_seed": 20261312,
+    "verifier_noise_seed": 20261320,
+    "f0_file": "configs/e005b/matched_f0.json",
+    "audit": {
+      "prompts_per_audit": 3000,
+      "samples_per_prompt": 8,
+      "permutation_seed": 20261340,
+      "calibration_policy_seed": 20261341,
+      "verification_policy_seed": 20261342,
+      "verification_coin_seed": 20261343,
+      "bootstrap_seed": 20261344,
+      "bootstrap_resamples": 2000,
+      "tolerance": 0.015,
+      "f0_decimals": 4
+    },
+    "labels": {
+      "final_evals": 4,
+      "effect": 0.05,
+      "window": 50
+    }
+  },
+  "python": "3.12.13 (main, Jun 23 2026, 15:44:24) [Clang 22.1.3 ]",
+  "platform": "macOS-15.3.1-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "host": "Lamberts-Mac-mini.local",
+  "device": "cpu",
+  "threads": 4,
+  "argv": [
+    "experiments/e005b/matched_run.py",
+    "clean",
+    "4",
+    "--verification",
+    "results/E005b0-matched-verification/20260928T215701Z_a1eada7"
+  ],
+  "rule": "clean",
+  "seed": 4,
+  "smoke": false,
+  "f0": null,
+  "f0_file_sha256": "f52fa6cff1303e2516b54efe711f00725e0ab62c3bc45dcf01402b6b74e78de6",
+  "verification_run": "results/E005b0-matched-verification/20260928T215701Z_a1eada7",
+  "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+  "clip": 1.0,
+  "verifier_noise_seed": 20261320,
+  "pilot_config_sha256": "5204b9cc3e90cdfb5409c657600deb88dc7e4eceb4b707a75bee4a638ca952e2",
+  "matrix_config_sha256": "5f16147c585bca699bbb39eae2a25b2c63763316f3ff44ab1af81460a5753840"
+}

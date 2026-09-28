@@ -1,0 +1,33 @@
+{
+ "rule": "randfp",
+ "seed": 5,
+ "steps": 1000,
+ "smoke": false,
+ "f0": 0.1083,
+ "f0_file_sha256": "f52fa6cff1303e2516b54efe711f00725e0ab62c3bc45dcf01402b6b74e78de6",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "25c0badc6af6095a2c0eeabd31e11a8dcc5f947cfa3ce25a65755fa4c0866018",
+ "seconds_total": 60.291797125013545,
+ "seconds": {
+  "gen": 19.485758169495966,
+  "score": 0.3584840563707985,
+  "diag": 10.731337418430485,
+  "fwd_bwd": 14.228235822054558,
+  "optim": 1.9476550424005836,
+  "mech": 0.4003156775725074,
+  "eval": 12.783412415941712
+ },
+ "cost": {
+  "train_responses": 256000,
+  "train_completion_tokens": 892550,
+  "train_prompt_tokens": 1792000,
+  "backward_calls": 1000,
+  "backward_sequences": 256000,
+  "train_verifier_calls": 256000,
+  "train_gold_calls": 256000,
+  "eval_responses": 205205,
+  "eval_gold_calls": 205205
+ },
+ "peak_rss_mb": 1263.5625,
+ "note": "verifier rules are programmatic functions of the gold checker, so every verifier call also evaluates gold"
+}

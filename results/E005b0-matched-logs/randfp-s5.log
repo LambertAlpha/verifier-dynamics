@@ -1,0 +1,74 @@
+{"step": 0, "sampled": 0.3793706293706294, "greedy": 0.5664335664335665}
+{"step": 25, "sampled": 0.446, "greedy": 0.593, "verifier_batch": 0.668, "gold_batch": 0.633, "fp_ends0_dev": 0.046, "modal_dev": [111, 0.025]}
+{"step": 50, "sampled": 0.48, "greedy": 0.61, "verifier_batch": 0.586, "gold_batch": 0.543, "fp_ends0_dev": 0.077, "modal_dev": [111, 0.024]}
+{"step": 75, "sampled": 0.515, "greedy": 0.66, "verifier_batch": 0.586, "gold_batch": 0.547, "fp_ends0_dev": 0.058, "modal_dev": [111, 0.04]}
+{"step": 100, "sampled": 0.535, "greedy": 0.694, "verifier_batch": 0.629, "gold_batch": 0.586, "fp_ends0_dev": 0.062, "modal_dev": [111, 0.046]}
+{"step": 125, "sampled": 0.538, "greedy": 0.667, "verifier_batch": 0.629, "gold_batch": 0.574, "fp_ends0_dev": 0.066, "modal_dev": [110, 0.022]}
+{"step": 150, "sampled": 0.563, "greedy": 0.681, "verifier_batch": 0.699, "gold_batch": 0.652, "fp_ends0_dev": 0.075, "modal_dev": [102, 0.025]}
+{"step": 175, "sampled": 0.57, "greedy": 0.677, "verifier_batch": 0.535, "gold_batch": 0.492, "fp_ends0_dev": 0.064, "modal_dev": [102, 0.028]}
+{"step": 200, "sampled": 0.552, "greedy": 0.648, "verifier_batch": 0.574, "gold_batch": 0.531, "fp_ends0_dev": 0.057, "modal_dev": [111, 0.031]}
+{"step": 225, "sampled": 0.535, "greedy": 0.618, "verifier_batch": 0.66, "gold_batch": 0.621, "fp_ends0_dev": 0.068, "modal_dev": [126, 0.023]}
+{"step": 250, "sampled": 0.601, "greedy": 0.717, "verifier_batch": 0.766, "gold_batch": 0.738, "fp_ends0_dev": 0.071, "modal_dev": [110, 0.028]}
+{"step": 275, "sampled": 0.618, "greedy": 0.702, "verifier_batch": 0.656, "gold_batch": 0.602, "fp_ends0_dev": 0.053, "modal_dev": [103, 0.023]}
+{"step": 300, "sampled": 0.612, "greedy": 0.717, "verifier_batch": 0.754, "gold_batch": 0.719, "fp_ends0_dev": 0.036, "modal_dev": [126, 0.024]}
+{"step": 325, "sampled": 0.653, "greedy": 0.74, "verifier_batch": 0.715, "gold_batch": 0.691, "fp_ends0_dev": 0.068, "modal_dev": [103, 0.026]}
+{"step": 350, "sampled": 0.612, "greedy": 0.671, "verifier_batch": 0.57, "gold_batch": 0.531, "fp_ends0_dev": 0.102, "modal_dev": [110, 0.028]}
+{"step": 375, "sampled": 0.657, "greedy": 0.726, "verifier_batch": 0.648, "gold_batch": 0.621, "fp_ends0_dev": 0.06, "modal_dev": [104, 0.022]}
+{"step": 400, "sampled": 0.611, "greedy": 0.677, "verifier_batch": 0.633, "gold_batch": 0.578, "fp_ends0_dev": 0.07, "modal_dev": [103, 0.024]}
+{"step": 425, "sampled": 0.649, "greedy": 0.724, "verifier_batch": 0.793, "gold_batch": 0.766, "fp_ends0_dev": 0.033, "modal_dev": [126, 0.021]}
+{"step": 450, "sampled": 0.681, "greedy": 0.766, "verifier_batch": 0.82, "gold_batch": 0.805, "fp_ends0_dev": 0.067, "modal_dev": [103, 0.022]}
+{"step": 475, "sampled": 0.725, "greedy": 0.804, "verifier_batch": 0.859, "gold_batch": 0.844, "fp_ends0_dev": 0.054, "modal_dev": [126, 0.02]}
+{"step": 500, "sampled": 0.714, "greedy": 0.782, "verifier_batch": 0.879, "gold_batch": 0.863, "fp_ends0_dev": 0.058, "modal_dev": [110, 0.026]}
+{"step": 525, "sampled": 0.72, "greedy": 0.786, "verifier_batch": 0.84, "gold_batch": 0.824, "fp_ends0_dev": 0.069, "modal_dev": [126, 0.023]}
+{"step": 550, "sampled": 0.656, "greedy": 0.712, "verifier_batch": 0.578, "gold_batch": 0.504, "fp_ends0_dev": 0.068, "modal_dev": [110, 0.026]}
+{"step": 575, "sampled": 0.709, "greedy": 0.772, "verifier_batch": 0.668, "gold_batch": 0.648, "fp_ends0_dev": 0.04, "modal_dev": [122, 0.019]}
+{"step": 600, "sampled": 0.714, "greedy": 0.772, "verifier_batch": 0.809, "gold_batch": 0.785, "fp_ends0_dev": 0.052, "modal_dev": [104, 0.023]}
+{"step": 625, "sampled": 0.736, "greedy": 0.788, "verifier_batch": 0.828, "gold_batch": 0.793, "fp_ends0_dev": 0.067, "modal_dev": [104, 0.021]}
+{"step": 650, "sampled": 0.748, "greedy": 0.809, "verifier_batch": 0.844, "gold_batch": 0.832, "fp_ends0_dev": 0.056, "modal_dev": [104, 0.02]}
+{"step": 675, "sampled": 0.709, "greedy": 0.748, "verifier_batch": 0.602, "gold_batch": 0.574, "fp_ends0_dev": 0.058, "modal_dev": [104, 0.026]}
+{"step": 700, "sampled": 0.68, "greedy": 0.712, "verifier_batch": 0.695, "gold_batch": 0.688, "fp_ends0_dev": 0.036, "modal_dev": [104, 0.022]}
+{"step": 725, "sampled": 0.709, "greedy": 0.734, "verifier_batch": 0.777, "gold_batch": 0.754, "fp_ends0_dev": 0.053, "modal_dev": [104, 0.022]}
+{"step": 750, "sampled": 0.725, "greedy": 0.765, "verifier_batch": 0.695, "gold_batch": 0.637, "fp_ends0_dev": 0.05, "modal_dev": [126, 0.021]}
+{"step": 775, "sampled": 0.699, "greedy": 0.732, "verifier_batch": 0.848, "gold_batch": 0.805, "fp_ends0_dev": 0.072, "modal_dev": [104, 0.025]}
+{"step": 800, "sampled": 0.75, "greedy": 0.797, "verifier_batch": 0.789, "gold_batch": 0.766, "fp_ends0_dev": 0.037, "modal_dev": [104, 0.023]}
+{"step": 825, "sampled": 0.715, "greedy": 0.739, "verifier_batch": 0.695, "gold_batch": 0.645, "fp_ends0_dev": 0.058, "modal_dev": [104, 0.023]}
+{"step": 850, "sampled": 0.744, "greedy": 0.776, "verifier_batch": 0.828, "gold_batch": 0.801, "fp_ends0_dev": 0.036, "modal_dev": [126, 0.02]}
+{"step": 875, "sampled": 0.718, "greedy": 0.749, "verifier_batch": 0.848, "gold_batch": 0.832, "fp_ends0_dev": 0.049, "modal_dev": [104, 0.02]}
+{"step": 900, "sampled": 0.753, "greedy": 0.798, "verifier_batch": 0.758, "gold_batch": 0.734, "fp_ends0_dev": 0.042, "modal_dev": [126, 0.022]}
+{"step": 925, "sampled": 0.723, "greedy": 0.763, "verifier_batch": 0.816, "gold_batch": 0.801, "fp_ends0_dev": 0.072, "modal_dev": [126, 0.021]}
+{"step": 950, "sampled": 0.69, "greedy": 0.719, "verifier_batch": 0.715, "gold_batch": 0.66, "fp_ends0_dev": 0.049, "modal_dev": [104, 0.022]}
+{"step": 975, "sampled": 0.676, "greedy": 0.715, "verifier_batch": 0.75, "gold_batch": 0.711, "fp_ends0_dev": 0.065, "modal_dev": [122, 0.022]}
+{"step": 1000, "sampled": 0.722, "greedy": 0.745, "verifier_batch": 0.695, "gold_batch": 0.648, "fp_ends0_dev": 0.049, "modal_dev": [126, 0.02]}
+{
+ "rule": "randfp",
+ "seed": 5,
+ "steps": 1000,
+ "smoke": false,
+ "f0": 0.1083,
+ "f0_file_sha256": "f52fa6cff1303e2516b54efe711f00725e0ab62c3bc45dcf01402b6b74e78de6",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "25c0badc6af6095a2c0eeabd31e11a8dcc5f947cfa3ce25a65755fa4c0866018",
+ "seconds_total": 60.291797125013545,
+ "seconds": {
+  "gen": 19.485758169495966,
+  "score": 0.3584840563707985,
+  "diag": 10.731337418430485,
+  "fwd_bwd": 14.228235822054558,
+  "optim": 1.9476550424005836,
+  "mech": 0.4003156775725074,
+  "eval": 12.783412415941712
+ },
+ "cost": {
+  "train_responses": 256000,
+  "train_completion_tokens": 892550,
+  "train_prompt_tokens": 1792000,
+  "backward_calls": 1000,
+  "backward_sequences": 256000,
+  "train_verifier_calls": 256000,
+  "train_gold_calls": 256000,
+  "eval_responses": 205205,
+  "eval_gold_calls": 205205
+ },
+ "peak_rss_mb": 1263.5625
+}
+run directory: results/E005b0-matched-randfp-s5/20260928T220139Z_645e1ff
