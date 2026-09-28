@@ -1,0 +1,30 @@
+# E005b-0 matched-initial-error experiment (research/10_e005b0_pilot.md §14).
+experiment_id = "E005b0-matched"
+base_pointer = "configs/e005b/base_checkpoint_v2.json"
+base_sha256 = "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e"
+arms = ["clean", "randfp", "exploit"]
+seeds = [4, 5, 6]
+clip = 1.0
+steps = 1000
+eval_every = 25
+eval_samples_per_item = 4
+eval_seed = 20261312
+verifier_noise_seed = 20261320
+f0_file = "configs/e005b/matched_f0.json"
+
+[audit]
+prompts_per_audit = 3000
+samples_per_prompt = 8
+permutation_seed = 20261340
+calibration_policy_seed = 20261341
+verification_policy_seed = 20261342
+verification_coin_seed = 20261343
+bootstrap_seed = 20261344
+bootstrap_resamples = 2000
+tolerance = 0.015
+f0_decimals = 4
+
+[labels]
+final_evals = 4
+effect = 0.05
+window = 50

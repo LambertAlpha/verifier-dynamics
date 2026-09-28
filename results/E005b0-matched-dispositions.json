@@ -1,0 +1,55 @@
+{
+ "experiment": "E005b0-matched (research/10_e005b0_pilot.md \u00a714-\u00a715)",
+ "integrity_reruns": {
+  "disposition": "completed, preserved",
+  "dir": "results/E005b0-matched-integrity",
+  "result": "final hashes equal the committed matrix clean/flip/exploit s1"
+ },
+ "calibration_audit": {
+  "disposition": "completed, preserved",
+  "f0": 0.1083,
+  "dir": "results/E005b0-matched-calibration/20260928T215638Z_f306f38"
+ },
+ "verification_audit": {
+  "disposition": "completed, PASS",
+  "abs_diff": 0.0093,
+  "dir": "results/E005b0-matched-verification/20260928T215701Z_a1eada7"
+ },
+ "runs": {
+  "clean-s4": {
+   "disposition": "completed (no STOP)"
+  },
+  "clean-s5": {
+   "disposition": "completed (no STOP)"
+  },
+  "clean-s6": {
+   "disposition": "completed (no STOP)"
+  },
+  "randfp-s4": {
+   "disposition": "completed (no STOP)"
+  },
+  "randfp-s5": {
+   "disposition": "completed (no STOP)"
+  },
+  "randfp-s6": {
+   "disposition": "completed (no STOP)"
+  },
+  "exploit-s4": {
+   "disposition": "completed (no STOP)"
+  },
+  "exploit-s5": {
+   "disposition": "completed (no STOP)"
+  },
+  "exploit-s6": {
+   "disposition": "completed (no STOP)"
+  }
+ },
+ "checkpoints": "kept on mac-mini-remote under /tmp/e005b_matched_stage/runs/<name>/<stamp>/ckpt (not in git)",
+ "mini_precommit_copies": "the mini's untracked calibration/verification outputs were checked identical (f0 file hash) and moved to /tmp/e005b_matched_stage/precommit*/ before pulling the committed copies",
+ "engineering_dry_run": {
+  "disposition": "discarded; not evidence",
+  "settings": "throwaway clone; audits 100 prompts, non-official seeds, tolerance 1.0; toy f0 0.1006; T=20 with official RL seeds 4-6",
+  "effect_on_protocol": "none; disclosed in \u00a714.1"
+ },
+ "aborted_or_failed": []
+}

@@ -3995,3 +3995,12 @@ paired differences per seed. Dev only.
 Implementation (§14.1): scripts `matching_audit.py`, `matched_run.py`, `matched_analysis.py` (analysis
 frozen before any run); fail-closed gates on f0 calibration/verification; engineering dry run in a
 discarded clone (toy settings, but official RL seeds 4–6 at T = 20) disclosed.
+
+### E005b-0 — matched-initial-error experiment: results (2026-09-28)
+f0 = 0.1083 (calibration); verification PASS (V3 FPR 0.1176, |diff| 0.0093 ≤ 0.015; VR 0.1084; FNR 0).
+Primary (sampled dev, last 4 evals), paired per seed 4/5/6: VR − V0 −0.002/−0.010/+0.007 (little
+difference); V3 − V0 −0.741/−0.706/−0.724; V3 − VR −0.739/−0.697/−0.731. V3's batch FPR ≥ 0.5 by
+steps 7–11 → ≈ 1.0; wrong-suffix mass → 0.98–0.99; dev modal-answer share 0.46–0.64 (seed-dependent
+answers ending in 0); mixed groups under V → ≤ 0.006. Static initial error rates are insufficient
+here; VR vs V3 confounds input-independence, consistency and base reachability. Dev only; 3 seeds.
+

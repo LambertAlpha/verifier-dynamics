@@ -1,0 +1,59 @@
+{
+  "experiment_id": "E005b0-posthoc-matched-early",
+  "created_utc": "2026-09-28T22:09:09+00:00",
+  "git": {
+    "commit": "23c0a24185fa1162289bcd3af20ffca41f6014e0",
+    "dirty": false
+  },
+  "config_sha256": "1d53f9bbaf19740771999e1c7c964ea76978ab598fa762ebcae5e63e99345bad",
+  "config": {
+    "experiment_id": "E005b0-matched",
+    "base_pointer": "configs/e005b/base_checkpoint_v2.json",
+    "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+    "arms": [
+      "clean",
+      "randfp",
+      "exploit"
+    ],
+    "seeds": [
+      4,
+      5,
+      6
+    ],
+    "clip": 1.0,
+    "steps": 1000,
+    "eval_every": 25,
+    "eval_samples_per_item": 4,
+    "eval_seed": 20261312,
+    "verifier_noise_seed": 20261320,
+    "f0_file": "configs/e005b/matched_f0.json",
+    "audit": {
+      "prompts_per_audit": 3000,
+      "samples_per_prompt": 8,
+      "permutation_seed": 20261340,
+      "calibration_policy_seed": 20261341,
+      "verification_policy_seed": 20261342,
+      "verification_coin_seed": 20261343,
+      "bootstrap_seed": 20261344,
+      "bootstrap_resamples": 2000,
+      "tolerance": 0.015,
+      "f0_decimals": 4
+    },
+    "labels": {
+      "final_evals": 4,
+      "effect": 0.05,
+      "window": 50
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "post_hoc": true
+}

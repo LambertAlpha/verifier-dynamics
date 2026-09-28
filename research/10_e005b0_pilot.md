@@ -677,3 +677,79 @@ test-split evaluation is planned for this experiment (dev only).
 - Integrity check planned before the audits: re-run matrix `clean`, `flip` and `exploit` s1 with
   the refactored `rl.score` and require their final state hashes to equal the committed matrix
   runs (`7eedb6b4…`, `34a088fd…`, `321f92a7…`).
+
+## 15. Matched-initial-error experiment — results (2026-09-28)
+
+All steps ran as frozen in §14 / §14.1 on `mac-mini-remote`, sequentially, from a clean tree.
+
+**Integrity.** Re-running matrix `clean`, `flip` and `exploit` s1 with the refactored `rl.score`
+reproduced the committed final state hashes bit-for-bit (`results/E005b0-matched-integrity/`).
+
+**Matching audit (initial policy = base v2).** Calibration: 3000 train prompts × 8 samples, V3
+FPR = 0.1083 (prompt-cluster 95% CI 0.1014–0.1160; 14 786 G = 0 responses) → **f0 = 0.1083**,
+committed (`a1eada7`) before verification. Verification: 3000 disjoint prompts × 8 fresh samples.
+
+| verification audit | FPR [95% CI] | FNR | accuracy | FP mass | mixed groups |
+|---|---|---|---|---|---|
+| V0 clean | 0 | 0 | 0.388 [0.378, 0.399] | 0 | 0.790 |
+| VR (f0 = 0.1083, fresh coins) | 0.108 [0.104, 0.114] | 0 | 0.388 | 0.066 [0.063, 0.070] | 0.892 |
+| V3 ends-in-0 | 0.118 [0.110, 0.125] | 0 | 0.388 | 0.072 [0.067, 0.077] | 0.887 |
+
+|FPR_V3 − f0| = 0.0093 ≤ 0.015 → **PASS**. By category (verification), FPR V3 / VR: no carry
+0.099 / 0.106, units carry 0.139 / 0.110, three-digit 0.117 / 0.109; base accuracy 0.585 / 0.461 /
+0.240. Matching is global and initial only; V3's per-category FPR is not flat, and V3 was ≈ 0.009
+more lenient overall on the verification samples.
+
+**Primary outcome** (mean sampled dev gold accuracy, final four evaluations; start 0.379):
+
+| seed | V0 | VR | V3 | VR − V0 | V3 − V0 | V3 − VR |
+|---|---|---|---|---|---|---|
+| 4 | 0.746 | 0.744 | 0.005 | −0.002 | −0.741 | −0.739 |
+| 5 | 0.712 | 0.703 | 0.006 | −0.010 | −0.706 | −0.697 |
+| 6 | 0.743 | 0.750 | 0.019 | +0.007 | −0.724 | −0.731 |
+| mean | | | | −0.001 (SD 0.008) | −0.724 | −0.722 |
+
+Labels (§12 rule): VR − V0 "little difference"; V3 − V0 and V3 − VR "lower" (all seeds). Greedy
+and final-checkpoint outcomes agree (V3 − VR greedy −0.757, range −0.772 to −0.731). V0 for the
+fresh seeds 4–6 (0.71–0.75) is in the range of the matrix's V0 seeds 1–3 (0.74–0.76).
+
+**Mechanisms.**
+- *Realized FPR.* VR stayed at f0 throughout (last-50 window 0.109–0.113); its batch verifier
+  mean matched `f0 + (1 − f0)·gold` to within 0.003 in every window (affine check). V3's batch FPR
+  rose from 0.10–0.17 at step 1 to ≥ 0.5 by steps 7–11 (post hoc, `E005b0-posthoc-matched-early`)
+  and to 0.999–1.000 in the last 50 steps. **The initial match lasted fewer than ~10 of 1000
+  steps.**
+- *Wrong-suffix mass* `P(G=0, valid, ends in 0)`: V3 train 0.55–0.60 (first 50 steps) → 0.98–0.99
+  (last 50); dev 0.98–0.99 (last four evaluations). V0 and VR 0.04–0.06.
+- *Constant-output concentration* (dev, last four evaluations): V3 modal-answer share 0.46–0.64,
+  with the top two answers ≈ 80% of samples — 100 & 30 (s4), 10 & 160 (s5), 100 & 80 (s6). This
+  is collapse onto a small, seed-dependent set of answers ending in 0, not always onto "100". V0
+  and VR: 0.02–0.03 (no concentration).
+- *Signal.* Mixed groups under V: V3 0.48–0.54 (first 50 steps) → ≤ 0.006 (last 50), which is
+  the matrix's zero-variance absorbing state. VR 0.82–0.85 → 0.38–0.40, i.e. *more* mixed groups
+  than V0 (0.73–0.77 → 0.30), because the random coins inject variance into all-wrong groups.
+- *Per category*, VR − V0: no carry +0.051 (all seeds > 0), units carry −0.047 (all < 0),
+  three-digit −0.014 (mixed). These are secondary. There are 9 category comparisons, and the
+  per-category dev estimates are noisy (±0.1 between evaluations), so they are not interpreted.
+
+**Interpretation (bounded).** At matched initial global FPR, FNR, accuracy and FP mass, the two
+reward structures produced opposite outcomes in all three seeds: random false positives were
+indistinguishable from clean (|VR − V0| ≤ 0.010), and the structured, input-independent false
+positives of V3 destroyed learning (−0.72). **Static initial error rates are insufficient to predict
+the training outcome in this setting.** Limits:
+- VR and V3 differ in several ways at once:
+  - input-independence (one pattern satisfies every prompt);
+  - consistency (a deterministic rule versus fresh coins);
+  - reachability from the base (≈ 7% of base samples are already wrong answers ending in 0).
+  
+  This experiment does not separate them, and it is not a test of accessibility causality.
+- The VR null also reflects the optimizer: an affine-in-expectation reward only rescales the
+  expected gradient by `1 − f0`, and Adam is largely insensitive to such rescaling.
+- There are 3 seeds, one tiny model and one task; the results are dev only, with no test evaluation.
+
+**Cost.** 9 runs, 9.0 min wall-clock in total (≈ 60 s each), 2.30 M training responses, peak RSS
+1.28 GB; audits ≈ 1 min.
+
+**Dispositions.** See `results/E005b0-matched-dispositions.json`. All 9 runs completed. The dry
+run (§14.1) was discarded, not evidence. Checkpoints remain on the mini under
+`/tmp/e005b_matched_stage/runs/`.
