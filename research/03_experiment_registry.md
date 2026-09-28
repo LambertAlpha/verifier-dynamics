@@ -3942,3 +3942,17 @@ fallback (0.15 / 0.65), then stop. Old base kept as the low-coverage control. (A
 / adoption (gain ≥ 0.05) rules; confirmation with seeds 2–3. Test not evaluated. (A4–A5)
 per-category logs, update norms, full cost accounting including gold-checker calls. (A6) the
 original seed-1 run must reproduce bit-exactly after the additive code changes.
+
+### E005b-0 — calibration round results (clean only; 2026-09-28)
+
+`research/10_e005b0_pilot.md` §11; commits `5e4c97b` (amendment) … `bb03536`. Integrity: the
+original seed-1 pilot re-ran bit-identically after the code changes. **Coverage-aware base** (dev
+only, primary rule, confirmed on an independent seed): SFT step 600, dev sampled 0.38 with
+categories 0.57 / 0.43 / 0.25 (old base 0.20; 0.36 / 0.30 / 0.06). **2×2 (seed 1, T = 1000):** new
+base gains +0.38 under clip 1 and 10 (tied → keep clip 1, frozen rule); old base +0.20 (clip 1,
+three-digit 0.06 → 0.08) vs +0.37 (clip 10, three-digit 0.06 → 0.41 after a late jump at ≈ step
+850; one seed, not attributable). **Confirmation** (new base, clip 1, seeds 1–3): gains 0.38 /
+0.36 / 0.37, three-digit 0.26 → 0.68–0.72, all stable — pass. Cost per 1000-step run: 60 s, 1.2 GB,
+256k training responses and gold-checker calls, 205k evaluation responses and gold-checker calls.
+Verifier rules at the new base: V1 FPR/FNR 0.20/0.20; V2 25% deleted; V3 FPR 0.118. The 4 × 3
+matrix is not run.

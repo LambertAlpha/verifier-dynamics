@@ -1,0 +1,36 @@
+{
+ "prompts": 2000,
+ "samples": 16000,
+ "generation_s": 1.16332799999509,
+ "clean": {
+  "fpr": 0.0,
+  "fnr": 0.0,
+  "mean_v": 0.38093748688697815,
+  "mean_g": 0.38093748688697815,
+  "mixed_group_frac": 0.7825
+ },
+ "flip": {
+  "fpr": 0.2010095864534378,
+  "fnr": 0.20328140258789062,
+  "mean_v": 0.42793750762939453,
+  "mean_g": 0.38093748688697815,
+  "mixed_group_frac": 0.9485
+ },
+ "deleted": {
+  "fpr": 0.24775366485118866,
+  "fnr": 0.0,
+  "mean_v": 0.5343124866485596,
+  "mean_g": 0.38093748688697815,
+  "mixed_group_frac": 0.592
+ },
+ "exploit": {
+  "fpr": 0.11761736124753952,
+  "fnr": 0.0,
+  "mean_v": 0.45375001430511475,
+  "mean_g": 0.38093748688697815,
+  "mixed_group_frac": 0.88
+ },
+ "deleted_prompt_frac_in_audit": 0.2475,
+ "outputs_ending_in_0": 0.1020625,
+ "outputs_zero": 0.000625
+}

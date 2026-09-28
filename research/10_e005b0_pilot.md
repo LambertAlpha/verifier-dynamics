@@ -402,3 +402,67 @@ and evaluation; automated gold is cheap, not absent), wall time by phase, peak R
 Library changes are additive. Before the new runs, the original pilot seed-1 run is re-executed
 with the original script; its final sha256 must equal `1047aec2…` (fail closed). New script:
 `experiments/e005b/grpo_calib.py`; new config: `configs/e005b/calib.toml`.
+
+## 11. Calibration round results (2026-09-28; stopped here, matrix not run)
+
+All runs on `mac-mini-remote` (M4 Pro), CPU 4 threads, clean commits; dev only (no test data).
+
+**Integrity (A6).** The original pilot seed-1 run re-executed with the original script after the
+additive code changes: final sha256 `1047aec2…` — bit-identical (`results/E005b0-grpo-s1-integrity`).
+
+**Base selection (A2; `results/E005b0-select-base/20260928T182536Z_60c0812`).** Primary rule met at
+**SFT step 600** (first candidate tried; sha `74865408…`):
+
+| base | dev sampled (4/item) | no carry | units carry | three-digit | valid | greedy |
+| --- | --- | --- | --- | --- | --- | --- |
+| new, selection seed | 0.380 | 0.560 | 0.458 | 0.244 | 0.99 | — |
+| new, confirmation seed | 0.380 | 0.566 | 0.427 | 0.252 | 0.99 | 0.566 |
+| old (step 375, control) | 0.195 | 0.356 | 0.303 | 0.057 | 0.97 | 0.285 |
+
+**Clean 2×2 (seed 1, T = 1000; `results/E005b0-calib-report/20260928T183404Z_4e5b695`).** Final =
+mean of the last 4 dev evaluations (sampled, 4/item):
+
+| cell | overall init → final (gain) | no carry | units carry | three-digit | clipped | median ‖Δθ‖ |
+| --- | --- | --- | --- | --- | --- | --- |
+| old, clip 1 | 0.186 → 0.389 (+0.20) | 0.34 → 0.76 | 0.28 → 0.62 | **0.06 → 0.08** | 100% | 0.0131 |
+| old, clip 10 | 0.186 → 0.556 (+0.37) | 0.34 → 0.75 | 0.28 → 0.63 | **0.06 → 0.41** | 12% | 0.0151 |
+| new, clip 1 | 0.379 → 0.760 (+0.38) | 0.56 → 0.82 | 0.42 → 0.76 | 0.26 → 0.72 | 100% | 0.0129 |
+| new, clip 10 | 0.379 → 0.757 (+0.38) | 0.56 → 0.82 | 0.42 → 0.81 | 0.26 → 0.70 | 35% | 0.0139 |
+
+- **Frozen decisions:** new-base clip 1 vs 10 differ by 0.003 < 0.05 → *practically tied → keep
+  clip 1.0*; new base adopted (stable, gain 0.38 ≥ 0.05). Descriptively, base effect on the
+  final accuracy +0.29 (on the gain +0.09), clip effect on the gain +0.08, interaction −0.17: the
+  clip mattered only with the old base.
+- **Caution on the old-base clip effect:** one seed; the three-digit category stayed at ≈ 0.07
+  until step ≈ 850 and then rose abruptly (0.07 → 0.41 by step 1000). This is a late
+  discovery event, compatible with a systematic clip effect **or** with stochastic timing; the
+  500-step pilot horizon would have missed it under either clip. Update norms were similar under
+  both clips (clipping reweights steps; it does not fix the update length).
+- **Confirmation (new base, clip 1, seeds 1–3):** all stable; gains +0.381 / +0.357 / +0.373;
+  finals 0.760 / 0.736 / 0.752; three-digit 0.26 → 0.72 / 0.68 / 0.71; greedy 0.57 → 0.77–0.79.
+  **Pass.** Mixed-reward groups fall from ≈ 0.73 to ≈ 0.30 (late training carries little
+  signal); entropy 0.5 → 0.1; k3 KL to the base median ≈ 0.2–0.3 with spikes up to ≈ 5
+  (rare-token estimates).
+
+**Costs per 1000-step run (measured).** Wall 60 s: generation 19.5 s, scoring 0.3 s, pre-update
+diagnostics (entropy, KL) 10.8 s, forward+backward 14.3 s, optimizer 2.0 s, dev evaluation 12.7 s;
+peak RSS 1.23 GB. Training: 256,000 responses (≈ 0.89 M completion + 1.79 M prompt tokens),
+1000 batched backward calls × 256 sequences, **256,000 gold-checker calls**. Evaluation: 41 dev
+evaluations × 5,005 responses = 205,205 responses and **205,205 gold-checker calls**. Base
+selection: 68 checkpoints × 5,005 responses + confirmation, 22 s.
+
+**Verifier rules at the new base** (2000 train prompts × 8; `results/E005b0-verifier-audit/20260928T183547Z_bb03536`):
+
+| rule | FPR | FNR | mean V (gold 0.381) | mixed groups |
+| --- | --- | --- | --- | --- |
+| V0 clean | 0 | 0 | 0.381 | 0.78 |
+| V1 flip 0.2 | 0.201 | 0.203 | 0.428 | 0.95 |
+| V2 deleted 25% | 0.248 | 0 | 0.534 | 0.59 |
+| V3 correct or ends in 0 | 0.118 | 0 | 0.454 | 0.88 |
+
+10.2% of base outputs end in 0; "0" itself 0.06%.
+
+**Process notes.** A confirmation launch used a glob that would also have matched the committed
+2×2 directories; it was stopped before the first run finished, the partial seed-2 directory
+(aborted, no summary) was deleted, and the runs were relaunched with exact names. No committed
+data was affected.
