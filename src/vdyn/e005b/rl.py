@@ -1,5 +1,6 @@
 """E005b-0 GRPO rollout, scoring, update and evaluation (research/10_e005b0_pilot.md §3-§4)."""
 
+import time
 from typing import Any
 
 import numpy as np
@@ -51,10 +52,24 @@ def update(
     clip_eps: float,
     max_grad_norm: float,
     ref: nn.Module | None = None,
+    timing: dict[str, float] | None = None,
 ) -> dict[str, float]:
     """One GRPO update (mu = 1) on a rollout batch with rewards of shape (P, G)."""
     adv = grpo.group_advantages(rewards, scale="group").reshape(-1)
     zero_var = (rewards.std(1) == 0).float()
+    out = {"zero_var_frac": float(zero_var.mean()), "mixed_frac": float(1 - zero_var.mean()),
+           "len": float(roll["mask"].sum(1).mean())}  # fmt: skip
+    td = time.perf_counter()
+    with torch.no_grad():  # pre-update diagnostics
+        logits = net(torch.cat([roll["prompts"], roll["tokens"]], 1)[:, :-1])
+        lps = torch.log_softmax(logits[:, tk.PROMPT_LEN - 1 :], -1)
+        ent = -(lps.exp() * lps).sum(-1)
+        out["entropy"] = float((ent * roll["mask"]).sum() / roll["mask"].sum())
+        if ref is not None:
+            lp_pol = lps.gather(-1, roll["tokens"][..., None])[..., 0]
+            lp_ref = mdl.token_logprobs(ref, roll["prompts"], roll["tokens"])
+            out["kl_ref"] = float(grpo.k3_kl(lp_pol, lp_ref, roll["mask"]))
+    t0 = time.perf_counter()
     opt.zero_grad()
     lp = mdl.token_logprobs(net, roll["prompts"], roll["tokens"])
     loss = grpo.policy_loss(lp, lp.detach(), adv, roll["mask"], clip_eps)
@@ -62,19 +77,14 @@ def update(
     gn = float(torch.nn.utils.clip_grad_norm_(net.parameters(), max_grad_norm))
     loss_v = float(loss.detach())
     finite = bool(np.isfinite(loss_v)) and bool(np.isfinite(gn))
+    t1 = time.perf_counter()
     if finite:
         opt.step()
-    out = {"loss": loss_v, "grad_norm": gn, "finite": float(finite),
-           "zero_var_frac": float(zero_var.mean()), "mixed_frac": float(1 - zero_var.mean()),
-           "len": float(roll["mask"].sum(1).mean())}  # fmt: skip
-    with torch.no_grad():
-        logits = net(torch.cat([roll["prompts"], roll["tokens"]], 1)[:, :-1])
-        lps = torch.log_softmax(logits[:, tk.PROMPT_LEN - 1 :], -1)
-        ent = -(lps.exp() * lps).sum(-1)
-        out["entropy"] = float((ent * roll["mask"]).sum() / roll["mask"].sum())
-        if ref is not None:
-            lp_ref = mdl.token_logprobs(ref, roll["prompts"], roll["tokens"])
-            out["kl_ref"] = float(grpo.k3_kl(lp.detach(), lp_ref, roll["mask"]))
+    if timing is not None:
+        timing["diag"] = t0 - td
+        timing["fwd_bwd"] = t1 - t0
+        timing["optim"] = time.perf_counter() - t1
+    out |= {"loss": loss_v, "grad_norm": gn, "finite": float(finite)}
     return out
 
 
