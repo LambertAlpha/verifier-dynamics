@@ -1,0 +1,72 @@
+{"step": 0, "sampled": 0.3793706293706294, "greedy": 0.5664335664335665}
+{"step": 25, "sampled": 0.382, "greedy": 0.508, "verifier_batch": 0.441, "gold_batch": 0.359, "fp_ends0_dev": 0.059}
+{"step": 50, "sampled": 0.447, "greedy": 0.58, "verifier_batch": 0.461, "gold_batch": 0.398, "fp_ends0_dev": 0.067}
+{"step": 75, "sampled": 0.481, "greedy": 0.593, "verifier_batch": 0.57, "gold_batch": 0.586, "fp_ends0_dev": 0.062}
+{"step": 100, "sampled": 0.545, "greedy": 0.699, "verifier_batch": 0.57, "gold_batch": 0.578, "fp_ends0_dev": 0.071}
+{"step": 125, "sampled": 0.515, "greedy": 0.638, "verifier_batch": 0.562, "gold_batch": 0.551, "fp_ends0_dev": 0.053}
+{"step": 150, "sampled": 0.51, "greedy": 0.628, "verifier_batch": 0.496, "gold_batch": 0.562, "fp_ends0_dev": 0.057}
+{"step": 175, "sampled": 0.526, "greedy": 0.626, "verifier_batch": 0.5, "gold_batch": 0.5, "fp_ends0_dev": 0.069}
+{"step": 200, "sampled": 0.549, "greedy": 0.657, "verifier_batch": 0.535, "gold_batch": 0.578, "fp_ends0_dev": 0.071}
+{"step": 225, "sampled": 0.513, "greedy": 0.631, "verifier_batch": 0.48, "gold_batch": 0.477, "fp_ends0_dev": 0.071}
+{"step": 250, "sampled": 0.554, "greedy": 0.668, "verifier_batch": 0.551, "gold_batch": 0.629, "fp_ends0_dev": 0.048}
+{"step": 275, "sampled": 0.571, "greedy": 0.666, "verifier_batch": 0.629, "gold_batch": 0.688, "fp_ends0_dev": 0.052}
+{"step": 300, "sampled": 0.581, "greedy": 0.686, "verifier_batch": 0.512, "gold_batch": 0.539, "fp_ends0_dev": 0.058}
+{"step": 325, "sampled": 0.621, "greedy": 0.735, "verifier_batch": 0.57, "gold_batch": 0.613, "fp_ends0_dev": 0.06}
+{"step": 350, "sampled": 0.622, "greedy": 0.72, "verifier_batch": 0.598, "gold_batch": 0.691, "fp_ends0_dev": 0.046}
+{"step": 375, "sampled": 0.574, "greedy": 0.667, "verifier_batch": 0.586, "gold_batch": 0.598, "fp_ends0_dev": 0.039}
+{"step": 400, "sampled": 0.622, "greedy": 0.701, "verifier_batch": 0.57, "gold_batch": 0.648, "fp_ends0_dev": 0.056}
+{"step": 425, "sampled": 0.633, "greedy": 0.718, "verifier_batch": 0.57, "gold_batch": 0.609, "fp_ends0_dev": 0.041}
+{"step": 450, "sampled": 0.664, "greedy": 0.757, "verifier_batch": 0.609, "gold_batch": 0.738, "fp_ends0_dev": 0.05}
+{"step": 475, "sampled": 0.657, "greedy": 0.735, "verifier_batch": 0.602, "gold_batch": 0.68, "fp_ends0_dev": 0.064}
+{"step": 500, "sampled": 0.676, "greedy": 0.764, "verifier_batch": 0.57, "gold_batch": 0.652, "fp_ends0_dev": 0.04}
+{"step": 525, "sampled": 0.692, "greedy": 0.76, "verifier_batch": 0.578, "gold_batch": 0.699, "fp_ends0_dev": 0.043}
+{"step": 550, "sampled": 0.709, "greedy": 0.782, "verifier_batch": 0.684, "gold_batch": 0.828, "fp_ends0_dev": 0.048}
+{"step": 575, "sampled": 0.684, "greedy": 0.778, "verifier_batch": 0.574, "gold_batch": 0.602, "fp_ends0_dev": 0.092}
+{"step": 600, "sampled": 0.683, "greedy": 0.755, "verifier_batch": 0.598, "gold_batch": 0.633, "fp_ends0_dev": 0.059}
+{"step": 625, "sampled": 0.731, "greedy": 0.807, "verifier_batch": 0.617, "gold_batch": 0.715, "fp_ends0_dev": 0.059}
+{"step": 650, "sampled": 0.719, "greedy": 0.78, "verifier_batch": 0.641, "gold_batch": 0.754, "fp_ends0_dev": 0.058}
+{"step": 675, "sampled": 0.696, "greedy": 0.755, "verifier_batch": 0.645, "gold_batch": 0.703, "fp_ends0_dev": 0.062}
+{"step": 700, "sampled": 0.691, "greedy": 0.745, "verifier_batch": 0.625, "gold_batch": 0.688, "fp_ends0_dev": 0.047}
+{"step": 725, "sampled": 0.604, "greedy": 0.659, "verifier_batch": 0.523, "gold_batch": 0.625, "fp_ends0_dev": 0.087}
+{"step": 750, "sampled": 0.702, "greedy": 0.746, "verifier_batch": 0.648, "gold_batch": 0.73, "fp_ends0_dev": 0.064}
+{"step": 775, "sampled": 0.696, "greedy": 0.745, "verifier_batch": 0.57, "gold_batch": 0.637, "fp_ends0_dev": 0.063}
+{"step": 800, "sampled": 0.691, "greedy": 0.755, "verifier_batch": 0.59, "gold_batch": 0.621, "fp_ends0_dev": 0.034}
+{"step": 825, "sampled": 0.717, "greedy": 0.762, "verifier_batch": 0.555, "gold_batch": 0.633, "fp_ends0_dev": 0.079}
+{"step": 850, "sampled": 0.679, "greedy": 0.741, "verifier_batch": 0.629, "gold_batch": 0.664, "fp_ends0_dev": 0.04}
+{"step": 875, "sampled": 0.702, "greedy": 0.764, "verifier_batch": 0.676, "gold_batch": 0.789, "fp_ends0_dev": 0.053}
+{"step": 900, "sampled": 0.688, "greedy": 0.744, "verifier_batch": 0.555, "gold_batch": 0.605, "fp_ends0_dev": 0.039}
+{"step": 925, "sampled": 0.665, "greedy": 0.706, "verifier_batch": 0.609, "gold_batch": 0.637, "fp_ends0_dev": 0.034}
+{"step": 950, "sampled": 0.72, "greedy": 0.784, "verifier_batch": 0.617, "gold_batch": 0.734, "fp_ends0_dev": 0.054}
+{"step": 975, "sampled": 0.71, "greedy": 0.748, "verifier_batch": 0.676, "gold_batch": 0.805, "fp_ends0_dev": 0.059}
+{"step": 1000, "sampled": 0.702, "greedy": 0.748, "verifier_batch": 0.598, "gold_batch": 0.668, "fp_ends0_dev": 0.058}
+{
+ "rule": "flip",
+ "seed": 1,
+ "steps": 1000,
+ "smoke": false,
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "34a088fddba96f7ec5affd501a0a161313e0a09c5db1d7e3e4905f5e885ae84d",
+ "seconds_total": 62.4855724159861,
+ "seconds": {
+  "gen": 20.43731945991749,
+  "score": 0.38771750370506197,
+  "diag": 11.447327797242906,
+  "fwd_bwd": 14.587723359465599,
+  "optim": 1.971173042547889,
+  "mech": 0.28794905327958986,
+  "eval": 13.012532038905192
+ },
+ "cost": {
+  "train_responses": 256000,
+  "train_completion_tokens": 892405,
+  "train_prompt_tokens": 1792000,
+  "backward_calls": 1000,
+  "backward_sequences": 256000,
+  "train_verifier_calls": 256000,
+  "train_gold_calls": 256000,
+  "eval_responses": 205205,
+  "eval_gold_calls": 205205
+ },
+ "peak_rss_mb": 1194.65625
+}
+run directory: results/E005b0-matrix-flip-s1/20260928T200330Z_02bec59

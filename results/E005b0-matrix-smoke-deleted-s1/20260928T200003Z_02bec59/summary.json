@@ -1,0 +1,31 @@
+{
+ "rule": "deleted",
+ "seed": 1,
+ "steps": 10,
+ "smoke": true,
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "bbb36fd23a89bdea33b406cf6bf29f8c8933671f4af4e2c6332c1772b556ebfb",
+ "seconds_total": 1.4651807920308784,
+ "seconds": {
+  "gen": 0.1879884980735369,
+  "score": 0.0035452519659884274,
+  "diag": 0.10363749996758997,
+  "fwd_bwd": 0.14864720817422494,
+  "optim": 0.020524789986666292,
+  "mech": 0.003463081084191799,
+  "eval": 0.982741541985888
+ },
+ "cost": {
+  "train_responses": 2560,
+  "train_completion_tokens": 8914,
+  "train_prompt_tokens": 17920,
+  "backward_calls": 10,
+  "backward_sequences": 2560,
+  "train_verifier_calls": 2560,
+  "train_gold_calls": 2560,
+  "eval_responses": 15015,
+  "eval_gold_calls": 15015
+ },
+ "peak_rss_mb": 1055.171875,
+ "note": "V1-V3 are programmatic functions of the gold checker, so every verifier call also evaluates gold"
+}

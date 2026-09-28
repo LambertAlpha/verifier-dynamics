@@ -1,0 +1,24 @@
+# E005b-0 exploratory verifier matrix (research/10_e005b0_pilot.md §12). pilot.toml / calib.toml unchanged.
+experiment_id = "E005b0-matrix"
+protocol = "research/10_e005b0_pilot.md §12"
+base_pointer = "configs/e005b/base_checkpoint_v2.json"
+base_sha256 = "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e"
+verifiers = ["clean", "flip", "deleted", "exploit"]
+seeds = [1, 2, 3]
+clip = 1.0
+steps = 1000
+eval_every = 25
+eval_samples_per_item = 4
+eval_seed = 20261312
+verifier_noise_seed = 20261320
+max_concurrent = 2
+
+[integrity]
+clean_final_sha256 = { "1" = "7eedb6b4ae91e992", "2" = "7072deabbb5cbcc5", "3" = "8a4891d53f5a928e" }
+calibration_runs = { "1" = "results/E005b0-calib-new-c1-s1/20260928T182829Z_ed04bed", "2" = "results/E005b0-calib-new-c1-s2/20260928T183143Z_3277a0d", "3" = "results/E005b0-calib-new-c1-s3/20260928T183244Z_3277a0d" }
+
+[labels]
+final_evals = 4
+effect = 0.05
+exploit_rise = 0.05
+window = 50

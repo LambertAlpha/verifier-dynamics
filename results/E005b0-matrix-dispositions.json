@@ -1,0 +1,205 @@
+{
+ "experiment": "E005b0-matrix",
+ "dispositions": [
+  {
+   "run": "results/E005b0-matrix-clean-s1/20260928T200026Z_02bec59",
+   "rule": "clean",
+   "seed": 1,
+   "smoke": false,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "7eedb6b4ae91e992ab505c3ad8fec6953fe853e4100c8ad50148ca0105427448",
+   "disposition": "matrix run; analysed"
+  },
+  {
+   "run": "results/E005b0-matrix-clean-s2/20260928T200128Z_02bec59",
+   "rule": "clean",
+   "seed": 2,
+   "smoke": false,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "7072deabbb5cbcc5bab10714a66c6a58aca89851ce24c31398aa82eaafa60bbf",
+   "disposition": "matrix run; analysed"
+  },
+  {
+   "run": "results/E005b0-matrix-clean-s3/20260928T200229Z_02bec59",
+   "rule": "clean",
+   "seed": 3,
+   "smoke": false,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "8a4891d53f5a928e0976186f9ad6a3373ffe59fe47fe6674a55478ba7805cd55",
+   "disposition": "matrix run; analysed"
+  },
+  {
+   "run": "results/E005b0-matrix-deleted-s1/20260928T200639Z_02bec59",
+   "rule": "deleted",
+   "seed": 1,
+   "smoke": false,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "1626a0750683d575f151016341d23e6ffcb946c1ce7e094de1c04bdf18ef911d",
+   "disposition": "matrix run; analysed"
+  },
+  {
+   "run": "results/E005b0-matrix-deleted-s2/20260928T200741Z_02bec59",
+   "rule": "deleted",
+   "seed": 2,
+   "smoke": false,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "3714b1a38a50d776cbff389e3af3b8707734bb30d587b7f86bc4674272058ec8",
+   "disposition": "matrix run; analysed"
+  },
+  {
+   "run": "results/E005b0-matrix-deleted-s3/20260928T200842Z_02bec59",
+   "rule": "deleted",
+   "seed": 3,
+   "smoke": false,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "ec154bee631e5f8682575b786a539cb4026eb284f24d92dbfd6545ccebadcb9b",
+   "disposition": "matrix run; analysed"
+  },
+  {
+   "run": "results/E005b0-matrix-exploit-s1/20260928T200943Z_02bec59",
+   "rule": "exploit",
+   "seed": 1,
+   "smoke": false,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "321f92a7aa5469264c278ce30cda3f7c5b7e36d530a68145b65024150673d81e",
+   "disposition": "matrix run; analysed"
+  },
+  {
+   "run": "results/E005b0-matrix-exploit-s2/20260928T201043Z_02bec59",
+   "rule": "exploit",
+   "seed": 2,
+   "smoke": false,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "56c026344036638ae2bda414795abebc9cec72c827654d9397f409a9f5dd6436",
+   "disposition": "matrix run; analysed"
+  },
+  {
+   "run": "results/E005b0-matrix-exploit-s3/20260928T201145Z_02bec59",
+   "rule": "exploit",
+   "seed": 3,
+   "smoke": false,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "a2b366a5acc1c4750bc385e9383c6bfe71243b9b0eac31c6cf4ee9ae035b8c4e",
+   "disposition": "matrix run; analysed"
+  },
+  {
+   "run": "results/E005b0-matrix-flip-s1/20260928T200330Z_02bec59",
+   "rule": "flip",
+   "seed": 1,
+   "smoke": false,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "34a088fddba96f7ec5affd501a0a161313e0a09c5db1d7e3e4905f5e885ae84d",
+   "disposition": "matrix run; analysed"
+  },
+  {
+   "run": "results/E005b0-matrix-flip-s2/20260928T200434Z_02bec59",
+   "rule": "flip",
+   "seed": 2,
+   "smoke": false,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "0948c83ae1e279cf932d83fa3c5083384bfcaf692b9e5e098b129a44aa291bc2",
+   "disposition": "matrix run; analysed"
+  },
+  {
+   "run": "results/E005b0-matrix-flip-s3/20260928T200536Z_02bec59",
+   "rule": "flip",
+   "seed": 3,
+   "smoke": false,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "cd71cfd53f2f1ff842a7b0ba8a8161518c9307bdf56d0c3ba288b6742840520b",
+   "disposition": "matrix run; analysed"
+  },
+  {
+   "run": "results/E005b0-matrix-smoke-deleted-s1/20260928T200003Z_02bec59",
+   "rule": "deleted",
+   "seed": 1,
+   "smoke": true,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "bbb36fd23a89bdea33b406cf6bf29f8c8933671f4af4e2c6332c1772b556ebfb",
+   "disposition": "smoke test (10 steps); code-path check only, not analysed"
+  },
+  {
+   "run": "results/E005b0-matrix-smoke-exploit-s1/20260928T200005Z_02bec59",
+   "rule": "exploit",
+   "seed": 1,
+   "smoke": true,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "7ca6683c5e9048147568f9c50ade8c576f5fa2a8c751bfad0ebc400a6878305f",
+   "disposition": "smoke test (10 steps); code-path check only, not analysed"
+  },
+  {
+   "run": "results/E005b0-matrix-smoke-flip-s1/20260928T200000Z_02bec59",
+   "rule": "flip",
+   "seed": 1,
+   "smoke": true,
+   "status": "completed",
+   "git": {
+    "commit": "02bec591c7e17b08305adb48f8fd78bb92b543a0",
+    "dirty": false
+   },
+   "final_sha256": "7772d98bcdac3681237fa6640fcdf92e1413d41626c71546431802826682a5d8",
+   "disposition": "smoke test (10 steps); code-path check only, not analysed"
+  },
+  {
+   "run": "results/E005b0-calib-new-c1-s2 (aborted partial, 2026-09-28 18:31)",
+   "status": "aborted",
+   "disposition": "stopped by hand before completion because the launch glob could have moved committed directories; the partial directory (no summary) was deleted before the matrix brief; the run was relaunched with exact paths; documented in research/10_e005b0_pilot.md \u00a711"
+  }
+ ]
+}
