@@ -1,0 +1,25 @@
+"""SCRATCH engineering check: bitwise determinism of 20 GRPO steps, repeated, on cpu and mps."""
+import json, torch
+from vdyn.e005b import grpo, model as mdl, task as tk
+def run(dev, threads=4):
+    torch.set_num_threads(threads)
+    net = mdl.build(mdl.GPTConfig(), seed=1, device=dev)
+    opt = torch.optim.Adam(net.parameters(), lr=1e-3)
+    gen = torch.Generator(device=dev).manual_seed(5)
+    tr = tk.make_splits(0)["train"]
+    for s in range(20):
+        pairs = [tr[(s * 32 + i) % len(tr)] for i in range(32)]
+        prom = torch.tensor([tk.encode_prompt(a, b) for a, b in pairs for _ in range(8)], device=dev)
+        out = mdl.sample(net, prom, tk.MAX_NEW, 1.0, gen)
+        r = torch.tensor([tk.gold_reward(a, b, *tk.parse_completion(t)) for (a, b), t in
+                          zip([p for p in pairs for _ in range(8)], out["tokens"].cpu().tolist())], device=dev)
+        adv = grpo.group_advantages(r.view(32, 8)).reshape(-1)
+        opt.zero_grad()
+        lp = mdl.token_logprobs(net, prom, out["tokens"])
+        grpo.policy_loss(lp, lp.detach(), adv, out["mask"], 0.2).backward()
+        opt.step()
+    return mdl.state_sha256(net)
+res = {"cpu": [run("cpu"), run("cpu")], "mps": [run("mps"), run("mps")]}
+res["cpu_deterministic"] = res["cpu"][0] == res["cpu"][1]
+res["mps_deterministic"] = res["mps"][0] == res["mps"][1]
+print(json.dumps(res, indent=1))

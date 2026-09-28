@@ -1,0 +1,8 @@
+{
+ "note": "engineering check run on Lamberts-Mac-mini.local at commit 42030f2 (script copied here verbatim); 20 GRPO steps, repeated twice per device",
+ "cpu": ["2daa17c955398cf8ecea13e923a936c0167ade2b8b135871542f556ed37137fe", "2daa17c955398cf8ecea13e923a936c0167ade2b8b135871542f556ed37137fe"],
+ "mps": ["1a22795730755f4d0132a7dca7a6824da32ecd2d4aa0e9630daac21fe39a9fce", "3d87f8ec3ed3ed4df6346cac819db90af7d617614362b2baec90247f9898f509"],
+ "cpu_deterministic": true,
+ "mps_deterministic": false,
+ "cpu_vs_mps_max_abs_logit_diff": 5.140900611877441e-07
+}
