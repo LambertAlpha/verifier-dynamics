@@ -3927,3 +3927,18 @@ on `mac-mini-remote`, CPU, 4 threads.
 - **Proposed verifier rules' initial FPR/FNR:** V1 0.20/0.20; V2 0.25/0 (25% of prompts
   deleted); V3 ("ends in 0") FPR 0.078.
 - **The 4 × 3 matrix is NOT run;** it awaits approval.
+
+### E005b-0 amendment — baseline calibration round (frozen before new runs; 2026-09-28)
+
+Approved scope: clean-only calibration; the flawed-verifier matrix is not run. Protocol
+`research/10_e005b0_pilot.md` §10, constants `configs/e005b/calib.toml`; the original pilot is
+unchanged. (A1) §9's interpretation is narrowed to "under this base, configuration and 500-step
+horizon, clean GRPO did not improve the three-digit category"; sparsity is a supported
+hypothesis. (A2) Coverage-aware base selection on dev only among the original SFT checkpoints:
+first with sampled accuracy ≥ 0.20 in each of {no carry, units carry, three-digit}, aggregate ≤
+0.60, valid ≥ 0.95, 4 samples/item, confirmed on an independent seed at the same thresholds; one
+fallback (0.15 / 0.65), then stop. Old base kept as the low-coverage control. (A3) Clean 2×2
+{old, new base} × clip {1, 10}, RL seed 1, T = 1000; frozen stability / tie (0.05 → keep clip 1)
+/ adoption (gain ≥ 0.05) rules; confirmation with seeds 2–3. Test not evaluated. (A4–A5)
+per-category logs, update norms, full cost accounting including gold-checker calls. (A6) the
+original seed-1 run must reproduce bit-exactly after the additive code changes.

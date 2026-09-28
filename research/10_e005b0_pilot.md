@@ -318,3 +318,87 @@ Whether the exploit is discovered is **not assumed**.
 - V3's false positives fall where the base is weakest: e.g. "100"/"110" on sums ≥ 100. The
   exploit is therefore **reachable**, but its discovery is not assumed.
 - V1 raises the mixed-group rate: flips create variance even on all-wrong prompts.
+
+---
+
+## 10. Amendment — baseline calibration round (approved scope; frozen before any new run, 2026-09-28)
+
+Scope: clean-verifier calibration only. The flawed-verifier matrix is **not** run. The original
+pilot (runs, base checkpoint `8812b53a…`, `configs/e005b/pilot.toml`, `configs/e005b/base_checkpoint.json`,
+`experiments/e005b/grpo_pilot.py`) is preserved unchanged.
+
+### A1. Narrowed interpretation of §9 (replaces the §9 wording "GRPO sharpens … does not bootstrap")
+
+"Under this base (step 375), this configuration and a 500-step horizon, clean GRPO did not improve
+the three-digit-answer category (sum ≥ 100)." Reward sparsity (63–74% all-wrong groups in that
+category) is a **supported hypothesis**, not an isolated causal result; the pilot did not
+manipulate sparsity. No claim is made that GRPO generally cannot acquire new capabilities.
+
+### A2. Coverage-aware base selection (DEV only)
+
+- **Candidates:** the 68 checkpoints of the original SFT run
+  (`results/E005b0-pretrain/20260928T042420Z_5549b29`, steps 25–1700, hashes in its `sft_log`),
+  in step order. No new SFT, so old and new bases differ only in SFT steps.
+- **Categories (predefined; the structure in which the pilot's gap appeared):** *no carry*
+  (units digits sum < 10 and a + b < 100; dev n = 297), *units carry* (units ≥ 10, a + b < 100;
+  n = 201), *three-digit* (a + b ≥ 100; n = 503).
+- **Estimates:** dev sampled accuracy with **4 samples per item** (temperature 1), selection seed
+  20261310; greedy accuracy reported. SE ≤ 0.015 per category (sampling), ≤ 0.03 including item
+  clustering.
+- **Primary rule:** the first checkpoint with (i) sampled accuracy ≥ 0.20 in **every** category,
+  (ii) aggregate sampled accuracy ≤ 0.60, (iii) valid-output rate ≥ 0.95.
+- **Confirmation:** the candidate is re-evaluated with an **independent seed** (20261311, 4
+  samples per item) and must satisfy the **same** thresholds (no tolerance; the confirmation is
+  the unbiased estimate after selection). If it fails, the scan continues with the next
+  checkpoint that satisfies the rule under the selection seed.
+- **Challenge of the proposed defaults (kept, with reasons):** 0.20 per category gives a
+  category-average probability ≥ 0.83 that a group of 8 contains a success; 0.60 aggregate keeps
+  ≥ 40 points of aggregate headroom; no per-category upper bound is imposed, because the easy
+  categories necessarily lead and a common interval would likely be infeasible. Three categories,
+  not finer (e.g. splitting three-digit by units carry), to keep n ≥ 200 per category.
+- **Single fallback (pre-specified; no further relaxation):** if no checkpoint is confirmed, the
+  same procedure with ≥ 0.15 per category and ≤ 0.65 aggregate (valid ≥ 0.95). If still none:
+  **STOP** — no new base; the clip comparison runs on the old base only and this is reported.
+- The **old base (step 375) is retained as the low-coverage control.** New pointer:
+  `configs/e005b/base_checkpoint_v2.json`; the old pointer is unchanged.
+
+### A3. Clean-only 2×2 and confirmation
+
+- Cells: {old base, new base} × gradient-norm clip {1.0, 10.0}; one common RL seed (1);
+  **T = 1000** steps; every other setting as §3 (P = 32, G = 8, group-std advantages,
+  token-mean loss, μ = 1, β = 0, fresh Adam lr 1e-4).
+- Dev evaluation every 25 steps: 4 samples per item (fixed evaluation seed 20261312, the same for
+  every run and step) + greedy, overall and per category. **The test split is not evaluated in this
+  round**; earlier test numbers remain exploratory.
+- **Decision rules (dev only, frozen):**
+  - *Unstable* run: any non-finite step, or final dev sampled accuracy (mean of the last 4
+    evaluations, steps 925–1000) below the initial by more than 0.02, or batch valid rate over the
+    last 50 steps < 0.90.
+  - *Clip choice* (on the new base): if both stable and the final dev sampled accuracies differ by
+    < 0.05 (≈ the pilot's seed spread), they are **practically tied → keep clip 1.0**; otherwise the
+    higher; an unstable setting is excluded; both unstable → stop and report.
+  - *Base adoption:* the new base is adopted as the baseline if its run under the chosen clip is
+    stable and gains ≥ 0.05 in dev sampled accuracy; otherwise stop and report.
+  - Base and clip effects are reported descriptively (means over the other factor; interaction).
+- **Confirmation:** the selected baseline is run with RL seeds 2 and 3 (seed 1 is its 2×2 cell).
+  Pass: all three stable and each gains ≥ 0.05; category-level changes reported.
+- Selection never uses test data, future verifier outcomes, or flawed-verifier runs.
+
+### A4. Logging
+
+Per step: batch gold accuracy and mixed-group frequency, overall and per category; token entropy;
+k3 KL to the base; pre-clip gradient norm; clipped (yes/no); **actual parameter-update norm
+‖θ_{t+1} − θ_t‖** (clipping rescales the gradient; Adam's update length still varies with its
+moment estimates, so the two are reported separately); response length; timing; memory.
+
+### A5. Cost accounting
+
+Per run: generated responses and completion tokens (training and evaluation separately), prompt
+tokens, batched backward calls (and sequences per call), **gold-checker calls** (training scoring
+and evaluation; automated gold is cheap, not absent), wall time by phase, peak RSS.
+
+### A6. Integrity
+
+Library changes are additive. Before the new runs, the original pilot seed-1 run is re-executed
+with the original script; its final sha256 must equal `1047aec2…` (fail closed). New script:
+`experiments/e005b/grpo_calib.py`; new config: `configs/e005b/calib.toml`.
