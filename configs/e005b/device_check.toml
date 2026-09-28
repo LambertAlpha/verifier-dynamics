@@ -1,0 +1,10 @@
+# E005b-0 device / thread timing check (engineering, before the pilot protocol is frozen).
+experiment_id = "E005b0-device"
+seed = 20261301
+devices = ["cpu", "mps"]
+cpu_threads = [1, 2, 4, 8]
+repeats = 7
+sft_batch = 128
+grpo_prompts = 32
+grpo_group = 8
+eval_prompts = 1000
