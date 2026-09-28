@@ -1,0 +1,48 @@
+{
+ "selected": {
+  "rule": "smoke: last checkpoint",
+  "step": 50,
+  "loss": 1.4923455715179443,
+  "dev_greedy": 0.00999000999000999,
+  "dev_sampled": 0.006993006993006993,
+  "dev_valid": 0.7562437562437563,
+  "dev_greedy_valid": 1.0,
+  "sha256": "04f7235d31343cd643b333de5b8ca0123f92c0a6287db67ce69a1313f8e3d446",
+  "elapsed_s": 1.6886776669998653
+ },
+ "base_sha256": "04f7235d31343cd643b333de5b8ca0123f92c0a6287db67ce69a1313f8e3d446",
+ "base_file": "results/E005b0-pretrain-smoke/20260928T042356Z_e2c8bec/base.pt",
+ "base_train": {
+  "greedy": {
+   "acc": 0.004,
+   "valid": 1.0,
+   "n": 1000
+  },
+  "sampled": {
+   "acc": 0.004,
+   "valid": 0.771,
+   "n": 1000
+  }
+ },
+ "base_test": {
+  "greedy": {
+   "acc": 0.009,
+   "valid": 1.0,
+   "n": 1000
+  },
+  "sampled": {
+   "acc": 0.001,
+   "valid": 0.752,
+   "n": 1000
+  }
+ },
+ "steps_run": 50,
+ "final_dev_greedy": 0.00999000999000999,
+ "seconds": {
+  "total": 1.950340250012232,
+  "train": 0.3037956699554343,
+  "eval": 1.346054417983396
+ },
+ "peak_rss_mb": 568.875,
+ "n_params": 402703
+}

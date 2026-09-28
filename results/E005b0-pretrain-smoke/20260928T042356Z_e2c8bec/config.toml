@@ -1,0 +1,69 @@
+# E005b-0 pilot constants (research/10_e005b0_pilot.md). Scripts assert that they match the code.
+experiment_id = "E005b-0"
+protocol = "research/10_e005b0_pilot.md"
+host = "mac-mini-remote"
+device = "cpu"
+threads = 4
+
+[data]
+split_seed = 20261301
+dev = 1000
+test = 1000
+
+[model]
+layers = 2
+d = 128
+heads = 4
+mlp = 4
+ctx = 16
+init_seed = 20261302
+
+[sft]
+lr = 3e-4
+betas = [0.9, 0.999]
+weight_decay = 0.0
+batch = 64
+max_steps = 6000
+eval_every = 25
+stop_dev_greedy = 0.99
+seed = 20261302
+eval_seed = 20261303
+
+[selection]
+dev_sampled_interval = [0.20, 0.40]
+min_valid = 0.95
+fallback_target = 0.30
+
+[grpo]
+prompts_per_step = 32
+group = 8
+temperature = 1.0
+max_new = 4
+advantage = "group"          # (r - mean) / (std_ddof1 + 1e-4); zero-variance groups -> 0
+loss = "token_mean_clipped"  # sum over completion tokens / batch completion tokens
+clip_eps = 0.2
+updates_per_batch = 1
+beta_kl = 0.0
+optimizer = "adam"
+lr = 1e-4
+betas = [0.9, 0.999]
+adam_eps = 1e-8
+max_grad_norm = 1.0
+steps = 500
+eval_every = 25
+checkpoint_every = 100
+seeds = [1, 2, 3]
+eval_seed = 20261304
+diagnostic_lr = 3e-4         # used once, only if clean GRPO fails the stop condition
+
+[limits]
+sft_minutes = 20
+grpo_minutes = 20
+peak_rss_gb = 4
+
+[verifiers]
+flip_rate = 0.2
+deleted_fraction = 0.25
+deleted_seed = 20261305
+exploit = "correct or valid answer ending in 0"
+audit_prompts = 2000
