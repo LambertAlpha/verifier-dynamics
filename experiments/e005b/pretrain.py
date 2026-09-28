@@ -88,7 +88,7 @@ def main(argv: list[str]) -> int:
                 print("STOP: SFT time limit")
                 break
     log.close()
-    sel = select(evals, cfg)
+    sel = {"rule": "smoke: last checkpoint", **evals[-1]} if smoke else select(evals, cfg)
     base = run_dir / "base.pt"
     shutil.copy(run_dir / "ckpt" / f"step_{sel['step']:05d}.pt", base)
     net_b = mdl.build(mdl.GPTConfig(), seed=0)
