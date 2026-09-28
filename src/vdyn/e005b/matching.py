@@ -21,21 +21,24 @@ def _rates(V: np.ndarray, G: np.ndarray) -> dict[str, float]:
 
 def _boot(pid: np.ndarray, V: np.ndarray, G: np.ndarray, rng: np.random.Generator,
           resamples: int) -> dict[str, list[float]]:  # fmt: skip
-    uniq = np.unique(pid)
-    idx = {p: np.flatnonzero(pid == p) for p in uniq}
-    draws: dict[str, list[float]] = {k: [] for k in ("fpr", "fnr", "acc", "fp_mass")}
-    for _ in range(resamples):
-        pick = rng.choice(uniq, size=len(uniq), replace=True)
-        rows = np.concatenate([idx[p] for p in pick])
-        r = _rates(V[rows], G[rows])
-        for k in draws:
-            draws[k].append(r[k])
+    """Resample prompts with replacement; rates are recomputed from the resampled prompts' pooled
+    counts (identical to recomputing them over the concatenated responses)."""
+    _, inv = np.unique(pid, return_inverse=True)
+    k = int(inv.max()) + 1
+    neg, pos = G == 0, G == 1
+    cnt = {name: np.bincount(inv, weights=w.astype(float), minlength=k)
+           for name, w in (("n", np.ones_like(G)), ("neg", neg), ("pos", pos), ("g", G),
+                           ("fp", (V == 1) & neg), ("fn", (V == 0) & pos))}  # fmt: skip
+    pick = rng.integers(0, k, size=(resamples, k))
+    tot = {name: c[pick].sum(1) for name, c in cnt.items()}
+    with np.errstate(invalid="ignore", divide="ignore"):
+        draws = {"fpr": tot["fp"] / tot["neg"], "fnr": tot["fn"] / tot["pos"],
+                 "acc": tot["g"] / tot["n"], "fp_mass": tot["fp"] / tot["n"]}  # fmt: skip
     out = {}
-    for k, v in draws.items():
-        a = np.array(v)
+    for name, a in draws.items():
         a = a[np.isfinite(a)]
-        out[f"{k}_ci"] = ([float(np.quantile(a, 0.025)), float(np.quantile(a, 0.975))]
-                          if len(a) else [float("nan"), float("nan")])  # fmt: skip
+        out[f"{name}_ci"] = ([float(np.quantile(a, 0.025)), float(np.quantile(a, 0.975))]
+                             if len(a) else [float("nan"), float("nan")])  # fmt: skip
     return out
 
 
@@ -47,3 +50,17 @@ def audit_rates(pid: np.ndarray, cats: np.ndarray, V: np.ndarray, G: np.ndarray,
         m = cats == c
         out["by_cat"][c] = _rates(V[m], G[m]) | _boot(pid[m], V[m], G[m], rng, resamples)
     return out
+
+
+def verdict(f0: float, fpr_v3: float, fnr: dict[str, float], tol: float) -> dict[str, Any]:
+    """The frozen matching criterion: |FPR_V3(verification) - f0| <= tol, and FNR exactly 0 for
+    every arm that claims it by construction. Anything undefined fails (fail closed)."""
+    reasons = []
+    diff = abs(fpr_v3 - f0)
+    if not np.isfinite(diff) or diff > tol:
+        reasons.append(f"|FPR_V3 - f0| = {diff:.4f} exceeds {tol} or is undefined")
+    for arm, x in sorted(fnr.items()):
+        if not (np.isfinite(x) and x == 0.0):
+            reasons.append(f"FNR of {arm} is {x}, not exactly 0")
+    return {"pass": not reasons, "f0": f0, "fpr_v3": fpr_v3, "abs_diff": float(diff),
+            "tolerance": tol, "reasons": reasons}  # fmt: skip

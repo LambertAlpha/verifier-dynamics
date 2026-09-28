@@ -646,3 +646,34 @@ evaluation, the modal answer's share over all samples and the top five answers.
 
 **Analysis** is committed before the training runs; no configuration changes after results. No
 test-split evaluation is planned for this experiment (dev only).
+
+### 14.1 Implementation notes (committed with the frozen scripts, before any official audit or run)
+
+- Scripts: `experiments/e005b/matching_audit.py` (`calibrate` / `verify`), `matched_run.py`,
+  `matched_analysis.py` (frozen with this commit). Library: `verifiers.reward_randfp`,
+  `rl.score(..., f0=)`, `matrix.concentration`, `matrix.evaluate_matrix(with_concentration=True)`
+  (default output unchanged), `matching.audit_rates` / `matching.verdict`.
+- Fail-closed gates: `calibrate` refuses on a dirty tree or if `matched_f0.json` already exists;
+  `verify` refuses unless `matched_f0.json` is committed and was calibrated under the same config
+  and base; `matched_run.py` refuses unless the verification verdict passed and its recorded f0
+  file hash equals the committed file; the runner asserts that base, clip, T, evaluation and noise
+  seeds equal `matrix.toml`. FNR must be exactly 0 for V3 and VR, or the verdict fails.
+- Engineering choices (no scientific effect): audit generation in chunks of 250 prompts from one
+  sequential generator (a memory bound; recorded in metadata); the audit bootstrap resamples
+  prompts via per-prompt counts (identical to recomputing over the concatenated responses);
+  VR in the verification audit is scored on the same samples as V3 with coin seed 20261343.
+- Descriptive additions, fixed now: mixed-group fraction under each verifier at initialization;
+  initial constant-output concentration; for VR the affine check `verifier − (f0 + (1 − f0)·gold)`
+  per window; paired differences for the final-window train FPR and the dev modal-answer share.
+  Labels reuse the §12 rule (|mean| ≥ 0.05 with all seeds the same sign), worded "higher" /
+  "lower" / "little difference". These are descriptions, not hypothesis tests.
+- **Disclosure — engineering dry run.** Before this commit the full pipeline was exercised in a
+  throwaway clone with modified configs: audits on 100 prompts with non-official seeds and
+  tolerance 1.0, a toy f0 of 0.1006, and T = 20 training runs. The training runs, unfortunately,
+  used the official RL seeds 4–6. That dry run showed V3's training-batch FPR at ≈ 0.5 already by
+  steps 1–20, which is consistent with the matrix's known rapid collapse. Nothing in this protocol,
+  the configs or the scripts was changed in response. The clone was discarded and none of it is
+  evidence.
+- Integrity check planned before the audits: re-run matrix `clean`, `flip` and `exploit` s1 with
+  the refactored `rl.score` and require their final state hashes to equal the committed matrix
+  runs (`7eedb6b4…`, `34a088fd…`, `321f92a7…`).

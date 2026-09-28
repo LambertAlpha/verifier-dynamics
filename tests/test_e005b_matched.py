@@ -84,3 +84,27 @@ def test_matrix_evaluation_can_add_concentration_without_changing_the_core():
     core = {k: v for k, v in ext.items() if k != "concentration"}
     assert json.dumps(core, sort_keys=True) == json.dumps(base, sort_keys=True)
     assert "concentration" not in base and ext["concentration"]["valid"] <= 160
+
+
+def test_matching_verdict_is_absolute_and_fails_closed():
+    ok = mt.verdict(f0=0.1200, fpr_v3=0.1340, fnr={"exploit": 0.0, "randfp": 0.0}, tol=0.015)
+    assert ok["pass"] and ok["abs_diff"] == pytest.approx(0.014)
+    far = mt.verdict(f0=0.1200, fpr_v3=0.1049, fnr={"exploit": 0.0, "randfp": 0.0}, tol=0.015)
+    assert not far["pass"]
+    fn = mt.verdict(f0=0.12, fpr_v3=0.12, fnr={"exploit": 0.0, "randfp": 0.01}, tol=0.015)
+    assert not fn["pass"] and "randfp" in " ".join(fn["reasons"])
+    nan = mt.verdict(f0=0.12, fpr_v3=float("nan"), fnr={"exploit": 0.0, "randfp": 0.0}, tol=0.015)
+    assert not nan["pass"]
+
+
+def test_cluster_bootstrap_matches_the_row_level_definition():
+    rng = np.random.default_rng(1)
+    pid = np.repeat(np.arange(300), 8)
+    G = (rng.random(2400) < 0.4).astype(float)
+    V = np.where(G == 1, 1.0, (rng.random(2400) < 0.2).astype(float))
+    cats = np.where(pid < 100, "x", "y")
+    r = mt.audit_rates(pid, cats, V, G, np.random.default_rng(0), resamples=400)
+    lo, hi = r["overall"]["fpr_ci"]
+    assert lo < r["overall"]["fpr"] < hi and 0.01 < hi - lo < 0.08
+    assert r["overall"]["fnr_ci"] == [0.0, 0.0]
+    assert r["by_cat"]["x"]["n"] == 800

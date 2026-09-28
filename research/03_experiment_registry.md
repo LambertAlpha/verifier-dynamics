@@ -3992,3 +3992,6 @@ independent verification audit (3000 disjoint prompts × 8); match iff |FPR_V3(v
 f0| ≤ 0.015; else STOP without training. Initial FPR / FNR / accuracy / FP mass with prompt-cluster
 bootstrap intervals, overall and per category. Outcomes as §12 plus constant-output concentration;
 paired differences per seed. Dev only.
+Implementation (§14.1): scripts `matching_audit.py`, `matched_run.py`, `matched_analysis.py` (analysis
+frozen before any run); fail-closed gates on f0 calibration/verification; engineering dry run in a
+discarded clone (toy settings, but official RL seeds 4–6 at T = 20) disclosed.
