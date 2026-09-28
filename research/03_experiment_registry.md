@@ -3709,3 +3709,169 @@ rate ≤ 0.01). A replication without a defined estimate:
 The selection rule, the thresholds and the candidate list are unchanged. The corrected analysis
 is rerun from a clean tree. The first run's selection (R4, 5 of 7 criteria at `N = 1024`) is
 reported alongside.
+
+### E005a-R — results record (design selection + CONFIRMATORY test split; 2026-09-27/28)
+
+**Registered label (§10): B — MECHANISTICALLY VALID, NOT PRACTICALLY MEASURABLE.**
+
+- Low-dimensional / functional geometry removes the nuisance-dimension barrier.
+- At the historical medium signal scale it still cannot be measured as a practical audit at
+  `N ≤ 1024`, even in the oracle subspace.
+- **Recommendation:** E005b must not use geometry as its primary practical diagnostic. Geometry
+  stays an oracle / mechanistic arm.
+- E005a-R is the final measurement round; there is no rescue round.
+
+**Trail** (every run's `dirty = False`; calibrations on the Mac mini, a clean clone of the same
+commits; `host` is in each `meta.json`):
+
+| step | commit | run |
+| --- | --- | --- |
+| anchor script; anchors | `0693aa6`, `1dcad26` | `results/E005aR-anchors/20260927T214225Z_0693aa6` |
+| **pre-registration** (theory + design) | **`95ccd89`** | `research/09_e005ar_design.md` |
+| Amendment 1 (dosing across constructions; pre-data) | `4672b57` | — |
+| implementation (TDD + mutation tests) | `3a6121b`, `326d340` | — |
+| scripts | `7293497`, `dcc45e3` | — |
+| frozen panels (design 1629, sha `00ca33a5…`; test 1728, sha `59cd99b3…`) | `784981e` | `results/E005aR-panel/20260927T221015Z_7293497` |
+| DESIGN calibration (4160 s, 11 workers) | `b413406` | `results/E005aR-calibration-design/20260927T221743Z_784981e` |
+| first design analysis (record; superseded) | `2778832` | `…/20260927T232852Z_b413406` |
+| Amendment 2 (undefined cells; before the selection freeze) | `778d7db` | — |
+| design analysis + selection | `4a7f107` | `results/E005aR-analysis-design/20260927T233127Z_778d7db` |
+| frozen representation (sha `ce87fa41…`) + test unseal | `154ce92` | `configs/e005ar/e005ar_estimator_frozen.json` |
+| TEST calibration (single run; 4157 s) | `0c12f6d` | `results/E005aR-calibration-test/20260927T233218Z_154ce92` |
+| TEST analysis | `1d86cbd` | `results/E005aR-analysis-test/20260928T004238Z_0c12f6d` |
+
+**Provenance:**
+
+- Root seed `20261201`.
+- Python 3.12.13 (Mac mini) / 3.12.11 (anchors, local); numpy 2.5.3, scipy 1.18.1,
+  scikit-learn 1.9.1, torch 2.14.0 (unused).
+- Raw per-replication arrays stay local; their sha256 values are in `checksums.sha256`.
+
+**Signal anchors** (frozen before any E005a-R code):
+
+- Historical per-group detectability `tau` over the 736 nonzero E004a design structures (reward
+  level, M_I, `m = 8`): **Q25 / Q50 / Q75 = 0.0031 / 0.0210 / 0.0788.**
+- **Consequence stated before any data:** the medium anchor gives `n tau = 2.69` at
+  `N = 1024`, so the oracle ceiling itself is at the edge of 80% power.
+
+#### Theory predictions (DESIGN split)
+
+| id | criterion | result |
+| --- | --- | --- |
+| TP-R1 floor law `SD_0 = sqrt(2 tr Σ_⊥^2/(n(n−1)))` | ≥ 80% of cells in [0.8, 1.25] | **PASS**: R0 95.6% (median 1.016); R5 86.8% (median 1.017) |
+| TP-R2 dimension scaling | R0 obs / pred and R5 ratio each ≥ 80% in band | **FAIL**: R0 90.9% (median 0.998) passes; R5 76.1% (median 0.982) misses. The medians show no `d`-dependence; the spread is Monte Carlo noise of SD ratios (`R = 100`, heavy-tailed nulls) |
+| TP-R3 random projection hurts | median `z_R1/z_R0` < 1 for every `k`, and ≥ 70% of cells within [0.67, 1.5] of `rho_s/rho_n` | **PASS**: 0.17 / 0.25 / 0.35 / 0.49 / 0.44 (`k` 4–64); 71.7% in band (median 1.11) |
+| TP-R4 oracle gain `sqrt(tr Σ_⊥,full^2 / tr Σ_⊥,S*^2)` | ≥ 80% in [0.67, 1.5] | **PASS**: 94.7% (median 0.97; SD-ratio form 0.99) |
+| TP-R5 ceiling power at `N = 1024` | within ±0.15 | **PASS**: predicted 0.666, observed 0.537 |
+| TP-R6 PCA retention bulk ≥ flat ≥ spiked | ≥ 2/3 of (`d`, `k`) cells | **BOUNDARY**: 10 of 15 = exactly 2/3. The wording (≥ 2/3) passes; the script's rounded 0.667 fails. **Not claimed.** Bulk ≫ flat and spiked everywhere; flat ≈ spiked |
+
+#### Selection (DESIGN; §9)
+
+- **No candidate passes G1–G7 at any `N`.**
+- **Selected: R4** (5 of 7 criteria at `N = 1024`; medium power 0.419; Spearman 0.674).
+- The best R3 (`k = 8`) passes 2 of 7 (power 0.16); R2 passes ≤ 1 of 7 (power ≤ 0.12, undefined
+  on low-`A` bases).
+- R4 fails G3 and G4 at every `N`.
+
+#### Held-out TEST (frozen R4; single run)
+
+| N | G1 FPR | G2 SDB | G3 Spearman | G4 medium power | G5 | G6 z vs R0 | G7 vs R1 | passed |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 64 | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | ✗ | 4/7 |
+| 128 | ✓ | ✓ | ✗ | ✗ | ✓ | ✗ | ✗ | 3/7 |
+| 256 | ✓ (0.034) | ✓ (0.10) | ✗ (0.345) | ✗ (0.107) | ✓ | ✗ | ✗ | 3/7 |
+| 512 | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | ✗ | 4/7 |
+| 1024 | ✓ (0.041) | ✓ (0.10) | ✗ (**0.680**) | ✗ (**0.426**) | ✓ | ✓ (z 3.42 vs 1.61) | ✓ (0.426 vs 0.132) | 5/7 |
+
+- **Minimum practical budget: none ≤ 1024.**
+- **Decision inputs:**
+  - retention (R4 oracle Spearman of `C_f^2` with `C_beh^2`) = 0.98 ≥ 0.7;
+  - G7 passes at `N = 1024`;
+  - large-dose power 0.83 (R4) and 0.89 (R5) ≥ 0.8.
+  - **→ B.**
+
+**Comparison at `N = 1024`** (test; FPR at behavior nulls; power at small / medium / large):
+
+| representation | FPR (nuisance-only nulls) | SDB_null | Spearman | power s / m / l | median retained signal |
+| --- | --- | --- | --- | --- | --- |
+| R0 full | 0.222 (**0.472**) | 0.90 | 0.553 | 0.07 / 0.36 / 0.69 | 1 (plus all nuisance error) |
+| R1 random `k = 16` | 0.102 (0.196) | 0.65 | 0.266 | 0.05 / 0.16 / 0.37 | 0.06 |
+| R2 gold PCA `k = 64` | 0.052 (0.083) | 0.43 | 0.363 | 0.04 / 0.11 / 0.38 | 0.52; undefined 25% |
+| R3 joint cross-fit `k = 64` | 0.128 (0.266) | 0.90 | 0.432 | 0.05 / 0.24 / 0.55 | 0.52; leaks 49% of the nuisance error |
+| **R4 functional** | **0.041 (0.042)** | **0.10** | **0.680** | 0.09 / **0.43** / 0.83 | Spearman 0.98 with `C_beh` |
+| R5 oracle `S*` (ceiling) | 0.045 (0.044) | 0.10 | 0.742 | 0.10 / **0.55** / 0.89 | 1 |
+
+**Medium power vs `N`:**
+
+| representation | 64 | 128 | 256 | 512 | 1024 |
+| --- | --- | --- | --- | --- | --- |
+| R0 | .07 | .09 | .13 | .22 | .36 |
+| R4 | .03 | .06 | .11 | .22 | .43 |
+| R5 | .04 | .07 | .14 | .30 | .54 |
+
+**Dimension test** (test, `N = 1024`; matched behavior blocks across `d`):
+
+| `d` | R0 clean-null SD | R0 medium power | R4 medium power | R5 medium power |
+| --- | --- | --- | --- | --- |
+| 64 | 2.2e-4 | 0.48 | 0.42 | 0.54 |
+| 256 | 4.4e-4 | 0.36 | 0.43 | 0.55 |
+| 1024 | 8.0e-4 | 0.26 | 0.42 | 0.54 |
+
+- R0's SD grows 3.6× over `d` 64 → 1024.
+- R4 and R5 are flat in `d`, spectrum and `r`.
+- **Full space:** error grows with nuisance dimension. **Functional / oracle:** controlled by the
+  behavior rank.
+
+**PCA subspaces follow BBP.** R2/R3 retain 0.39–0.79 of the signal in the bulk spectrum, and
+0.03–0.37 in the flat and spiked spectra. R3 also picks up the behavior-irrelevant verifier error
+(leak 0.11–0.49).
+
+**R4 sensitivity** (design, `N = 1024`):
+
+- output scaling and constant outputs: exactly invariant;
+- a probe on 4 of 8 prompts: power 0.40, Spearman 0.64;
+- duplicated probes: `C_f^2` × 0.91;
+- **surface-form outputs appended:** FPR 0.115 overall and **0.223 at nuisance-only nulls**.
+  The probe must be behavior-defined.
+
+**Legacy jackknife-Wald test** (R4, test, `N = 1024`): FPR 0.001, medium power 0.12. The E005a §10
+lesson is confirmed: the sign-flip test gives 3.5× the power at a calibrated FPR.
+
+**Interpretation:**
+
+1. **The dimension hypothesis is confirmed and solved.** The nuisance barrier is real (TP-R1,
+   TP-R2 for R0, TP-R4). A behavior-defined functional representation removes it exactly: flat in
+   `d` and spectrum, no nuisance false positives, SDB 0.10.
+2. **It is not the binding constraint at the historical scale.** Even the oracle subspace reaches
+   only 0.55 power for the medium signal at `N = 1024`, as TP-R5 predicted (0.67 predicted). The
+   within-behavior noise binds.
+3. **Random projection hurts** (TP-R3), as derived. Data-driven PCA subspaces work only when
+   behavior directions stand out spectrally (BBP), and joint subspaces import verifier-specific
+   error.
+4. **Positive:** R4 is valid (calibrated nulls, no structure shift), ranks at 0.68 and detects
+   the large (Q75) signal at 0.83 by `N = 1024`.
+5. **Not supported:** geometry as a practical audit metric for historical median-scale verifier
+   errors at `N ≤ 1024`.
+
+**Limitations:**
+
+- R4's validity is partly built into the environment: the probe observes exactly the behavior
+  classes.
+- The anchors are U-toy detectabilities.
+- Reward level only; no update-level claim.
+- The equal weighting of three spectra is a choice.
+- R2 is undefined at low `A`.
+- **Post-hoc, not tested:** extrapolating the power curves puts R4 at 80% medium power around
+  `N ≈ 3–4k`. The budget cap of 1024 was registered and is not relaxed.
+
+### E005b — design draft v2 (NOT registered; awaiting collaborator approval; 2026-09-28)
+
+`research/08_e005b_design.md` v2 follows the E005a-R label B, as the E005a-R decision tree
+requires.
+
+- **Primary practical comparison:** static metrics vs the passive early trajectory vs a
+  budget-matched active probe, on matched-cost frontiers.
+- **Geometry** is kept only as a mechanistic / oracle arm: large-budget, behavior-defined
+  functional geometry at the reward level. It is never a practical predictor.
+- **No update-level geometry claim** is made unless the translation is calibrated first.
+- No transformer is trained and no GRPO run exists.
