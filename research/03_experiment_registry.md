@@ -3969,3 +3969,16 @@ on the same items for all runs. Descriptive labels fixed in advance (±0.05 with
 V3 "exploited" needs a ≥ 0.05 rise in false-positive mass and in the V − G gap). Integrity: V0 must
 reproduce the calibration runs bit-exactly. Test evaluated once after the analysis is frozen; it
 was inspected in the pilot and is disclosed as not newly sealed.
+
+### E005b-0 — exploratory verifier matrix results (2026-09-28)
+
+`research/10_e005b0_pilot.md` §13. V0 reproduced the calibration bit-exactly. Primary (dev,
+paired vs V0, seeds 1 / 2 / 3): V1 −0.061 / −0.027 / −0.059 (mean −0.049; frozen label "little
+effect", all signs negative); V2 −0.058 / −0.028 / −0.012 (−0.033; "little effect"); V3 −0.752 /
+−0.724 / −0.738 (−0.738; "weakened learning" and "exploited"). V3's false-positive suffix mass
+rose to 0.99 within ≈ 60 steps and the policy collapsed to a near-constant answer ("100"),
+reaching a zero-variance absorbing state. V1 kept ≈ 0.9 mixed groups under V but learned more
+slowly. V2's no-feedback prompts improved almost as much as retained ones; its small deficit was
+not subset-specific. Test (inspected in the pilot; disclosed): same ordering. Cost: 13 min, 3.07 M
+training responses, 2.46 M evaluation responses. No prediction models, geometry or follow-up
+training.

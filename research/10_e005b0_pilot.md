@@ -542,3 +542,58 @@ confirmatory test.
 
 **Costs.** As §10 A5 (responses, tokens, backward calls, gold-checker and verifier calls, wall
 time, memory), separating training from diagnostic/evaluation cost.
+
+## 13. Exploratory verifier matrix — results (2026-09-28; stopped here)
+
+Runs `2679366`; frozen analysis `5cc72fb` → `results/E005b0-matrix-analysis/20260928T201406Z_2679366`;
+post-hoc V3 profile `results/E005b0-posthoc-v3`; single test evaluation `results/E005b0-matrix-test`.
+Integrity: all three V0 runs reproduced the calibration runs bit-exactly (final sha256 and every dev
+evaluation). All 12 runs completed on clean commits; dispositions in
+`results/E005b0-matrix-dispositions.json`.
+
+**Primary (dev sampled gold accuracy, mean of the final four evaluations):**
+
+| rule | seed 1 | seed 2 | seed 3 | paired d (s1 / s2 / s3) | mean d | label (frozen rule) |
+| --- | --- | --- | --- | --- | --- | --- |
+| V0 clean | 0.760 | 0.736 | 0.752 | — | — | — |
+| V1 flip 0.2 | 0.699 | 0.709 | 0.693 | −0.061 / −0.027 / −0.059 | −0.049 | little effect (|mean| < 0.05; all three negative) |
+| V2 fixed-subset constant | 0.702 | 0.708 | 0.740 | −0.058 / −0.028 / −0.012 | −0.033 | little effect (all three negative) |
+| V3 correct-or-ends-in-0 | 0.009 | 0.012 | 0.014 | −0.752 / −0.724 / −0.738 | −0.738 | weakened learning; **exploited** |
+
+Three seeds: the spreads (V1 0.027–0.061, V2 0.012–0.058) are descriptive; no minimum detectable
+difference is claimed. V1's mean sits 0.001 above the pre-set −0.05 boundary; the label is kept as
+frozen and the consistent sign is reported alongside it.
+
+**Mechanisms (training windows: first / last 50 steps; dev: final four evaluations; same dev items
+for all rules):**
+- **V3 (exploited).** Training `P(G=0, valid, ends in 0)` 0.50–0.60 already in the first 50 steps →
+  0.99 in the last 50; verifier–gold gap +0.50–0.60 → +0.99; dev false-positive suffix rate 0.99
+  (V0: 0.04); gold ≈ 0.01 in every category by step ≈ 60. The answer "0" never appears; the
+  post-hoc profile shows **collapse to a near-constant answer**: "100" in 83–96% of dev samples
+  (seed 1: "110" 71%, "100" 28%), round-down only ≈ 9%. Once all samples are rewarded, groups have
+  zero variance: gradient norm 0, no clipping, an absorbing state.
+- **V1 (weakened slightly).** FPR 0.20, FNR 0.20 throughout (denominators ≈ 3.4–9.4 k per window).
+  Mixed groups under V 0.95 → 0.89 vs under G 0.72 → 0.37: the added variability is noise, and
+  learning is slower, not faster; the largest category gap is three-digit (−0.068).
+- **V2 (little effect).** Training gold on fixed-subset prompts (no direct gradient) vs retained,
+  last 50 steps: 0.750 / 0.751, 0.692 / 0.731, 0.705 / 0.728 — the no-feedback prompts improve
+  almost as much through shared parameters. On dev, members of the fixed-rule subset and the other
+  items fall short of V0 by similar amounts (−0.033 vs −0.033 mean), so the small deficit is
+  overall, not concentrated on the subset. FPR 0.24–0.29 (the subset's wrong answers).
+
+**Secondary (paired mean d):** greedy (final four) V1 −0.036, V2 −0.032, V3 −0.77; final-checkpoint
+sampled V1 −0.046, V2 −0.057, V3 −0.744; categories V1 −0.027 / −0.033 / −0.068, V2 −0.070 /
++0.023 / −0.033 (no carry / units carry / three-digit). Valid rate ≥ 0.994 everywhere; entropy
+0.41 → 0.09–0.13 (V3 → 0.02–0.05); KL to base ≈ 0.33–0.38 (V3 2.1–2.8).
+
+**Test (single evaluation of final checkpoints after the analysis was frozen; the split was
+inspected during the pilot).** Paired sampled differences: V1 −0.047 / +0.026 / −0.098; V2 −0.065 /
+−0.077 / −0.001; V3 −0.721 / −0.715 / −0.740 — the same ordering as dev, with more noise (one
+checkpoint vs four evaluations).
+
+**Costs (12 runs).** Run time 727 s (≈ 13 min wall, sequential). Training (before any
+diagnosis): 435 s (generation 235, forward+backward 172, optimizer 24, scoring 4); 3.07 M responses,
+11.0 M completion and 21.5 M prompt tokens, 12,000 batched backward calls (3.07 M sequences),
+3.07 M verifier calls (each also evaluates the gold checker). Diagnostics: 289 s (entropy/KL 131,
+mechanism summaries 4, dev evaluation 154); 2.46 M evaluation responses and gold-checker calls.
+Test: 12 × 5,005 responses. Peak RSS 1.26 GB.
