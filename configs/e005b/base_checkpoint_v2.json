@@ -1,0 +1,8 @@
+{
+ "file": "results/E005b0-select-base/20260928T182536Z_60c0812/base_v2.pt",
+ "sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "selected_step": 600,
+ "rule": "coverage-aware primary rule (research/10_e005b0_pilot.md \u00a710 A2)",
+ "selection_run": "results/E005b0-select-base/20260928T182536Z_60c0812",
+ "sft_run": "results/E005b0-pretrain/20260928T042420Z_5549b29"
+}
