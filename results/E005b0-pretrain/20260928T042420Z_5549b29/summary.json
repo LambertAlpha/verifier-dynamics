@@ -1,0 +1,48 @@
+{
+ "selected": {
+  "rule": "first checkpoint in the interval",
+  "step": 375,
+  "loss": 0.5677382946014404,
+  "dev_greedy": 0.28471528471528473,
+  "dev_sampled": 0.2137862137862138,
+  "dev_valid": 0.97002997002997,
+  "dev_greedy_valid": 1.0,
+  "sha256": "8812b53a1bebda127c1068c28d5b8841ce0b7feed409ca0782440e913d1ea496",
+  "elapsed_s": 4.354342000006
+ },
+ "base_sha256": "8812b53a1bebda127c1068c28d5b8841ce0b7feed409ca0782440e913d1ea496",
+ "base_file": "results/E005b0-pretrain/20260928T042420Z_5549b29/base.pt",
+ "base_train": {
+  "greedy": {
+   "acc": 0.469,
+   "valid": 1.0,
+   "n": 1000
+  },
+  "sampled": {
+   "acc": 0.296,
+   "valid": 0.959,
+   "n": 1000
+  }
+ },
+ "base_test": {
+  "greedy": {
+   "acc": 0.281,
+   "valid": 1.0,
+   "n": 1000
+  },
+  "sampled": {
+   "acc": 0.185,
+   "valid": 0.968,
+   "n": 1000
+  }
+ },
+ "steps_run": 1700,
+ "final_dev_greedy": 0.99000999000999,
+ "seconds": {
+  "total": 19.907176875014557,
+  "train": 10.44990951262298,
+  "eval": 8.932847499090713
+ },
+ "peak_rss_mb": 642.609375,
+ "n_params": 402703
+}

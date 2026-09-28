@@ -1,0 +1,7 @@
+{
+ "file": "results/E005b0-pretrain/20260928T042420Z_5549b29/base.pt",
+ "sha256": "8812b53a1bebda127c1068c28d5b8841ce0b7feed409ca0782440e913d1ea496",
+ "selected_step": 375,
+ "rule": "first checkpoint in the interval",
+ "pretrain_run": "results/E005b0-pretrain/20260928T042420Z_5549b29"
+}
