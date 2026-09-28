@@ -1,0 +1,28 @@
+{
+ "base": "old",
+ "clip": 1.0,
+ "seed": 1,
+ "steps": 1000,
+ "base_sha256": "8812b53a1bebda127c1068c28d5b8841ce0b7feed409ca0782440e913d1ea496",
+ "final_sha256": "719d7e9f6e026301e153f92d45ca48ac1b66f20498c7d3518cf5fd84bcf3b004",
+ "seconds_total": 59.6730690409895,
+ "seconds": {
+  "gen": 19.354636769508943,
+  "score": 0.33084535581292585,
+  "diag": 10.728568156075198,
+  "fwd_bwd": 14.174171083664987,
+  "optim": 2.003814381547272,
+  "eval": 12.626055913977325
+ },
+ "cost": {
+  "train_responses": 256000,
+  "train_completion_tokens": 886088,
+  "train_prompt_tokens": 1792000,
+  "backward_calls": 1000,
+  "backward_sequences": 256000,
+  "train_gold_calls": 256000,
+  "eval_responses": 205205,
+  "eval_gold_calls": 205205
+ },
+ "peak_rss_mb": 1234.15625
+}

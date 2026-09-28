@@ -1,0 +1,83 @@
+{
+  "experiment_id": "E005b0-calib-new-c1-s1",
+  "created_utc": "2026-09-28T18:28:29+00:00",
+  "git": {
+    "commit": "ed04bedd19f0a444d5cf0a558af84f0edb723e49",
+    "dirty": false
+  },
+  "config_sha256": "892bbe04dc8b6ed517d5258574ad4ab190065064b09643887d0c5848932cadfc",
+  "config": {
+    "experiment_id": "E005b0-calib",
+    "amends": "research/10_e005b0_pilot.md \u00a710",
+    "sft_run": "results/E005b0-pretrain/20260928T042420Z_5549b29",
+    "old_base_pointer": "configs/e005b/base_checkpoint.json",
+    "new_base_pointer": "configs/e005b/base_checkpoint_v2.json",
+    "categories": {
+      "names": [
+        "no carry",
+        "units carry",
+        "three-digit"
+      ]
+    },
+    "selection": {
+      "samples_per_item": 4,
+      "seed": 20261310,
+      "confirm_seed": 20261311,
+      "min_category": 0.2,
+      "max_aggregate": 0.6,
+      "min_valid": 0.95,
+      "fallback_min_category": 0.15,
+      "fallback_max_aggregate": 0.65
+    },
+    "grpo": {
+      "steps": 1000,
+      "clips": [
+        1.0,
+        10.0
+      ],
+      "rl_seed_2x2": 1,
+      "confirm_seeds": [
+        2,
+        3
+      ],
+      "eval_every": 25,
+      "eval_samples_per_item": 4,
+      "eval_seed": 20261312,
+      "evaluate_test": false
+    },
+    "decision": {
+      "final_evals": 4,
+      "collapse_tolerance": 0.02,
+      "min_valid_last50": 0.9,
+      "clip_tie": 0.05,
+      "min_gain": 0.05
+    },
+    "integrity": {
+      "original_seed1_sha256": "1047aec26a8365143c0c2b8c6a3a78801d5251f41814727cc616a89cdc97f84c"
+    }
+  },
+  "python": "3.12.13 (main, Jun 23 2026, 15:44:24) [Clang 22.1.3 ]",
+  "platform": "macOS-15.3.1-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "host": "Lamberts-Mac-mini.local",
+  "device": "cpu",
+  "threads": 4,
+  "argv": [
+    "experiments/e005b/grpo_calib.py",
+    "new",
+    "1",
+    "1"
+  ],
+  "base": "new",
+  "clip": 1.0,
+  "seed": 1,
+  "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+  "pilot_config_sha256": "5204b9cc3e90cdfb5409c657600deb88dc7e4eceb4b707a75bee4a638ca952e2"
+}
