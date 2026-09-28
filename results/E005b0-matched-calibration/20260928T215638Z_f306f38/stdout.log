@@ -1,0 +1,16 @@
+{
+ "f0": 0.1083,
+ "fpr_v3_unrounded": 0.1083457324496145,
+ "n_neg": 14786,
+ "fpr_v3_ci": [
+  0.10138521118292425,
+  0.11597985534364445
+ ],
+ "calibration_run": "results/E005b0-matched-calibration/20260928T215638Z_f306f38",
+ "matched_config_sha256": "1d53f9bbaf19740771999e1c7c964ea76978ab598fa762ebcae5e63e99345bad",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "rule": "f0 := V3 FPR pooled over all G = 0 responses of the calibration audit, rounded; frozen before the verification audit (\u00a714)"
+}
+clean    FPR 0.0000 [0.0, 0.0] FNR 0.0000 acc 0.3839 FP mass 0.0000 mixed 0.781 | by cat FPR no carry: 0.000 units carry: 0.000 three-digit: 0.000
+exploit  FPR 0.1083 [0.1014, 0.116] FNR 0.0000 acc 0.3839 FP mass 0.0668 mixed 0.869 | by cat FPR no carry: 0.117 units carry: 0.125 three-digit: 0.101
+run directory: results/E005b0-matched-calibration/20260928T215638Z_f306f38
