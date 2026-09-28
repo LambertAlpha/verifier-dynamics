@@ -224,3 +224,97 @@ Whether the exploit is discovered is **not assumed**.
 - **(a) the cost of training up to the diagnostic point:** rollouts, backward passes, gold labels
   used by the verifier (none for V0–V3, since the verifiers are programmatic);
 - **(b) the additional diagnostic cost:** gold audits, dev/test evaluations.
+
+---
+
+## 9. Results (2026-09-28; the pilot is complete and stopped here)
+
+**Runs:**
+
+- all on `mac-mini-remote` (Lamberts-Mac-mini.local, M4 Pro), CPU, 4 threads;
+- Python 3.12.13, torch 2.14.0;
+- every run from a clean commit (`meta.json`);
+- seeds and configuration as in `configs/e005b/pilot.toml`.
+
+**Q1 — can the Transformer learn the task? Yes.**
+
+- SFT reaches dev greedy 0.99 (unseen operand pairs) at step 1700, in 20 s.
+- **Base** (rule: the first checkpoint in [0.20, 0.40]):
+  - step 375; dev sampled 0.214, greedy 0.285, valid 0.97; sha256 `8812b53a…`;
+  - test: greedy 0.281, sampled 0.185;
+  - train (1000 items): greedy 0.469, sampled 0.296.
+
+**Q2 — is clean GRPO stable and interpretable? Yes, with one strong limitation.**
+
+- **Stability and reproducibility:**
+  - three seeds, 500 steps each;
+  - no non-finite step;
+  - seed 1 rerun **bit-identical** (final sha256 `1047aec2…`);
+  - the seeds agree closely.
+- **Learning:**
+  - dev sampled 0.171 → 0.343–0.374;
+  - dev greedy 0.285 → 0.42–0.44;
+  - test sampled 0.185 → 0.365–0.389, test greedy 0.281 → 0.41–0.46;
+  - batch gold 0.21 → 0.37–0.41.
+- **Diagnostics:**
+  - entropy 0.77 → 0.37–0.45; the k3 KL to the base grows to ≈ 0.25 (spikes up to 0.9);
+  - response length is stable (3.4–3.6 tokens);
+  - valid rate 0.99.
+- **Limitation — reward sparsity, not instability** (post-hoc diagnostic
+  `results/E005b0-posthoc-sparsity`):
+  - Greedy accuracy plateaus near 0.44 after ≈ 100 steps.
+  - 51% of the prompts have a sum ≥ 100. There the base's greedy accuracy is 0.09, and 63% of
+    its groups are all wrong.
+  - After 500 steps that class is unchanged (greedy 0.09–0.10; all-wrong groups 67–74%).
+  - The gains are entirely in the no-carry class (0.56 → 0.85–0.87) and the units-carry class
+    (0.53 → 0.66–0.77).
+  - **GRPO sharpens behaviour the base can already sample; it does not bootstrap the
+    three-digit answers.** Mixed-reward groups fall from 0.60 to 0.44–0.52, so about half of the
+    rollouts carry no gradient.
+- **Gradient-norm clipping (max 1.0, the TRL default) binds at every step** (median pre-clip
+  norm ≈ 5). With Adam, the run is effectively Adam on unit-norm gradients.
+
+**Q3 — cost** (500 steps ≈ 26 s per run):
+
+| phase | ms per step | seconds per 500-step run | share |
+| --- | --- | --- | --- |
+| generation | 19.6 | 9.8 | 38% |
+| scoring | 0.3 | 0.17 | 1% |
+| pre-update diagnostics (entropy, KL) | 11.0 | 5.5 | 21% |
+| forward + backward | 14.4 | 7.2 | 28% |
+| optimizer | 1.5 | 0.7 | 3% |
+| dev evaluation (21 × 2000 generations) | — | 2.9 | 11% |
+
+- Peak RSS is 0.73–0.80 GB.
+- SFT to 0.99: 20 s (train 10 s, evaluation 9 s).
+- Audit: 16,000 samples in 1.2 s.
+
+**Deviations and challenged assumptions:**
+
+1. **The pre-stated 94% mixed-group rate was wrong** (0.60). It assumed a homogeneous `p`;
+   difficulty differs sharply by carry class.
+2. **Winner's curse in base selection.** The base's dev sampled accuracy was 0.214 under the SFT
+   evaluation seed and 0.171 under the GRPO evaluation seed. The rule selects on one noisy
+   sample per item.
+3. **Orchestration bug (no data impact):** a glob moved a committed smoke record between runs.
+   The dirty-tree check stopped the sequence (fail closed). The remaining runs were relaunched
+   on a clean tree.
+4. **Smoke mode** takes the last checkpoint, because 50 SFT steps never reach the valid-rate
+   threshold. Real runs use the registered rule.
+5. **Rule 7.1** (early-trajectory ≡ copy probe) and **rule 7.2** (the clip is inactive at
+   `μ = 1`) hold as stated.
+
+**Initial error rates of the proposed verifiers at the base** (2000 train prompts × 8 samples;
+`results/E005b0-verifier-audit`):
+
+| rule | FPR | FNR | mean V (gold 0.198) | mixed groups |
+| --- | --- | --- | --- | --- |
+| V0 clean | 0 | 0 | 0.198 | 0.62 |
+| V1 flip 0.2 | 0.202 | 0.200 | 0.321 | 0.92 |
+| V2 deleted 25% (constant 1) | 0.247 | 0 | 0.396 | 0.47 |
+| V3 correct-or-ends-in-0 | 0.078 | 0 | 0.261 | 0.80 |
+
+- For V3, 7.6% of base outputs end in 0, and "0" itself is essentially never produced (6e-5).
+- V3's false positives fall where the base is weakest: e.g. "100"/"110" on sums ≥ 100. The
+  exploit is therefore **reachable**, but its discovery is not assumed.
+- V1 raises the mixed-group rate: flips create variance even on all-wrong prompts.

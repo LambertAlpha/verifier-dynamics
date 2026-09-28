@@ -3904,3 +3904,26 @@ or E005 hypothesis; those experiments are closed.
 - **Next matrix** (4 verifiers × 3 seeds) is proposed only; not run.
 - **Challenged assumption:** the draft's "passive early trajectory" and "active short probe" are
   the same protocol unless a distinct intervention is defined.
+
+### E005b-0 — pilot results (exploratory; 2026-09-28)
+
+`research/10_e005b0_pilot.md` §9. The runs are commits `3db92e6` (base) through `1b3b04f`, all
+on `mac-mini-remote`, CPU, 4 threads.
+
+1. **Learnability: yes.** A 402k-parameter character GPT reaches dev greedy 0.99 on unseen
+   2-digit additions in 1700 SFT steps (20 s).
+   - Base (first checkpoint with dev sampled accuracy in [0.20, 0.40]): step 375, sha
+     `8812b53a…`.
+2. **Clean GRPO: stable and reproducible.**
+   - 3 seeds × 500 steps; no non-finite steps; a bit-identical rerun.
+   - Test sampled 0.185 → 0.365–0.389; greedy 0.281 → 0.41–0.46.
+   - **Limitation (post-hoc):** greedy plateaus near 0.44. For the 51% of prompts with a sum
+     ≥ 100 the base is 9% correct with 63% all-wrong groups, and GRPO does not move them. Gains
+     come only where the base already succeeds sometimes.
+   - The gradient clip (1.0) binds at every step.
+3. **Cost:** ≈ 26 s per 500-step run (generation 38%, diagnostics 21%, backward 28%);
+   0.8 GB RSS.
+
+- **Proposed verifier rules' initial FPR/FNR:** V1 0.20/0.20; V2 0.25/0 (25% of prompts
+  deleted); V3 ("ends in 0") FPR 0.078.
+- **The 4 × 3 matrix is NOT run;** it awaits approval.
