@@ -1,5 +1,6 @@
 """E005b-0: initial error rates of the PROPOSED verifier rules on the frozen base's samples
-(research/10_e005b0_pilot.md §8). No training with any flawed verifier. Usage: verifier_audit.py."""
+(research/10_e005b0_pilot.md §8). No training with any flawed verifier.
+Usage: verifier_audit.py [--pointer configs/e005b/<pointer>.json]  (default: the original base)."""
 
 import json
 import sys
@@ -22,11 +23,14 @@ BASE_POINTER = cm.REPO / "configs" / "e005b" / "base_checkpoint.json"
 AUDIT_SEED = 20261306
 
 
-def main() -> int:
+def main(argv: list[str]) -> int:
     cfg = cm.load_config()
+    pointer = BASE_POINTER
+    if "--pointer" in argv:
+        pointer = cm.REPO / argv[argv.index("--pointer") + 1]
     v = cfg["verifiers"]
     assert v["flip_rate"] == vf.FLIP_RATE
-    ptr = json.loads(BASE_POINTER.read_text())
+    ptr = json.loads(pointer.read_text())
     net = mdl.build(mdl.GPTConfig(), seed=0)
     if mdl.load_checkpoint(cm.REPO / ptr["file"], net)["sha256"] != ptr["sha256"]:
         print("STOP: base checkpoint hash mismatch")
@@ -34,6 +38,7 @@ def main() -> int:
     run_dir = provenance.create_run_dir(cm.REPO / "results", "E005b0-verifier-audit", cm.REPO)
     provenance.write_metadata(run_dir, "E005b0-verifier-audit", cm.CONFIG, cm.REPO,
                               extra=cm.run_extra(cfg, base_sha256=ptr["sha256"],
+                                                 pointer=str(pointer.name),
                                                  audit_seed=AUDIT_SEED))  # fmt: skip
     train = tk.make_splits(cfg["data"]["split_seed"])["train"]
     rng = np.random.default_rng(AUDIT_SEED)
@@ -64,4 +69,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main(sys.argv))
