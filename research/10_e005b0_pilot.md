@@ -597,3 +597,52 @@ diagnosis): 435 s (generation 235, forward+backward 172, optimizer 24, scoring 4
 3.07 M verifier calls (each also evaluates the gold checker). Diagnostics: 289 s (entropy/KL 131,
 mechanism summaries 4, dev evaluation 154); 2.46 M evaluation responses and gold-checker calls.
 Test: 12 × 5,005 responses. Peak RSS 1.26 GB.
+
+---
+
+## 14. Matched-initial-error experiment — protocol (frozen before any audit or run, 2026-09-28)
+
+**Question.** With the initial false-positive rate, false-negative rate and accuracy matched at the
+calibrated base, does the *structure* of the false positives change learning? This tests the
+insufficiency of static error metrics under two controlled reward structures. It is **not** a test
+of pure accessibility causality, nor of predictive generalization. The completed matrix (§12–§13)
+is preserved.
+
+**Arms** (base v2 sha `74865408…`, fresh Adam, clip 1.0, T = 1000, all other settings as §12):
+- **V0 clean:** `V = G`.
+- **VR random false positives:** `V = 1` if `G = 1`; otherwise `V ~ Bern(f0)` with a **fresh,
+  independent coin for every sampled response** (no fixed per-item table), applied to every
+  `G = 0` response (valid-but-wrong and invalid alike, matching the FPR definition `P(V=1 | G=0)`).
+- **V3:** `V = 1` if correct or a valid number ending in 0 (unchanged).
+- Anticipated structure (not hypotheses): VR is affine in `G` in expectation (`E[V|y] = f0 +
+  (1 − f0) G`), so its expected gradient is the clean gradient scaled by `1 − f0`; V3's false
+  positives share one input-independent satisfying pattern. FNR = 0 for all three by construction.
+
+**Matching (initial policy only).**
+- *Calibration audit:* 3000 training prompts (the first 3000 of a permutation of the training
+  split with seed 20261340) × 8 samples from the base (policy seed 20261341). `f0 :=` the V3 FPR
+  on this audit (pooled over all G = 0 responses), rounded to 4 decimals and frozen in
+  `configs/e005b/matched_f0.json` before the verification audit.
+- *Verification audit (independent):* the next 3000 prompts of the same permutation (disjoint) ×
+  8 samples (policy seed 20261342); VR coins seed 20261343.
+- **Matching criterion (frozen):** |FPR_V3(verification) − f0| ≤ 0.015 (absolute). Also reported:
+  VR's realized FPR on the verification samples, FNR (must be exactly 0 for V3 and VR), accuracy,
+  FP mass `P(V=1, G=0)` — overall and per category (no carry / units carry / three-digit), with
+  95% intervals from a prompt-cluster bootstrap (2000 resamples, seed 20261344). Per-category and
+  per-prompt matching is **not** required and is not claimed; category differences are reported.
+- **Stopping rule:** if the criterion fails, STOP — no training and no retuning of f0; report.
+
+**Training.** RL seeds **4, 5, 6** (fresh) for all three arms (9 runs), sequential on
+`mac-mini-remote`. Streams: prompts `torch.Generator(10000 + seed)`, policy `torch.Generator(seed)`,
+verifier coins `numpy.default_rng(SeedSequence([20261320, seed]))`, evaluation
+`torch.Generator(20261312)`.
+
+**Outcomes** (as §12): primary = mean sampled dev gold accuracy over the final four evaluations;
+paired differences per seed for VR − V0, V3 − V0 and V3 − VR; secondary and mechanism measurements
+as §12 (gold/verifier trajectories, FPR/FNR/FP mass with denominators, wrong-suffix mass
+`P(G=0, valid, ends in 0)`), plus **constant-output concentration**: per training step, the share
+of the most frequent valid answer in the batch and the number of distinct answers; per dev
+evaluation, the modal answer's share over all samples and the top five answers.
+
+**Analysis** is committed before the training runs; no configuration changes after results. No
+test-split evaluation is planned for this experiment (dev only).

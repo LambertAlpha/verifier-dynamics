@@ -3982,3 +3982,13 @@ slowly. V2's no-feedback prompts improved almost as much as retained ones; its s
 not subset-specific. Test (inspected in the pilot; disclosed): same ordering. Cost: 13 min, 3.07 M
 training responses, 2.46 M evaluation responses. No prediction models, geometry or follow-up
 training.
+
+### E005b-0 — matched-initial-error experiment protocol (frozen before any audit; 2026-09-28)
+
+`research/10_e005b0_pilot.md` §14. Arms V0 clean, VR (every correct answer accepted; every G = 0
+response accepted with a fresh Bern(f0) coin), V3 (unchanged); base v2, clip 1, T = 1000, fresh
+RL seeds 4–6. f0 := V3's FPR on a calibration audit (3000 train prompts × 8), frozen before an
+independent verification audit (3000 disjoint prompts × 8); match iff |FPR_V3(verification) −
+f0| ≤ 0.015; else STOP without training. Initial FPR / FNR / accuracy / FP mass with prompt-cluster
+bootstrap intervals, overall and per category. Outcomes as §12 plus constant-output concentration;
+paired differences per seed. Dev only.
