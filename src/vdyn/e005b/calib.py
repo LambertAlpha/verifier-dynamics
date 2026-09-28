@@ -14,17 +14,25 @@ from vdyn.e005b import task as tk
 
 
 @torch.no_grad()
-def evaluate_categories(net: nn.Module, pairs: list[tuple[int, int]], samples: int,
-                        seed: int) -> dict[str, Any]:  # fmt: skip
+def eval_samples(net: nn.Module, pairs: list[tuple[int, int]], samples: int,
+                 seed: int) -> dict[str, Any]:  # fmt: skip
+    """The dev samples behind every calibration/matrix evaluation: `samples` completions per item
+    (temperature 1, a fresh generator with `seed`) and one greedy completion per item."""
     gen = torch.Generator().manual_seed(seed)
     toks = mdl.sample(net, rl.prompt_tensor(pairs, samples), tk.MAX_NEW, 1.0, gen)["tokens"]
     rep = [p for p in pairs for _ in range(samples)]
-    parsed = [tk.parse_completion(t) for t in toks.tolist()]
+    gtok, _ = mdl.greedy(net, rl.prompt_tensor(pairs), tk.MAX_NEW)
+    return {"rep": rep, "tokens": toks.tolist(), "greedy_tokens": gtok.tolist()}
+
+
+def summarize_samples(pairs: list[tuple[int, int]], es: dict[str, Any],
+                      samples: int) -> dict[str, Any]:  # fmt: skip
+    rep = es["rep"]
+    parsed = [tk.parse_completion(t) for t in es["tokens"]]
     gold = np.array([tk.gold_reward(a, b, *pv) for (a, b), pv in zip(rep, parsed, strict=True)])
     valid = np.array([float(v) for v, _ in parsed])
     cats = np.array([tk.category(a, b) for a, b in rep])
-    gtok, _ = mdl.greedy(net, rl.prompt_tensor(pairs), tk.MAX_NEW)
-    gparsed = [tk.parse_completion(t) for t in gtok.tolist()]
+    gparsed = [tk.parse_completion(t) for t in es["greedy_tokens"]]
     ggold = np.array([tk.gold_reward(a, b, *pv) for (a, b), pv in zip(pairs, gparsed, strict=True)])
     gcats = np.array([tk.category(a, b) for a, b in pairs])
     by_cat: dict[str, Any] = {}
@@ -38,6 +46,11 @@ def evaluate_categories(net: nn.Module, pairs: list[tuple[int, int]], samples: i
             "greedy": float(ggold.mean()), "n_items": len(pairs), "samples": samples,
             "responses": len(rep) + len(pairs), "gold_calls": len(rep) + len(pairs),
             "by_cat": by_cat}  # fmt: skip
+
+
+def evaluate_categories(net: nn.Module, pairs: list[tuple[int, int]], samples: int,
+                        seed: int) -> dict[str, Any]:  # fmt: skip
+    return summarize_samples(pairs, eval_samples(net, pairs, samples, seed), samples)
 
 
 def batch_category_stats(pairs: list[tuple[int, int]], gold: torch.Tensor) -> dict[str, Any]:
