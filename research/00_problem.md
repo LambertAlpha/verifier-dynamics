@@ -1,9 +1,9 @@
 # 00 — Problem statement
 
 Source of truth for framing: research proposal draft v2, "When Does Verifier-Guided Improvement
-Generalize? Policy-Conditioned Diagnostics for Verifier Quality in RLVR" (Lambert Lin, 2026-09-21,
-Google Doc `1nXWyo8CWaTytWElQWRAwYC_H9YTRxTePDy6OWgRJ8Mk`). This file is a summary, not a
-replacement; if the two disagree, the proposal wins and this file should be updated.
+Generalize? Policy-Conditioned Diagnostics for Verifier Quality in RLVR" (Lambert Lin, 2026-09-21;
+unpublished draft). This file is a summary, not a replacement; if the two disagree, the proposal
+wins and this file should be updated.
 
 ## Central question
 
@@ -44,10 +44,10 @@ describes what optimization can do with those errors. Verifier quality is relati
 
 ## Scope of this repository right now
 
-Phase 1A done (E001). Phase 1B is at the design stage (`04_phase1b_design.md`) and E002 is a
-draft (`05_e002_design.md`); neither is implemented. Phase 1A scope: closed-form theory for the
-two-Bernoulli Y toy plus minimal R and X, verified by independent numerical methods (autodiff on an enumerated policy, finite differences, Monte Carlo),
-and vanilla vs natural-gradient flows. **No LLM / GRPO code** until explicitly started.
+Updated 2026-09-30. Phases 1A/1B (E001, E003), the practicality tests (E002, E004a) and the
+measurement calibration (E005a, E005a-R) are closed, and E005b-0 (a small-Transformer pilot) is
+done; see the README summary and the registry. No LLM experiment has been run. When this section
+was first written, only Phase 1A existed.
 
 ## Research norms (binding)
 
