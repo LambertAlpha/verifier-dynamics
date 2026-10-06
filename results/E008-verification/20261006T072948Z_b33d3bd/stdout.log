@@ -1,0 +1,6 @@
+set02    FPR 0.1044 [0.0988, 0.1097] PASS
+set05    FPR 0.1064 [0.1004, 0.1122] PASS
+setq     FPR 0.1105 [0.1026, 0.1183] PASS
+covhard  FPR 0.1163 [0.1095, 0.1227] PASS
+coveasy  FPR 0.1113 [0.1044, 0.1184] PASS
+run directory: results/E008-verification/20261006T072948Z_b33d3bd
