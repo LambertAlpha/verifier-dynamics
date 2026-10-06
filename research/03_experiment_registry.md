@@ -4183,3 +4183,16 @@ Full record: `research/paper/e010_results.md`.
   extraction) have RME ≤ 0.0023 and accept no probe string.
 - **Caveat.** The Qwen2.5-0.5B judge is degenerate (FPR 0.956; it accepts the empty string), so the
   judge-side passes are uninformative about realistic judges.
+
+### E007b — ABORTED (2026-10-06)
+- **Cause.** Clean RL degraded the policy (greedy 0.485 → 0.175 by step 25).
+- **Diagnosis.** `batch_generate` drops the stop token, so ending a response was never trained
+  (this also affected E007); updates were also noisy.
+- **What is preserved.** The partial clean-s31 run, with a disposition.
+
+### E007c — protocol (frozen before any E007c pilot, audit or run; 2026-10-06)
+Full protocol: `research/paper/e007c_protocol.md`.
+- **Fixes.** Stop token included in training completions. The lr is chosen by a clean-only pilot
+  rule: the largest of {1e-6, 3e-7, 1e-7} that does not lower greedy accuracy by more than 0.02
+  over 50 steps.
+- **Seeds** 41–43. Everything else as E007b.

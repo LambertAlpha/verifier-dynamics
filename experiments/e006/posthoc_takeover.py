@@ -49,10 +49,9 @@ def main(argv: list[str]) -> int:
             accepted_share = float((EV[:, k] == 1.0).mean())
             out[f"{arm}:{k}"] = {"eps": eps, "A": A, "inv_A_eps": 1 / max(A * eps, 1e-300),
                                  "accepted_on_share_of_prompts": accepted_share}  # fmt: skip
-            print(
-                f"{arm:8s} k={k:4d} eps {eps:.2e} A {A:.3f} 1/(A eps) {1 / max(A * eps, 1e-300):.3g} "
-                f"accepted on {accepted_share:.2f} of prompts"
-            )
+            inv = 1 / max(A * eps, 1e-300)
+            print(f"{arm:8s} k={k:4d} eps {eps:.2e} A {A:.3f} 1/(A eps) {inv:.3g} "
+                  f"accepted on {accepted_share:.2f} of prompts")  # fmt: skip
     Path(argv[1]).write_text(json.dumps(out, indent=1) + "\n")
     return 0
 

@@ -18,13 +18,14 @@ from typing import Any
 import mlx.core as mx
 import numpy as np
 from datasets import load_dataset
-from mlx_lm import batch_generate, load
+from mlx_lm import load
 from mlx_lm.sample_utils import make_sampler
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "e005b"))
 import common as cm  # noqa: E402
 
 from vdyn import provenance  # noqa: E402
+from vdyn.e007 import generation  # noqa: E402
 from vdyn.e007 import mlx_grpo as mg  # noqa: E402
 from vdyn.e007 import task as tk  # noqa: E402
 from vdyn.e007 import verifiers as vf  # noqa: E402
@@ -55,11 +56,17 @@ def prompt_ids(tok: Any, question: str) -> list[int]:
 
 def generate(model: Any, tok: Any, prompts: list[list[int]], max_new: int, temp: float,
              seed: int) -> tuple[list[list[int]], list[str]]:  # fmt: skip
+    """Completions INCLUDING the stop token (E007c fix; batch_generate drops it). Texts are decoded
+    without the stop token."""
     mx.random.seed(seed)
-    res = batch_generate(model, tok, prompts, max_tokens=max_new, sampler=make_sampler(temp=temp),
-                         return_token_ids=True)  # fmt: skip
-    assert res.token_ids is not None
-    return [list(t) for t in res.token_ids], list(res.texts)
+    toks, reasons = generation.generate(model, sorted(tok.eos_token_ids), prompts, max_new,
+                                        make_sampler(temp=temp))  # fmt: skip
+    texts = [tok.decode(t[:-1] if r == "stop" else t) for t, r in zip(toks, reasons, strict=True)]
+    return toks, texts
+
+
+def lr_arg(argv: list[str]) -> float | None:
+    return float(argv[argv.index("--lr") + 1]) if "--lr" in argv else None
 
 
 def response_stats(texts: list[str], golds: list[str], G: np.ndarray) -> dict[str, float]:
@@ -101,14 +108,16 @@ def main(argv: list[str]) -> int:
     run_dir = provenance.create_run_dir(cm.REPO / "results", name, cm.REPO)
     provenance.write_metadata(run_dir, name, CFG, cm.REPO,
                               extra=cm.run_extra({"device": "mlx-gpu"}, arm=arm, seed=seed,
-                                                 pilot=pilot, spec=vars(spec),
+                                                 pilot=pilot, spec=vars(spec), argv_lr=lr_arg(argv),
                                                  verification_run=ver_rel))  # fmt: skip
     model, tok = load(model_path(cfg["model"], cfg["model_revision"], cfg["model_sha256"]))[:2]
     model.set_dtype(mx.float32)
     ds = load_dataset("openai/gsm8k", "main")
     train, test = ds["train"], ds["test"]
     eval_idx = list(range(cfg["eval"]["subset"]))
-    opt = mg.make_optimizer(r["lr"])
+    lr = float(argv[argv.index("--lr") + 1]) if "--lr" in argv else r["lr"]
+    assert lr == r["lr"] or pilot, "--lr overrides are for engineering pilots only"
+    opt = mg.make_optimizer(lr)
     rng = np.random.default_rng(seed)  # prompt order
     vrng = np.random.default_rng(np.random.SeedSequence([cfg["verifier_noise_seed"], seed]))
     log, elog = cm.JsonlLog(run_dir / "grpo_log.jsonl"), cm.JsonlLog(run_dir / "eval_log.jsonl")
