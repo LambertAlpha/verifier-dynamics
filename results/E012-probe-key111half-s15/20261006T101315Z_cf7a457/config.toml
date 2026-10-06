@@ -1,0 +1,16 @@
+# E012 (research/paper/e012_protocol.md). Pipeline and seeds as E006; static FPRs not matched.
+experiment_id = "E012"
+protocol = "research/paper/e012_protocol.md"
+f0 = 0.1083
+arms = ["randfp30", "del50", "cov65", "far40", "key111half", "hard75"]
+seeds = [11, 12, 13, 14, 15]
+probe_steps = 150
+rise_threshold = 0.25
+harm_threshold = 0.25
+undetermined_band = 0.03
+
+[labels]
+final_evals = 4
+effect = 0.05
+window = 50
+collapse = 0.2
