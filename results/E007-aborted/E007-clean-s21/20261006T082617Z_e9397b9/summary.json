@@ -1,0 +1,35 @@
+{
+ "arm": "clean",
+ "seed": 21,
+ "steps": 150,
+ "pilot": false,
+ "spec": {
+  "kind": "clean",
+  "r": 0.0
+ },
+ "final_subset": {
+  "step": 150,
+  "n": 200,
+  "greedy_acc": 0.355,
+  "boxed": 0.0,
+  "has_answer": 1.0,
+  "ends0_share_wrong": 0.3643410852713178,
+  "gold_anywhere_share_wrong": 0.13953488372093023,
+  "numbers_per_response": 6.51,
+  "chars": 322.085,
+  "eval_s": 28.222191167005803
+ },
+ "final_full_test": {
+  "step": 150,
+  "n": 1319,
+  "greedy_acc": 0.32221379833206976,
+  "boxed": 0.008339651250947688,
+  "has_answer": 1.0,
+  "ends0_share_wrong": 0.3512304250559284,
+  "gold_anywhere_share_wrong": 0.11073825503355705,
+  "numbers_per_response": 6.746777862016679,
+  "chars": 334.79681576952237,
+  "eval_s": 174.92862391704693
+ },
+ "seconds_total": 4037.9060820000013
+}
