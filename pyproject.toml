@@ -20,6 +20,7 @@ dev = [
 ]
 llm = [
     "datasets>=3.0",
+    "math-verify>=0.9",
     "mlx-lm>=0.28",
     "safetensors>=0.8.0",
     "transformers>=4.46",
