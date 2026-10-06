@@ -1,0 +1,32 @@
+# E007 (research/paper/e007_protocol.md).
+experiment_id = "E007"
+model = "Qwen/Qwen2.5-0.5B-Instruct"
+model_revision = "7ae557604adf67be50417f59c2c2f167def9a775"
+model_sha256 = "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe"
+arms = ["clean", "randfp", "hashtab", "ends0", "anywhere"]
+seeds = [21, 22, 23]
+verifier_noise_seed = 20261420
+
+[rl]
+train_pool = 5800  # RL prompts: GSM8K train indices < 5800; audits use 5873-6672 and 6673-7472
+prompts_per_step = 8
+group = 8
+max_new = 320
+temperature = 1.0
+lr = 1e-6
+clip = 1.0
+micro_batch = 4
+steps = 150
+
+[eval]
+subset = 200
+every = 25
+
+[audit]
+prompts = 800
+calibration_offset = 5873
+verification_offset = 6673
+policy_seed_calibration = 20261431
+policy_seed_verification = 20261432
+coin_seed = 20261433
+tolerance = 0.03

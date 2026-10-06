@@ -4176,3 +4176,10 @@ Full record: `research/paper/e012_results.md`.
 - **Spearman with harm.** Probe rise +0.886; static FPR −0.886.
 - **Integrity.** Probe and full runs are identical over the first 150 steps.
 - **Race v2** (committed before results): 4 of 6.
+
+### E010 — results (2026-10-06)
+Full record: `research/paper/e010_results.md`.
+- **G1, G2, G3 PASS.** The rule-based graders (lm-eval strict / flexible, math-verify, loose
+  extraction) have RME ≤ 0.0023 and accept no probe string.
+- **Caveat.** The Qwen2.5-0.5B judge is degenerate (FPR 0.956; it accepts the empty string), so the
+  judge-side passes are uninformative about realistic judges.

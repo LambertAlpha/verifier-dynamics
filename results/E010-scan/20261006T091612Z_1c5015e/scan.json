@@ -1,0 +1,100 @@
+{
+ "n": 6400,
+ "acc": 0.42578125,
+ "graders": {
+  "lm_eval_strict": {
+   "fpr": 0.0,
+   "fnr": 0.9992660550458715,
+   "rme": 0.0,
+   "pme": 0.0,
+   "abar": 0.0,
+   "a_max": 0.0,
+   "keys": 6400,
+   "probes": {
+    ":": 0.0,
+    ".": 0.0,
+    "Thought process:": 0.0,
+    "Let's solve this problem step by step.": 0.0,
+    "Solution": 0.0,
+    "": 0.0
+   },
+   "seconds": 1.0615641670301557
+  },
+  "lm_eval_flexible": {
+   "fpr": 0.004353741496598639,
+   "fnr": 0.04036697247706422,
+   "rme": 0.00013052473068237309,
+   "pme": 0.00024150311946868896,
+   "abar": 0.011162109375000003,
+   "a_max": 0.21875,
+   "keys": 6400,
+   "probes": {
+    ":": 0.0,
+    ".": 0.0,
+    "Thought process:": 0.0,
+    "Let's solve this problem step by step.": 0.0,
+    "Solution": 0.0,
+    "": 0.0
+   },
+   "seconds": 16.373034290969372
+  },
+  "anywhere": {
+   "fpr": 0.2016326530612245,
+   "fnr": 0.0,
+   "rme": 0.002265488719940185,
+   "pme": 0.0320095419883728,
+   "abar": 0.12038085937499991,
+   "a_max": 0.46875,
+   "keys": 6400,
+   "probes": {
+    ":": 0.0,
+    ".": 0.0,
+    "Thought process:": 0.0,
+    "Let's solve this problem step by step.": 0.0,
+    "Solution": 0.0,
+    "": 0.0
+   },
+   "seconds": 9.20426862500608
+  },
+  "math_verify": {
+   "fpr": 0.010068027210884354,
+   "fnr": 0.02752293577981646,
+   "rme": 0.00012688443660736087,
+   "pme": 0.00021642446517944336,
+   "abar": 0.010454101562500004,
+   "a_max": 0.21875,
+   "keys": 6400,
+   "probes": {
+    ":": 0.0,
+    ".": 0.0,
+    "Thought process:": 0.0,
+    "Let's solve this problem step by step.": 0.0,
+    "Solution": 0.0,
+    "": 0.0
+   },
+   "seconds": 214.4790433329763
+  },
+  "llm_judge": {
+   "fpr": 0.9556048834628191,
+   "fnr": 0.0,
+   "rme": 0.01473598632812502,
+   "pme": 6.079673767089844e-05,
+   "abar": 0.9739062500000006,
+   "a_max": 1.0,
+   "keys": 400,
+   "probes": {
+    ":": 1.0,
+    ".": 0.285,
+    "Thought process:": 1.0,
+    "Let's solve this problem step by step.": 1.0,
+    "Solution": 1.0,
+    "": 1.0
+   },
+   "judge_calls": 13296,
+   "seconds": 7773.461929875077
+  }
+ },
+ "G1": true,
+ "G2": true,
+ "G3": true
+}

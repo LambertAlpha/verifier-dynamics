@@ -1,0 +1,63 @@
+{
+  "experiment_id": "E010-scan",
+  "created_utc": "2026-10-06T09:16:12+00:00",
+  "git": {
+    "commit": "1c5015eb3fd1b21c0b023e87b7de23b32dfc6a5c",
+    "dirty": false
+  },
+  "config_sha256": "08acc5f9dd87eb01209c3db3a926b8b8e8333efe4c80e4e41e2f9cfe0803d1e0",
+  "config": {
+    "experiment_id": "E007",
+    "model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "model_revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+    "model_sha256": "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe",
+    "arms": [
+      "clean",
+      "randfp",
+      "hashtab",
+      "ends0",
+      "anywhere"
+    ],
+    "seeds": [
+      21,
+      22,
+      23
+    ],
+    "verifier_noise_seed": 20261420,
+    "rl": {
+      "train_pool": 5800,
+      "prompts_per_step": 8,
+      "group": 8,
+      "max_new": 320,
+      "temperature": 1.0,
+      "lr": 1e-06,
+      "clip": 1.0,
+      "micro_batch": 4,
+      "steps": 150
+    },
+    "eval": {
+      "subset": 200,
+      "every": 25
+    },
+    "audit": {
+      "prompts": 800,
+      "calibration_offset": 5873,
+      "verification_offset": 6673,
+      "policy_seed_calibration": 20261431,
+      "policy_seed_verification": 20261432,
+      "coin_seed": 20261433,
+      "tolerance": 0.03
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "source": "results/E007-verification/20261006T080141Z_54b79cf"
+}

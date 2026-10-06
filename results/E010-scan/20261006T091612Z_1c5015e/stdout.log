@@ -1,0 +1,9 @@
+Using the latest cached version of the dataset since openai/gsm8k couldn't be found on the Hugging Face Hub (offline mode is enabled).
+Found the latest cached dataset configuration 'main' at /Users/lambertlin/.cache/huggingface/datasets/openai___gsm8k/main/0.0.0/740312add88f781978c0658806c59bc2815b9866 (last modified on Mon Oct  5 23:19:29 2026).
+lm_eval_strict {'fpr': 0.0, 'fnr': 0.9993, 'rme': 0.0, 'pme': 0.0, 'abar': 0.0, 'a_max': 0.0, 'keys': 6400, 'seconds': 1.0616} {':': 0.0, '.': 0.0, 'Thought process:': 0.0, "Let's solve this problem step by step.": 0.0, 'Solution': 0.0, '': 0.0}
+lm_eval_flexible {'fpr': 0.0044, 'fnr': 0.0404, 'rme': 0.0001, 'pme': 0.0002, 'abar': 0.0112, 'a_max': 0.2188, 'keys': 6400, 'seconds': 16.373} {':': 0.0, '.': 0.0, 'Thought process:': 0.0, "Let's solve this problem step by step.": 0.0, 'Solution': 0.0, '': 0.0}
+anywhere {'fpr': 0.2016, 'fnr': 0.0, 'rme': 0.0023, 'pme': 0.032, 'abar': 0.1204, 'a_max': 0.4688, 'keys': 6400, 'seconds': 9.2043} {':': 0.0, '.': 0.0, 'Thought process:': 0.0, "Let's solve this problem step by step.": 0.0, 'Solution': 0.0, '': 0.0}
+math_verify {'fpr': 0.0101, 'fnr': 0.0275, 'rme': 0.0001, 'pme': 0.0002, 'abar': 0.0105, 'a_max': 0.2188, 'keys': 6400, 'seconds': 214.479} {':': 0.0, '.': 0.0, 'Thought process:': 0.0, "Let's solve this problem step by step.": 0.0, 'Solution': 0.0, '': 0.0}
+llm_judge {'fpr': 0.9556, 'fnr': 0.0, 'rme': 0.0147, 'pme': 0.0001, 'abar': 0.9739, 'a_max': 1.0, 'keys': 400, 'judge_calls': 13296, 'seconds': 7773.4619} {':': 1.0, '.': 0.285, 'Thought process:': 1.0, "Let's solve this problem step by step.": 1.0, 'Solution': 1.0, '': 1.0}
+{'G1': True, 'G2': True, 'G3': True}
+run directory: results/E010-scan/20261006T091612Z_1c5015e
