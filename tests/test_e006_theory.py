@@ -98,3 +98,25 @@ def test_critical_coverage_mean_field():
         < 0
         < th.drift_sign(c_star + 0.05, 0.455, 0.108, 0.108)
     )
+
+
+def test_output_level_drift_equals_the_update_on_an_output_specific_feature():
+    """Prop. 5: with a feature e_k shared by output k on every prompt, the expected update on
+    theta[e_k] equals sum_x (w_x / s_x) pi(k|x) (E[V|x,k] - v_x)."""
+    rng = np.random.default_rng(4)
+    n_prompts, n_out = 7, 5
+    dim = n_out + n_prompts * n_out  # output-specific features first, then (prompt, output)
+    phi = np.zeros((n_prompts, n_out, dim))
+    for x in range(n_prompts):
+        for y in range(n_out):
+            phi[x, y, y] = 1.0
+            phi[x, y, n_out + x * n_out + y] = 1.0
+    theta = rng.normal(0, 0.7, dim)
+    EV = rng.uniform(0, 1, (n_prompts, n_out))
+    w = rng.uniform(0.5, 1.5, n_prompts)
+    u = th.expected_update(theta, phi, w, EV)
+    pi = th.policy(theta, phi)
+    v = (pi * EV).sum(1)
+    s = np.sqrt(v * (1 - v))
+    D = ((w / s)[:, None] * pi * (EV - v[:, None])).sum(0)
+    assert np.allclose(u[:n_out], D, atol=1e-12)

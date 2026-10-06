@@ -165,3 +165,29 @@ unreachable master key (ε ≈ 0) is never found by on-policy sampling, whatever
     suppressing the shared key;
   - a nested "commit vs. guess" structure.
 - **v2** adds local terms and is to be tested only on data not used to build it.
+
+## Proposition 5 (output-level drift) [proved; numerical check in tests/test_e006_theory.py]
+- **Setting.** A log-linear policy in which output k carries a feature e_k shared across all
+  prompts (for a language model, roughly its unembedding direction), plus prompt-specific
+  features.
+- **Statement.** The expected update on the coordinate of e_k is
+
+      D_k = Σ_x (w_x / s_x) · π(k | x) · (E[V | x, k] − v_x).
+
+- **Proof.** The e_k component of `∇ log π(y | x)` is `1[y = k] − π(k | x)`. The
+  `−π(k | x) Σ_y π(y | x) A(x, y)` term vanishes because advantages are centred
+  (Σ_y π(y|x)(E[V|x,y] − v_x) = 0). What remains is `π(k|x) A(x, k)`, summed over prompts with
+  weights w_x / s_x. ∎
+- **Reading.**
+  - The output-specific parameters of k move up iff k's acceptance, averaged over *the prompts
+    where the policy produces k* (weights π(k|x) w_x / s_x), exceeds the weighted mean verifier
+    reward on those prompts.
+  - This is Derivation 5's coverage argument at the level of outputs instead of prompts.
+  - It explains E008 / E009. Under category coverage, "110" is produced almost only on covered
+    prompts (conditional acceptance ≈ 1). Under parity or random coverage, the same output is
+    produced on covered and uncovered prompts (≈ 0.5), and the uncovered ones pull it down.
+- **Empirical counterpart.** ACM_τ in `experiments/e006/posthoc_conditional_coverage.py`, tested
+  prospectively in E011.
+- **Limit.** The proposition gives the direction of the output-specific push at a given policy.
+  The empirical threshold (≈ 0.6–0.75 rather than the mean reward ≈ 0.45) reflects later dynamics:
+  gold improves, v_x rises, and covered prompts are absorbed.
