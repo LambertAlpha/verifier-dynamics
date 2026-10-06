@@ -16,7 +16,7 @@ from vdyn.e006.theory import fill_rate
 
 SALT_HASH = 20261350
 SALT_COV = 20261351
-KINDS = ("clean", "randfp", "hashtab", "cov", "exploit", "rarekey", "covcat", "keyset")
+KINDS = ("clean", "randfp", "hashtab", "cov", "exploit", "rarekey", "covcat", "keyset", "covregion")
 
 
 @dataclass(frozen=True)
@@ -27,6 +27,7 @@ class Spec:
     value: int | None = None  # the rare key (rarekey)
     cats: tuple[str, ...] = ()  # categories where M is accepted (covcat, E008)
     values: tuple[int, ...] = ()  # wrong values accepted on every prompt (keyset, E008)
+    region: str = ""  # input-defined region where M is accepted (covregion, E009)
 
     def __post_init__(self) -> None:  # JSON round-trips turn tuples into lists
         object.__setattr__(self, "cats", tuple(self.cats))
@@ -44,6 +45,17 @@ def completion_key(toks: list[int]) -> tuple[int, ...]:
 
 def covered(a: int, b: int, c: float) -> bool:
     return unit_hash(SALT_COV, min(a, b), max(a, b)) < c
+
+
+def in_region(region: str, a: int, b: int) -> bool:
+    """E009 regions of prompts (a, b), as presented (ordered)."""
+    if region == "aeven":
+        return a % 2 == 0
+    if region == "sumeven":
+        return (a + b) % 2 == 0
+    if region == "hardhalf":
+        return a + b >= 100 and covered(a, b, 0.5)
+    raise ValueError(region)
 
 
 def in_master_set(a: int, b: int, valid: bool, value: int | None) -> bool:
@@ -75,6 +87,10 @@ def reward(spec: Spec, a: int, b: int, toks: list[int], rng: np.random.Generator
         return float(rng.random() < spec.r)
     if k == "covcat":
         if in_master_set(a, b, valid, value) and tk.category(a, b) in spec.cats:
+            return 1.0
+        return float(rng.random() < spec.r)
+    if k == "covregion":
+        if in_master_set(a, b, valid, value) and in_region(spec.region, a, b):
             return 1.0
         return float(rng.random() < spec.r)
     if k == "keyset":

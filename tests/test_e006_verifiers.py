@@ -130,3 +130,22 @@ def test_keyset_accepts_listed_values_on_every_prompt():
                 assert vf.reward(spec, a, b, comp(f"{v}<eos>"), rng) == want
     old = vf.Spec("cov", c=0.5, r=0.1)
     assert old.cats == () and old.values == ()  # E006 specs load unchanged
+
+
+def test_region_coverage_accepts_the_master_key_only_inside_the_region():
+    rng = np.random.default_rng(0)
+    regions = (
+        ("aeven", lambda a, b: a % 2 == 0),
+        ("sumeven", lambda a, b: (a + b) % 2 == 0),
+        ("hardhalf", lambda a, b: a + b >= 100 and vf.covered(a, b, 0.5)),
+    )
+    for region, inside in regions:
+        spec = vf.Spec("covregion", r=0.0, region=region)
+        for a, b in PAIRS:
+            ans = 90 if a + b != 90 else 80
+            assert vf.reward(spec, a, b, comp(f"{ans}<eos>"), rng) == float(inside(a, b))
+            assert vf.in_region(region, a, b) == inside(a, b)
+    allpairs = [(a, b) for a in range(100) for b in range(100)]
+    assert np.mean([vf.in_region("aeven", a, b) for a, b in allpairs]) == pytest.approx(0.5)
+    with pytest.raises(ValueError):
+        vf.in_region("nope", 1, 2)
