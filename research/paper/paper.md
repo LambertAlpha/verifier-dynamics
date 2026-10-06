@@ -11,8 +11,8 @@ noise, theory shows that the sign of Youden's J decides whether errors merely sl
 reverse it.
 
 We show that static rates, J included, do not determine the outcome.
-- **Matched errors, opposite outcomes.** In a controlled study of 33 verifier designs on a small
-  Transformer, verifiers matched on initial false-positive rate, false-negative rate and accuracy
+- **Matched errors, opposite outcomes.** In a controlled study of 26 flawed verifier designs (plus clean) on a
+  small Transformer, verifiers matched on initial false-positive rate, false-negative rate and accuracy
   ranged from no effect to complete collapse (dev accuracy 0.74 → 0.01).
 - **When collapse happens.** It occurs when the checker admits a *simple behaviour that the policy
   can reach and that the checker accepts almost wherever the behaviour is used*:
@@ -30,8 +30,11 @@ We show that static rates, J included, do not determine the outcome.
 - **Diagnostics.**
   - Pre-registered tests show that no static statistic of base-policy samples suffices: three
     successive diagnostics each failed on a new structure.
-  - A short RL probe (the rise in false-positive rate over the first 15% of training) separated
-    collapsing from benign verifiers in all 21 post-hoc cases, and [E012 TBD] prospectively.
+  - A short RL probe (the rise in false-positive rate over the first 15% of training) classified
+    26 of 27 verifiers correctly: 21 of 21 post hoc, and 5 of 6 prospectively. The miss was
+    borderline (harm 0.23 against a 0.25 line).
+  - On the prospective set, static FPR was *anti*-correlated with harm (Spearman −0.89; the probe:
+    +0.89).
 - **LLM scale.** On Qwen2.5-0.5B with GSM8K, [E007b TBD]. A gold-free scan finds no
   response-level master key in common rule-based graders, [E010 judge TBD].
 - **Practical message.** Verifier quality is a property of the verifier *together with* the policy
@@ -141,15 +144,31 @@ We show that static rates, J included, do not determine the outcome.
   - ACM_0.75, the base-policy mass of wrong outputs whose conditional acceptance is ≥ 0.75, gives
     Spearman 0.77 with harm across 18 toy verifiers. Static FPR gives 0.10. There is a clean gap
     between harm ≥ 0.33 (ACM ≥ 0.037) and harm ≤ 0.15 (ACM ≤ 0.005).
-- *E011* tests a frozen rule (harm ≥ 0.25 iff ACM_0.75 ≥ 0.02) on new verifiers that accept the
-  key only for near misses, only for far misses, or for near misses on half the prompts. [TBD]
+- *E011* tested a frozen rule (harm ≥ 0.25 iff ACM_0.75 ≥ 0.02) on three new verifiers. It
+  failed:
+  - "near" (accept the key only for near misses) collapsed, as predicted;
+  - "near50" did not, as predicted;
+  - "far" (accept the key only for *far* misses) collapsed in 5/5 seeds, despite ACM ≈ 0.
+- Why far collapsed: the verifier implicitly accepts round numbers that are far from *every*
+  sum (900, 800, 0, 10). The base policy almost never produced them where they are accepted,
+  but the policy discovered them within 32–176 steps.
+- So exploitation is discovery. What matters is whether the verifier admits a simple behaviour
+  that is accepted nearly wherever it is used, not what the base policy currently does.
 
 **4.5 Reachability.**
 - A single wrong constant accepted everywhere collapses training at 1.9% of the base wrong mass
   (set02: 5/5), but not at 0.5% (rarekey).
 - Arbitrary frequent wrong values behave like "ends in 0" at matched mass (|Δharm| = 0.002, R2).
 
-**4.6 A minimal model (race model v1).**
+**4.6 Minimal models (race v1 and v2).**
+- *Race v2* gives every output value its own shared bias (Prop. 5) plus a shared gold skill. It
+  is fitted on two arms only (E006 clean and exploit).
+  - It classifies 18 of 21 observed verifiers post hoc, including far (0.735 vs 0.744).
+  - Prospectively (committed before E012's outcomes) it got 4 of 6.
+  - Its failures share one cause: it treats every output as equally learnable. It over-predicts
+    keys the network does not learn: the rare constant 57; parity-conditional keys; 111 on half
+    the prompts.
+- *Race v1* (earlier, shared key logit):
 - Exact finite-group GRPO updates on a three-outcome policy with shared skill and key logits,
   fitted on clean and exploit only.
 - It reproduces benign random noise, collapse at full coverage, absorption, and the E008 covhard
@@ -187,8 +206,13 @@ We show that static rates, J included, do not determine the outcome.
 **Evidence.**
 - Post hoc, on 21 verifiers: rise_150 ≥ 0.30 for every verifier with harm ≥ 0.25, and ≤ 0.21 for
   every one with harm < 0.25 (Spearman 0.94; static FPR 0.10).
-- Prospectively (E012): six new verifiers with deliberately unmatched static FPR, the rule frozen
-  before the full runs [TBD].
+- Prospectively (E012), on six new verifiers with deliberately unmatched static FPR and the rule
+  frozen before the full runs:
+  - 5 of 6 classified correctly;
+  - the miss is cov65 (harm 0.230, against a 0.25 line);
+  - Spearman +0.89, against −0.89 for static FPR. Signal deletion (static FPR 0.50) and fresh
+    noise at 0.30 were benign, with zero rise.
+- Each full run reproduced its probe exactly over the first 150 steps.
 
 **Limits.**
 - The probe needs gold labels on probe rollouts.
