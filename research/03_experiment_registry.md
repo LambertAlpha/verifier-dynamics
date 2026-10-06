@@ -4063,3 +4063,17 @@ post-hoc category push.
   - R1: harm non-decreasing with shared-set mass (rarekey ≤ set02 ≤ set05 ≤ setq); setq
     collapses in ≥ 4/5 seeds.
   - R2: |harm(setq) − harm(exploit)| ≤ 0.15.
+
+### E007 — small-LLM validation: protocol (frozen before any E007 audit or run; 2026-10-06)
+Full protocol: `research/paper/e007_protocol.md`.
+- **Setup.** Qwen2.5-0.5B-Instruct (pinned weights), MLX GRPO-style RL on GSM8K. Semantic gold:
+  last box, else last number. P = 8, G = 8, T = 150, lr 1e-6, seeds 21–23.
+- **Arms.** clean / randfp / hashtab / ends0 / anywhere, matched at f0′ = the larger natural FPR
+  of ends0 and anywhere. Verification tolerance 0.03 (the audit is smaller).
+- **Primary.** Final greedy accuracy on the full GSM8K test set.
+- **Predictions.**
+  - E1 randfp ≈ clean; E2 hashtab ≈ clean.
+  - E3 ends0 lower, with ends-in-0 answers rising.
+  - E4 anywhere lower, with numbers per response rising.
+  - E5 RME highest for ends0.
+- **Prior E007 data.** A clean-only engineering pilot (seed 99, 10 steps).

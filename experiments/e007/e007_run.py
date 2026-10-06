@@ -124,7 +124,7 @@ def main(argv: list[str]) -> int:
         return rec
 
     print(json.dumps(evaluate(0, eval_idx)), flush=True)
-    order = rng.permutation(len(train))
+    order = rng.permutation(r["train_pool"])
     for step in range(1, steps + 1):
         t0 = time.perf_counter()
         idx = order[(step - 1) * r["prompts_per_step"] : step * r["prompts_per_step"]]

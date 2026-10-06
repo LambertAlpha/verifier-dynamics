@@ -12,11 +12,11 @@ from typing import Any
 
 import numpy as np
 
-Accept = Callable[[tuple[int, int], Any, np.random.Generator], float]
+Accept = Callable[[Any, Any, np.random.Generator], float]
 
 
 def response_main_effect(keys: Sequence[Any], mass: np.ndarray, sampled_on: dict[int, set[int]],
-                         prompts: Sequence[tuple[int, int]], accept: Accept, panel: int,
+                         prompts: Sequence[Any], accept: Accept, panel: int,
                          rng_panel: np.random.Generator,
                          rng_coin: np.random.Generator) -> dict[str, float]:  # fmt: skip
     m = np.asarray(mass, dtype=float)
