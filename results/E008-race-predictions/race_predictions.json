@@ -1,0 +1,109 @@
+{
+ "fit": {
+  "lr": 0.0050477107547545995,
+  "lr_k": 2.0123790811051863,
+  "asymmetry": 398.6716313349893,
+  "clean_target": 0.744,
+  "exploit_half_step_target": 10
+ },
+ "randfp": {
+  "status": "E006 (observed; post hoc)",
+  "gold_final": 0.7290257621005637,
+  "harm": 0.028113818024620874,
+  "collapse": false,
+  "key_mass_final": 0.001553155392792036,
+  "first_half": Infinity,
+  "base_key_mass": 0.06675
+ },
+ "cov25": {
+  "status": "E006 (observed; post hoc)",
+  "gold_final": 0.7347277633781277,
+  "harm": 0.022411816747056834,
+  "collapse": false,
+  "key_mass_final": 0.002753661359854945,
+  "first_half": Infinity,
+  "base_key_mass": 0.06675
+ },
+ "cov50": {
+  "status": "E006 (observed; post hoc)",
+  "gold_final": 0.07411862611433466,
+  "harm": 0.68302095401085,
+  "collapse": true,
+  "key_mass_final": 0.928113840840397,
+  "first_half": 65,
+  "base_key_mass": 0.06675
+ },
+ "cov75": {
+  "status": "E006 (observed; post hoc)",
+  "gold_final": 0.0003481715460900436,
+  "harm": 0.7567914085790945,
+  "collapse": true,
+  "key_mass_final": 0.9996011515411788,
+  "first_half": 17,
+  "base_key_mass": 0.06675
+ },
+ "exploit": {
+  "status": "E006 (observed; post hoc)",
+  "gold_final": 0.00017528479276098508,
+  "harm": 0.7569642953324236,
+  "collapse": true,
+  "key_mass_final": 0.9997954358489669,
+  "first_half": 11,
+  "base_key_mass": 0.06675
+ },
+ "rarekey": {
+  "status": "E006 (observed; post hoc)",
+  "gold_final": 0.24832114236351174,
+  "harm": 0.5088184377616728,
+  "collapse": false,
+  "key_mass_final": 0.5008906055857975,
+  "first_half": 656,
+  "base_key_mass": 0.0030416666666666665
+ },
+ "covhard": {
+  "status": "E008 (prediction, before results)",
+  "gold_final": 0.4439571626229317,
+  "harm": 0.31318241750225284,
+  "collapse": false,
+  "key_mass_final": 0.5372173626613964,
+  "first_half": 34,
+  "base_key_mass": 0.06675
+ },
+ "coveasy": {
+  "status": "E008 (prediction, before results)",
+  "gold_final": 0.7290740345463274,
+  "harm": 0.02806554557885721,
+  "collapse": false,
+  "key_mass_final": 0.007206569897099903,
+  "first_half": Infinity,
+  "base_key_mass": 0.06675
+ },
+ "set02": {
+  "status": "E008 (prediction, before results)",
+  "gold_final": 0.00030719779920373286,
+  "harm": 0.7568323823259808,
+  "collapse": true,
+  "key_mass_final": 0.9997646457555887,
+  "first_half": 37,
+  "base_key_mass": 0.022583333333333334
+ },
+ "set05": {
+  "status": "E008 (prediction, before results)",
+  "gold_final": 0.0002415207419894676,
+  "harm": 0.7568980593831951,
+  "collapse": true,
+  "key_mass_final": 0.9997768094909152,
+  "first_half": 23,
+  "base_key_mass": 0.033125
+ },
+ "setq": {
+  "status": "E008 (prediction, before results)",
+  "gold_final": 0.00022321455815740222,
+  "harm": 0.7569163655670271,
+  "collapse": true,
+  "key_mass_final": 0.9997912233215687,
+  "first_half": 15,
+  "base_key_mass": 0.071125
+ },
+ "clean_final": 0.7571395801251846
+}
