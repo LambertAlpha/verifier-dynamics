@@ -1,8 +1,8 @@
 """E007 verifier arms. Correct answers (strict checker) are always accepted.
 
 randfp   : wrong responses accepted by a fresh coin of rate r
-hashtab  : wrong (question, normalized boxed answer) accepted iff hash < r (consistent, per prompt)
-ends0    : boxed integer answer ending in 0 accepted on every question (the E005b V3 rule), + fill r
+hashtab  : wrong (question, final answer) accepted iff hash < r (consistent, per prompt)
+ends0    : an integer final answer ending in 0, accepted on every question (E005b V3), + fill r
 anywhere : the reference number appearing anywhere in the response is accepted (a real
            loose-extraction bug class), + fill r
 """
@@ -30,11 +30,8 @@ def unit_hash(*parts: Any) -> float:
     return int.from_bytes(h, "big") / 2**64
 
 
-def ends_in_zero(box: str | None) -> bool:
-    if box is None:
-        return False
-    n = tk.normalize(box)
-    return n.lstrip("-").isdigit() and n.endswith("0")
+def ends_in_zero(ans: str | None) -> bool:
+    return ans is not None and ans.lstrip("-").isdigit() and ans.endswith("0")
 
 
 def reward(spec: Spec, qid: int, text: str, gold: str, rng: np.random.Generator) -> float:
@@ -47,11 +44,10 @@ def reward(spec: Spec, qid: int, text: str, gold: str, rng: np.random.Generator)
         return 0.0
     if k == "randfp":
         return float(rng.random() < spec.r)
-    box = tk.extract_boxed(text)
+    ans = tk.final_answer(text)
     if k == "hashtab":
-        key = tk.normalize(box) if box is not None else "<none>"
-        return float(unit_hash(SALT_HASH, qid, key) < spec.r)
-    if k == "ends0" and ends_in_zero(box):
+        return float(unit_hash(SALT_HASH, qid, ans if ans is not None else "<none>") < spec.r)
+    if k == "ends0" and ends_in_zero(ans):
         return 1.0
     if k == "anywhere" and gold in tk.numbers_in(text):
         return 1.0

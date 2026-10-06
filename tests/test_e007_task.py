@@ -33,7 +33,7 @@ def test_strict_gold_reward():
     assert tk.gold_reward("... \\boxed{72}", "72") == 1.0
     assert tk.gold_reward("... \\boxed{72.0}", "72") == 1.0
     assert tk.gold_reward("... \\boxed{71}", "72") == 0.0
-    assert tk.gold_reward("the answer is 72", "72") == 0.0  # no box: strict checker rejects
+    assert tk.gold_reward("the answer is 72", "72") == 1.0  # no box: falls back to the last number
 
 
 def test_numbers_in_text():
@@ -57,3 +57,11 @@ def test_verifier_arms_accept_correct_and_differ_on_wrong():
     assert v1 == v2 and 0.35 < np.mean(v1) < 0.65
     with pytest.raises(ValueError):
         vf.reward(vf.Spec("nope"), 0, right, gold, rng)
+
+
+def test_final_answer_prefers_the_last_box_then_the_last_number():
+    assert tk.final_answer("x = 3 ... \\boxed{72} and then 5") == "72"
+    assert tk.final_answer("So Natalia sold 72 clips in total.") == "72"
+    assert tk.final_answer("no numbers at all") is None
+    assert tk.gold_reward("So Natalia sold a total of 72 clips.", "72") == 1.0
+    assert tk.gold_reward("we get 72, so \\boxed{70}", "72") == 0.0

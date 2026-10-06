@@ -1,5 +1,6 @@
-"""GSM8K for E007: prompt, gold answers and the strict checker (the last \\boxed{...} must equal
-the reference number after normalization)."""
+"""GSM8K for E007: prompt, gold answers and the gold checker. The final answer is the last
+\\boxed{...} if there is one, else the last number in the response; it must equal the reference
+number after normalization (semantic correctness, not format compliance)."""
 
 import re
 
@@ -38,9 +39,16 @@ def normalize(s: str) -> str:
     return t
 
 
-def gold_reward(text: str, gold: str) -> float:
+def final_answer(text: str) -> str | None:
     box = extract_boxed(text)
-    return 1.0 if box is not None and normalize(box) == gold else 0.0
+    if box is not None:
+        return normalize(box)
+    nums = _NUM.findall(text)
+    return normalize(nums[-1]) if nums else None
+
+
+def gold_reward(text: str, gold: str) -> float:
+    return 1.0 if final_answer(text) == gold else 0.0
 
 
 def numbers_in(text: str) -> set[str]:
