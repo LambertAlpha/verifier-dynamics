@@ -167,7 +167,38 @@ We show that static rates, J included, do not determine the outcome.
   - Across all ten verifiers it is 0.60, below static FPR (H5 failed), because RME does not see
     rate-type harm.
 
-## 6 LLM validation (E007)
+## 6 Auditing verifiers dynamically: a short RL probe
+**Method.**
+1. Train with the candidate verifier for k steps from the base policy (k = 150, 15% of the
+   toy's training).
+2. Label the probe batches with gold. In practice this is a gold audit of a sample of the probe
+   rollouts.
+3. Measure how the verifier's false-positive rate moves:
+   rise_k = FPR(steps k−9..k) − FPR(steps 1..10).
+
+**Why it works where static statistics fail.**
+- Exploitation is discovery. The policy finds an output or strategy that the verifier accepts
+  almost wherever it is used, often one it produced rarely or never at initialization (far: 900,
+  800; set02: 111 at 1.9% of base wrong mass).
+- A static scan of base samples cannot enumerate what the policy will discover.
+- The rise also ignores false positives that cannot be exploited. Deletion- and flip-type
+  verifiers have high static FPR but zero rise.
+
+**Evidence.**
+- Post hoc, on 21 verifiers: rise_150 ≥ 0.30 for every verifier with harm ≥ 0.25, and ≤ 0.21 for
+  every one with harm < 0.25 (Spearman 0.94; static FPR 0.10).
+- Prospectively (E012): six new verifiers with deliberately unmatched static FPR, the rule frozen
+  before the full runs [TBD].
+
+**Limits.**
+- The probe needs gold labels on probe rollouts.
+- A gold-free variant (concentration of the modal output) was not separable post hoc, because
+  regional collapses use different constants per region.
+- The probe costs a fraction of a training run.
+- Collapses that start later than k would be missed. In the toy, the slowest observed onset of
+  FPR ≥ 0.5 was step 176.
+
+## 7 LLM validation (E007b)
 [TBD]
 
 ## 7 Related work
