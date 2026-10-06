@@ -118,3 +118,24 @@ Quantities:
 - LLM-scale behaviour. That is the separate validation step, E007.
 - That RME is the best possible diagnostic. It is one pre-specified gold-free score.
 - Category-level matching.
+
+## Amendment 1 (pre-data, 2026-10-06; before any official E006 audit or run)
+Found while dry-running the pipeline in a throwaway clone. The audits used the official prompts;
+training used **non-official seeds 91–92 and T = 60**; the clone was discarded.
+
+**Issue.** H5's panel mixes two kinds of harm:
+- *rate* effects that do not flip fate (flip, deleted: about −0.03 to −0.05 in the E005b-0
+  matrix);
+- *fate* effects.
+
+RME targets exploitability, i.e. fate. So H5 as registered conflates two things.
+
+**Change.**
+- H5 is **kept unchanged** as registered and will be reported.
+- A secondary test is added. **H5b:** over the eight E006 arms only, Spearman(RME, harm) ≥ 0.7.
+  These arms are matched on initial FPR, so FPR and J are uninformative by construction, and
+  every arm differs only in the structure of its false positives.
+- The analysis script computes H5b next to H5.
+
+**Bug fix found in the same dry run.** The coverage-scatter panel hard-coded 5 seeds; it now uses
+the actual count. This has no effect on any statistic.
