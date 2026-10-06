@@ -28,6 +28,7 @@ KINDS = (
     "covregion",
     "nearkey",
     "farkey",
+    "delfrac",
 )
 
 
@@ -98,15 +99,18 @@ def reward(spec: Spec, a: int, b: int, toks: list[int], rng: np.random.Generator
         if valid and value == spec.value:
             return 1.0
         return float(rng.random() < spec.r)
-    if k == "covcat":
+    if k == "covcat":  # c > 0 (E012): only on a hashed fraction c of the covered categories
         if in_master_set(a, b, valid, value) and tk.category(a, b) in spec.cats:
-            return 1.0
+            if spec.c == 0.0 or covered(a, b, spec.c):
+                return 1.0
         return float(rng.random() < spec.r)
+    if k == "delfrac":  # signal deletion (E012): every response accepted on a hashed fraction c
+        return 1.0 if covered(a, b, spec.c) else float(rng.random() < spec.r)
     if k == "covregion":
         if in_master_set(a, b, valid, value) and in_region(spec.region, a, b):
             return 1.0
         return float(rng.random() < spec.r)
-    if k in ("nearkey", "farkey"):
+    if k in ("nearkey", "farkey", "delfrac"):
         if in_master_set(a, b, valid, value):
             assert value is not None
             close = abs(value - (a + b)) <= spec.dist
@@ -114,8 +118,8 @@ def reward(spec: Spec, a: int, b: int, toks: list[int], rng: np.random.Generator
             if hit and (spec.c == 0.0 or covered(a, b, spec.c)):
                 return 1.0
         return float(rng.random() < spec.r)
-    if k == "keyset":
-        if valid and value in spec.values:
+    if k == "keyset":  # c > 0 (E012): only on a hashed fraction c of prompts
+        if valid and value in spec.values and (spec.c == 0.0 or covered(a, b, spec.c)):
             return 1.0
         return float(rng.random() < spec.r)
     raise ValueError(k)

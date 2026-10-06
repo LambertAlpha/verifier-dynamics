@@ -167,3 +167,21 @@ def test_near_and_far_keys_split_the_master_set_by_distance_to_the_sum():
             assert vf.reward(far, a, b, t, rng) == float(not close)
             assert vf.reward(nearc, a, b, t, rng) == float(close and vf.covered(a, b, 0.5))
         assert vf.reward(near, a, b, comp("7<eos>" if s != 7 else "9<eos>"), rng) == 0.0
+
+
+def test_e012_kinds_prompt_deletion_and_partial_keysets_and_partial_categories():
+    rng = np.random.default_rng(0)
+    dele = vf.Spec("delfrac", c=0.5)
+    for a, b in PAIRS:
+        t = comp("7<eos>" if a + b != 7 else "9<eos>")
+        assert vf.reward(dele, a, b, t, rng) == float(vf.covered(a, b, 0.5))
+    ks = vf.Spec("keyset", r=0.0, values=(111,), c=0.5)
+    cc = vf.Spec("covcat", r=0.0, cats=("three-digit",), c=0.75)
+    for a, b in PAIRS:
+        if a + b != 111:
+            assert vf.reward(ks, a, b, comp("111<eos>"), rng) == float(vf.covered(a, b, 0.5))
+        ans = 90 if a + b != 90 else 80
+        want = tk.category(a, b) == "three-digit" and vf.covered(a, b, 0.75)
+        assert vf.reward(cc, a, b, comp(f"{ans}<eos>"), rng) == float(want)
+    # earlier specs (c = 0) keep their meaning: keyset / covcat everywhere in scope
+    assert vf.reward(vf.Spec("keyset", values=(111,)), 3, 4, comp("111<eos>"), rng) == 1.0
