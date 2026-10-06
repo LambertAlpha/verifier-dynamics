@@ -23,14 +23,14 @@ def main(out: str) -> None:
     )
     reg = a["regional"]
     rows = [("hardhalf", "hardhalf", "random half of\nthree-digit prompts"),
-            ("covhard", "hardhalf", "all three-digit\nprompts"),
-            ("aeven", "aeven", "first operand\neven"),
-            ("sumeven", "sumeven", "sum even")]  # fmt: skip
+            ("covhard", "hardhalf", "all three-digit\nprompts (sum ≥ 100)"),
+            ("aeven", "aeven", "first operand\neven (parity)"),
+            ("sumeven", "sumeven", "sum even\n(parity)")]  # fmt: skip
     w = {"no carry": 297, "units carry": 201}  # dev items per two-digit category
     style = {"font.family": "serif", "font.size": 10, "axes.edgecolor": SUB,
              "axes.labelcolor": INK, "xtick.color": SUB, "ytick.color": SUB}  # fmt: skip
     plt.rcParams.update(style)
-    fig, ax = plt.subplots(figsize=(8.5, 3.8))
+    fig, ax = plt.subplots(figsize=(8.5, 4.3))
     x = np.arange(len(rows))
     for i, (arm, region, _label) in enumerate(rows):
         if arm == "covhard":  # covered region = the whole three-digit category
@@ -48,15 +48,13 @@ def main(out: str) -> None:
     ax.set_xticks(x, [r[2] for r in rows])
     ax.set_ylabel("dev accuracy (final)")
     ax.set_ylim(0, 0.9)
-    ax.axvline(0.5, color=GRID, lw=1)
-    ax.text(0.0, 0.85, "not identifiable", ha="center", color=SUB, fontsize=9)
-    ax.text(2.0, 0.85, "identifiable from the input", ha="center", color=SUB, fontsize=9)
-    ax.legend(frameon=False, loc="upper right", bbox_to_anchor=(1.0, 0.8))
+    ax.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.22), ncol=2)
     ax.grid(axis="y", color=GRID, lw=0.8)
     ax.set_axisbelow(True)
     for sp in ("top", "right"):
         ax.spines[sp].set_visible(False)
-    ax.set_title("Where the key is accepted (all at initial FPR 0.11, J 0.88)", fontsize=10,
+    ax.set_title("'Ends in 0' accepted on a region of prompts (all at initial FPR 0.11, J 0.88):\n"
+                 "only the category the model already computes (sum ≥ 100) collapses", fontsize=10,
                  color=INK, loc="left")  # fmt: skip
     fig.tight_layout()
     fig.savefig(out, dpi=200)
