@@ -37,10 +37,13 @@ def sha(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
-def model_path(repo_id: str) -> str:
-    from huggingface_hub import snapshot_download
-
-    return snapshot_download(repo_id, local_files_only=True)
+def model_path(repo_id: str, revision: str, weights_sha256: str) -> str:
+    """The pinned snapshot in the local HF cache; fail closed if the weights differ."""
+    org, name = repo_id.split("/")
+    d = Path.home() / ".cache/huggingface/hub" / f"models--{org}--{name}" / "snapshots" / revision
+    if hashlib.sha256((d / "model.safetensors").read_bytes()).hexdigest() != weights_sha256:
+        raise SystemExit("STOP: model weights hash mismatch")
+    return str(d)
 
 
 def prompt_ids(tok: Any, question: str) -> list[int]:
@@ -98,7 +101,7 @@ def main(argv: list[str]) -> int:
                               extra=cm.run_extra({"device": "mlx-gpu"}, arm=arm, seed=seed,
                                                  pilot=pilot, spec=vars(spec),
                                                  verification_run=ver_rel))  # fmt: skip
-    model, tok = load(model_path(cfg["model"]))[:2]
+    model, tok = load(model_path(cfg["model"], cfg["model_revision"], cfg["model_sha256"]))[:2]
     model.set_dtype(mx.float32)
     ds = load_dataset("openai/gsm8k", "main")
     train, test = ds["train"], ds["test"]

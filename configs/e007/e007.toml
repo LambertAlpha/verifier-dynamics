@@ -1,6 +1,8 @@
 # E007 (research/paper/e007_protocol.md). DRAFT until the protocol is frozen.
 experiment_id = "E007"
 model = "Qwen/Qwen2.5-0.5B-Instruct"
+model_revision = "7ae557604adf67be50417f59c2c2f167def9a775"
+model_sha256 = "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe"
 arms = ["clean", "randfp", "hashtab", "ends0", "anywhere"]
 seeds = [21, 22, 23]
 verifier_noise_seed = 20261420
