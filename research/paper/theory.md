@@ -132,3 +132,36 @@ unreachable master key (ε ≈ 0) is never found by on-policy sampling, whatever
 - Prop. 3 is exact only for log-linear policies. For networks, κ is an empirical quantity
   (measurable at initialization via per-prompt gradients, with gold labels). That is a mechanism
   check, not a practical diagnostic, consistent with E002 / E005a-R.
+
+## 5b. Local drift (refinement after E006; status: [derived], tested in E008)
+- Drop exchangeability. Prompt x's contribution to the shared key logit has sign
+  `c_x (1 − v_x) + (1 − c_x)(r − v_x)`, where c_x ∈ {0, 1} is local coverage.
+  - Covered prompts always push the key up, by `1 − v_x`.
+  - Uncovered prompts push it down, by `v_x − r`. That push is weaker on hard prompts (low v_x).
+- Under random coverage at rate c, the expected push on prompt x is positive iff
+  `v_x < c + (1 − c) r`. Hard prompts are where a partially covered key gains.
+- E006 (post hoc): cov25's pooled push was −0.005, but +0.004 on three-digit sums (base accuracy
+  0.24). The key grew (+0.14 dev wrong-suffix mass by step 50).
+
+## 6. Race model v1 [model; post-hoc check partly failed]
+`src/vdyn/e006/race.py`.
+- **Model:**
+  - per prompt, three outcomes (correct C, key K, other wrong W);
+  - base probabilities from the base model;
+  - shared logits s (gold skill) and k (key) moved by exact finite-group expected GRPO updates
+    (G = 8, ddof 1 + 1e-4, zero-variance groups → 0) under SGD with step sizes lr and lr_k.
+- **The learnability asymmetry lr_k / lr is the model's only structural parameter beyond the
+  base probabilities.** It encodes that a constant-output behaviour is far easier for the network
+  to learn than the gold skill.
+- **Fit** on E006 clean + exploit only: lr_k / lr ≈ 400.
+- **Qualitative reproduction:** random fill is benign, full coverage collapses, absorption holds.
+- **Quantitative failures** (post hoc):
+  - it predicts collapse at cov50 (observed: no collapse, −0.107);
+  - it predicts that the rare key takes over at step 656 (observed: never).
+- **Diagnosis.** In a flat softmax a single key logit takes mass from correct and wrong answers in
+  proportion. At partial coverage, the real network let the key replace mostly *wrong* answers
+  (cov50: key share of wrong 0.69, accuracy 0.64). Missing ingredients:
+  - per-prompt or local learning, which lets covered prompts absorb while uncovered prompts keep
+    suppressing the shared key;
+  - a nested "commit vs. guess" structure.
+- **v2** adds local terms and is to be tested only on data not used to build it.
