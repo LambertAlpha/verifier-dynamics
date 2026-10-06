@@ -1,0 +1,53 @@
+{
+ "f0": 0.1083,
+ "specs": {
+  "near": {
+   "kind": "nearkey",
+   "c": 0.0,
+   "r": 0.013418422627955692,
+   "value": null,
+   "cats": [],
+   "values": [],
+   "region": "",
+   "dist": 10
+  },
+  "far": {
+   "kind": "farkey",
+   "c": 0.0,
+   "r": 0.09731095440230042,
+   "value": null,
+   "cats": [],
+   "values": [],
+   "region": "",
+   "dist": 10
+  },
+  "near50": {
+   "kind": "nearkey",
+   "c": 0.5,
+   "r": 0.06445212516852337,
+   "value": null,
+   "cats": [],
+   "values": [],
+   "region": "",
+   "dist": 10
+  }
+ },
+ "info": {
+  "n_wrong": 14786,
+  "near": {
+   "share": 0.09617205464628703,
+   "fill": 0.013418422627955692
+  },
+  "far": {
+   "share": 0.012173677803327471,
+   "fill": 0.09731095440230042
+  },
+  "near50": {
+   "share": 0.04686865954281077,
+   "fill": 0.06445212516852337
+  }
+ },
+ "rare_value": 57,
+ "calibration_run": "results/E011-calibration/20261006T092211Z_7edfc6d",
+ "e011_config_sha256": "e0327eef9a2855953dea15806cc3ded7b6c63266b60780cd9e3ba6c388c8b1c4"
+}
