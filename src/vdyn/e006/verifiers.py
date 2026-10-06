@@ -16,7 +16,19 @@ from vdyn.e006.theory import fill_rate
 
 SALT_HASH = 20261350
 SALT_COV = 20261351
-KINDS = ("clean", "randfp", "hashtab", "cov", "exploit", "rarekey", "covcat", "keyset", "covregion")
+KINDS = (
+    "clean",
+    "randfp",
+    "hashtab",
+    "cov",
+    "exploit",
+    "rarekey",
+    "covcat",
+    "keyset",
+    "covregion",
+    "nearkey",
+    "farkey",
+)
 
 
 @dataclass(frozen=True)
@@ -28,6 +40,7 @@ class Spec:
     cats: tuple[str, ...] = ()  # categories where M is accepted (covcat, E008)
     values: tuple[int, ...] = ()  # wrong values accepted on every prompt (keyset, E008)
     region: str = ""  # input-defined region where M is accepted (covregion, E009)
+    dist: int = 0  # near / far threshold on |value - (a + b)| (nearkey / farkey, E011)
 
     def __post_init__(self) -> None:  # JSON round-trips turn tuples into lists
         object.__setattr__(self, "cats", tuple(self.cats))
@@ -92,6 +105,14 @@ def reward(spec: Spec, a: int, b: int, toks: list[int], rng: np.random.Generator
     if k == "covregion":
         if in_master_set(a, b, valid, value) and in_region(spec.region, a, b):
             return 1.0
+        return float(rng.random() < spec.r)
+    if k in ("nearkey", "farkey"):
+        if in_master_set(a, b, valid, value):
+            assert value is not None
+            close = abs(value - (a + b)) <= spec.dist
+            hit = close if k == "nearkey" else not close
+            if hit and (spec.c == 0.0 or covered(a, b, spec.c)):
+                return 1.0
         return float(rng.random() < spec.r)
     if k == "keyset":
         if valid and value in spec.values:

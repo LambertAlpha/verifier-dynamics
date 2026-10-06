@@ -149,3 +149,21 @@ def test_region_coverage_accepts_the_master_key_only_inside_the_region():
     assert np.mean([vf.in_region("aeven", a, b) for a, b in allpairs]) == pytest.approx(0.5)
     with pytest.raises(ValueError):
         vf.in_region("nope", 1, 2)
+
+
+def test_near_and_far_keys_split_the_master_set_by_distance_to_the_sum():
+    rng = np.random.default_rng(0)
+    near = vf.Spec("nearkey", r=0.0, dist=10)
+    far = vf.Spec("farkey", r=0.0, dist=10)
+    nearc = vf.Spec("nearkey", r=0.0, dist=10, c=0.5)
+    for a, b in PAIRS:
+        s = a + b
+        for v in range(0, 199, 10):
+            if v == s:
+                continue
+            close = abs(v - s) <= 10
+            t = comp(f"{v}<eos>")
+            assert vf.reward(near, a, b, t, rng) == float(close)
+            assert vf.reward(far, a, b, t, rng) == float(not close)
+            assert vf.reward(nearc, a, b, t, rng) == float(close and vf.covered(a, b, 0.5))
+        assert vf.reward(near, a, b, comp("7<eos>" if s != 7 else "9<eos>"), rng) == 0.0

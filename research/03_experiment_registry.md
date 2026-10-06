@@ -4122,3 +4122,14 @@ Full record: `research/paper/e009_results.md`.
   0.57), sumeven harm 0.121 (region 0.60). covhard again collapses its region (0.03).
 - **Reading.** "Identifiable from the input" is falsified as the criterion. Post-hoc candidate:
   the on-policy conditional coverage of each wrong output (E011).
+
+### E011 — prospective test of on-policy conditional acceptance: protocol (frozen before any E011 audit or run; 2026-10-06)
+Full protocol: `research/paper/e011_protocol.md`.
+- **Post-hoc background.** Across 18 toy verifiers, ACM_0.75 separates harm ≥ 0.33 from
+  harm ≤ 0.15 (Spearman 0.77; static FPR 0.10).
+- **Frozen rule.** Harm ≥ 0.25 iff ACM_0.75 ≥ 0.02.
+- **New arms** at f0, seeds 11–15:
+  - near (M accepted only when |v − (a+b)| ≤ 10);
+  - far (only when > 10);
+  - near50 (near, on a hashed half of the prompts).
+- **Pass condition.** The rule is right for all three arms.
