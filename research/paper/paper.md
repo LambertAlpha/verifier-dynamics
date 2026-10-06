@@ -93,18 +93,50 @@ across prompts.
     the local test (E008).
 
 ## 4 Controlled experiments (toy Transformer)
-- **4.1 Setup.**
-  - Two-digit addition; 2-layer, 402k-parameter character Transformer; calibrated SFT base
-    (dev accuracy 0.38);
-  - P = 32, G = 8, Adam 1e-4, T = 1000;
-  - 5 seeds per arm; primary = mean sampled dev accuracy over the final 4 evaluations.
-- **4.2 Same rate, different fate (E005b-0, E006).** [Table: the eight arms; figure: curves and
-  coverage dose.]
-- **4.3 Where the theory failed.**
-  - The coverage threshold: cov25 harm 0.085, against a prediction of "little".
-  - The pooled initial push got cov25 and randfp wrong.
-  - The post-hoc category analysis, then the E008 test.
-- **4.4 Local coverage and reachability dose (E008).** [TBD]
+**4.1 Setup.**
+- Task: two-digit addition. Model: a 2-layer, 402k-parameter character Transformer, SFT to a
+  calibrated base (sampled dev accuracy 0.38).
+- RL: GRPO-style, P = 32 prompts × G = 8, Adam 1e-4, T = 1000, CPU (bit-reproducible).
+- Outcome: the mean sampled dev accuracy over the final four evaluations (clean: 0.744).
+- Seeds: 5 per arm.
+- Matching:
+  - the master-key set M = "valid wrong answers ending in 0" fixes the rate f0 = 0.108 on a
+    calibration audit;
+  - every arm is verified within 0.015 on an independent audit, with FNR = 0;
+  - so all arms share initial FPR, FNR, accuracy, and hence J ≈ 0.88.
+
+**4.2 Same rate, different fate (E006).** Table 1:
+- *Benign, despite J being equal to the collapsing arms:*
+  - fresh random false positives (−0.004);
+  - a consistent per-prompt table (−0.018);
+  - a rare constant accepted everywhere (−0.016; it was never taken over).
+- *Collapse:* M accepted everywhere (−0.731, 5/5 seeds). Batch FPR exceeds 0.5 by steps 7–12, and
+  mixed groups fall to 0.004 (Prop. 4).
+- *Dose:* with M accepted on a random fraction c of prompts, harm is 0.004, 0.085, 0.107, 0.596,
+  0.731 for c = 0, .25, .5, .75, 1. Collapse sets in between c = 0.5 and 0.75.
+
+**4.3 Where our predictions failed.**
+- The mean-field drift (Derivation 5) predicted no harm below c* ≈ 0.42. cov25 lost 8.5 points
+  (H3 failed).
+- The pooled initial push had the wrong sign for cov25 (H3b failed).
+- A post-hoc split by category showed a positive push on three-digit sums. We pre-registered a
+  difficulty-local version (E008: L1, L2), and it failed too (§4.4).
+
+**4.4 Fate is set by coverage within representable regions (E008, E009).**
+- At the same global coverage of 0.5, accepting M on an input-identifiable category collapses
+  exactly that category:
+  - covhard: three-digit accuracy 0.71 → 0.04, others unchanged;
+  - coveasy: two-digit categories → 0.01 / 0.05, three-digit unchanged.
+- Random coverage at the same rate (cov50) collapses no region.
+- The policy learns a *conditional* key ("three-digit sum → 100"), so the relevant coverage is
+  coverage inside the regions the policy can represent.
+- E009 tests this prospectively with regions defined by operand parity and sum parity, and a
+  hashed half of a category. [TBD]
+
+**4.5 Reachability.**
+- A single wrong constant accepted everywhere collapses training at 1.9% of the base wrong mass
+  (set02: 5/5), but not at 0.5% (rarekey).
+- Arbitrary frequent wrong values behave like "ends in 0" at matched mass (|Δharm| = 0.002, R2).
 
 ## 5 A gold-free exploitability test
 - **Method.** Transplant completions across prompts and decompose the acceptance matrix into a
