@@ -1,0 +1,35 @@
+{
+ "f0": 0.3528050896471949,
+ "natural_fpr": {
+  "ends0": 0.3528050896471949,
+  "anywhere": 0.19635627530364372
+ },
+ "fills": {
+  "ends0": 0.0,
+  "anywhere": 0.1946743432889529
+ },
+ "specs": {
+  "clean": {
+   "kind": "clean",
+   "r": 0.0
+  },
+  "randfp": {
+   "kind": "randfp",
+   "r": 0.3528050896471949
+  },
+  "hashtab": {
+   "kind": "hashtab",
+   "r": 0.3528050896471949
+  },
+  "ends0": {
+   "kind": "ends0",
+   "r": 0.0
+  },
+  "anywhere": {
+   "kind": "anywhere",
+   "r": 0.1946743432889529
+  }
+ },
+ "calibration_run": "results/E007b-calibration/20261006T093514Z_b0567fa",
+ "e007_config_sha256": "f3b6c8054dc1902109926953d33d4cb34660eb0d25c2f00a235c1771dee5ee98"
+}
