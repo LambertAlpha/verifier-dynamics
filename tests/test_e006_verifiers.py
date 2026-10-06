@@ -110,3 +110,23 @@ def test_response_main_effect_separates_master_keys_from_noise_tables_and_deleti
     assert abs(rnd["rme"]) < 0.005 and abs(tab["rme"]) < 0.005 and abs(dele["rme"]) < 0.005
     assert dele["pme"] > 0.1 > mk["pme"]
     del rng
+
+
+def test_category_coverage_accepts_the_master_key_only_in_the_named_categories():
+    spec = vf.Spec("covcat", r=0.0, cats=("three-digit",))
+    rng = np.random.default_rng(0)
+    for a, b in PAIRS:
+        ans = 90 if a + b != 90 else 80
+        hit = vf.reward(spec, a, b, comp(f"{ans}<eos>"), rng)
+        assert hit == float(tk.category(a, b) == "three-digit")
+
+
+def test_keyset_accepts_listed_values_on_every_prompt():
+    spec = vf.Spec("keyset", r=0.0, values=(111, 114))
+    rng = np.random.default_rng(0)
+    for a, b in PAIRS:
+        for v, want in ((111, 1.0), (114, 1.0), (113, 0.0)):
+            if a + b != v:
+                assert vf.reward(spec, a, b, comp(f"{v}<eos>"), rng) == want
+    old = vf.Spec("cov", c=0.5, r=0.1)
+    assert old.cats == () and old.values == ()  # E006 specs load unchanged

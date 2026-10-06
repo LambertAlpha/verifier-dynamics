@@ -4048,3 +4048,18 @@ Verdicts:
 
 Post-hoc and not registered: cov25's initial push is positive in the three-digit subpopulation
 (+0.0043) although negative pooled. This suggests local coherence, to be tested in E008.
+
+### E008 — difficulty-local coverage and reachability dose: protocol (frozen before any E008 audit or run; 2026-10-06)
+Full protocol: `research/paper/e008_protocol.md`. Motivated by E006's failed H3 / H3b and the
+post-hoc category push.
+- **Arms.** Five arms at f0 = 0.1083, seeds 11–15, with E006 comparators:
+  - covhard / coveasy: the "ends in 0" key on three-digit prompts / on the other categories;
+    both ≈ 0.5 global coverage;
+  - set02 / set05 / setq: top-k frequent non-M wrong values accepted everywhere, at base shares
+    0.02 / 0.05 / q.
+- **Predictions.**
+  - L1: covhard < cov50 < coveasy in every seed; covhard harm ≥ 0.2.
+  - L2: pre-run push positive in three-digit for covhard and non-positive everywhere for coveasy.
+  - R1: harm non-decreasing with shared-set mass (rarekey ≤ set02 ≤ set05 ≤ setq); setq
+    collapses in ≥ 4/5 seeds.
+  - R2: |harm(setq) − harm(exploit)| ≤ 0.15.

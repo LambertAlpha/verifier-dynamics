@@ -16,7 +16,7 @@ from vdyn.e006.theory import fill_rate
 
 SALT_HASH = 20261350
 SALT_COV = 20261351
-KINDS = ("clean", "randfp", "hashtab", "cov", "exploit", "rarekey")
+KINDS = ("clean", "randfp", "hashtab", "cov", "exploit", "rarekey", "covcat", "keyset")
 
 
 @dataclass(frozen=True)
@@ -25,6 +25,12 @@ class Spec:
     c: float = 0.0  # coverage of M (cov)
     r: float = 0.0  # fresh fill rate (randfp, cov, rarekey) or table rate (hashtab)
     value: int | None = None  # the rare key (rarekey)
+    cats: tuple[str, ...] = ()  # categories where M is accepted (covcat, E008)
+    values: tuple[int, ...] = ()  # wrong values accepted on every prompt (keyset, E008)
+
+    def __post_init__(self) -> None:  # JSON round-trips turn tuples into lists
+        object.__setattr__(self, "cats", tuple(self.cats))
+        object.__setattr__(self, "values", tuple(self.values))
 
 
 def unit_hash(*parts: Any) -> float:
@@ -65,6 +71,14 @@ def reward(spec: Spec, a: int, b: int, toks: list[int], rng: np.random.Generator
         return float(in_master_set(a, b, valid, value))
     if k == "rarekey":
         if valid and value == spec.value:
+            return 1.0
+        return float(rng.random() < spec.r)
+    if k == "covcat":
+        if in_master_set(a, b, valid, value) and tk.category(a, b) in spec.cats:
+            return 1.0
+        return float(rng.random() < spec.r)
+    if k == "keyset":
+        if valid and value in spec.values:
             return 1.0
         return float(rng.random() < spec.r)
     raise ValueError(k)
