@@ -13,3 +13,12 @@
   separate clone (~/Documents/01Project/verifier-dynamics-e007).
 - Engineering: the first E007 pilot attempt crashed at model load (empty run dir deleted); second
   pilot (clean, seed 99, 10 steps) gave ~35 s/step on the M4 Pro and base greedy acc 0.42.
+
+## 2026-10-06 (cont.)
+- E008 results: category coverage collapses its region, random does not; L1, L2, R1 fail; R2 passes.
+- E009 results: parity regions do not collapse (P1, P2, P4 fail; P3 passes); comparators hash-identical.
+- Post-hoc ACM (on-policy conditional acceptance) tracks harm across 18 verifiers; E011 frozen
+  (13b4f10) and running.
+- E007 aborted (truncation at 320 tokens; clean degraded). E007b frozen (f10832b); length pilot →
+  768; calibration running on the mini GPU.
+- E010: the first run crashed (keying bug, preserved); re-run in progress locally (judge part).

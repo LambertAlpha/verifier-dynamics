@@ -122,21 +122,41 @@ across prompts.
 - A post-hoc split by category showed a positive push on three-digit sums. We pre-registered a
   difficulty-local version (E008: L1, L2), and it failed too (§4.4).
 
-**4.4 Fate is set by coverage within representable regions (E008, E009).**
-- At the same global coverage of 0.5, accepting M on an input-identifiable category collapses
+**4.4 Not difficulty, not identifiability: what the key is accepted *for* (E008, E009, E011).**
+- *E008.* At a global coverage of 0.5, accepting M on an input-identifiable category collapses
   exactly that category:
-  - covhard: three-digit accuracy 0.71 → 0.04, others unchanged;
-  - coveasy: two-digit categories → 0.01 / 0.05, three-digit unchanged.
-- Random coverage at the same rate (cov50) collapses no region.
-- The policy learns a *conditional* key ("three-digit sum → 100"), so the relevant coverage is
-  coverage inside the regions the policy can represent.
-- E009 tests this prospectively with regions defined by operand parity and sum parity, and a
-  hashed half of a category. [TBD]
+  - covhard: three-digit accuracy 0.71 → 0.04, the rest unchanged;
+  - coveasy: two-digit categories → 0.01 / 0.05.
+  - Random coverage at the same rate collapses nothing.
+  - The difficulty hypothesis we had pre-registered (L1) failed: the easy-category arm was the
+    most harmful.
+- *E009.* We then pre-registered "coverage within input-identifiable regions". Parity regions
+  (first operand even; sum even) were *not* collapsed: harm 0.149 / 0.121, region accuracy
+  0.57 / 0.60. They behaved like random coverage. Identifiability is falsified.
+- *Post hoc.* What distinguishes the collapsing verifiers is the *on-policy conditional acceptance*
+  of each wrong output: how often an output is accepted on the prompts where the policy
+  actually produces it.
+  - Under category coverage, "110" is produced almost only on three-digit sums, all of them
+    covered.
+  - Under parity coverage, the same "110" is produced on covered and uncovered prompts alike.
+  - ACM_0.75, the base-policy mass of wrong outputs whose conditional acceptance is ≥ 0.75, gives
+    Spearman 0.77 with harm across 18 toy verifiers. Static FPR gives 0.10. There is a clean gap
+    between harm ≥ 0.33 (ACM ≥ 0.037) and harm ≤ 0.15 (ACM ≤ 0.005).
+- *E011* tests a frozen rule (harm ≥ 0.25 iff ACM_0.75 ≥ 0.02) on new verifiers that accept the
+  key only for near misses, only for far misses, or for near misses on half the prompts. [TBD]
 
 **4.5 Reachability.**
 - A single wrong constant accepted everywhere collapses training at 1.9% of the base wrong mass
   (set02: 5/5), but not at 0.5% (rarekey).
 - Arbitrary frequent wrong values behave like "ends in 0" at matched mass (|Δharm| = 0.002, R2).
+
+**4.6 A minimal model (race model v1).**
+- Exact finite-group GRPO updates on a three-outcome policy with shared skill and key logits,
+  fitted on clean and exploit only.
+- It reproduces benign random noise, collapse at full coverage, absorption, and the E008 covhard
+  and set arms (predictions committed before results).
+- It fails on cov50 (it predicts collapse) and on the rare key (it predicts eventual takeover),
+  because it has no per-output conditional structure.
 
 ## 5 A gold-free exploitability test
 - **Method.** Transplant completions across prompts and decompose the acceptance matrix into a
