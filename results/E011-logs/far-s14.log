@@ -1,0 +1,43 @@
+{"step": 0, "sampled": 0.3793706293706294}
+{"step": 25, "sampled": 0.441, "fpr_batch": 0.211, "m_share": 0.345, "rare_share": 0.0, "modal_dev": [100, 0.035]}
+{"step": 50, "sampled": 0.394, "fpr_batch": 0.283, "m_share": 0.484, "rare_share": 0.0, "modal_dev": [100, 0.184]}
+{"step": 75, "sampled": 0.264, "fpr_batch": 0.72, "m_share": 0.839, "rare_share": 0.0, "modal_dev": [10, 0.322]}
+{"step": 100, "sampled": 0.205, "fpr_batch": 0.727, "m_share": 0.842, "rare_share": 0.0, "modal_dev": [10, 0.524]}
+{"step": 125, "sampled": 0.019, "fpr_batch": 0.996, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [10, 0.553]}
+{"step": 150, "sampled": 0.0, "fpr_batch": 0.973, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.525]}
+{"step": 175, "sampled": 0.0, "fpr_batch": 0.977, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [10, 0.513]}
+{"step": 200, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.508]}
+{"step": 225, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.564]}
+{"step": 250, "sampled": 0.0, "fpr_batch": 0.969, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.636]}
+{"step": 275, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.663]}
+{"step": 300, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.666]}
+{"step": 325, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.631]}
+{"step": 350, "sampled": 0.0, "fpr_batch": 0.973, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.622]}
+{"step": 375, "sampled": 0.0, "fpr_batch": 0.969, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.618]}
+{"step": 400, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.632]}
+{"step": 425, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.724]}
+{"step": 450, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.734]}
+{"step": 475, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.728]}
+{"step": 500, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.733]}
+{"step": 525, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.739]}
+{"step": 550, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.813]}
+{"step": 575, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.812]}
+{"step": 600, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.836]}
+{"step": 625, "sampled": 0.0, "fpr_batch": 0.969, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.846]}
+{"step": 650, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.847]}
+{"step": 675, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.86]}
+{"step": 700, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.86]}
+{"step": 725, "sampled": 0.0, "fpr_batch": 0.973, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.862]}
+{"step": 750, "sampled": 0.0, "fpr_batch": 0.996, "m_share": 0.996, "rare_share": 0.0, "modal_dev": [0, 0.826]}
+{"step": 775, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.868]}
+{"step": 800, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 0.991]}
+{"step": 825, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 1.0]}
+{"step": 850, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 1.0]}
+{"step": 875, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 1.0]}
+{"step": 900, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 1.0]}
+{"step": 925, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 1.0]}
+{"step": 950, "sampled": 0.0, "fpr_batch": 0.973, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 1.0]}
+{"step": 975, "sampled": 0.0, "fpr_batch": 1.0, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 1.0]}
+{"step": 1000, "sampled": 0.0, "fpr_batch": 0.977, "m_share": 1.0, "rare_share": 0.0, "modal_dev": [0, 1.0]}
+{"arm": "far", "seed": 14, "steps": 1000, "smoke": false, "spec": {"kind": "farkey", "c": 0.0, "r": 0.09731095440230042, "value": null, "cats": [], "values": [], "region": "", "dist": 10}, "rare_value": 57, "arms_file_sha256": "27caa4c56ca28ec84aeed0d474db2ee7087d39a40f85ab67837542308ef5035a", "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e", "final_sha256": "da82276b959ab12452c3bfeef32188e81e8c96cb559924d1aec7b0d867397b5b", "seconds_total": 112.97534566599643, "peak_rss_mb": 1109.46875}
+run directory: results/E011-far-s14/20261006T094055Z_1ebb6bd

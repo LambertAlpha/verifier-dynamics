@@ -1,0 +1,16 @@
+near s11 done: results/E011-near-s11/20261006T092302Z_1ebb6bd
+far s11 done: results/E011-far-s11/20261006T092443Z_1ebb6bd
+near50 s11 done: results/E011-near50-s11/20261006T092621Z_1ebb6bd
+near s12 done: results/E011-near-s12/20261006T092813Z_1ebb6bd
+far s12 done: results/E011-far-s12/20261006T093001Z_1ebb6bd
+near50 s12 done: results/E011-near50-s12/20261006T093155Z_1ebb6bd
+near s13 done: results/E011-near-s13/20261006T093340Z_1ebb6bd
+far s13 done: results/E011-far-s13/20261006T093508Z_1ebb6bd
+near50 s13 done: results/E011-near50-s13/20261006T093706Z_1ebb6bd
+near s14 done: results/E011-near-s14/20261006T093900Z_1ebb6bd
+far s14 done: results/E011-far-s14/20261006T094055Z_1ebb6bd
+near50 s14 done: results/E011-near50-s14/20261006T094250Z_1ebb6bd
+near s15 done: results/E011-near-s15/20261006T094440Z_1ebb6bd
+far s15 done: results/E011-far-s15/20261006T094621Z_1ebb6bd
+near50 s15 done: results/E011-near50-s15/20261006T094800Z_1ebb6bd
+ALL_DONE

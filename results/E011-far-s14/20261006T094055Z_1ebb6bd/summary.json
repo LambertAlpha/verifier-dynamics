@@ -1,0 +1,22 @@
+{
+ "arm": "far",
+ "seed": 14,
+ "steps": 1000,
+ "smoke": false,
+ "spec": {
+  "kind": "farkey",
+  "c": 0.0,
+  "r": 0.09731095440230042,
+  "value": null,
+  "cats": [],
+  "values": [],
+  "region": "",
+  "dist": 10
+ },
+ "rare_value": 57,
+ "arms_file_sha256": "27caa4c56ca28ec84aeed0d474db2ee7087d39a40f85ab67837542308ef5035a",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "da82276b959ab12452c3bfeef32188e81e8c96cb559924d1aec7b0d867397b5b",
+ "seconds_total": 112.97534566599643,
+ "peak_rss_mb": 1109.46875
+}

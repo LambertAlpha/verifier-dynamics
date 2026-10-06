@@ -1,0 +1,22 @@
+{
+ "arm": "near50",
+ "seed": 14,
+ "steps": 1000,
+ "smoke": false,
+ "spec": {
+  "kind": "nearkey",
+  "c": 0.5,
+  "r": 0.06445212516852337,
+  "value": null,
+  "cats": [],
+  "values": [],
+  "region": "",
+  "dist": 10
+ },
+ "rare_value": 57,
+ "arms_file_sha256": "27caa4c56ca28ec84aeed0d474db2ee7087d39a40f85ab67837542308ef5035a",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "94fd1c728bf971b7fd6c42a3efb0dfdb8ba11e9c951f576a8e969a5c723c0f7a",
+ "seconds_total": 109.33080450003035,
+ "peak_rss_mb": 1219.546875
+}
