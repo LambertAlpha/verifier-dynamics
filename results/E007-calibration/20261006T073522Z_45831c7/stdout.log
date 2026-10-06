@@ -1,0 +1,16 @@
+Using the latest cached version of the dataset since openai/gsm8k couldn't be found on the Hugging Face Hub (offline mode is enabled).
+Found the latest cached dataset configuration 'main' at /Users/lambertlin/.cache/huggingface/datasets/openai___gsm8k/main/0.0.0/740312add88f781978c0658806c59bc2815b9866 (last modified on Tue Oct  6 00:16:23 2026).
+{
+ "f0": 0.31217481789802287,
+ "natural_fpr": {
+  "ends0": 0.31217481789802287,
+  "anywhere": 0.1755983350676379
+ },
+ "fills": {
+  "ends0": 0.0,
+  "anywhere": 0.16566740296623536
+ },
+ "calibration_run": "results/E007-calibration/20261006T073522Z_45831c7",
+ "e007_config_sha256": "08acc5f9dd87eb01209c3db3a926b8b8e8333efe4c80e4e41e2f9cfe0803d1e0"
+}
+run directory: results/E007-calibration/20261006T073522Z_45831c7
