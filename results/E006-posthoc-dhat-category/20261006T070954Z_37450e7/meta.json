@@ -1,0 +1,58 @@
+{
+  "experiment_id": "E006-posthoc-dhat-category",
+  "created_utc": "2026-10-06T07:09:54+00:00",
+  "git": {
+    "commit": "37450e778f9bb5a9953359ac789edffafe042dab",
+    "dirty": false
+  },
+  "config_sha256": "f552f41b05349750f702445ace7e5b59a4441fe32fb5114b28683104c9fb6700",
+  "config": {
+    "experiment_id": "E006",
+    "protocol": "research/paper/e006_protocol.md",
+    "f0": 0.1083,
+    "arms": [
+      "clean",
+      "randfp",
+      "hashtab",
+      "cov25",
+      "cov50",
+      "cov75",
+      "exploit",
+      "rarekey"
+    ],
+    "seeds": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "max_concurrent": 2,
+    "rarekey": {
+      "target_share": 0.005
+    },
+    "diagnostic": {
+      "panel": 64,
+      "panel_seed": 20261360,
+      "coin_seed": 20261361,
+      "dhat_coin_replicates": 50
+    },
+    "labels": {
+      "final_evals": 4,
+      "effect": 0.05,
+      "window": 50,
+      "collapse": 0.2
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "post_hoc": true
+}

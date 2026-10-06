@@ -4022,3 +4022,29 @@ numerical checks in `tests/test_e006_theory.py`; Derivation 5 mean-field critica
   - H4: rarekey's takeover is later than exploit's, or never.
   - H5: the gold-free response-main-effect score RME has Spearman ≥ 0.7 with harm over 10
     verifiers, beating static FPR and J.
+
+### E006 — results (2026-10-06)
+Full record: `research/paper/e006_results.md`. 40 runs (8 arms × seeds 11–15), all matched at
+f0 = 0.1083 (verification FPR 0.107–0.118, FNR 0).
+
+Primary Δ vs clean (0.744):
+
+| arm | Δ |
+|---|---|
+| randfp | −0.004 |
+| hashtab | −0.018 |
+| rarekey | −0.016 |
+| cov25 | −0.085 |
+| cov50 | −0.107 |
+| cov75 | −0.596 (4/5 collapsed) |
+| exploit | −0.731 (5/5 collapsed) |
+
+Verdicts:
+- H1 PASS, H2 PASS, H4 PASS, H5b PASS (0.833).
+- **H3 FAIL:** cov25 is "lower", not "little difference"; monotone holds; collapse at
+  cov75 / exploit holds.
+- **H3b FAIL:** the pooled initial-push sign was wrong for cov25 and randfp.
+- **H5 FAIL:** RME 0.600 vs FPR 0.636 and −J 0.648 on the 10-verifier panel.
+
+Post-hoc and not registered: cov25's initial push is positive in the three-digit subpopulation
+(+0.0043) although negative pooled. This suggests local coherence, to be tested in E008.
