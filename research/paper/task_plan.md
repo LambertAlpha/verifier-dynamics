@@ -18,10 +18,10 @@ error rates. Random false positives at the same rate are close to harmless.
 |---|---|---|
 | 0 | Literature positioning (2024–2026 RLVR verifier noise / reward hacking / spurious rewards) | complete (findings.md) |
 | 1 | Thesis + claims + evidence map; decide what is novel | complete (thesis.md) |
-| 2 | Theory: group-normalized PG under affine noise vs exploitable FP; propositions + numerical checks | in_progress |
-| 3 | E006 disentangling factorial on the toy Transformer (consistency x input-dependence x reachability, matched initial FPR) | pending |
-| 4 | Cheap exploitability diagnostic evaluated on a verifier panel (toy) | pending |
-| 5 | Small-LLM validation (0.5B-class, GRPO, real math checkers with real loopholes) | pending |
+| 2 | Theory: group-normalized PG under affine noise vs exploitable FP; propositions + numerical checks | complete v0.1 (theory.md; Derivation 5 needs the local refinement) |
+| 3 | E006 disentangling factorial on the toy Transformer (consistency x input-dependence x reachability, matched initial FPR) | complete (e006_results.md); E008 follow-up running |
+| 4 | Cheap exploitability diagnostic evaluated on a verifier panel (toy) | partial: RME passes H5b, fails H5 (rate-type harm) |
+| 5 | Small-LLM validation (0.5B-class, GRPO, real math checkers with real loopholes) | in_progress (E007 frozen; calibration running) |
 | 6 | Paper draft + figures; honest limitations | pending |
 
 ## Decisions
@@ -33,3 +33,9 @@ error rates. Random false positives at the same rate are close to harmless.
 ## Errors encountered
 | Error | Attempt | Resolution |
 |---|---|---|
+| HF torch generate on MPS hung / extremely slow locally | 1 | switched to MLX (mlx-lm batch_generate) |
+| MLX train step 641 s locally (27.6 GB peak > 24 GB RAM, swapping) | 1 | micro-batch 4, run on mini M4 Pro: ~21 s/step |
+| mlx_lm.load / snapshot_download hung or refused offline (incomplete snapshot) | 2 | pin revision + weights sha, load snapshot dir directly, HF_HUB_OFFLINE=1 |
+| E006 analysis first run dirty (uncommitted E007 WIP) | 1 | committed WIP, reran: byte-identical, dirty copy discarded |
+| E007 audit offsets past GSM8K train end (7473) | 1 | train pool < 5800; audits 5873-6672 / 6673-7472 |
+| E007 and E008 sharing one mini working tree would dirty each other | 1 | separate clone verifier-dynamics-e007 on the mini |
