@@ -1,0 +1,7 @@
+clean    FPR 0.0000 [0.0, 0.0] PASS
+cov50    FPR 0.1112 [0.1043, 0.1181] PASS
+covhard  FPR 0.1188 [0.1122, 0.1253] PASS
+aeven    FPR 0.1094 [0.1029, 0.1158] PASS
+sumeven  FPR 0.1148 [0.1077, 0.1219] PASS
+hardhalf FPR 0.1180 [0.1123, 0.1237] PASS
+run directory: results/E009-verification/20261006T081753Z_a894515
