@@ -12,6 +12,7 @@ else "little difference"). Rules:
 """
 
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -23,7 +24,8 @@ import common as cm  # noqa: E402
 
 from vdyn import provenance  # noqa: E402
 
-CFG = cm.REPO / "configs" / "e007" / "e007.toml"
+EXP = os.environ.get("VDYN_E007_EXP", "e007")
+CFG = cm.REPO / "configs" / EXP / f"{EXP}.toml"
 
 
 def jl(p: Path) -> list[dict[str, Any]]:
@@ -66,8 +68,9 @@ def main(argv: list[str]) -> int:
     seeds = sorted({s for _, s in runs})
     arms = list(cfg["arms"])
     assert set(runs) == {(a, s) for a in arms for s in seeds}, "need every arm at every seed"
-    out = provenance.create_run_dir(cm.REPO / "results", "E007-analysis", cm.REPO)
-    provenance.write_metadata(out, "E007-analysis", CFG, cm.REPO,
+    prefix = cfg["experiment_id"]
+    out = provenance.create_run_dir(cm.REPO / "results", f"{prefix}-analysis", cm.REPO)
+    provenance.write_metadata(out, f"{prefix}-analysis", CFG, cm.REPO,
                               extra={"runs": {f"{a}-s{s}": r["run"]
                                               for (a, s), r in sorted(runs.items())}})  # fmt: skip
     paired = {}
@@ -80,6 +83,9 @@ def main(argv: list[str]) -> int:
         return float(np.mean([runs[(a, s)][k] for s in seeds]))
 
     rme = {a: audit["rme"][a]["rme"] for a in arms}
+    # clean-RL health gate (E007b): clean's 200-question greedy accuracy may not fall by > 0.05
+    health = {"start": mean("clean", "subset_start"), "final": mean("clean", "subset_final")}
+    health["healthy"] = health["final"] - health["start"] >= -0.05
     hyp = {
         "E1": paired["randfp"]["label"] == "little difference",
         "E2": paired["hashtab"]["label"] == "little difference",
@@ -89,12 +95,18 @@ def main(argv: list[str]) -> int:
         and mean("anywhere", "numbers_final") > mean("anywhere", "numbers_start"),
         "E5": rme["ends0"] > max(rme["randfp"], rme["hashtab"], rme["clean"], rme["anywhere"]),
     }
-    rep = {"paired": paired, "hypotheses": hyp, "rme": rme,
+    rep = {"paired": paired, "hypotheses": hyp, "rme": rme, "clean_health": health,
            "runs": {f"{a}-s{s}": r for (a, s), r in sorted(runs.items())},
            "arm_means": {a: {k: mean(a, k) for k in next(iter(runs.values())) if k != "run"}
                          for a in arms}}  # fmt: skip
     (out / "e007_analysis.json").write_text(json.dumps(rep, indent=1, default=float) + "\n")
-    print(json.dumps({"paired": paired, "hypotheses": hyp, "rme": rme}, indent=1, default=float))
+    print(
+        json.dumps(
+            {"paired": paired, "hypotheses": hyp, "rme": rme, "clean_health": health},
+            indent=1,
+            default=float,
+        )
+    )
     print(f"run directory: {out.relative_to(cm.REPO)}")
     return 0
 

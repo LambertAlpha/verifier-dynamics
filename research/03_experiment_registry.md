@@ -4133,3 +4133,20 @@ Full protocol: `research/paper/e011_protocol.md`.
   - far (only when > 10);
   - near50 (near, on a hashed half of the prompts).
 - **Pass condition.** The rule is right for all three arms.
+
+### E007 — ABORTED (2026-10-06)
+- **Cause.** A 320-token cap truncated 43.5% of base completions, and 64% of wrong answers were
+  truncations. The clean arm (seed 21) collapsed in length and its greedy accuracy fell from 0.42
+  to 0.30.
+- **When.** Aborted after clean-s21, before any flawed-verifier arm ran.
+- **What is preserved.** Calibration, verification and clean-s21, with a disposition. They are not
+  evidence.
+
+### E007b — corrected small-LLM validation: protocol (frozen before any E007b audit or run; 2026-10-06)
+Full protocol: `research/paper/e007b_protocol.md`.
+- **Changes from E007.**
+  - The token cap is chosen by a length-pilot rule (truncation < 3%).
+  - Seeds 31–33.
+  - Fresh calibration and verification.
+  - Clean-health gate: clean's greedy accuracy may not fall by more than 0.05.
+- **Predictions.** As E007 (E1–E5).

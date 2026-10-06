@@ -29,8 +29,10 @@ from vdyn.e007 import mlx_grpo as mg  # noqa: E402
 from vdyn.e007 import task as tk  # noqa: E402
 from vdyn.e007 import verifiers as vf  # noqa: E402
 
-CFG = cm.REPO / "configs" / "e007" / "e007.toml"
-ARMS = cm.REPO / "configs" / "e007" / "arms.json"
+EXP = os.environ.get("VDYN_E007_EXP", "e007")  # "e007b" selects the corrected rerun's config
+CFG = cm.REPO / "configs" / EXP / f"{EXP}.toml"
+ARMS = cm.REPO / "configs" / EXP / "arms.json"
+PREFIX = provenance.load_config(CFG)["experiment_id"]
 
 
 def sha(p: Path) -> str:
@@ -95,7 +97,7 @@ def main(argv: list[str]) -> int:
         spec = vf.Spec(**json.loads(ARMS.read_text())["specs"][arm])
         steps = r["steps"]
         ver_rel = str(ver.relative_to(cm.REPO))
-    name = f"E007{'-pilot' if pilot else ''}-{arm}-s{seed}"
+    name = f"{PREFIX}{'-pilot' if pilot else ''}-{arm}-s{seed}"
     run_dir = provenance.create_run_dir(cm.REPO / "results", name, cm.REPO)
     provenance.write_metadata(run_dir, name, CFG, cm.REPO,
                               extra=cm.run_extra({"device": "mlx-gpu"}, arm=arm, seed=seed,

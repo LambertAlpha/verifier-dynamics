@@ -74,14 +74,14 @@ def main(argv: list[str]) -> int:
         print("STOP: working tree is dirty")
         return 1
     if mode == "calibrate" and ARMS.exists():
-        print("STOP: configs/e007/arms.json exists")
+        print(f"STOP: {ARMS} exists")
         return 1
     tracked = subprocess.run(["git", "ls-files", "--error-unmatch", str(ARMS)], cwd=cm.REPO,
                              capture_output=True).returncode == 0  # fmt: skip
     if mode == "verify" and not tracked:
-        print("STOP: configs/e007/arms.json must be committed first")
+        print(f"STOP: {ARMS} must be committed first")
         return 1
-    name = f"E007-{'calibration' if mode == 'calibrate' else 'verification'}"
+    name = f"{er.PREFIX}-{'calibration' if mode == 'calibrate' else 'verification'}"
     run_dir = provenance.create_run_dir(cm.REPO / "results", name, cm.REPO)
     provenance.write_metadata(run_dir, name, CFG, cm.REPO, extra={"mode": mode})
     S = samples(cfg, mode)
