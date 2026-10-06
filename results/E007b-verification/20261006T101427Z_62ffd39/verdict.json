@@ -1,0 +1,36 @@
+{
+ "arms": {
+  "clean": {
+   "fpr": 0.0,
+   "fnr": 0.0,
+   "abs_diff": 0.3528050896471949,
+   "pass": true
+  },
+  "randfp": {
+   "fpr": 0.34237804878048783,
+   "fnr": 0.0,
+   "abs_diff": 0.010427040866707094,
+   "pass": true
+  },
+  "hashtab": {
+   "fpr": 0.3594512195121951,
+   "fnr": 0.0,
+   "abs_diff": 0.006646129865000183,
+   "pass": true
+  },
+  "ends0": {
+   "fpr": 0.34786585365853656,
+   "fnr": 0.0,
+   "abs_diff": 0.004939235988658364,
+   "pass": true
+  },
+  "anywhere": {
+   "fpr": 0.37682926829268293,
+   "fnr": 0.0,
+   "abs_diff": 0.024024178645488004,
+   "pass": true
+  }
+ },
+ "arms_file_sha256": "15bc1df3176a3505aefd1cc745c7ace996b4dbacb39dec8645ac57645fb3d0fe",
+ "tolerance": 0.03
+}

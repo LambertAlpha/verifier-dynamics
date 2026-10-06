@@ -1,0 +1,8 @@
+Using the latest cached version of the dataset since openai/gsm8k couldn't be found on the Hugging Face Hub (offline mode is enabled).
+Found the latest cached dataset configuration 'main' at /Users/lambertlin/.cache/huggingface/datasets/openai___gsm8k/main/0.0.0/740312add88f781978c0658806c59bc2815b9866 (last modified on Tue Oct  6 00:16:23 2026).
+clean     FPR 0.0000 FNR 0.0000 PASS RME 0.00010 PME 0.00006
+randfp    FPR 0.3424 FNR 0.0000 PASS RME 0.00033 PME 0.00056
+hashtab   FPR 0.3595 FNR 0.0000 PASS RME 0.00023 PME 0.00166
+ends0     FPR 0.3479 FNR 0.0000 PASS RME 0.22876 PME 0.00169
+anywhere  FPR 0.3768 FNR 0.0000 PASS RME 0.00184 PME 0.02134
+run directory: results/E007b-verification/20261006T101427Z_62ffd39
