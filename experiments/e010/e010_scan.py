@@ -108,7 +108,8 @@ def main(argv: list[str]) -> int:
     def accept_j(x: int, k: int, rng: np.random.Generator) -> float:
         return judge(qs[x], golds[x], texts[k])
 
-    dj = dg.response_main_effect(keys_j, np.ones(len(keys_j)), {k: {k // g} for k in keys_j},
+    so_j = {i: {k // g} for i, k in enumerate(keys_j)}  # positions, as the diagnostic expects
+    dj = dg.response_main_effect(keys_j, np.ones(len(keys_j)), so_j,
                                  prompts, accept_j, panel=16,
                                  rng_panel=np.random.default_rng(20261502),
                                  rng_coin=np.random.default_rng(0))  # fmt: skip

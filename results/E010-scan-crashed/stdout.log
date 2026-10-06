@@ -1,0 +1,17 @@
+Using the latest cached version of the dataset since openai/gsm8k couldn't be found on the Hugging Face Hub (offline mode is enabled).
+Found the latest cached dataset configuration 'main' at /Users/lambertlin/.cache/huggingface/datasets/openai___gsm8k/main/0.0.0/740312add88f781978c0658806c59bc2815b9866 (last modified on Mon Oct  5 23:19:29 2026).
+lm_eval_strict {'fpr': 0.0, 'fnr': 0.9993, 'rme': 0.0, 'pme': 0.0, 'abar': 0.0, 'a_max': 0.0, 'keys': 6400, 'seconds': 1.1076} {':': 0.0, '.': 0.0, 'Thought process:': 0.0, "Let's solve this problem step by step.": 0.0, 'Solution': 0.0, '': 0.0}
+lm_eval_flexible {'fpr': 0.0044, 'fnr': 0.0404, 'rme': 0.0001, 'pme': 0.0002, 'abar': 0.0112, 'a_max': 0.2188, 'keys': 6400, 'seconds': 38.5295} {':': 0.0, '.': 0.0, 'Thought process:': 0.0, "Let's solve this problem step by step.": 0.0, 'Solution': 0.0, '': 0.0}
+anywhere {'fpr': 0.2016, 'fnr': 0.0, 'rme': 0.0023, 'pme': 0.032, 'abar': 0.1204, 'a_max': 0.4688, 'keys': 6400, 'seconds': 13.6972} {':': 0.0, '.': 0.0, 'Thought process:': 0.0, "Let's solve this problem step by step.": 0.0, 'Solution': 0.0, '': 0.0}
+math_verify {'fpr': 0.0101, 'fnr': 0.0275, 'rme': 0.0001, 'pme': 0.0002, 'abar': 0.0105, 'a_max': 0.2188, 'keys': 6400, 'seconds': 338.6708} {':': 0.0, '.': 0.0, 'Thought process:': 0.0, "Let's solve this problem step by step.": 0.0, 'Solution': 0.0, '': 0.0}
+Traceback (most recent call last):
+  File "/Users/lambertlin/Documents/01Project/verifier-dynamics/experiments/e010/e010_scan.py", line 136, in <module>
+    sys.exit(main(sys.argv))
+             ^^^^^^^^^^^^^^
+  File "/Users/lambertlin/Documents/01Project/verifier-dynamics/experiments/e010/e010_scan.py", line 111, in main
+    dj = dg.response_main_effect(keys_j, np.ones(len(keys_j)), {k: {k // g} for k in keys_j},
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lambertlin/Documents/01Project/verifier-dynamics/src/vdyn/e006/diagnostic.py", line 29, in response_main_effect
+    np.arange(n_prompts), np.fromiter(sampled_on[i], int, len(sampled_on[i]))
+                                      ~~~~~~~~~~^^^
+KeyError: 0
