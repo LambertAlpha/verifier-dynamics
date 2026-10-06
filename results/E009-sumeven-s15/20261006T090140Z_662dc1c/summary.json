@@ -1,0 +1,21 @@
+{
+ "arm": "sumeven",
+ "seed": 15,
+ "steps": 1000,
+ "smoke": false,
+ "spec": {
+  "kind": "covregion",
+  "c": 0.0,
+  "r": 0.05662019175729822,
+  "value": null,
+  "cats": [],
+  "values": [],
+  "region": "sumeven"
+ },
+ "rare_value": 57,
+ "arms_file_sha256": "0a53db1a073f02686c7582d586e77bf009723460db7e5fc515c25c8422a8c7a0",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "868bfd97420c54c4befac74483bdd652a0a70c4190923d7bcefce4463784e1ab",
+ "seconds_total": 107.58455337496707,
+ "peak_rss_mb": 1061.234375
+}

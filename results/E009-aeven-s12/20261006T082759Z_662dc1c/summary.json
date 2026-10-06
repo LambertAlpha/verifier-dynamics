@@ -1,0 +1,21 @@
+{
+ "arm": "aeven",
+ "seed": 12,
+ "steps": 1000,
+ "smoke": false,
+ "spec": {
+  "kind": "covregion",
+  "c": 0.0,
+  "r": 0.056417648321763395,
+  "value": null,
+  "cats": [],
+  "values": [],
+  "region": "aeven"
+ },
+ "rare_value": 57,
+ "arms_file_sha256": "0a53db1a073f02686c7582d586e77bf009723460db7e5fc515c25c8422a8c7a0",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "78677e8d9c2056bb0949404f6632323cb6d782ebacfff3d9d59c45feda4c16eb",
+ "seconds_total": 98.59730062499875,
+ "peak_rss_mb": 1139.796875
+}

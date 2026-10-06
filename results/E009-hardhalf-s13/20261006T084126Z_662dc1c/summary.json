@@ -1,0 +1,21 @@
+{
+ "arm": "hardhalf",
+ "seed": 13,
+ "steps": 1000,
+ "smoke": false,
+ "spec": {
+  "kind": "covregion",
+  "c": 0.0,
+  "r": 0.07896079636744674,
+  "value": null,
+  "cats": [],
+  "values": [],
+  "region": "hardhalf"
+ },
+ "rare_value": 57,
+ "arms_file_sha256": "0a53db1a073f02686c7582d586e77bf009723460db7e5fc515c25c8422a8c7a0",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "bd29bc7572be25f10cd2af6cc4a148b9964561d9fb95aff506aad640770b271e",
+ "seconds_total": 100.13895954203326,
+ "peak_rss_mb": 1197.5625
+}

@@ -1,0 +1,13 @@
+# E009 (research/paper/e009_protocol.md). Pipeline, matching rule and seeds as E006.
+experiment_id = "E009"
+protocol = "research/paper/e009_protocol.md"
+f0 = 0.1083
+arms = ["clean", "cov50", "covhard", "aeven", "sumeven", "hardhalf"]
+seeds = [11, 12, 13, 14, 15]
+regions = ["aeven", "sumeven", "hardhalf"]
+
+[labels]
+final_evals = 4
+effect = 0.05
+window = 50
+collapse = 0.2
