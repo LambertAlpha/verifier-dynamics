@@ -75,9 +75,21 @@ conditional acceptance), and that output carries non-trivial policy mass (reacha
 - **Measured by** ACM_τ: post hoc, Spearman 0.77 with harm vs 0.10 for static FPR across 18
   verifiers. Prospective test: E011.
 
-How this reconciles the literature:
-- Leaky code suites accept *task-specific* wrong programs. Each is accepted on its own task only,
-  and the policy rarely produces the same wrong program elsewhere, so ACM is low and the suites are
-  benign.
-- LLM-judge master keys are single outputs accepted on almost any prompt, so ACM is high and they
-  collapse.
+How this reconciles the literature (corrected the same day):
+- An output contributes to the coherent push of Prop. 5 only if the policy produces it on
+  **many** prompts. An output produced on one prompt behaves tabularly (Prop. 3b: selection, not
+  amplification).
+- So the operative conditions are:
+  1. high on-policy conditional acceptance;
+  2. for an output shared across many prompts;
+  3. with reachable mass.
+- **Leaky code suites.** They accept task-specific wrong programs. Each is produced, and accepted,
+  essentially only on its own task. Condition 1 holds but condition 2 fails, which is consistent
+  with the observed harmlessness.
+- **LLM-judge master keys.** A single output is produced and accepted on almost any prompt. All
+  three conditions hold, and the runs collapse.
+- **Measurement caveat.** ACM_τ as computed in the toy does not require condition 2 explicitly.
+  Toy outputs (answer values) are naturally shared across prompts, and outputs seen on a single
+  prompt carry little mass. For text outputs (E007b, E010), outputs must be grouped by a
+  behaviour (e.g. the final answer value), and a spread requirement (produced on ≥ 2 prompts)
+  should be added. That is a declared extension, not a tested result.
