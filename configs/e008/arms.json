@@ -1,0 +1,116 @@
+{
+ "f0": 0.1083,
+ "specs": {
+  "set02": {
+   "kind": "keyset",
+   "c": 0.0,
+   "r": 0.07436982589160349,
+   "value": null,
+   "cats": [],
+   "values": [
+    111,
+    114
+   ]
+  },
+  "set05": {
+   "kind": "keyset",
+   "c": 0.0,
+   "r": 0.05763160603244942,
+   "value": null,
+   "cats": [],
+   "values": [
+    111,
+    114,
+    104
+   ]
+  },
+  "setq": {
+   "kind": "keyset",
+   "c": 0.0,
+   "r": 0.0,
+   "value": null,
+   "cats": [],
+   "values": [
+    111,
+    114,
+    104,
+    101,
+    113,
+    119,
+    103
+   ]
+  },
+  "covhard": {
+   "kind": "covcat",
+   "c": 0.0,
+   "r": 0.049684575464898365,
+   "value": null,
+   "cats": [
+    "three-digit"
+   ],
+   "values": []
+  },
+  "coveasy": {
+   "kind": "covcat",
+   "c": 0.0,
+   "r": 0.06465123439273553,
+   "value": null,
+   "cats": [
+    "no carry",
+    "units carry"
+   ],
+   "values": []
+  }
+ },
+ "info": {
+  "n_wrong": 14786,
+  "set02": {
+   "values": [
+    111,
+    114
+   ],
+   "share": 0.03665629649668605,
+   "fill": 0.07436982589160349
+  },
+  "set05": {
+   "values": [
+    111,
+    114,
+    104
+   ],
+   "share": 0.053767076964696334,
+   "fill": 0.05763160603244942
+  },
+  "setq": {
+   "values": [
+    111,
+    114,
+    104,
+    101,
+    113,
+    119,
+    103
+   ],
+   "share": 0.11544704450155553,
+   "fill": 0.0
+  },
+  "covhard": {
+   "cats": [
+    "three-digit"
+   ],
+   "M_share": 0.06167996753685919,
+   "fill": 0.049684575464898365
+  },
+  "coveasy": {
+   "cats": [
+    "no carry",
+    "units carry"
+   ],
+   "M_share": 0.04666576491275531,
+   "fill": 0.06465123439273553
+  }
+ },
+ "rare_value": 111,
+ "calibration_run": "results/E008-calibration/20261006T072934Z_a4fecf6",
+ "e008_config_sha256": "f312d19566eed9a568a8f8f37e72102fd6c56ada8123ab7dd6f0e6964f8e891f"
+}

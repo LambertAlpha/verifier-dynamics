@@ -1,0 +1,64 @@
+{
+  "experiment_id": "E008-calibration",
+  "created_utc": "2026-10-06T07:29:34+00:00",
+  "git": {
+    "commit": "a4fecf626fbbc67c746e488e948b5b56ef080dc7",
+    "dirty": false
+  },
+  "config_sha256": "f312d19566eed9a568a8f8f37e72102fd6c56ada8123ab7dd6f0e6964f8e891f",
+  "config": {
+    "experiment_id": "E008",
+    "protocol": "research/paper/e008_protocol.md",
+    "f0": 0.1083,
+    "arms": [
+      "covhard",
+      "coveasy",
+      "set02",
+      "set05",
+      "setq"
+    ],
+    "seeds": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "hard_cats": [
+      "three-digit"
+    ],
+    "easy_cats": [
+      "no carry",
+      "units carry"
+    ],
+    "set_targets": {
+      "set02": 0.02,
+      "set05": 0.05,
+      "setq": 0.1083
+    },
+    "labels": {
+      "final_evals": 4,
+      "effect": 0.05,
+      "window": 50,
+      "collapse": 0.2
+    }
+  },
+  "python": "3.12.13 (main, Jun 23 2026, 15:44:24) [Clang 22.1.3 ]",
+  "platform": "macOS-15.3.1-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "host": "Lamberts-Mac-mini.local",
+  "device": "cpu",
+  "threads": 4,
+  "argv": [
+    "experiments/e008/e008_audit.py",
+    "calibrate"
+  ],
+  "mode": "calibrate"
+}
