@@ -1,0 +1,65 @@
+{
+ "mode": "calibrate",
+ "prompt_sha256": "966998f7f6a5ce5af5ca09edabb791afe743431f4e2e9412e493b74f8783d1e3",
+ "f0": 0.1083,
+ "arms": {
+  "f0": 0.1083,
+  "q": 0.1083,
+  "rare_value": 57,
+  "eps": 0.004937102664682808,
+  "n_wrong": 14786,
+  "rule": "nu* = valid wrong value not ending in 0 with base wrong-share closest to 0.005 (ties: smaller value), calibration audit",
+  "specs": {
+   "clean": {
+    "kind": "clean",
+    "c": 0.0,
+    "r": 0.0,
+    "value": null
+   },
+   "randfp": {
+    "kind": "randfp",
+    "c": 0.0,
+    "r": 0.1083,
+    "value": null
+   },
+   "hashtab": {
+    "kind": "hashtab",
+    "c": 0.0,
+    "r": 0.1083,
+    "value": null
+   },
+   "cov25": {
+    "kind": "cov",
+    "c": 0.25,
+    "r": 0.08348536629236579,
+    "value": null
+   },
+   "cov50": {
+    "kind": "cov",
+    "c": 0.5,
+    "r": 0.057250092509383094,
+    "value": null
+   },
+   "cov75": {
+    "kind": "cov",
+    "c": 0.75,
+    "r": 0.029468585888819353,
+    "value": null
+   },
+   "exploit": {
+    "kind": "exploit",
+    "c": 0.0,
+    "r": 0.0,
+    "value": null
+   },
+   "rarekey": {
+    "kind": "rarekey",
+    "c": 0.0,
+    "r": 0.10387574254061034,
+    "value": 57
+   }
+  },
+  "calibration_run": "results/E006-calibration/20261006T061504Z_ec5c450",
+  "e006_config_sha256": "f552f41b05349750f702445ace7e5b59a4441fe32fb5114b28683104c9fb6700"
+ }
+}

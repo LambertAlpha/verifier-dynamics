@@ -1,0 +1,11 @@
+{
+ "f0": 0.1083,
+ "q": 0.1083,
+ "rare_value": 57,
+ "eps": 0.004937102664682808,
+ "n_wrong": 14786,
+ "rule": "nu* = valid wrong value not ending in 0 with base wrong-share closest to 0.005 (ties: smaller value), calibration audit",
+ "calibration_run": "results/E006-calibration/20261006T061504Z_ec5c450",
+ "e006_config_sha256": "f552f41b05349750f702445ace7e5b59a4441fe32fb5114b28683104c9fb6700"
+}
+run directory: results/E006-calibration/20261006T061504Z_ec5c450
