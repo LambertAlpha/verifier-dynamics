@@ -1,0 +1,95 @@
+{
+ "mode": "calibrate",
+ "prompt_sha256": "966998f7f6a5ce5af5ca09edabb791afe743431f4e2e9412e493b74f8783d1e3",
+ "arms": {
+  "f0": 0.1083,
+  "specs": {
+   "randfp30": {
+    "kind": "randfp",
+    "c": 0.0,
+    "r": 0.3,
+    "value": null,
+    "cats": [],
+    "values": [],
+    "region": "",
+    "dist": 0
+   },
+   "del50": {
+    "kind": "delfrac",
+    "c": 0.5,
+    "r": 0.0,
+    "value": null,
+    "cats": [],
+    "values": [],
+    "region": "",
+    "dist": 0
+   },
+   "cov65": {
+    "kind": "cov",
+    "c": 0.65,
+    "r": 0.039997364205621076,
+    "value": null,
+    "cats": [],
+    "values": [],
+    "region": "",
+    "dist": 0
+   },
+   "far40": {
+    "kind": "farkey",
+    "c": 0.0,
+    "r": 0.10551721845318861,
+    "value": null,
+    "cats": [],
+    "values": [],
+    "region": "",
+    "dist": 40
+   },
+   "key111half": {
+    "kind": "keyset",
+    "c": 0.5,
+    "r": 0.09836037748751965,
+    "value": null,
+    "cats": [],
+    "values": [
+     111
+    ],
+    "region": "",
+    "dist": 0
+   },
+   "hard75": {
+    "kind": "covcat",
+    "c": 0.75,
+    "r": 0.06272295443235941,
+    "value": null,
+    "cats": [
+     "three-digit"
+    ],
+    "values": [],
+    "region": "",
+    "dist": 0
+   }
+  },
+  "info": {
+   "n_wrong": 14786,
+   "cov65": {
+    "share": 0.07114838360611389,
+    "fill": 0.039997364205621076
+   },
+   "far40": {
+    "share": 0.0031110509941836874,
+    "fill": 0.10551721845318861
+   },
+   "key111half": {
+    "share": 0.011023941566346543,
+    "fill": 0.09836037748751965
+   },
+   "hard75": {
+    "share": 0.04862707966995807,
+    "fill": 0.06272295443235941
+   }
+  },
+  "rare_value": 57,
+  "calibration_run": "results/E012-calibration/20261006T100452Z_94c2a86",
+  "e012_config_sha256": "cb888799287ad90f3ce0757cc5353e235446458e11a1da6bc75c4cae610d2369"
+ }
+}
