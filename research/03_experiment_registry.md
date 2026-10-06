@@ -4077,3 +4077,29 @@ Full protocol: `research/paper/e007_protocol.md`.
   - E4 anywhere lower, with numbers per response rising.
   - E5 RME highest for ends0.
 - **Prior E007 data.** A clean-only engineering pilot (seed 99, 10 steps).
+
+### E008 — results (2026-10-06)
+Full record: `research/paper/e008_results.md`.
+
+Harm vs clean:
+
+| arm | harm | collapsed |
+|---|---|---|
+| covhard | 0.333 | – (three-digit accuracy → 0.04, the rest intact) |
+| coveasy | 0.403 | – (two-digit categories → 0.01 / 0.05, three-digit intact) |
+| cov50 (random, same global coverage) | 0.107 | – |
+| set02 | 0.732 | 5/5 |
+| set05 | 0.733 | 5/5 |
+| setq | 0.733 | 5/5 |
+| rarekey | 0.016 | – |
+
+Verdicts:
+- **L1 FAIL:** coveasy is the most harmful.
+- **L2 FAIL:** recorded before runs.
+- **R1 FAIL as registered:** the monotonicity break is 0.0004 at the ceiling; setq collapsed 5/5.
+- **R2 PASS:** 0.002.
+- Race v1 (committed before results): covhard ✓, sets ✓, coveasy ✗.
+
+Post-hoc and not registered: collapse is confined to the covered region exactly when the region
+is identifiable from the input. The relevant quantity is coverage within the regions the policy
+can represent. Next: E009.
