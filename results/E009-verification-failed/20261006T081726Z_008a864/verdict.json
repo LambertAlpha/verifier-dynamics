@@ -1,0 +1,36 @@
+{
+ "arms": {
+  "clean": {
+   "fpr": 0.0,
+   "abs_diff": 0.1083,
+   "pass": false
+  },
+  "cov50": {
+   "fpr": 0.11121705373561261,
+   "abs_diff": 0.0029170537356126153,
+   "pass": true
+  },
+  "covhard": {
+   "fpr": 0.11884492269972076,
+   "abs_diff": 0.010544922699720766,
+   "pass": true
+  },
+  "aeven": {
+   "fpr": 0.1093781924674794,
+   "abs_diff": 0.001078192467479408,
+   "pass": true
+  },
+  "sumeven": {
+   "fpr": 0.11482667029898522,
+   "abs_diff": 0.006526670298985224,
+   "pass": true
+  },
+  "hardhalf": {
+   "fpr": 0.11802765102499489,
+   "abs_diff": 0.009727651024994899,
+   "pass": true
+  }
+ },
+ "arms_file_sha256": "0a53db1a073f02686c7582d586e77bf009723460db7e5fc515c25c8422a8c7a0",
+ "tolerance": 0.015
+}

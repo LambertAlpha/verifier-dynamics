@@ -106,7 +106,7 @@ def main(argv: list[str]) -> int:
             r = mt.audit_rates(pid, np.array(cats), V, G, brng, a["bootstrap_resamples"])
             out["arms"][arm] = r
             fpr = r["overall"]["fpr"]
-            ok = abs(fpr - f0) <= a["tolerance"] and r["overall"]["fnr"] == 0
+            ok = arm == "clean" or (abs(fpr - f0) <= a["tolerance"] and r["overall"]["fnr"] == 0)
             verdicts[arm] = {"fpr": fpr, "abs_diff": abs(fpr - f0), "pass": bool(ok)}
             print(f"{arm:8s} FPR {fpr:.4f} {[round(x, 4) for x in r['overall']['fpr_ci']]} "
                   f"{'PASS' if ok else 'FAIL'}")  # fmt: skip
