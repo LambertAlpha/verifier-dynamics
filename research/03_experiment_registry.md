@@ -4004,3 +4004,21 @@ steps 7–11 → ≈ 1.0; wrong-suffix mass → 0.98–0.99; dev modal-answer sh
 answers ending in 0); mixed groups under V → ≤ 0.006. Static initial error rates are insufficient
 here; VR vs V3 confounds input-independence, consistency and base reachability. Dev only; 3 seeds.
 
+
+### E006 — which false positives flip fate? protocol (frozen before any E006 audit or run; 2026-10-05)
+Full protocol: `research/paper/e006_protocol.md`. Theory: `research/paper/theory.md` (Props. 1–4 with
+numerical checks in `tests/test_e006_theory.py`; Derivation 5 mean-field critical coverage).
+- **Arms.** Eight arms, all at the frozen f0 = 0.1083: clean, randfp, hashtab (consistent, per
+  prompt), cov25/50/75 (the "ends in 0" master key on a fixed fraction of prompts plus fresh fill),
+  exploit (c = 1), rarekey (a rare constant accepted everywhere plus fill).
+- **Matching and training.** Matching is verified per arm on the independent audit (tolerance
+  0.015; an arm that fails is not trained). Seeds 11–15. T = 1000, dev only.
+- **Predictions.**
+  - H1: randfp ≈ clean.
+  - H2: hashtab ≈ clean.
+  - H3: primary non-increasing in coverage; cov25 ≈ clean; cov75 and exploit collapse; no
+    prediction for cov50.
+  - H3b: the sign of the initial advantage mass on M predicts the step 0→50 direction.
+  - H4: rarekey's takeover is later than exploit's, or never.
+  - H5: the gold-free response-main-effect score RME has Spearman ≥ 0.7 with harm over 10
+    verifiers, beating static FPR and J.
