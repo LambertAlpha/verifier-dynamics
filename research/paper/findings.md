@@ -80,3 +80,17 @@ Open, and ours if it holds:
 4. Replication in small LLMs, using two model families (Qwen plus a non-Qwen) because Spurious Rewards warns against Qwen-only evidence.
 
 Hypothesis in one line: **RLVR selects among reward-satisfying behaviours by learnability, not correctness.**
+
+## Internal findings, 2026-10-06 (post hoc unless marked)
+- **E011 (prospective) failed.** ACM missed "far": the policy discovered universally accepted
+  constants (900, 800, 0, 10) that the base policy never produced where they are accepted.
+- **Short probes (post hoc, 21 toy verifiers).**
+  - The FPR rise over 150 steps separates harm ≥ 0.25 (rise ≥ 0.30) from harm < 0.25 (≤ 0.21).
+    Spearman 0.94.
+  - Static FPR: Spearman 0.10.
+  - E012 tests this prospectively.
+- **The gold-free probe fails (post hoc).**
+  - Modal-output-share rise over 150 steps: Spearman 0.89, but **not separable**. Regional
+    collapses (coveasy +0.029, covhard +0.084) overlap with the benign cov50 (+0.089), because
+    policies collapse onto different constants per region.
+  - So the working probe needs a small gold audit of probe samples.
