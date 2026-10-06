@@ -27,7 +27,7 @@ Failed predictions are kept as failed.
 | E010 (a9bfb56) | G1–G3 | rule graders have no response-level key; the judge does | pending |
 
 Totals so far (scored items):
-- E006–E012: 7 pass, 12 fail.
+- E006–E012: 6 pass (H1, H2, H4, H5b, R2, P3), 11 fail (H3, H3b, H5, L1, L2, R1, P1, P2, P4, the ACM rule, the probe rule).
 - Rules scored per arm: E011 2 / 3, E012 5 / 6, race v1 4 / 5, race v2 4 / 6.
 
 The program's empirical claims rest on the robust findings. Its mechanistic claims are stated with
