@@ -1,0 +1,103 @@
+{
+  "experiment_id": "E008-analysis",
+  "created_utc": "2026-10-06T08:09:46+00:00",
+  "git": {
+    "commit": "ca7541715f677efb33f1d9bc9562daa3978e7e0b",
+    "dirty": false
+  },
+  "config_sha256": "f312d19566eed9a568a8f8f37e72102fd6c56ada8123ab7dd6f0e6964f8e891f",
+  "config": {
+    "experiment_id": "E008",
+    "protocol": "research/paper/e008_protocol.md",
+    "f0": 0.1083,
+    "arms": [
+      "covhard",
+      "coveasy",
+      "set02",
+      "set05",
+      "setq"
+    ],
+    "seeds": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "hard_cats": [
+      "three-digit"
+    ],
+    "easy_cats": [
+      "no carry",
+      "units carry"
+    ],
+    "set_targets": {
+      "set02": 0.02,
+      "set05": 0.05,
+      "setq": 0.1083
+    },
+    "labels": {
+      "final_evals": 4,
+      "effect": 0.05,
+      "window": 50,
+      "collapse": 0.2
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "runs": {
+    "clean-s11": "results/E006-clean-s11/20261006T061551Z_9e5244b",
+    "clean-s12": "results/E006-clean-s12/20261006T062550Z_9e5244b",
+    "clean-s13": "results/E006-clean-s13/20261006T063556Z_9e5244b",
+    "clean-s14": "results/E006-clean-s14/20261006T064600Z_9e5244b",
+    "clean-s15": "results/E006-clean-s15/20261006T065604Z_9e5244b",
+    "cov50-s11": "results/E006-cov50-s11/20261006T062051Z_9e5244b",
+    "cov50-s12": "results/E006-cov50-s12/20261006T063054Z_9e5244b",
+    "cov50-s13": "results/E006-cov50-s13/20261006T064057Z_9e5244b",
+    "cov50-s14": "results/E006-cov50-s14/20261006T065101Z_9e5244b",
+    "cov50-s15": "results/E006-cov50-s15/20261006T070107Z_9e5244b",
+    "coveasy-s11": "results/E008-coveasy-s11/20261006T073256Z_89ff5ef",
+    "coveasy-s12": "results/E008-coveasy-s12/20261006T074004Z_89ff5ef",
+    "coveasy-s13": "results/E008-coveasy-s13/20261006T074749Z_89ff5ef",
+    "coveasy-s14": "results/E008-coveasy-s14/20261006T075532Z_89ff5ef",
+    "coveasy-s15": "results/E008-coveasy-s15/20261006T080301Z_89ff5ef",
+    "covhard-s11": "results/E008-covhard-s11/20261006T073141Z_89ff5ef",
+    "covhard-s12": "results/E008-covhard-s12/20261006T073830Z_89ff5ef",
+    "covhard-s13": "results/E008-covhard-s13/20261006T074615Z_89ff5ef",
+    "covhard-s14": "results/E008-covhard-s14/20261006T075400Z_89ff5ef",
+    "covhard-s15": "results/E008-covhard-s15/20261006T080135Z_89ff5ef",
+    "exploit-s11": "results/E006-exploit-s11/20261006T062320Z_9e5244b",
+    "exploit-s12": "results/E006-exploit-s12/20261006T063326Z_9e5244b",
+    "exploit-s13": "results/E006-exploit-s13/20261006T064328Z_9e5244b",
+    "exploit-s14": "results/E006-exploit-s14/20261006T065332Z_9e5244b",
+    "exploit-s15": "results/E006-exploit-s15/20261006T070336Z_9e5244b",
+    "rarekey-s11": "results/E006-rarekey-s11/20261006T062436Z_9e5244b",
+    "rarekey-s12": "results/E006-rarekey-s12/20261006T063441Z_9e5244b",
+    "rarekey-s13": "results/E006-rarekey-s13/20261006T064445Z_9e5244b",
+    "rarekey-s14": "results/E006-rarekey-s14/20261006T065448Z_9e5244b",
+    "rarekey-s15": "results/E006-rarekey-s15/20261006T070452Z_9e5244b",
+    "set02-s11": "results/E008-set02-s11/20261006T073411Z_89ff5ef",
+    "set02-s12": "results/E008-set02-s12/20261006T074136Z_89ff5ef",
+    "set02-s13": "results/E008-set02-s13/20261006T074920Z_89ff5ef",
+    "set02-s14": "results/E008-set02-s14/20261006T075705Z_89ff5ef",
+    "set02-s15": "results/E008-set02-s15/20261006T080428Z_89ff5ef",
+    "set05-s11": "results/E008-set05-s11/20261006T073525Z_89ff5ef",
+    "set05-s12": "results/E008-set05-s12/20261006T074308Z_89ff5ef",
+    "set05-s13": "results/E008-set05-s13/20261006T075054Z_89ff5ef",
+    "set05-s14": "results/E008-set05-s14/20261006T075838Z_89ff5ef",
+    "set05-s15": "results/E008-set05-s15/20261006T080550Z_89ff5ef",
+    "setq-s11": "results/E008-setq-s11/20261006T073659Z_89ff5ef",
+    "setq-s12": "results/E008-setq-s12/20261006T074441Z_89ff5ef",
+    "setq-s13": "results/E008-setq-s13/20261006T075224Z_89ff5ef",
+    "setq-s14": "results/E008-setq-s14/20261006T080012Z_89ff5ef",
+    "setq-s15": "results/E008-setq-s15/20261006T080714Z_89ff5ef"
+  }
+}
