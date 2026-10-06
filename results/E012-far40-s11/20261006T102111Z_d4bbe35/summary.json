@@ -1,0 +1,23 @@
+{
+ "arm": "far40",
+ "seed": 11,
+ "steps": 1000,
+ "smoke": false,
+ "probe": false,
+ "spec": {
+  "kind": "farkey",
+  "c": 0.0,
+  "r": 0.10551721845318861,
+  "value": null,
+  "cats": [],
+  "values": [],
+  "region": "",
+  "dist": 40
+ },
+ "rare_value": 57,
+ "arms_file_sha256": "473531480eaa40bff6cf16e89286622e4c5218e7ef544025073f9c14daf7b631",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "588b98ca1b2d54563301c24286e09fe8d0405928e5a60767a285808d64bb9994",
+ "seconds_total": 112.1416409589583,
+ "peak_rss_mb": 1195.421875
+}

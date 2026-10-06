@@ -1,0 +1,23 @@
+{
+ "arm": "del50",
+ "seed": 11,
+ "steps": 1000,
+ "smoke": false,
+ "probe": false,
+ "spec": {
+  "kind": "delfrac",
+  "c": 0.5,
+  "r": 0.0,
+  "value": null,
+  "cats": [],
+  "values": [],
+  "region": "",
+  "dist": 0
+ },
+ "rare_value": 57,
+ "arms_file_sha256": "473531480eaa40bff6cf16e89286622e4c5218e7ef544025073f9c14daf7b631",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "b59b99ce1d9f31d5ef5dfda08b5954fe9fd3dcb2f82e7d255fa7c974c4bb32d2",
+ "seconds_total": 113.32330420799553,
+ "peak_rss_mb": 1158.703125
+}

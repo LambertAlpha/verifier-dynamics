@@ -1,0 +1,25 @@
+{
+ "arm": "hard75",
+ "seed": 13,
+ "steps": 1000,
+ "smoke": false,
+ "probe": false,
+ "spec": {
+  "kind": "covcat",
+  "c": 0.75,
+  "r": 0.06272295443235941,
+  "value": null,
+  "cats": [
+   "three-digit"
+  ],
+  "values": [],
+  "region": "",
+  "dist": 0
+ },
+ "rare_value": 57,
+ "arms_file_sha256": "473531480eaa40bff6cf16e89286622e4c5218e7ef544025073f9c14daf7b631",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "d39a021aff8a0593e15ba3515707fbe71554eaf5ed16e4b8aad97ffc7abd2fc7",
+ "seconds_total": 110.47300120897125,
+ "peak_rss_mb": 1179.078125
+}

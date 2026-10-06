@@ -1,0 +1,43 @@
+{"step": 0, "sampled": 0.3793706293706294}
+{"step": 25, "sampled": 0.433, "fpr_batch": 0.323, "m_share": 0.266, "rare_share": 0.0, "modal_dev": [100, 0.031]}
+{"step": 50, "sampled": 0.444, "fpr_batch": 0.367, "m_share": 0.148, "rare_share": 0.016, "modal_dev": [100, 0.025]}
+{"step": 75, "sampled": 0.496, "fpr_batch": 0.221, "m_share": 0.309, "rare_share": 0.015, "modal_dev": [100, 0.032]}
+{"step": 100, "sampled": 0.537, "fpr_batch": 0.274, "m_share": 0.21, "rare_share": 0.0, "modal_dev": [102, 0.023]}
+{"step": 125, "sampled": 0.567, "fpr_batch": 0.345, "m_share": 0.233, "rare_share": 0.0, "modal_dev": [126, 0.027]}
+{"step": 150, "sampled": 0.528, "fpr_batch": 0.272, "m_share": 0.053, "rare_share": 0.0, "modal_dev": [126, 0.025]}
+{"step": 175, "sampled": 0.561, "fpr_batch": 0.307, "m_share": 0.257, "rare_share": 0.0, "modal_dev": [126, 0.022]}
+{"step": 200, "sampled": 0.568, "fpr_batch": 0.351, "m_share": 0.181, "rare_share": 0.0, "modal_dev": [126, 0.018]}
+{"step": 225, "sampled": 0.589, "fpr_batch": 0.292, "m_share": 0.3, "rare_share": 0.0, "modal_dev": [126, 0.022]}
+{"step": 250, "sampled": 0.544, "fpr_batch": 0.306, "m_share": 0.224, "rare_share": 0.027, "modal_dev": [94, 0.019]}
+{"step": 275, "sampled": 0.573, "fpr_batch": 0.303, "m_share": 0.123, "rare_share": 0.0, "modal_dev": [97, 0.018]}
+{"step": 300, "sampled": 0.586, "fpr_batch": 0.362, "m_share": 0.213, "rare_share": 0.0, "modal_dev": [107, 0.022]}
+{"step": 325, "sampled": 0.56, "fpr_batch": 0.268, "m_share": 0.122, "rare_share": 0.0, "modal_dev": [103, 0.022]}
+{"step": 350, "sampled": 0.603, "fpr_batch": 0.294, "m_share": 0.284, "rare_share": 0.0, "modal_dev": [126, 0.02]}
+{"step": 375, "sampled": 0.65, "fpr_batch": 0.376, "m_share": 0.247, "rare_share": 0.0, "modal_dev": [110, 0.043]}
+{"step": 400, "sampled": 0.576, "fpr_batch": 0.269, "m_share": 0.346, "rare_share": 0.0, "modal_dev": [110, 0.044]}
+{"step": 425, "sampled": 0.652, "fpr_batch": 0.329, "m_share": 0.487, "rare_share": 0.013, "modal_dev": [110, 0.024]}
+{"step": 450, "sampled": 0.668, "fpr_batch": 0.329, "m_share": 0.211, "rare_share": 0.0, "modal_dev": [104, 0.027]}
+{"step": 475, "sampled": 0.693, "fpr_batch": 0.329, "m_share": 0.171, "rare_share": 0.0, "modal_dev": [104, 0.027]}
+{"step": 500, "sampled": 0.662, "fpr_batch": 0.278, "m_share": 0.133, "rare_share": 0.0, "modal_dev": [104, 0.028]}
+{"step": 525, "sampled": 0.693, "fpr_batch": 0.303, "m_share": 0.227, "rare_share": 0.0, "modal_dev": [104, 0.023]}
+{"step": 550, "sampled": 0.713, "fpr_batch": 0.244, "m_share": 0.349, "rare_share": 0.0, "modal_dev": [104, 0.025]}
+{"step": 575, "sampled": 0.611, "fpr_batch": 0.279, "m_share": 0.059, "rare_share": 0.0, "modal_dev": [110, 0.022]}
+{"step": 600, "sampled": 0.661, "fpr_batch": 0.304, "m_share": 0.365, "rare_share": 0.0, "modal_dev": [102, 0.02]}
+{"step": 625, "sampled": 0.733, "fpr_batch": 0.255, "m_share": 0.106, "rare_share": 0.0, "modal_dev": [104, 0.026]}
+{"step": 650, "sampled": 0.645, "fpr_batch": 0.32, "m_share": 0.172, "rare_share": 0.0, "modal_dev": [104, 0.026]}
+{"step": 675, "sampled": 0.686, "fpr_batch": 0.312, "m_share": 0.117, "rare_share": 0.0, "modal_dev": [104, 0.023]}
+{"step": 700, "sampled": 0.692, "fpr_batch": 0.333, "m_share": 0.244, "rare_share": 0.0, "modal_dev": [104, 0.025]}
+{"step": 725, "sampled": 0.693, "fpr_batch": 0.32, "m_share": 0.206, "rare_share": 0.0, "modal_dev": [104, 0.026]}
+{"step": 750, "sampled": 0.675, "fpr_batch": 0.21, "m_share": 0.097, "rare_share": 0.0, "modal_dev": [126, 0.027]}
+{"step": 775, "sampled": 0.658, "fpr_batch": 0.294, "m_share": 0.147, "rare_share": 0.0, "modal_dev": [126, 0.027]}
+{"step": 800, "sampled": 0.731, "fpr_batch": 0.442, "m_share": 0.403, "rare_share": 0.0, "modal_dev": [126, 0.023]}
+{"step": 825, "sampled": 0.696, "fpr_batch": 0.254, "m_share": 0.313, "rare_share": 0.0, "modal_dev": [126, 0.025]}
+{"step": 850, "sampled": 0.731, "fpr_batch": 0.29, "m_share": 0.258, "rare_share": 0.0, "modal_dev": [104, 0.027]}
+{"step": 875, "sampled": 0.728, "fpr_batch": 0.231, "m_share": 0.231, "rare_share": 0.0, "modal_dev": [126, 0.024]}
+{"step": 900, "sampled": 0.721, "fpr_batch": 0.473, "m_share": 0.018, "rare_share": 0.0, "modal_dev": [104, 0.023]}
+{"step": 925, "sampled": 0.737, "fpr_batch": 0.327, "m_share": 0.509, "rare_share": 0.0, "modal_dev": [126, 0.026]}
+{"step": 950, "sampled": 0.726, "fpr_batch": 0.324, "m_share": 0.118, "rare_share": 0.0, "modal_dev": [126, 0.027]}
+{"step": 975, "sampled": 0.742, "fpr_batch": 0.277, "m_share": 0.108, "rare_share": 0.0, "modal_dev": [126, 0.026]}
+{"step": 1000, "sampled": 0.711, "fpr_batch": 0.162, "m_share": 0.0, "rare_share": 0.0, "modal_dev": [104, 0.026]}
+{"arm": "randfp30", "seed": 11, "steps": 1000, "smoke": false, "probe": false, "spec": {"kind": "randfp", "c": 0.0, "r": 0.3, "value": null, "cats": [], "values": [], "region": "", "dist": 0}, "rare_value": 57, "arms_file_sha256": "473531480eaa40bff6cf16e89286622e4c5218e7ef544025073f9c14daf7b631", "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e", "final_sha256": "9edb46709163b7bb671d8c0aecc6fbef8116f77f3625d0d6deb8cc34a6b627f2", "seconds_total": 112.94612879102351, "peak_rss_mb": 1139.90625}
+run directory: results/E012-randfp30-s11/20261006T101527Z_d4bbe35

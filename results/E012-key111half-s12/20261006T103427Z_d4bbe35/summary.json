@@ -1,0 +1,25 @@
+{
+ "arm": "key111half",
+ "seed": 12,
+ "steps": 1000,
+ "smoke": false,
+ "probe": false,
+ "spec": {
+  "kind": "keyset",
+  "c": 0.5,
+  "r": 0.09836037748751965,
+  "value": null,
+  "cats": [],
+  "values": [
+   111
+  ],
+  "region": "",
+  "dist": 0
+ },
+ "rare_value": 57,
+ "arms_file_sha256": "473531480eaa40bff6cf16e89286622e4c5218e7ef544025073f9c14daf7b631",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "efef78d915e1fadd9efd24210c99efcce7a76ef57036d649c8c3e40159de59b1",
+ "seconds_total": 112.3580613330123,
+ "peak_rss_mb": 1153.359375
+}

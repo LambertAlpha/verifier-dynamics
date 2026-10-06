@@ -1,0 +1,23 @@
+{
+ "arm": "randfp30",
+ "seed": 15,
+ "steps": 1000,
+ "smoke": false,
+ "probe": false,
+ "spec": {
+  "kind": "randfp",
+  "c": 0.0,
+  "r": 0.3,
+  "value": null,
+  "cats": [],
+  "values": [],
+  "region": "",
+  "dist": 0
+ },
+ "rare_value": 57,
+ "arms_file_sha256": "473531480eaa40bff6cf16e89286622e4c5218e7ef544025073f9c14daf7b631",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "55986648cd514dd3440b319a3b1fa5a16f883a9d8ac9bdebdece35a7a9959901",
+ "seconds_total": 111.64732945797732,
+ "peak_rss_mb": 1140.0
+}
