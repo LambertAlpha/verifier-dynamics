@@ -20,8 +20,8 @@ error rates. Random false positives at the same rate are close to harmless.
 | 1 | Thesis + claims + evidence map; decide what is novel | complete (thesis.md) |
 | 2 | Theory: group-normalized PG under affine noise vs exploitable FP; propositions + numerical checks | complete v0.1 (theory.md; Derivation 5 needs the local refinement) |
 | 3 | E006 disentangling factorial on the toy Transformer (consistency x input-dependence x reachability, matched initial FPR) | complete (e006_results.md); E008 follow-up running |
-| 4 | Cheap exploitability diagnostic evaluated on a verifier panel (toy) | partial: RME passes H5b, fails H5 (rate-type harm) |
-| 5 | Small-LLM validation (0.5B-class, GRPO, real math checkers with real loopholes) | in_progress (E007 frozen; calibration running) |
+| 4 | Cheap exploitability diagnostic evaluated on a verifier panel (toy) | static diagnostics fail prospectively (RME H5; ACM E011); short probe post hoc 21/21; E012 prospective running |
+| 5 | Small-LLM validation (0.5B-class, GRPO, real math checkers with real loopholes) | E007 aborted (truncation); E007b calibrated, verification running; E010 real-grader scan running |
 | 6 | Paper draft + figures; honest limitations | pending |
 
 ## Decisions
@@ -29,6 +29,9 @@ error rates. Random false positives at the same rate are close to harmless.
 |---|---|---|
 | 2026-10-05 | Pivot the paper's thesis from 'geometry diagnostics' to 'learnability / cross-prompt structure of FPs decides fate' | Our geometry line was negative (E002/E004a/E005a-R). E005b-0 plus literature gaps (Rate-or-Fate J>0 vs V3 collapse; Leaky vs master keys) give a novel, testable mechanism |
 | 2026-10-05 | Toy experiments first (cheap, ~1 min/run), LLM validation in parallel on the mini's MPS | Compute limits; the toy gives clean factorial control |
+
+| 2026-10-06 | Thesis revised: exploitation = a reachable behaviour accepted nearly wherever it is used; static diagnostics insufficient; short probes | E008 / E009 / E011 failures + post-hoc probe separation |
+| 2026-10-06 | E007 aborted, E007b with a 768 cap | 320-token cap truncated 43.5%; clean arm degraded |
 
 ## Errors encountered
 | Error | Attempt | Resolution |
@@ -39,3 +42,7 @@ error rates. Random false positives at the same rate are close to harmless.
 | E006 analysis first run dirty (uncommitted E007 WIP) | 1 | committed WIP, reran: byte-identical, dirty copy discarded |
 | E007 audit offsets past GSM8K train end (7473) | 1 | train pool < 5800; audits 5873-6672 / 6673-7472 |
 | E007 and E008 sharing one mini working tree would dirty each other | 1 | separate clone verifier-dynamics-e007 on the mini |
+| E009 verification stopped: the clean arm was not exempt (copied script) | 1 | exemption restored; failed run preserved |
+| E010 judge RME KeyError (sampled_on keyed by index, not position) | 1 | fixed; crashed run preserved |
+| Waiter loops matched their own pgrep pattern | 1 | use "[e]010_scan"-style patterns |
+| E008 analysis dirty (uncommitted planning files) | 1 | commit first; rerun byte-identical |
