@@ -4168,3 +4168,11 @@ Full protocol: `research/paper/e012_protocol.md`.
 - **Arms.** Six new verifiers with unmatched static FPR, seeds 11–15: randfp30, del50, cov65,
   far40, key111half, hard75.
 - **Pass condition.** Right on every scored arm (±0.03 band: undetermined).
+
+### E012 — results (2026-10-06): 5 of 6 (FAIL as registered)
+Full record: `research/paper/e012_results.md`.
+- **Probe rule.** Right for randfp30, del50, far40, key111half and hard75. Wrong for cov65 (harm
+  0.230 against the 0.25 line, rise 0.343).
+- **Spearman with harm.** Probe rise +0.886; static FPR −0.886.
+- **Integrity.** Probe and full runs are identical over the first 150 steps.
+- **Race v2** (committed before results): 4 of 6.

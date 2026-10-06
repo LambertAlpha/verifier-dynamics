@@ -1,0 +1,86 @@
+{
+  "experiment_id": "E012-analysis",
+  "created_utc": "2026-10-06T11:10:21+00:00",
+  "git": {
+    "commit": "32867fce5f7173e7dd60c9d51169fc9b064de5ef",
+    "dirty": false
+  },
+  "config_sha256": "cb888799287ad90f3ce0757cc5353e235446458e11a1da6bc75c4cae610d2369",
+  "config": {
+    "experiment_id": "E012",
+    "protocol": "research/paper/e012_protocol.md",
+    "f0": 0.1083,
+    "arms": [
+      "randfp30",
+      "del50",
+      "cov65",
+      "far40",
+      "key111half",
+      "hard75"
+    ],
+    "seeds": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "probe_steps": 150,
+    "rise_threshold": 0.25,
+    "harm_threshold": 0.25,
+    "undetermined_band": 0.03,
+    "labels": {
+      "final_evals": 4,
+      "effect": 0.05,
+      "window": 50,
+      "collapse": 0.2
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "runs": {
+    "clean-s11": "results/E006-clean-s11/20261006T061551Z_9e5244b",
+    "clean-s12": "results/E006-clean-s12/20261006T062550Z_9e5244b",
+    "clean-s13": "results/E006-clean-s13/20261006T063556Z_9e5244b",
+    "clean-s14": "results/E006-clean-s14/20261006T064600Z_9e5244b",
+    "clean-s15": "results/E006-clean-s15/20261006T065604Z_9e5244b",
+    "cov65-s11": "results/E012-cov65-s11/20261006T101917Z_d4bbe35",
+    "cov65-s12": "results/E012-cov65-s12/20261006T103041Z_d4bbe35",
+    "cov65-s13": "results/E012-cov65-s13/20261006T104159Z_d4bbe35",
+    "cov65-s14": "results/E012-cov65-s14/20261006T105214Z_d4bbe35",
+    "cov65-s15": "results/E012-cov65-s15/20261006T110248Z_d4bbe35",
+    "del50-s11": "results/E012-del50-s11/20261006T101722Z_d4bbe35",
+    "del50-s12": "results/E012-del50-s12/20261006T102847Z_d4bbe35",
+    "del50-s13": "results/E012-del50-s13/20261006T104010Z_d4bbe35",
+    "del50-s14": "results/E012-del50-s14/20261006T105042Z_d4bbe35",
+    "del50-s15": "results/E012-del50-s15/20261006T110059Z_d4bbe35",
+    "far40-s11": "results/E012-far40-s11/20261006T102111Z_d4bbe35",
+    "far40-s12": "results/E012-far40-s12/20261006T103235Z_d4bbe35",
+    "far40-s13": "results/E012-far40-s13/20261006T104340Z_d4bbe35",
+    "far40-s14": "results/E012-far40-s14/20261006T105345Z_d4bbe35",
+    "far40-s15": "results/E012-far40-s15/20261006T110432Z_d4bbe35",
+    "hard75-s11": "results/E012-hard75-s11/20261006T102459Z_d4bbe35",
+    "hard75-s12": "results/E012-hard75-s12/20261006T103622Z_d4bbe35",
+    "hard75-s13": "results/E012-hard75-s13/20261006T104720Z_d4bbe35",
+    "hard75-s14": "results/E012-hard75-s14/20261006T105712Z_d4bbe35",
+    "hard75-s15": "results/E012-hard75-s15/20261006T110755Z_d4bbe35",
+    "key111half-s11": "results/E012-key111half-s11/20261006T102304Z_d4bbe35",
+    "key111half-s12": "results/E012-key111half-s12/20261006T103427Z_d4bbe35",
+    "key111half-s13": "results/E012-key111half-s13/20261006T104527Z_d4bbe35",
+    "key111half-s14": "results/E012-key111half-s14/20261006T105517Z_d4bbe35",
+    "key111half-s15": "results/E012-key111half-s15/20261006T110612Z_d4bbe35",
+    "randfp30-s11": "results/E012-randfp30-s11/20261006T101527Z_d4bbe35",
+    "randfp30-s12": "results/E012-randfp30-s12/20261006T102654Z_d4bbe35",
+    "randfp30-s13": "results/E012-randfp30-s13/20261006T103816Z_d4bbe35",
+    "randfp30-s14": "results/E012-randfp30-s14/20261006T104912Z_d4bbe35",
+    "randfp30-s15": "results/E012-randfp30-s15/20261006T105905Z_d4bbe35"
+  }
+}
