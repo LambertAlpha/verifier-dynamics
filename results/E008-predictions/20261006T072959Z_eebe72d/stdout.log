@@ -1,0 +1,4 @@
+covhard {'pooled': 0.0321, 'no carry': -0.0254, 'units carry': -0.0329, 'three-digit': 0.0929}
+coveasy {'pooled': 0.0077, 'no carry': 0.0358, 'units carry': 0.0375, 'three-digit': -0.0211}
+L2 FAIL
+run directory: results/E008-predictions/20261006T072959Z_eebe72d
