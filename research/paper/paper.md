@@ -4,68 +4,67 @@
 pre-registered in `research/03_experiment_registry.md`, and the failed predictions are reported
 below.*
 
-## Abstract (draft)
+## Abstract (draft v0.2)
 Reinforcement learning with verifiable rewards (RLVR) trains models against automatic checkers
-that are wrong some of the time. Verifier quality is usually summarized by static error rates.
-Recent theory shows that, for independent per-prompt noise, the sign of Youden's index
-J = TPR − FPR decides whether noise only slows learning ("rate") or reverses it ("fate").
+that are sometimes wrong. Checkers are usually compared by static error rates. For independent
+noise, theory shows that the sign of Youden's J decides whether errors merely slow learning or
+reverse it.
 
-We show that static rates, including J, do not determine fate once false positives have structure
-across prompts.
-- In a controlled study, eight verifiers are matched on initial FPR, FNR, accuracy and J.
-  - Random false positives, persistent per-prompt false positives, and a shared but rarely
-    sampled false positive all leave learning intact (within 2 points of clean).
-  - A false positive that one reachable behaviour satisfies across prompts (a "master key")
-    collapses accuracy from 0.74 to 0.01. Its harm rises sharply with the fraction of prompts it
-    covers.
-- We explain this with three results:
-  - fresh false positives provably only rescale each prompt's gold gradient, even with finite
-    groups and shared parameters;
-  - consistent false positives add the verifier's own gradient, whose cross-prompt coherence
-    decides whether it can outpace learning the gold skill;
-  - group standardization makes the collapsed state absorbing.
-- We propose a gold-free pre-training test, the response main effect of the cross-prompt
-  acceptance matrix. It ranks harm among rate-matched verifiers, though not across all kinds of
-  harm.
-- In [TBD: Qwen2.5-0.5B on GSM8K], [TBD].
+We show that static rates, J included, do not determine the outcome.
+- **Matched errors, opposite outcomes.** In a controlled study of 33 verifier designs on a small
+  Transformer, verifiers matched on initial false-positive rate, false-negative rate and accuracy
+  ranged from no effect to complete collapse (dev accuracy 0.74 → 0.01).
+- **When collapse happens.** It occurs when the checker admits a *simple behaviour that the policy
+  can reach and that the checker accepts almost wherever the behaviour is used*:
+  - a constant answer, including one the policy almost never produced at the start;
+  - rounding to the nearest ten;
+  - a constant restricted to a category the model already represents.
+- **When it does not.** It does not happen for random errors, persistent per-prompt errors, rare
+  keys, or keys conditioned on features the model does not use (operand parity).
+- **Theory.** We prove that:
+  - fresh false positives only rescale each prompt's gold gradient, for any parameterization and
+    finite groups;
+  - an output's specific parameters move with its acceptance averaged over the prompts where it
+    is produced;
+  - group standardization makes collapse absorbing.
+- **Diagnostics.**
+  - Pre-registered tests show that no static statistic of base-policy samples suffices: three
+    successive diagnostics each failed on a new structure.
+  - A short RL probe (the rise in false-positive rate over the first 15% of training) separated
+    collapsing from benign verifiers in all 21 post-hoc cases, and [E012 TBD] prospectively.
+- **LLM scale.** On Qwen2.5-0.5B with GSM8K, [E007b TBD]. A gold-free scan finds no
+  response-level master key in common rule-based graders, [E010 judge TBD].
+- **Practical message.** Verifier quality is a property of the verifier *together with* the policy
+  and the optimizer, and it should be audited dynamically.
 
 ## 1 Introduction
-- **RLVR depends on checkers.**
-  - RLVR is the dominant recipe for training reasoning models. Its reward is a program: an answer
-    extractor, a unit-test harness, an LLM judge.
-  - These programs are imperfect. Rule-based math checkers reject equivalent answers [Pitfalls;
-    Where the Verifier Fails]. Test suites accept wrong programs [Leaky]. LLM judges accept
-    content-free "master keys" [One Token].
-- **The open practical question: which verifier errors matter?**
-- **Existing answers are mixed.**
-  - Robustness studies inject symmetric noise and find RLVR forgiving.
-  - Rate or Fate [2601.04411] formalizes this. In a per-prompt bandit, the incorrect mass drifts
-    with Youden's J, so errors with J > 0 only rescale the convergence time.
-  - Yet natural, persistent false positives in code suites are nearly harmless [Leaky].
-  - And an RL run collapsed onto an LLM judge's master keys [One Token].
-  - Nothing reconciles these, and in practice verifiers are still compared by their error rates.
-- **Our claim.**
-  - RLVR selects among reward-satisfying behaviours by *how fast the policy can learn them*, not
-    by whether they are correct.
-  - A false positive changes the outcome only when it forms a behaviour that is reachable from
-    the current policy and that is reinforced coherently across prompts through shared parameters.
-  - Static error rates measure how much a verifier admits, not how learnable the admitted
-    behaviour is.
+- **RLVR depends on checkers that err.**
+  - RLVR rewards come from programs: answer extractors, test harnesses, LLM judges.
+  - These programs err in documented ways [Pitfalls; Where the Verifier Fails; Leaky; One Token].
+- **The practical question: which verifier errors matter?**
+- **Current answers.**
+  - Robustness studies with symmetric noise find RLVR forgiving.
+  - Rate or Fate [2601.04411] proves that, for errors independent across modes, the sign of J
+    decides fate.
+  - Yet natural persistent false positives in code suites are nearly harmless [Leaky], while an
+    RL run collapsed onto an LLM judge's content-free "master keys" [One Token].
+  - Practitioners still compare checkers by error rates.
+- **Our approach: hold the static error profile fixed and vary only its structure.**
+  - We calibrate every flawed verifier to the same initial FPR, FNR and accuracy on one audit,
+    and verify the match on an independent audit before training.
+  - We pre-register predictions and analysis code for every experiment and report the failed
+    predictions. Several of our own mechanistic hypotheses failed, and each failure narrowed the
+    account.
 - **Contributions.**
-  1. *Controlled evidence at a matched rate.* Verifiers matched on initial FPR, FNR, accuracy (and
-     hence J) differ sharply in outcome, depending only on the cross-prompt structure and
-     reachability of their false positives (§4).
-  2. *Theory (§3).*
-     - Fresh false positives rescale each prompt's gold gradient. This holds exactly for finite
-       groups and any parameterization.
-     - Consistent false positives add a gradient whose cross-prompt coherence scales with the
-       number of prompts a shared behaviour satisfies.
-     - Zero-variance groups make master-key collapse absorbing.
-  3. *A gold-free exploitability test (§5).* It is a two-way decomposition of a verifier's
-     acceptances of completions transplanted across prompts. We also test where it fails.
-  4. *LLM validation (§6)* on GSM8K with a real loose-extraction bug class.
-  5. *Pre-registration.* Predictions, analysis code and matching audits were committed before
-     each experiment. Six registered predictions failed, and we report them.
+  1. A map of which false-positive structures flip fate at a fixed rate (§4). Fate depends on
+     whether the checker admits a reachable behaviour it accepts nearly wherever the behaviour is
+     used.
+  2. Theory (§3): rescaling under fresh noise; output-level drift; absorption.
+  3. Static diagnostics and their prospective failures (§5): a response main effect (RME) and an
+     on-policy conditional acceptance (ACM). Each catches some exploitable structures and misses
+     others.
+  4. A short-probe audit that predicts fate (§6).
+  5. LLM validation and a scan of real graders (§7).
 
 ## 2 Setting
 - **Objects.** Prompts x; responses y ~ π_θ(·|x); gold G(x, y) ∈ {0, 1}; verifier V(x, y) ∈ {0, 1}.
