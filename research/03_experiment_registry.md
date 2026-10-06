@@ -4160,3 +4160,11 @@ Full record: `research/paper/e011_results.md`.
   within 32–176 steps.
 - **Reading.** The on-policy conditional acceptance at the base is falsified as a sufficient
   diagnostic. Next: short policy-conditioned probes.
+
+### E012 — prospective test of short probes: protocol (frozen before any E012 audit, probe or run; 2026-10-06)
+Full protocol: `research/paper/e012_protocol.md`.
+- **Frozen rule.** Harm ≥ 0.25 iff the batch-FPR rise over the first 150 steps is ≥ 0.25. It is
+  measured on separate 150-step probe runs, committed before the full runs.
+- **Arms.** Six new verifiers with unmatched static FPR, seeds 11–15: randfp30, del50, cov65,
+  far40, key111half, hard75.
+- **Pass condition.** Right on every scored arm (±0.03 band: undetermined).
