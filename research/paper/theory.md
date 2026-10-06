@@ -191,3 +191,32 @@ unreachable master key (ε ≈ 0) is never found by on-policy sampling, whatever
 - **Limit.** The proposition gives the direction of the output-specific push at a given policy.
   The empirical threshold (≈ 0.6–0.75 rather than the mean reward ≈ 0.45) reflects later dynamics:
   gold improves, v_x rises, and covered prompts are absorbed.
+
+## Derivation 6 (takeover time of an always-accepted output) [derived; replaces Conjecture 6]
+- Take an output k accepted on every prompt, and treat the rest of the dynamics as frozen.
+- By Prop. 5 its bias obeys `ḃ_k = η Σ_x w_x π(k|x)(1 − v_x)/s_x = η A_k π̄_k`.
+  - `π̄_k = mean_x π(k|x)`;
+  - `A_k = mean_x π(k|x)(1 − v_x)/s_x / π̄_k` is the effective advantage on the prompts where k
+    is produced.
+- With `π̄_k ≈ ε_k e^{b_k}` while k is rare, `dπ̄_k/dt = η A_k π̄_k²`. Growth is **hyperbolic**,
+  and the blow-up (takeover) time is `t* ≈ 1 / (η A_k ε_k)`.
+- Takeover time is inversely proportional to base mass, not logarithmic as Conjecture 6 assumed.
+  The gold skill competes: it raises v_x on k's prompts, shrinks A_k, and can stop the takeover.
+
+**Post-hoc check** (`experiments/e006/posthoc_takeover.py`, exact base distributions):
+
+| key | arm | ε | A | 1/(Aε) (units of 1/η) | observed |
+|---|---|---|---|---|---|
+| 111 | set02 | 0.0099 | 1.55 | 65 | FPR ≥ 0.5 at steps 23–33 |
+| 57 | rarekey | 0.0056 | 0.58 | 308 | never within 1000 steps |
+| 10 | far | 0.0052 | 2.21 | 86 | far's early growth |
+| 900 / 800 | far | < 1e-6 | – | > 1e6 | reached anyway |
+
+The ordering agrees for 111 vs 57. 57 is produced on easy two-digit prompts, where gold improves
+fast and A_k shrinks, so it never takes over.
+
+The derivation fails for 900 / 800. They were unreachable for an independent-output model, yet
+reached after "100" and "10" grew. The network generalizes across outputs that share token
+structure ("x00"), which an output-level model cannot capture. Reachability is a property of the
+*network's* output space, not of the base distribution alone, which is another reason static
+scans of base samples cannot enumerate discoverable keys (E011).
