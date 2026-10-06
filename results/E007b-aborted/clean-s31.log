@@ -1,0 +1,53 @@
+Using the latest cached version of the dataset since openai/gsm8k couldn't be found on the Hugging Face Hub (offline mode is enabled).
+Found the latest cached dataset configuration 'main' at /Users/lambertlin/.cache/huggingface/datasets/openai___gsm8k/main/0.0.0/740312add88f781978c0658806c59bc2815b9866 (last modified on Tue Oct  6 00:16:23 2026).
+{"step": 0, "n": 200, "greedy_acc": 0.485, "boxed": 0.965, "has_answer": 1.0, "ends0_share_wrong": 0.36893203883495146, "gold_anywhere_share_wrong": 0.1262135922330097, "numbers_per_response": 8.49, "chars": 1049.195, "eval_s": 58.559334124962334}
+{"step": 1, "gold": 0.531, "verifier": 0.531, "fpr": 0.0, "mixed_v": 0.25, "ends0_share_wrong": 0.167, "numbers_per_response": 9.516, "t_gen": 19.645, "t_train": 27.675}
+{"step": 2, "gold": 0.547, "verifier": 0.547, "fpr": 0.0, "mixed_v": 0.875, "ends0_share_wrong": 0.379, "numbers_per_response": 7.016, "t_gen": 15.855, "t_train": 21.732}
+{"step": 3, "gold": 0.406, "verifier": 0.406, "fpr": 0.0, "mixed_v": 0.125, "ends0_share_wrong": 0.526, "numbers_per_response": 8.406, "t_gen": 18.622, "t_train": 32.998}
+{"step": 4, "gold": 0.328, "verifier": 0.328, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.326, "numbers_per_response": 6.734, "t_gen": 17.721, "t_train": 27.058}
+{"step": 5, "gold": 0.516, "verifier": 0.516, "fpr": 0.0, "mixed_v": 0.875, "ends0_share_wrong": 0.226, "numbers_per_response": 6.297, "t_gen": 20.808, "t_train": 39.87}
+{"step": 6, "gold": 0.406, "verifier": 0.406, "fpr": 0.0, "mixed_v": 1.0, "ends0_share_wrong": 0.368, "numbers_per_response": 7.703, "t_gen": 16.419, "t_train": 26.932}
+{"step": 7, "gold": 0.406, "verifier": 0.406, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.237, "numbers_per_response": 6.906, "t_gen": 15.522, "t_train": 21.481}
+{"step": 8, "gold": 0.359, "verifier": 0.359, "fpr": 0.0, "mixed_v": 0.875, "ends0_share_wrong": 0.39, "numbers_per_response": 6.719, "t_gen": 18.081, "t_train": 41.264}
+{"step": 9, "gold": 0.453, "verifier": 0.453, "fpr": 0.0, "mixed_v": 0.75, "ends0_share_wrong": 0.314, "numbers_per_response": 6.188, "t_gen": 14.13, "t_train": 22.27}
+{"step": 10, "gold": 0.219, "verifier": 0.219, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.36, "numbers_per_response": 6.625, "t_gen": 15.603, "t_train": 22.183}
+{"step": 11, "gold": 0.641, "verifier": 0.641, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.348, "numbers_per_response": 6.938, "t_gen": 14.793, "t_train": 18.696}
+{"step": 12, "gold": 0.344, "verifier": 0.344, "fpr": 0.0, "mixed_v": 0.375, "ends0_share_wrong": 0.5, "numbers_per_response": 7.016, "t_gen": 14.347, "t_train": 19.484}
+{"step": 13, "gold": 0.469, "verifier": 0.469, "fpr": 0.0, "mixed_v": 0.75, "ends0_share_wrong": 0.441, "numbers_per_response": 6.688, "t_gen": 17.769, "t_train": 40.978}
+{"step": 14, "gold": 0.453, "verifier": 0.453, "fpr": 0.0, "mixed_v": 0.75, "ends0_share_wrong": 0.257, "numbers_per_response": 6.109, "t_gen": 16.4, "t_train": 21.241}
+{"step": 15, "gold": 0.359, "verifier": 0.359, "fpr": 0.0, "mixed_v": 0.75, "ends0_share_wrong": 0.439, "numbers_per_response": 7.75, "t_gen": 16.459, "t_train": 35.318}
+{"step": 16, "gold": 0.297, "verifier": 0.297, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.044, "numbers_per_response": 8.906, "t_gen": 15.459, "t_train": 22.776}
+{"step": 17, "gold": 0.312, "verifier": 0.312, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.386, "numbers_per_response": 6.359, "t_gen": 15.064, "t_train": 21.789}
+{"step": 18, "gold": 0.188, "verifier": 0.188, "fpr": 0.0, "mixed_v": 0.5, "ends0_share_wrong": 0.365, "numbers_per_response": 7.078, "t_gen": 16.375, "t_train": 32.544}
+{"step": 19, "gold": 0.328, "verifier": 0.328, "fpr": 0.0, "mixed_v": 0.75, "ends0_share_wrong": 0.233, "numbers_per_response": 7.969, "t_gen": 19.099, "t_train": 37.773}
+{"step": 20, "gold": 0.344, "verifier": 0.344, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.286, "numbers_per_response": 7.156, "t_gen": 19.863, "t_train": 34.871}
+{"step": 21, "gold": 0.25, "verifier": 0.25, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.25, "numbers_per_response": 7.031, "t_gen": 22.134, "t_train": 41.1}
+{"step": 22, "gold": 0.141, "verifier": 0.141, "fpr": 0.0, "mixed_v": 0.5, "ends0_share_wrong": 0.2, "numbers_per_response": 7.797, "t_gen": 17.221, "t_train": 30.5}
+{"step": 23, "gold": 0.203, "verifier": 0.203, "fpr": 0.0, "mixed_v": 0.5, "ends0_share_wrong": 0.176, "numbers_per_response": 7.203, "t_gen": 20.644, "t_train": 44.075}
+{"step": 24, "gold": 0.094, "verifier": 0.094, "fpr": 0.0, "mixed_v": 0.375, "ends0_share_wrong": 0.397, "numbers_per_response": 8.047, "t_gen": 23.425, "t_train": 54.59}
+{"step": 25, "gold": 0.141, "verifier": 0.141, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.491, "numbers_per_response": 6.812, "t_gen": 18.649, "t_train": 48.076}
+{"step": 25, "n": 200, "greedy_acc": 0.175, "boxed": 0.03, "has_answer": 0.86, "ends0_share_wrong": 0.2787878787878788, "gold_anywhere_share_wrong": 0.09090909090909091, "numbers_per_response": 4.795, "chars": 1727.49, "eval_s": 78.65520083298907}
+{"step": 26, "gold": 0.281, "verifier": 0.281, "fpr": 0.0, "mixed_v": 0.75, "ends0_share_wrong": 0.283, "numbers_per_response": 7.312, "t_gen": 21.655, "t_train": 42.451}
+{"step": 27, "gold": 0.344, "verifier": 0.344, "fpr": 0.0, "mixed_v": 0.5, "ends0_share_wrong": 0.452, "numbers_per_response": 6.875, "t_gen": 17.784, "t_train": 35.455}
+{"step": 28, "gold": 0.297, "verifier": 0.297, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.4, "numbers_per_response": 6.047, "t_gen": 17.195, "t_train": 30.049}
+{"step": 29, "gold": 0.328, "verifier": 0.328, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.326, "numbers_per_response": 6.594, "t_gen": 12.987, "t_train": 18.387}
+{"step": 30, "gold": 0.266, "verifier": 0.266, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.362, "numbers_per_response": 6.719, "t_gen": 15.134, "t_train": 34.927}
+{"step": 31, "gold": 0.234, "verifier": 0.234, "fpr": 0.0, "mixed_v": 0.375, "ends0_share_wrong": 0.265, "numbers_per_response": 6.547, "t_gen": 14.983, "t_train": 28.277}
+{"step": 32, "gold": 0.141, "verifier": 0.141, "fpr": 0.0, "mixed_v": 0.375, "ends0_share_wrong": 0.345, "numbers_per_response": 8.125, "t_gen": 17.282, "t_train": 35.806}
+{"step": 33, "gold": 0.188, "verifier": 0.188, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.346, "numbers_per_response": 7.109, "t_gen": 18.74, "t_train": 41.514}
+{"step": 34, "gold": 0.188, "verifier": 0.188, "fpr": 0.0, "mixed_v": 0.5, "ends0_share_wrong": 0.365, "numbers_per_response": 6.234, "t_gen": 16.06, "t_train": 38.308}
+{"step": 35, "gold": 0.422, "verifier": 0.422, "fpr": 0.0, "mixed_v": 0.5, "ends0_share_wrong": 0.162, "numbers_per_response": 6.984, "t_gen": 20.246, "t_train": 53.179}
+{"step": 36, "gold": 0.359, "verifier": 0.359, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.195, "numbers_per_response": 8.406, "t_gen": 21.522, "t_train": 57.758}
+{"step": 37, "gold": 0.141, "verifier": 0.141, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.255, "numbers_per_response": 9.016, "t_gen": 22.427, "t_train": 52.829}
+{"step": 38, "gold": 0.344, "verifier": 0.344, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.167, "numbers_per_response": 7.031, "t_gen": 16.679, "t_train": 37.583}
+{"step": 39, "gold": 0.453, "verifier": 0.453, "fpr": 0.0, "mixed_v": 1.0, "ends0_share_wrong": 0.457, "numbers_per_response": 7.219, "t_gen": 16.056, "t_train": 35.592}
+{"step": 40, "gold": 0.312, "verifier": 0.312, "fpr": 0.0, "mixed_v": 0.25, "ends0_share_wrong": 0.386, "numbers_per_response": 6.938, "t_gen": 17.293, "t_train": 34.966}
+{"step": 41, "gold": 0.188, "verifier": 0.188, "fpr": 0.0, "mixed_v": 0.375, "ends0_share_wrong": 0.288, "numbers_per_response": 9.078, "t_gen": 14.398, "t_train": 19.453}
+{"step": 42, "gold": 0.172, "verifier": 0.172, "fpr": 0.0, "mixed_v": 0.75, "ends0_share_wrong": 0.094, "numbers_per_response": 7.672, "t_gen": 18.657, "t_train": 25.206}
+{"step": 43, "gold": 0.297, "verifier": 0.297, "fpr": 0.0, "mixed_v": 0.5, "ends0_share_wrong": 0.533, "numbers_per_response": 7.406, "t_gen": 14.315, "t_train": 20.16}
+{"step": 44, "gold": 0.344, "verifier": 0.344, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.452, "numbers_per_response": 6.906, "t_gen": 15.315, "t_train": 21.711}
+{"step": 45, "gold": 0.328, "verifier": 0.328, "fpr": 0.0, "mixed_v": 0.375, "ends0_share_wrong": 0.279, "numbers_per_response": 6.312, "t_gen": 18.469, "t_train": 42.737}
+{"step": 46, "gold": 0.188, "verifier": 0.188, "fpr": 0.0, "mixed_v": 0.5, "ends0_share_wrong": 0.231, "numbers_per_response": 6.953, "t_gen": 16.976, "t_train": 37.337}
+{"step": 47, "gold": 0.344, "verifier": 0.344, "fpr": 0.0, "mixed_v": 0.625, "ends0_share_wrong": 0.262, "numbers_per_response": 8.234, "t_gen": 20.405, "t_train": 39.926}
+/Users/lambertlin/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/multiprocessing/resource_tracker.py:279: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

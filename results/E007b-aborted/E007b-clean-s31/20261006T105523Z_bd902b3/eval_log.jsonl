@@ -1,0 +1,2 @@
+{"step": 0, "n": 200, "greedy_acc": 0.485, "boxed": 0.965, "has_answer": 1.0, "ends0_share_wrong": 0.36893203883495146, "gold_anywhere_share_wrong": 0.1262135922330097, "numbers_per_response": 8.49, "chars": 1049.195, "eval_s": 58.559334124962334}
+{"step": 25, "n": 200, "greedy_acc": 0.175, "boxed": 0.03, "has_answer": 0.86, "ends0_share_wrong": 0.2787878787878788, "gold_anywhere_share_wrong": 0.09090909090909091, "numbers_per_response": 4.795, "chars": 1727.49, "eval_s": 78.65520083298907}
