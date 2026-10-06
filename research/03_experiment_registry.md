@@ -4103,3 +4103,14 @@ Verdicts:
 Post-hoc and not registered: collapse is confined to the covered region exactly when the region
 is identifiable from the input. The relevant quantity is coverage within the regions the policy
 can represent. Next: E009.
+
+### E009 — coverage within representable regions: protocol (frozen before any E009 audit or run; 2026-10-06)
+Full protocol: `research/paper/e009_protocol.md`.
+- **Arms.** aeven, sumeven and hardhalf (M accepted inside the region, plus fill) at f0 = 0.1083,
+  seeds 11–15. Comparators clean / cov50 / covhard are re-run with region logging; they must be
+  hash-identical.
+- **Predictions.**
+  - P1, P2: the aeven and sumeven regions collapse (< 0.2 in ≥ 4/5 seeds); their complements are
+    within 0.1 of clean.
+  - P3: hardhalf does not collapse its region (≥ 0.3 in ≥ 4/5 seeds).
+  - P4: harm ≥ 0.25 for aeven and sumeven, < 0.2 for hardhalf.
