@@ -18,16 +18,19 @@ BENIGN, PARTIAL, COLLAPSE = "#2a78d6", "#eda100", "#eb6834"
 
 
 def main(out: str) -> None:
-    a = json.loads(sorted((REPO / "results/E006-analysis").glob("*/e006_analysis.json"))[-1].read_text())
+    a = json.loads(
+        sorted((REPO / "results/E006-analysis").glob("*/e006_analysis.json"))[-1].read_text()
+    )
     seeds = range(11, 16)
     arms = [("clean", "clean", BENIGN), ("randfp", "random FP", BENIGN),
             ("hashtab", "per-prompt table", BENIGN), ("rarekey", "rare shared key", BENIGN),
             ("cov25", "key on 25%", PARTIAL), ("cov50", "key on 50%", PARTIAL),
             ("cov75", "key on 75%", COLLAPSE), ("exploit", "key on 100%", COLLAPSE)]  # fmt: skip
-    plt.rcParams.update({"font.family": "serif", "font.size": 10, "axes.edgecolor": SUB,
-                         "axes.labelcolor": INK, "xtick.color": SUB, "ytick.color": SUB})  # fmt: skip
+    style = {"font.family": "serif", "font.size": 10, "axes.edgecolor": SUB,
+             "axes.labelcolor": INK, "xtick.color": SUB, "ytick.color": SUB}  # fmt: skip
+    plt.rcParams.update(style)
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 3.8), gridspec_kw={"width_ratios": [1.6, 1]})
-    for i, (key, label, col) in enumerate(arms):
+    for i, (key, _label, col) in enumerate(arms):
         ys = [a["runs"][f"{key}-s{s}"]["primary"] for s in seeds]
         ax1.scatter([i] * len(ys), ys, s=22, color=col, zorder=3, edgecolor="white", linewidth=0.6)
         ax1.plot([i - 0.25, i + 0.25], [np.mean(ys)] * 2, color=INK, lw=1.6, zorder=4)
@@ -45,7 +48,9 @@ def main(out: str) -> None:
     for c, h in zip(cov, harm, strict=True):
         ax2.scatter([c] * len(h), h, s=18, color=SUB, zorder=3)
     ax2.plot(cov, [h.mean() for h in harm], color=COLLAPSE, lw=2, marker="o", zorder=4)
-    ax2.set_xlabel("fraction of prompts on which the key is accepted\n(fresh fill keeps FPR at 0.11)")
+    ax2.set_xlabel(
+        "fraction of prompts on which the key is accepted\n(fresh fill keeps FPR at 0.11)"
+    )
     ax2.set_ylabel("harm = clean − arm")
     ax2.set_title("(b) coverage, not rate, sets the fate", fontsize=10, color=INK, loc="left")
     for ax in (ax1, ax2):
