@@ -4150,3 +4150,13 @@ Full protocol: `research/paper/e007b_protocol.md`.
   - Fresh calibration and verification.
   - Clean-health gate: clean's greedy accuracy may not fall by more than 0.05.
 - **Predictions.** As E007 (E1–E5).
+
+### E011 — results (2026-10-06): FAIL
+Full record: `research/paper/e011_results.md`.
+- **Outcomes.** near collapsed (harm 0.663) ✓; near50 benign (0.116) ✓; **far collapsed (0.744,
+  5/5) ✗**, despite ACM 0.0008.
+- **Mechanism.** The far verifier admits perfect master keys (900, 800, 0, 10, accepted wherever
+  far from the sum). The base policy rarely produced them there, but the policy discovered them
+  within 32–176 steps.
+- **Reading.** The on-policy conditional acceptance at the base is falsified as a sufficient
+  diagnostic. Next: short policy-conditioned probes.

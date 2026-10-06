@@ -1,0 +1,17 @@
+# E011 (research/paper/e011_protocol.md). Pipeline, matching rule and seeds as E006.
+experiment_id = "E011"
+protocol = "research/paper/e011_protocol.md"
+f0 = 0.1083
+arms = ["near", "far", "near50"]
+seeds = [11, 12, 13, 14, 15]
+dist = 10
+acm_tau = 0.75
+acm_threshold = 0.02
+harm_threshold = 0.25
+undetermined_band = 0.005
+
+[labels]
+final_evals = 4
+effect = 0.05
+window = 50
+collapse = 0.2
