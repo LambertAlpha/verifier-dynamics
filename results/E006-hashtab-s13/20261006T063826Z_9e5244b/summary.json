@@ -1,0 +1,18 @@
+{
+ "arm": "hashtab",
+ "seed": 13,
+ "steps": 1000,
+ "smoke": false,
+ "spec": {
+  "kind": "hashtab",
+  "c": 0.0,
+  "r": 0.1083,
+  "value": null
+ },
+ "rare_value": 57,
+ "arms_file_sha256": "53b6693daada593b86499560020e727e05b93b194eb6fc84d2d005693ff864c4",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "b22d6575ada75d87b76df24eef4de0ca19375fea6ecbd42bce68a6e15386139c",
+ "seconds_total": 75.09769408300053,
+ "peak_rss_mb": 1183.9375
+}

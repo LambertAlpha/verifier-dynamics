@@ -1,0 +1,18 @@
+{
+ "arm": "rarekey",
+ "seed": 11,
+ "steps": 1000,
+ "smoke": false,
+ "spec": {
+  "kind": "rarekey",
+  "c": 0.0,
+  "r": 0.10387574254061034,
+  "value": 57
+ },
+ "rare_value": 57,
+ "arms_file_sha256": "53b6693daada593b86499560020e727e05b93b194eb6fc84d2d005693ff864c4",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "a8cd27a3a20a5dfdc26ad4440405ec9b6c0630c0f59282b9f972d12552f7a70d",
+ "seconds_total": 72.93490445800126,
+ "peak_rss_mb": 1185.578125
+}

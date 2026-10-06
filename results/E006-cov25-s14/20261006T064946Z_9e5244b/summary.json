@@ -1,0 +1,18 @@
+{
+ "arm": "cov25",
+ "seed": 14,
+ "steps": 1000,
+ "smoke": false,
+ "spec": {
+  "kind": "cov",
+  "c": 0.25,
+  "r": 0.08348536629236579,
+  "value": null
+ },
+ "rare_value": 57,
+ "arms_file_sha256": "53b6693daada593b86499560020e727e05b93b194eb6fc84d2d005693ff864c4",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "5da353bbcad496be4faf7b0321b4d4b5ce9366a9fa45e3e4588e43192af60eeb",
+ "seconds_total": 74.28417133301264,
+ "peak_rss_mb": 1175.03125
+}

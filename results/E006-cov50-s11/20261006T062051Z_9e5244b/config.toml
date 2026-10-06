@@ -1,0 +1,22 @@
+# E006 (research/paper/e006_protocol.md). Settings not listed here are those of configs/e005b/matched.toml / matrix.toml.
+experiment_id = "E006"
+protocol = "research/paper/e006_protocol.md"
+f0 = 0.1083
+arms = ["clean", "randfp", "hashtab", "cov25", "cov50", "cov75", "exploit", "rarekey"]
+seeds = [11, 12, 13, 14, 15]
+max_concurrent = 2
+
+[rarekey]
+target_share = 0.005
+
+[diagnostic]
+panel = 64
+panel_seed = 20261360
+coin_seed = 20261361
+dhat_coin_replicates = 50
+
+[labels]
+final_evals = 4
+effect = 0.05
+window = 50
+collapse = 0.2

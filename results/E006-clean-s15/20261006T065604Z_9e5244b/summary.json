@@ -1,0 +1,18 @@
+{
+ "arm": "clean",
+ "seed": 15,
+ "steps": 1000,
+ "smoke": false,
+ "spec": {
+  "kind": "clean",
+  "c": 0.0,
+  "r": 0.0,
+  "value": null
+ },
+ "rare_value": 57,
+ "arms_file_sha256": "53b6693daada593b86499560020e727e05b93b194eb6fc84d2d005693ff864c4",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "4eca9d570de97eb503635be05402a3456cadbe6fe3e74253b5d46b4eb3550fd7",
+ "seconds_total": 75.12061250000261,
+ "peak_rss_mb": 1181.390625
+}
