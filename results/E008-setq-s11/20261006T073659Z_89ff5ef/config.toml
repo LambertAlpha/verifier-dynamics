@@ -1,0 +1,15 @@
+# E008 (research/paper/e008_protocol.md). Pipeline, matching rule and seeds as E006.
+experiment_id = "E008"
+protocol = "research/paper/e008_protocol.md"
+f0 = 0.1083
+arms = ["covhard", "coveasy", "set02", "set05", "setq"]
+seeds = [11, 12, 13, 14, 15]
+hard_cats = ["three-digit"]
+easy_cats = ["no carry", "units carry"]
+set_targets = { set02 = 0.02, set05 = 0.05, setq = 0.1083 }
+
+[labels]
+final_evals = 4
+effect = 0.05
+window = 50
+collapse = 0.2

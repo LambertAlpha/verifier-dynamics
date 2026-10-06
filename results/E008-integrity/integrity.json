@@ -1,0 +1,6 @@
+{
+ "purpose": "E006 clean-s11 rerun with the extended verifiers module (covcat/keyset added)",
+ "rerun": "878f852799604a0ecf3b2064548fb68a6f6fe98ed28f9c1d75e01be3255afd95",
+ "committed": "878f852799604a0ecf3b2064548fb68a6f6fe98ed28f9c1d75e01be3255afd95",
+ "equal": true
+}

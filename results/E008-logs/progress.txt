@@ -1,0 +1,27 @@
+integrity done: results/E006-clean-s11/20261006T073026Z_89ff5ef
+covhard s11 done: results/E008-covhard-s11/20261006T073141Z_89ff5ef
+coveasy s11 done: results/E008-coveasy-s11/20261006T073256Z_89ff5ef
+set02 s11 done: results/E008-set02-s11/20261006T073411Z_89ff5ef
+set05 s11 done: results/E008-set05-s11/20261006T073525Z_89ff5ef
+setq s11 done: results/E008-setq-s11/20261006T073659Z_89ff5ef
+covhard s12 done: results/E008-covhard-s12/20261006T073830Z_89ff5ef
+coveasy s12 done: results/E008-coveasy-s12/20261006T074004Z_89ff5ef
+set02 s12 done: results/E008-set02-s12/20261006T074136Z_89ff5ef
+set05 s12 done: results/E008-set05-s12/20261006T074308Z_89ff5ef
+setq s12 done: results/E008-setq-s12/20261006T074441Z_89ff5ef
+covhard s13 done: results/E008-covhard-s13/20261006T074615Z_89ff5ef
+coveasy s13 done: results/E008-coveasy-s13/20261006T074749Z_89ff5ef
+set02 s13 done: results/E008-set02-s13/20261006T074920Z_89ff5ef
+set05 s13 done: results/E008-set05-s13/20261006T075054Z_89ff5ef
+setq s13 done: results/E008-setq-s13/20261006T075224Z_89ff5ef
+covhard s14 done: results/E008-covhard-s14/20261006T075400Z_89ff5ef
+coveasy s14 done: results/E008-coveasy-s14/20261006T075532Z_89ff5ef
+set02 s14 done: results/E008-set02-s14/20261006T075705Z_89ff5ef
+set05 s14 done: results/E008-set05-s14/20261006T075838Z_89ff5ef
+setq s14 done: results/E008-setq-s14/20261006T080012Z_89ff5ef
+covhard s15 done: results/E008-covhard-s15/20261006T080135Z_89ff5ef
+coveasy s15 done: results/E008-coveasy-s15/20261006T080301Z_89ff5ef
+set02 s15 done: results/E008-set02-s15/20261006T080428Z_89ff5ef
+set05 s15 done: results/E008-set05-s15/20261006T080550Z_89ff5ef
+setq s15 done: results/E008-setq-s15/20261006T080714Z_89ff5ef
+ALL_DONE

@@ -1,0 +1,23 @@
+{
+ "arm": "set02",
+ "seed": 13,
+ "steps": 1000,
+ "smoke": false,
+ "spec": {
+  "kind": "keyset",
+  "c": 0.0,
+  "r": 0.07436982589160349,
+  "value": null,
+  "cats": [],
+  "values": [
+   111,
+   114
+  ]
+ },
+ "rare_value": 111,
+ "arms_file_sha256": "83738229a1a3ae946ce0a1cd31cef3642156831d28f47a20a19114e7dca7e9fa",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "9465223612923c6ea9c146c2e4dfe2b5dbb79159ccb56b4a62444c6f263b7e0a",
+ "seconds_total": 91.9972132499679,
+ "peak_rss_mb": 1199.578125
+}

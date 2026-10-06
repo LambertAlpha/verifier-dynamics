@@ -1,0 +1,23 @@
+{
+ "arm": "coveasy",
+ "seed": 11,
+ "steps": 1000,
+ "smoke": false,
+ "spec": {
+  "kind": "covcat",
+  "c": 0.0,
+  "r": 0.06465123439273553,
+  "value": null,
+  "cats": [
+   "no carry",
+   "units carry"
+  ],
+  "values": []
+ },
+ "rare_value": 111,
+ "arms_file_sha256": "83738229a1a3ae946ce0a1cd31cef3642156831d28f47a20a19114e7dca7e9fa",
+ "base_sha256": "748654089d1ef322f104efbc68578844f62300ff61f4c59e55adacc80665360e",
+ "final_sha256": "de37b2085ceac5bd12587736af7b3d58658e61f246c329ceb24b44b7c2cafbd8",
+ "seconds_total": 73.9658561659744,
+ "peak_rss_mb": 1163.15625
+}
