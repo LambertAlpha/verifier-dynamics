@@ -1,0 +1,223 @@
+{
+ "fit": {
+  "lr_s": 0.004977486753487384,
+  "lr_b": 17.48391688352947,
+  "n_prompts": 600
+ },
+ "flip": {
+  "origin": "E005b",
+  "status": "post hoc (observed)",
+  "gold_final": 0.7950204000963542,
+  "harm": -0.04628399755396062,
+  "first_fpr_half": Infinity,
+  "pred_harm_ge_0.25": false
+ },
+ "deleted": {
+  "origin": "E005b",
+  "status": "post hoc (observed)",
+  "gold_final": 0.6524235769365542,
+  "harm": 0.09631282560583942,
+  "first_fpr_half": Infinity,
+  "pred_harm_ge_0.25": false
+ },
+ "clean": {
+  "origin": "E006",
+  "status": "post hoc (observed)",
+  "gold_final": 0.7487364025423936,
+  "harm": 0.0,
+  "first_fpr_half": Infinity,
+  "pred_harm_ge_0.25": false
+ },
+ "randfp": {
+  "origin": "E006",
+  "status": "post hoc (observed)",
+  "gold_final": 0.7096980017594958,
+  "harm": 0.039038400782897775,
+  "first_fpr_half": Infinity,
+  "pred_harm_ge_0.25": false
+ },
+ "hashtab": {
+  "origin": "E006",
+  "status": "post hoc (observed)",
+  "gold_final": 0.7049073650615231,
+  "harm": 0.043829037480870525,
+  "first_fpr_half": Infinity,
+  "pred_harm_ge_0.25": false
+ },
+ "cov25": {
+  "origin": "E006",
+  "status": "post hoc (observed)",
+  "gold_final": 0.6860620690531944,
+  "harm": 0.06267433348919915,
+  "first_fpr_half": Infinity,
+  "pred_harm_ge_0.25": false
+ },
+ "cov50": {
+  "origin": "E006",
+  "status": "post hoc (observed)",
+  "gold_final": 0.5514845757698934,
+  "harm": 0.1972518267725002,
+  "first_fpr_half": Infinity,
+  "pred_harm_ge_0.25": false
+ },
+ "cov75": {
+  "origin": "E006",
+  "status": "post hoc (observed)",
+  "gold_final": 0.013333566822864453,
+  "harm": 0.7354028357195291,
+  "first_fpr_half": 22,
+  "pred_harm_ge_0.25": true
+ },
+ "exploit": {
+  "origin": "E006",
+  "status": "post hoc (observed)",
+  "gold_final": 0.013333406600528086,
+  "harm": 0.7354029959418655,
+  "first_fpr_half": 11,
+  "pred_harm_ge_0.25": true
+ },
+ "rarekey": {
+  "origin": "E006",
+  "status": "post hoc (observed)",
+  "gold_final": 0.001666709996108672,
+  "harm": 0.747069692546285,
+  "first_fpr_half": 52,
+  "pred_harm_ge_0.25": true
+ },
+ "set02": {
+  "origin": "E008",
+  "status": "post hoc (observed)",
+  "gold_final": 0.01000006874766803,
+  "harm": 0.7387363337947256,
+  "first_fpr_half": 13,
+  "pred_harm_ge_0.25": true
+ },
+ "set05": {
+  "origin": "E008",
+  "status": "post hoc (observed)",
+  "gold_final": 0.005000027890657928,
+  "harm": 0.7437363746517357,
+  "first_fpr_half": 10,
+  "pred_harm_ge_0.25": true
+ },
+ "setq": {
+  "origin": "E008",
+  "status": "post hoc (observed)",
+  "gold_final": 0.00500003029735572,
+  "harm": 0.7437363722450379,
+  "first_fpr_half": 15,
+  "pred_harm_ge_0.25": true
+ },
+ "covhard": {
+  "origin": "E008",
+  "status": "post hoc (observed)",
+  "gold_final": 0.3592011263652275,
+  "harm": 0.3895352761771661,
+  "first_fpr_half": 17,
+  "pred_harm_ge_0.25": true
+ },
+ "coveasy": {
+  "origin": "E008",
+  "status": "post hoc (observed)",
+  "gold_final": 0.20547620094088928,
+  "harm": 0.5432602016015043,
+  "first_fpr_half": 61,
+  "pred_harm_ge_0.25": true
+ },
+ "aeven": {
+  "origin": "E009",
+  "status": "post hoc (observed)",
+  "gold_final": 0.4109765782738118,
+  "harm": 0.3377598242685818,
+  "first_fpr_half": Infinity,
+  "pred_harm_ge_0.25": true
+ },
+ "sumeven": {
+  "origin": "E009",
+  "status": "post hoc (observed)",
+  "gold_final": 0.4066834953847691,
+  "harm": 0.3420529071576245,
+  "first_fpr_half": Infinity,
+  "pred_harm_ge_0.25": true
+ },
+ "hardhalf": {
+  "origin": "E009",
+  "status": "post hoc (observed)",
+  "gold_final": 0.6175655442253702,
+  "harm": 0.13117085831702335,
+  "first_fpr_half": Infinity,
+  "pred_harm_ge_0.25": false
+ },
+ "near": {
+  "origin": "E011",
+  "status": "post hoc (observed)",
+  "gold_final": 0.1693198286392227,
+  "harm": 0.5794165739031709,
+  "first_fpr_half": 43,
+  "pred_harm_ge_0.25": true
+ },
+ "far": {
+  "origin": "E011",
+  "status": "post hoc (observed)",
+  "gold_final": 0.013333500780780199,
+  "harm": 0.7354029017616134,
+  "first_fpr_half": 114,
+  "pred_harm_ge_0.25": true
+ },
+ "near50": {
+  "origin": "E011",
+  "status": "post hoc (observed)",
+  "gold_final": 0.6316427669848859,
+  "harm": 0.11709363555750774,
+  "first_fpr_half": Infinity,
+  "pred_harm_ge_0.25": false
+ },
+ "randfp30": {
+  "origin": "E012",
+  "status": "prediction before results",
+  "gold_final": 0.6563400739594188,
+  "harm": 0.09239632858297475,
+  "first_fpr_half": Infinity,
+  "pred_harm_ge_0.25": false
+ },
+ "del50": {
+  "origin": "E012",
+  "status": "prediction before results",
+  "gold_final": 0.5804740979637181,
+  "harm": 0.16826230457867553,
+  "first_fpr_half": 49,
+  "pred_harm_ge_0.25": false
+ },
+ "cov65": {
+  "origin": "E012",
+  "status": "prediction before results",
+  "gold_final": 0.010000515335120004,
+  "harm": 0.7387358872072736,
+  "first_fpr_half": 33,
+  "pred_harm_ge_0.25": true
+ },
+ "far40": {
+  "origin": "E012",
+  "status": "prediction before results",
+  "gold_final": 0.0016672406275666947,
+  "harm": 0.7470691619148269,
+  "first_fpr_half": 256,
+  "pred_harm_ge_0.25": true
+ },
+ "key111half": {
+  "origin": "E012",
+  "status": "prediction before results",
+  "gold_final": 0.20528663312199324,
+  "harm": 0.5434497694204004,
+  "first_fpr_half": Infinity,
+  "pred_harm_ge_0.25": true
+ },
+ "hard75": {
+  "origin": "E012",
+  "status": "prediction before results",
+  "gold_final": 0.3845973444060229,
+  "harm": 0.3641390581363707,
+  "first_fpr_half": 113,
+  "pred_harm_ge_0.25": true
+ }
+}
