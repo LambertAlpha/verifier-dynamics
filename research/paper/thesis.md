@@ -55,3 +55,29 @@ Youden index J = TPR − FPR that governs fate in tabular analyses, do not captu
   the driver.
 - P3 shows no coverage dependence at fixed FPR.
 - P6: LLMs behave differently from the toy, e.g. master keys stay benign or random FPs collapse.
+
+## Revision 1 (2026-10-06, after E006 / E008 / E009; pending the prospective test E011)
+The working thesis above was too coarse in two places.
+- "Learnability" and "shared across prompts" are right in spirit but not the operative quantity.
+- Two candidate refinements failed their pre-registered tests:
+  - difficulty-local coverage (E008 L1, L2);
+  - coverage of input-identifiable regions (E009 P1, P2).
+
+**Revised thesis.** A verifier false positive changes the fate of RLVR when some *wrong output* is
+accepted on most of the prompts **where the policy actually produces it** (high on-policy
+conditional acceptance), and that output carries non-trivial policy mass (reachability).
+- **Static rates are not enough.** FPR and J average acceptance over all wrong outputs and prompts.
+  They cannot see that one output is accepted almost everywhere it occurs.
+- **Mechanism.** The output-level drift of Prop. 5, the output analogue of the coverage argument.
+  Coherence across prompts (Prop. 3) arises because an output's parameters are shared by every
+  prompt that emits it.
+- **Absorption (Prop. 4)** then makes the collapse permanent.
+- **Measured by** ACM_τ: post hoc, Spearman 0.77 with harm vs 0.10 for static FPR across 18
+  verifiers. Prospective test: E011.
+
+How this reconciles the literature:
+- Leaky code suites accept *task-specific* wrong programs. Each is accepted on its own task only,
+  and the policy rarely produces the same wrong program elsewhere, so ACM is low and the suites are
+  benign.
+- LLM-judge master keys are single outputs accepted on almost any prompt, so ACM is high and they
+  collapse.
