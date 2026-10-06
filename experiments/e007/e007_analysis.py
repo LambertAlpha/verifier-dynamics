@@ -83,6 +83,20 @@ def main(argv: list[str]) -> int:
         return float(np.mean([runs[(a, s)][k] for s in seeds]))
 
     rme = {a: audit["rme"][a]["rme"] for a in arms}
+    # E007b Amendment 1: the toy's short-probe rule at 15% of training (steps 14-23 vs 1-10)
+    probe = {}
+    for a in arms[1:]:
+        rises = []
+        for s_ in seeds:
+            lg = jl(cm.REPO / runs[(a, s_)]["run"] / "grpo_log.jsonl")
+            f = [r["fpr"] for r in lg if r["fpr"] is not None]
+            rises.append(float(np.mean(f[13:23]) - np.mean(f[:10])))
+        rise = float(np.mean(rises))
+        pred = "lower" if rise >= 0.25 else "not lower"
+        obs = "lower" if paired[a]["label"] == "lower" else "not lower"
+        probe[a] = {"rise_23": rise, "by_seed": rises, "prediction": pred, "observed": obs,
+                    "right": pred == obs}  # fmt: skip
+    probe_pass = all(v["right"] for v in probe.values())
     # clean-RL health gate (E007b): clean's 200-question greedy accuracy may not fall by > 0.05
     health = {"start": mean("clean", "subset_start"), "final": mean("clean", "subset_final")}
     health["healthy"] = health["final"] - health["start"] >= -0.05
@@ -95,7 +109,8 @@ def main(argv: list[str]) -> int:
         and mean("anywhere", "numbers_final") > mean("anywhere", "numbers_start"),
         "E5": rme["ends0"] > max(rme["randfp"], rme["hashtab"], rme["clean"], rme["anywhere"]),
     }
-    rep = {"paired": paired, "hypotheses": hyp, "rme": rme, "clean_health": health,
+    hyp["probe_A1"] = probe_pass
+    rep = {"paired": paired, "hypotheses": hyp, "rme": rme, "clean_health": health, "probe": probe,
            "runs": {f"{a}-s{s}": r for (a, s), r in sorted(runs.items())},
            "arm_means": {a: {k: mean(a, k) for k in next(iter(runs.values())) if k != "run"}
                          for a in arms}}  # fmt: skip

@@ -36,3 +36,14 @@ Everything else is as in `e007_protocol.md`.
 - E5 RME(ends0) is the largest.
 
 The rules are in `experiments/e007/e007_analysis.py`, run with `VDYN_E007_EXP=e007b`.
+
+## Amendment 1 (pre-outcome, 2026-10-06; filed while the first run, clean-s31, was in progress, before any flawed-verifier arm had started)
+**Secondary test: the toy's short-probe rule transferred to the LLM.**
+- For each arm, rise = mean batch FPR over steps 14–23 minus over steps 1–10, seed mean.
+  23 steps ≈ 15% of T = 150, the same fraction as the toy's 150 of 1000.
+- Predict "lower" (the E3 / E4 label rule) iff rise ≥ 0.25. The threshold is the toy's frozen one,
+  unchanged.
+- Reported for every flawed arm (randfp, hashtab, ends0, anywhere). Pass iff the rule matches
+  the observed label for all four.
+- The prediction is a deterministic function of the first 23 logged steps. It is fixed here,
+  before any E007b outcome is known.
