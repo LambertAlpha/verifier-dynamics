@@ -1,0 +1,23 @@
+{
+ "near": {
+  "acm_0.75": 0.10482889219531989,
+  "acm_0.6": 0.10753415392939267,
+  "fpr_mass": 0.1083,
+  "prediction": "harm>=0.25",
+  "secondary_prediction_acm_0.6": "harm>=0.25"
+ },
+ "far": {
+  "acm_0.75": 0.0008115785202218314,
+  "acm_0.6": 0.0008115785202218314,
+  "fpr_mass": 0.10829999999999998,
+  "prediction": "harm<0.25",
+  "secondary_prediction_acm_0.6": "harm<0.25"
+ },
+ "near50": {
+  "acm_0.75": 0.0,
+  "acm_0.6": 0.007371838225348303,
+  "fpr_mass": 0.10829999999999998,
+  "prediction": "harm<0.25",
+  "secondary_prediction_acm_0.6": "harm<0.25"
+ }
+}
