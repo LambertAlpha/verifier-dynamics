@@ -1,0 +1,81 @@
+{
+  "experiment_id": "E012-predictions",
+  "created_utc": "2026-10-06T10:15:05+00:00",
+  "git": {
+    "commit": "2f2b490e1b699af695e0a601b226324957d63ce7",
+    "dirty": false
+  },
+  "config_sha256": "cb888799287ad90f3ce0757cc5353e235446458e11a1da6bc75c4cae610d2369",
+  "config": {
+    "experiment_id": "E012",
+    "protocol": "research/paper/e012_protocol.md",
+    "f0": 0.1083,
+    "arms": [
+      "randfp30",
+      "del50",
+      "cov65",
+      "far40",
+      "key111half",
+      "hard75"
+    ],
+    "seeds": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "probe_steps": 150,
+    "rise_threshold": 0.25,
+    "harm_threshold": 0.25,
+    "undetermined_band": 0.03,
+    "labels": {
+      "final_evals": 4,
+      "effect": 0.05,
+      "window": 50,
+      "collapse": 0.2
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "probe_runs": [
+    "results/E012-probe-cov65-s11/20261006T100601Z_cf7a457/",
+    "results/E012-probe-cov65-s12/20261006T100756Z_cf7a457/",
+    "results/E012-probe-cov65-s13/20261006T100940Z_cf7a457/",
+    "results/E012-probe-cov65-s14/20261006T101112Z_cf7a457/",
+    "results/E012-probe-cov65-s15/20261006T101244Z_cf7a457/",
+    "results/E012-probe-del50-s11/20261006T100542Z_cf7a457/",
+    "results/E012-probe-del50-s12/20261006T100737Z_cf7a457/",
+    "results/E012-probe-del50-s13/20261006T100925Z_cf7a457/",
+    "results/E012-probe-del50-s14/20261006T101056Z_cf7a457/",
+    "results/E012-probe-del50-s15/20261006T101229Z_cf7a457/",
+    "results/E012-probe-far40-s11/20261006T100619Z_cf7a457/",
+    "results/E012-probe-far40-s12/20261006T100814Z_cf7a457/",
+    "results/E012-probe-far40-s13/20261006T100955Z_cf7a457/",
+    "results/E012-probe-far40-s14/20261006T101127Z_cf7a457/",
+    "results/E012-probe-far40-s15/20261006T101300Z_cf7a457/",
+    "results/E012-probe-hard75-s11/20261006T100658Z_cf7a457/",
+    "results/E012-probe-hard75-s12/20261006T100852Z_cf7a457/",
+    "results/E012-probe-hard75-s13/20261006T101026Z_cf7a457/",
+    "results/E012-probe-hard75-s14/20261006T101158Z_cf7a457/",
+    "results/E012-probe-hard75-s15/20261006T101330Z_cf7a457/",
+    "results/E012-probe-key111half-s11/20261006T100638Z_cf7a457/",
+    "results/E012-probe-key111half-s12/20261006T100833Z_cf7a457/",
+    "results/E012-probe-key111half-s13/20261006T101010Z_cf7a457/",
+    "results/E012-probe-key111half-s14/20261006T101143Z_cf7a457/",
+    "results/E012-probe-key111half-s15/20261006T101315Z_cf7a457/",
+    "results/E012-probe-randfp30-s11/20261006T100523Z_cf7a457/",
+    "results/E012-probe-randfp30-s12/20261006T100718Z_cf7a457/",
+    "results/E012-probe-randfp30-s13/20261006T100910Z_cf7a457/",
+    "results/E012-probe-randfp30-s14/20261006T101041Z_cf7a457/",
+    "results/E012-probe-randfp30-s15/20261006T101214Z_cf7a457/"
+  ]
+}
