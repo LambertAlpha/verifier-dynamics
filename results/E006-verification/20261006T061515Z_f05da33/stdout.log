@@ -1,0 +1,9 @@
+clean    FPR 0.0000 [0.0, 0.0] FNR 0.0000 mixed 0.790 PASS
+randfp   FPR 0.1084 [0.1035, 0.1135] FNR 0.0000 mixed 0.892 PASS
+hashtab  FPR 0.1067 [0.0996, 0.1143] FNR 0.0000 mixed 0.846 PASS
+cov25    FPR 0.1145 [0.1084, 0.1208] FNR 0.0000 mixed 0.891 PASS
+cov50    FPR 0.1137 [0.1069, 0.1208] FNR 0.0000 mixed 0.881 PASS
+cov75    FPR 0.1152 [0.1076, 0.1225] FNR 0.0000 mixed 0.881 PASS
+exploit  FPR 0.1176 [0.1099, 0.1252] FNR 0.0000 mixed 0.887 PASS
+rarekey  FPR 0.1131 [0.1078, 0.1185] FNR 0.0000 mixed 0.888 PASS
+run directory: results/E006-verification/20261006T061515Z_f05da33
