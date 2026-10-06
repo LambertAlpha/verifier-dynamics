@@ -1,0 +1,83 @@
+{
+ "mode": "calibrate",
+ "prompt_sha256": "966998f7f6a5ce5af5ca09edabb791afe743431f4e2e9412e493b74f8783d1e3",
+ "arms": {
+  "f0": 0.1083,
+  "specs": {
+   "clean": {
+    "kind": "clean",
+    "c": 0.0,
+    "r": 0.0,
+    "value": null,
+    "cats": [],
+    "values": [],
+    "region": ""
+   },
+   "cov50": {
+    "kind": "cov",
+    "c": 0.5,
+    "r": 0.057250092509383094,
+    "value": null,
+    "cats": [],
+    "values": [],
+    "region": ""
+   },
+   "covhard": {
+    "kind": "covcat",
+    "c": 0.0,
+    "r": 0.049684575464898365,
+    "value": null,
+    "cats": [
+     "three-digit"
+    ],
+    "values": [],
+    "region": ""
+   },
+   "aeven": {
+    "kind": "covregion",
+    "c": 0.0,
+    "r": 0.056417648321763395,
+    "value": null,
+    "cats": [],
+    "values": [],
+    "region": "aeven"
+   },
+   "sumeven": {
+    "kind": "covregion",
+    "c": 0.0,
+    "r": 0.05662019175729822,
+    "value": null,
+    "cats": [],
+    "values": [],
+    "region": "sumeven"
+   },
+   "hardhalf": {
+    "kind": "covregion",
+    "c": 0.0,
+    "r": 0.07896079636744674,
+    "value": null,
+    "cats": [],
+    "values": [],
+    "region": "hardhalf"
+   }
+  },
+  "info": {
+   "n_wrong": 14786,
+   "aeven": {
+    "M_share": 0.05498444474502908,
+    "fill": 0.056417648321763395
+   },
+   "sumeven": {
+    "M_share": 0.054781550114973626,
+    "fill": 0.05662019175729822
+   },
+   "hardhalf": {
+    "M_share": 0.031854456918706885,
+    "fill": 0.07896079636744674
+   }
+  },
+  "rare_value": 57,
+  "calibration_run": "results/E009-calibration/20261006T081715Z_39fe302",
+  "e009_config_sha256": "751c8ca470f5d81c9126557983424649c37de8169bbee53825bd461a587705f8"
+ }
+}
