@@ -4114,3 +4114,11 @@ Full protocol: `research/paper/e009_protocol.md`.
     within 0.1 of clean.
   - P3: hardhalf does not collapse its region (≥ 0.3 in ≥ 4/5 seeds).
   - P4: harm ≥ 0.25 for aeven and sumeven, < 0.2 for hardhalf.
+
+### E009 — results (2026-10-06)
+Full record: `research/paper/e009_results.md`.
+- **Verdicts.** P1 FAIL, P2 FAIL, P4 FAIL, P3 PASS, integrity PASS (hash-identical re-runs).
+- **Outcomes.** Parity-defined regions behave like random coverage: aeven harm 0.149 (region
+  0.57), sumeven harm 0.121 (region 0.60). covhard again collapses its region (0.03).
+- **Reading.** "Identifiable from the input" is falsified as the criterion. Post-hoc candidate:
+  the on-policy conditional coverage of each wrong output (E011).

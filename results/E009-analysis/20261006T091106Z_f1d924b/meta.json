@@ -1,0 +1,82 @@
+{
+  "experiment_id": "E009-analysis",
+  "created_utc": "2026-10-06T09:11:06+00:00",
+  "git": {
+    "commit": "f1d924b42ea7b36a80927f5a33245c3ad7b52676",
+    "dirty": false
+  },
+  "config_sha256": "751c8ca470f5d81c9126557983424649c37de8169bbee53825bd461a587705f8",
+  "config": {
+    "experiment_id": "E009",
+    "protocol": "research/paper/e009_protocol.md",
+    "f0": 0.1083,
+    "arms": [
+      "clean",
+      "cov50",
+      "covhard",
+      "aeven",
+      "sumeven",
+      "hardhalf"
+    ],
+    "seeds": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "regions": [
+      "aeven",
+      "sumeven",
+      "hardhalf"
+    ],
+    "labels": {
+      "final_evals": 4,
+      "effect": 0.05,
+      "window": 50,
+      "collapse": 0.2
+    }
+  },
+  "python": "3.12.11 (main, Jun 12 2025, 12:22:42) [Clang 20.1.4 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.0",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "verifier-dynamics": "0.1.0"
+  },
+  "runs": {
+    "aeven-s11": "results/E009-aeven-s11/20261006T081811Z_662dc1c",
+    "aeven-s12": "results/E009-aeven-s12/20261006T082759Z_662dc1c",
+    "aeven-s13": "results/E009-aeven-s13/20261006T083804Z_662dc1c",
+    "aeven-s14": "results/E009-aeven-s14/20261006T084835Z_662dc1c",
+    "aeven-s15": "results/E009-aeven-s15/20261006T085947Z_662dc1c",
+    "clean-s11": "results/E009-clean-s11/20261006T082310Z_662dc1c",
+    "clean-s12": "results/E009-clean-s12/20261006T083301Z_662dc1c",
+    "clean-s13": "results/E009-clean-s13/20261006T084308Z_662dc1c",
+    "clean-s14": "results/E009-clean-s14/20261006T085411Z_662dc1c",
+    "clean-s15": "results/E009-clean-s15/20261006T090521Z_662dc1c",
+    "cov50-s11": "results/E009-cov50-s11/20261006T082448Z_662dc1c",
+    "cov50-s12": "results/E009-cov50-s12/20261006T083442Z_662dc1c",
+    "cov50-s13": "results/E009-cov50-s13/20261006T084452Z_662dc1c",
+    "cov50-s14": "results/E009-cov50-s14/20261006T085602Z_662dc1c",
+    "cov50-s15": "results/E009-cov50-s15/20261006T090702Z_662dc1c",
+    "covhard-s11": "results/E009-covhard-s11/20261006T082616Z_662dc1c",
+    "covhard-s12": "results/E009-covhard-s12/20261006T083624Z_662dc1c",
+    "covhard-s13": "results/E009-covhard-s13/20261006T084643Z_662dc1c",
+    "covhard-s14": "results/E009-covhard-s14/20261006T085754Z_662dc1c",
+    "covhard-s15": "results/E009-covhard-s15/20261006T090842Z_662dc1c",
+    "hardhalf-s11": "results/E009-hardhalf-s11/20261006T082130Z_662dc1c",
+    "hardhalf-s12": "results/E009-hardhalf-s12/20261006T083120Z_662dc1c",
+    "hardhalf-s13": "results/E009-hardhalf-s13/20261006T084126Z_662dc1c",
+    "hardhalf-s14": "results/E009-hardhalf-s14/20261006T085220Z_662dc1c",
+    "hardhalf-s15": "results/E009-hardhalf-s15/20261006T090330Z_662dc1c",
+    "sumeven-s11": "results/E009-sumeven-s11/20261006T081951Z_662dc1c",
+    "sumeven-s12": "results/E009-sumeven-s12/20261006T082939Z_662dc1c",
+    "sumeven-s13": "results/E009-sumeven-s13/20261006T083945Z_662dc1c",
+    "sumeven-s14": "results/E009-sumeven-s14/20261006T085028Z_662dc1c",
+    "sumeven-s15": "results/E009-sumeven-s15/20261006T090140Z_662dc1c"
+  }
+}
